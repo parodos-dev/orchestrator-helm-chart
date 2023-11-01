@@ -1,0 +1,116 @@
+{{- if eq .Values.postgres.externalPostgresDBHost "" }}
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: postgres-db
+  namespace: {{ .Values.orchestrator.namespace }}
+  labels: 
+    app: postgres-db
+spec:
+  serviceName: {{ .Values.postgres.serviceName }}-hl
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-db
+  template:
+    metadata:
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+        - name: postgres-db
+          image: 'quay.io/ecosystem-appeng/rhdh-postgres'
+          imagePullPolicy: 'IfNotPresent'
+# https://access.redhat.com/solutions/7002730
+{{- if eq (include "is-openshift" .) "true" }}
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+              - ALL
+{{- end }}
+          ports:
+            - containerPort: {{ .Values.postgres.port }}
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: dbfiles
+          env:
+            - name: PGDATA
+              value: {{ .Values.postgres.dataDir }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.database }}
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: password
+            - name: POSTGRES_INITDB_ARGS
+              value: "-U postgres"
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.username }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: {{ .Values.postgres.secretKeys.userPasswordKey }}
+                  name: '{{- include "get-postgres-secret-name" . }}'
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pvc
+  namespace: {{ .Values.orchestrator.namespace }}
+  labels: 
+      app: postgres-db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.postgres.storage }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.postgres.serviceName }}-hl
+  namespace: {{ .Values.orchestrator.namespace }}
+  labels: 
+      app: postgres-db
+spec:
+  selector:
+    app: postgres-db
+  clusterIP: None
+  ports:
+    - protocol: TCP
+      port: {{ .Values.postgres.port }}
+      targetPort: {{ .Values.postgres.port }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.postgres.serviceName }}
+  namespace: {{ .Values.orchestrator.namespace }}
+  labels: 
+      app: postgres-db
+spec:
+  selector:
+    app: postgres-db
+  ports:
+    - protocol: TCP
+      port: {{ .Values.postgres.port }}
+      targetPort: {{ .Values.postgres.port }}
+---
+kind: Secret
+apiVersion: v1
+type: Opaque
+metadata:
+  labels: 
+    app: kogito
+  name: {{ include "get-postgres-secret-name" . }}
+  namespace: {{ .Values.orchestrator.namespace }}
+stringData:
+  {{ .Values.postgres.secretKeys.userPasswordKey }}: {{ .Values.postgres.password }}
+{{- end }}

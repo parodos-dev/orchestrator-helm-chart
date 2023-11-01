@@ -1,0 +1,65 @@
+{{- $ns := .Values.orchestrator.namespace }}
+{{- $isOpenShift := include "is-openshift" . }}
+{{- $releaseName := .Release.Name }}
+{{- $releaseNamespace := .Release.Namespace }}
+{{- if .Values.includeCustomResources }}
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlowPlatform
+metadata:
+  name: sonataflow-platform
+  namespace: {{ $ns }}
+spec:
+  build:
+    config:
+      strategyOptions:
+        KanikoBuildCacheEnabled: "true"
+    template:
+      resources:
+        requests:
+          memory: {{ .Values.orchestrator.sonataPlatform.resources.requests.memory }}
+          cpu: {{ .Values.orchestrator.sonataPlatform.resources.requests.cpu }}
+        limits:
+          memory: {{ .Values.orchestrator.sonataPlatform.resources.limits.memory }}
+          cpu: {{ .Values.orchestrator.sonataPlatform.resources.limits.cpu }}
+---
+{{- range $v := .Values.orchestrator.sonataflows }}
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlow
+metadata:
+  name: {{ $v.name }}
+  namespace: {{ $ns }}
+  annotations:
+    sonataflow.org/description: {{ $v.description }}
+    sonataflow.org/version: {{ $v.version }}
+    sonataflow.org/profile: {{ $v.profile }}
+spec:
+{{ $v.spec | indent 2 }}
+---
+{{- if ne $v.propsConfigData "" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $v.name }}-props
+  namespace: {{ $ns }}
+data:
+{{ $v.propsConfigData | indent 2 }}
+---
+{{- end }}
+{{- if eq $isOpenShift "true" }}
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ $v.name }}
+  namespace: {{ $ns }}
+  labels:
+    app: {{ $v.name }}
+spec:
+  to:
+    kind: Service
+    name: {{ $v.name }}
+  port:
+    targetPort: {{ $v.serviceTargetPort }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
