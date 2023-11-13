@@ -1,0 +1,6 @@
+dependencies:
+- name: backstage
+  repository: https://janus-idp.github.io/helm-backstage
+  version: 2.4.0
+digest: sha256:073603129cf80c6421cccb43dc8718ea90356c115a71461c132e9d7229a9b079
+generated: "2023-10-27T16:19:34.108875-04:00"

@@ -1,0 +1,96 @@
+
+{{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" .Values.orchestrator.namespace .Release.Name) }}
+{{- if eq $unmanagedNamespaceExists "false" }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.orchestrator.namespace }}
+---
+{{- end }}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: data-index
+  namespace: {{ .Values.orchestrator.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-index
+  template:
+    metadata:
+      labels:
+        app: data-index
+    spec:
+      containers:
+      - name: data-index
+        image: {{ .Values.orchestrator.dataindex.image }}
+# https://access.redhat.com/solutions/7002730
+{{- if eq (include "is-openshift" .) "true" }}
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+            - ALL
+{{- end }}     
+        ports:
+        - containerPort: {{ .Values.orchestrator.dataindex.port }}
+        env:
+        - name: QUARKUS_DATASOURCE_JDBC_URL
+          value: "{{- include "get-postgres-jdbc-url" . }}?currentSchema=data-index-service"
+        - name: QUARKUS_DATASOURCE_USERNAME
+          value: {{ .Values.postgres.username }}
+        - name: QUARKUS_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: '{{- include "get-postgres-secret-name" . }}'
+              key: {{ .Values.postgres.secretKeys.userPasswordKey }}
+        - name: QUARKUS_HTTP_CORS_ORIGINS
+          value: "/.*/"
+        - name: QUARKUS_PROFILE
+          value: http-events-support
+        - name: KOGITO_DATA_INDEX_QUARKUS_PROFILE
+          value: http-events-support
+        - name: QUARKUS_FLYWAY_MIGRATE_AT_START
+          value: "true"
+        - name: QUARKUS_FLYWAY_TABLE
+          value: data-index-flyway
+        - name: QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION
+          value: update
+        - name: KOGITO_DATA_INDEX_PROPS
+          value: "-Dquarkus.hibernate-orm.database.generation=update -Dquarkus.log.category.\"org.kie.kogito.index\".min-level=DEBUG -Dquarkus.log.category.\"org.kie.kogito.index\".level=DEBUG"
+      initContainers:
+        - name: init-postgres
+          image: busybox:1.36
+# https://access.redhat.com/solutions/7002730
+{{- if eq (include "is-openshift" .) "true" }}
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+              - ALL
+{{- end }}         
+          imagePullPolicy: IfNotPresent
+          command: ['sh', '-c', 'until nc -vz {{ include "get-postgres-host" . }}:{{ .Values.postgres.port }}; do echo "Waiting for postgres server"; sleep 3; done;']
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: data-index-service
+  namespace: {{ .Values.orchestrator.namespace }}
+  labels: 
+      app: data-index
+spec:
+  selector:
+    app: data-index
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: {{.Values.orchestrator.dataindex.port}}
+  type: NodePort
