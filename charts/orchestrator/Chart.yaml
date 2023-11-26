@@ -27,4 +27,4 @@ appVersion: "0.0.1"
 dependencies:
   - name: backstage
     repository: https://janus-idp.github.io/helm-backstage
-    version: "2.4.0"
+    version: "2.11.1"
