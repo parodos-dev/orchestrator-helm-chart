@@ -37,7 +37,7 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `postgres.serviceName` | service name to access the database | `"postgres-db-service"` |
 | `postgres.port` | service port to access the database | `5432` |
 | `postgres.dataDir` | where the database data files are stored inside the container | `"/var/lib/postgresql/data/dbfiles"` |
-| `backstage.upstream.backstage.image.repository` |  | `"rgolangh/orchestrator"` |
+| `backstage.upstream.backstage.image.tag` | Hack to bypass bug in 'next' tag | `pr-814` |
 | `backstage.upstream.backstage.appConfig.orchestrator.catalog.environment` |  | `"development"` |
 | `backstage.upstream.backstage.appConfig.orchestrator.sonataFlowService.baseUrl` |  | `"http://event-timeout.sonataflow-infra.svc.cluster.local"` |
 | `backstage.upstream.backstage.appConfig.orchestrator.sonataFlowService.port` |  | `80` |

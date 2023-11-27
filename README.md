@@ -34,7 +34,10 @@ $ oc new-project orchestrator-install
 ```
 Perform a first pass installation:
 ```console
-$ helm install orchestrator orchestrator
+Replace `backstage.global.clusterRouterBase` with the route of your cluster ingress router. For example, if the route of
+your cluster ingress router is `apps.ocp413.lab.local`, then you should set `backstage.global.clusterRouterBase=apps.ocp413.lab.local`.
+
+$ helm install orchestrator orchestrator --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
 NAME: orchestrator
 LAST DEPLOYED: Tue Nov  7 21:04:36 2023
 NAMESPACE: orchestrator-install
@@ -81,7 +84,7 @@ sonataflows.sonataflow.org                                        2023-11-06T16:
 ```
 Now, perform a 2nd pass installation using `helm upgrade` with `--set includeCustomResources=true` to deploy the remaining components with custom resources:
 ```console
-$ helm upgrade orchestrator orchestrator  --set includeCustomResources=true
+$ helm upgrade orchestrator orchestrator --set includeCustomResources=true --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
 Release "orchestrator" has been upgraded. Happy Helming!
 NAME: orchestrator
 LAST DEPLOYED: Tue Nov  7 21:06:40 2023
