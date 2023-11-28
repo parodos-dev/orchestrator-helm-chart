@@ -1,3 +1,4 @@
+## Orchestrator Janus IDP Backstage Helm Repository
 Helm chart to deploy the Orchestrator solution suite. The following components will be installed on the cluster:
 * Janus IDP backstage
 * SonataFlow Operator
@@ -32,8 +33,9 @@ $ oc new-project orchestrator-install
 
 #### Perform a first pass installation
 
-Replace `backstage.global.clusterRouterBase` with the route of your cluster ingress router. For example, if the route of
-your cluster ingress router is `apps.ocp413.lab.local`, then you should set `backstage.global.clusterRouterBase=apps.ocp413.lab.local`.
+Replace `backstage.global.clusterRouterBase` with the route of your cluster ingress router.
+For example, if the route of your cluster ingress router is `apps.ocp413.lab.local`, then you should 
+set `backstage.global.clusterRouterBase=apps.ocp413.lab.local`.
 
 ```console
 $ helm install orchestrator orchestrator --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
