@@ -42,8 +42,8 @@ backstage:
       plugins:
         - disabled: false
           integrity: >-
-            sha512-YbCxiO+3xU+08hky9VJZnu0JrjX8KUNZKxAaRRC0l+WWMl92kN1PbSW7m/msfQ/TR2/MN3UMl5Pgqr/NYNlqIQ==
-          package: '@caponetto-tests/backstage-plugin-orchestrator-backend-dynamic@0.0.2'
+            sha512-uwGZRqe0IXFO9Xtsm106FxykFCIIa0htYIbo01yhUx4n2tjz6tvGhKGv7zeVaQYeGJ7AytQ1Y9p/xTHrF1PuZw==
+          package: '@caponetto-tests/backstage-plugin-orchestrator-backend-dynamic@0.0.3'
           pluginConfig:
             orchestrator:
               sonataFlowService:
@@ -53,8 +53,8 @@ backstage:
                 path: 'https://sandbox.kie.org/swf-chrome-extension/0.32.0'
         - disabled: false
           integrity: >-
-            sha512-c4yiLKkcAOUwopYIWmlHaDJ/h7NF8MGYQsSmdxYQ8+BGiXbzPOkrEFgmXUswc8lxLkJ1HSI/RGvzcKdwlUWVXg==
-          package: '@caponetto-tests/backstage-plugin-orchestrator@0.0.2'
+            sha512-re4v8pu+97DEdv3MAELP0iehHSG2HxlmE/JA7Ss/3ZfcM5bcH85DlsLrZS7cGAMiZSkKUn3q9d360pTCyeyasQ==
+          package: '@caponetto-tests/backstage-plugin-orchestrator@0.0.3'
           pluginConfig:
             dynamicPlugins:
               frontend:
