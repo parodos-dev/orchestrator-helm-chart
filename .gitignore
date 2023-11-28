@@ -1,9 +1,0 @@
-### macOS ###
-.DS_Store
-.AppleDouble
-.LSOverride
-.idea
-
-# helm chart dependencies
-charts/*/charts/
-**/charts/*.tgz
