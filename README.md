@@ -1,4 +1,4 @@
-## Orchestrator Janus IDP Backstage Helm Repository
+## Orchestrator Backstage Helm Repository
 Helm chart to deploy the Orchestrator solution suite. The following components will be installed on the cluster:
 * Janus IDP backstage
 * SonataFlow Operator
