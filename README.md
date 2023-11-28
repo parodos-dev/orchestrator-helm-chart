@@ -38,19 +38,19 @@ For example, if the route of your cluster ingress router is `apps.ocp413.lab.loc
 set `backstage.global.clusterRouterBase=apps.ocp413.lab.local`.
 
 ```console
-$ helm install orchestrator orchestrator --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
+$ helm install orchestrator orchestrator/orchestrator --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
 ```
 Follow the instructions in the output to complete the *first pass* installation.
 
 #### Perform a second pass installation
 Using `helm upgrade` with `--set includeCustomResources=true` to deploy the remaining components with custom resources:
 ```console
-$ helm upgrade orchestrator orchestrator --set includeCustomResources=true --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
+$ helm upgrade orchestrator orchestrator/orchestrator --set includeCustomResources=true --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
 ```
 
 ### Uninstallation
 ```console
-$ helm upgrade orchestrator orchestrator/ --set includeCustomResources=false
+$ helm upgrade orchestrator orchestrator/orchestrator --set includeCustomResources=false
 ```
 Followed by:
 ```console
