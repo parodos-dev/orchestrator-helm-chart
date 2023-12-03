@@ -75,6 +75,17 @@ backstage:
       image:
         tag: next
       appConfig:
+        integrations:
+          github:
+            - host: github.com
+              token: "INSERT VALID TOKEN HERE"
+        auth:
+          environment: development
+          providers:
+            github:
+              development:
+                clientId: "INSERT VALID CLIENT ID HERE"
+                clientSecret: "INSERT VALID CLIENT SECRET HERE"
         backend:
           csp:
             frame-src:
