@@ -208,7 +208,7 @@ set-cookie: da54ae0c1dede48a1bd1b52c3620cecc=bf774cafeae884d8642fba7b3e7e16f0; p
 ## Cleanup
 To remove the installation from the cluster, first remove the deployed custom resources using `helm upgrade` as below.
 ```console
-$ helm upgrade orchestrator orchestrator/ --set includeCustomResources=false
+$ helm upgrade orchestrator orchestrator --set includeCustomResources=false
 Release "orchestrator" has been upgraded. Happy Helming!
 NAME: orchestrator
 LAST DEPLOYED: Tue Nov  7 21:24:04 2023
