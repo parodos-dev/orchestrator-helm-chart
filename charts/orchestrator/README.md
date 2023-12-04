@@ -39,11 +39,6 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `postgres.dataDir` | where the database data files are stored inside the container | `"/var/lib/postgresql/data/dbfiles"` |
 | `backstage.upstream.backstage.image.tag` | Hack to bypass bug in 'next' tag | `pr-814` |
 | `backstage.upstream.backstage.appConfig.orchestrator.catalog.environment` |  | `"development"` |
-| `backstage.upstream.backstage.appConfig.orchestrator.sonataFlowService.baseUrl` |  | `"http://event-timeout.sonataflow-infra.svc.cluster.local"` |
-| `backstage.upstream.backstage.appConfig.orchestrator.sonataFlowService.port` |  | `80` |
-| `backstage.upstream.backstage.appConfig.orchestrator.sonataFlowService.path` |  | `"/"` |
-| `backstage.upstream.backstage.appConfig.orchestrator.sonataFlowService.workflowsSource.localPath` |  | `"/tmp"` |
-| `backstage.upstream.backstage.appConfig.orchestrator.sonataFlowService.workflowsSource.gitRepositoryUrl` |  | `"https://github.com/tiagodolphine/backstage-orchestrator-work"` |
 | `orchestrator.namespace` | namespace where the data index, job service and workflows are deployed | `"sonataflow-infra"` |
 | `orchestrator.dataindex.image` | image for data index | `"quay.io/kiegroup/kogito-data-index-postgresql:1.42"` |
 | `orchestrator.dataindex.name` | service name of the data index | `"data-index-service"` |

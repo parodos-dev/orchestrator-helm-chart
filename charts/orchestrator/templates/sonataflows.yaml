@@ -1,7 +1,4 @@
 {{- $ns := .Values.orchestrator.namespace }}
-{{- $isOpenShift := include "is-openshift" . }}
-{{- $releaseName := .Release.Name }}
-{{- $releaseNamespace := .Release.Namespace }}
 {{- if .Values.includeCustomResources }}
 apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlowPlatform
@@ -22,44 +19,146 @@ spec:
           memory: {{ .Values.orchestrator.sonataPlatform.resources.limits.memory }}
           cpu: {{ .Values.orchestrator.sonataPlatform.resources.limits.cpu }}
 ---
-{{- range $v := .Values.orchestrator.sonataflows }}
+apiVersion: v1
+data:
+  greeting.sw.input-schema.json: |
+    {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string"
+        }
+      }
+    }
+  greeting.sw.yaml: |
+    id: greeting
+    version: '1.0'
+    specVersion: '1.0'
+    name: Greeting workflow
+    description: YAML based greeting workflow
+    expressionLang: jsonpath
+    dataInputSchema: "greeting.sw.input-schema.json"
+    start: ChooseOnLanguage
+    functions:
+      - name: greetFunction
+        type: custom
+        operation: sysout
+    states:
+      - name: ChooseOnLanguage
+        type: switch
+        dataConditions:
+          - condition: "${$.[?(@.language  == 'English')]}"
+            transition: GreetInEnglish
+          - condition: "${$.[?(@.language  == 'Spanish')]}"
+            transition: GreetInSpanish
+        defaultCondition:
+          transition: GreetInEnglish
+      - name: GreetInEnglish
+        type: inject
+        data:
+          greeting: 'Hello from YAML Workflow, '
+        transition: GreetPerson
+      - name: GreetInSpanish
+        type: inject
+        data:
+          greeting: 'Saludos desde YAML Workflow, '
+        transition: GreetPerson
+      - name: GreetPerson
+        type: operation
+        actions:
+          - name: greetAction
+            functionRef:
+              refName: greetFunction
+              arguments:
+                message: "$.greeting $.name"
+        end:
+          terminate: true
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: 01-greeting-resources
+  namespace: {{ $ns }}
+---
+{{- $greetingImage := "" }}
+  {{- range .Values.orchestrator.sonataflows }}
+    {{- if eq .name "greeting" }}
+      {{- $greetingImage = .image }}
+    {{- end }}
+  {{- end }}
 apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlow
 metadata:
-  name: {{ $v.name }}
-  namespace: {{ $ns }}
   annotations:
-    sonataflow.org/description: {{ $v.description }}
-    sonataflow.org/version: {{ $v.version }}
-    sonataflow.org/profile: {{ $v.profile }}
-spec:
-{{ $v.spec | indent 2 }}
----
-{{- if ne $v.propsConfigData "" }}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ $v.name }}-props
-  namespace: {{ $ns }}
-data:
-{{ $v.propsConfigData | indent 2 }}
----
-{{- end }}
-{{- if eq $isOpenShift "true" }}
-kind: Route
-apiVersion: route.openshift.io/v1
-metadata:
-  name: {{ $v.name }}
-  namespace: {{ $ns }}
+    sonataflow.org/description: YAML based greeting workflow
+    sonataflow.org/expressionLang: jsonpath
+    sonataflow.org/profile: dev
+    sonataflow.org/version: "1.0"
+  creationTimestamp: null
   labels:
-    app: {{ $v.name }}
+    app: greeting
+    sonataflow.org/workflow-app: greeting
+  name: greeting
+  namespace: {{ $ns }}
 spec:
-  to:
-    kind: Service
-    name: {{ $v.name }}
-  port:
-    targetPort: {{ $v.serviceTargetPort }}
----
-{{- end }}
-{{- end }}
+  flow:
+    annotations:
+      - workflow-type/infrastructure
+    dataInputSchema:
+      failOnValidationErrors: true
+      schema: greeting.sw.input-schema.json
+    functions:
+      - name: greetFunction
+        operation: sysout
+        type: custom
+    start:
+      stateName: ChooseOnLanguage
+    states:
+      - dataConditions:
+          - condition: ${$.[?(@.language  == 'English')]}
+            transition:
+              nextState: GreetInEnglish
+          - condition: ${$.[?(@.language  == 'Spanish')]}
+            transition:
+              nextState: GreetInSpanish
+        defaultCondition:
+          transition:
+            nextState: GreetInEnglish
+        name: ChooseOnLanguage
+        type: switch
+      - data:
+          greeting: 'Hello from YAML Workflow, '
+        name: GreetInEnglish
+        transition:
+          nextState: GreetPerson
+        type: inject
+      - data:
+          greeting: 'Saludos desde YAML Workflow, '
+        name: GreetInSpanish
+        transition:
+          nextState: GreetPerson
+        type: inject
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                message: $.greeting $.name
+              invoke: sync
+              refName: greetFunction
+            name: greetAction
+        end:
+          terminate: true
+        name: GreetPerson
+        type: operation
+  podTemplate:
+    container:
+      resources: {}
+      image: {{ $greetingImage }}
+  resources:
+    configMaps:
+      - configMap:
+          name: 01-greeting-resources
+        workflowPath: specs
 {{- end }}
