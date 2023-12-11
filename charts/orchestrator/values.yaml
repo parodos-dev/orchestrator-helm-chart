@@ -93,9 +93,9 @@ backstage:
             - allow: [ Component, System, Group, Resource, Location, Template, API, User, Domain ]
           locations:
             - type: url
-              target: https://github.com/parodos-dev/workflow-gpt/blob/main/entities/workflow-resources.yaml
+              target: https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml
             - type: url
-              target: https://github.com/parodos-dev/workflow-gpt/blob/main/template/template.yaml
+              target: https://github.com/parodos-dev/workflow-software-templates/blob/main/template/template.yaml
             - type: url
               target: https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml
         backend:
