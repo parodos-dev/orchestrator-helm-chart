@@ -21,17 +21,12 @@ serverlessOperator:
     sourceNamespace: openshift-marketplace # namespace of the catalog source
 
 postgres:
-  externalPostgresDBHost: ""  # host name of an existing Postgres DB used by dataindex and job service. If empty, a local Postgres DB is deployed
-  existingSecret: ""  # name of existing secret to use for PostgreSQL credentials. 
-  secretKeys:
-    userPasswordKey: password  # name of key in existing secret to use for PostgreSQL credentials. Only used when `existingSecret` is set.
-  database: sonataflow  # database instance used by data index and job service
+  postgresDBHostAndPort: "sonataflow-psql-postgresql.sonataflow-infra.svc.cluster.local:5432"  # host and port of an existing Postgres DB used by dataindex and job service. Cannot be empty.
+  authSecret:
+    name: "sonataflow-psql-postgresql"  # name of existing secret to use for PostgreSQL credentials. 
+    passwordKey: postgres-password  # name of key in existing secret to use for PostgreSQL credentials.
+  database: sonataflow  # existing database instance used by data index and job service
   username: postgres  # database user name 
-  password: postgres  # database password. Ignored if existingSecret is set.
-  storage: 2Gi # the database storage size
-  serviceName: postgres-db-service # service name to access the database
-  port: 5432  # service port to access the database
-  dataDir: /var/lib/postgresql/data/dbfiles  # where the database data files are stored inside the container
 
 # override Janus image with one with the orchestrator plugin
 backstage:

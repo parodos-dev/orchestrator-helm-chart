@@ -74,24 +74,9 @@ Returns custom hostname
     {{- end -}}
 {{- end -}}
 
-{{- define "get-postgres-secret-name" -}}
-    {{- if .Values.postgres.existingSecret -}}
-        {{- .Values.postgres.existingSecret -}}
-    {{- else }}
-        {{- "orchestrator-postgresql" -}}
-    {{- end -}}
-{{- end -}}
-
-{{- define "get-postgres-host" -}}
-    {{- if .Values.postgres.externalPostgresDBHost -}}
-        {{- .Values.postgres.externalPostgresDBHost -}}
-    {{- else }}
-        {{- print .Values.postgres.serviceName "." .Values.orchestrator.namespace ".svc.cluster.local" -}}
-    {{- end -}}
-{{- end -}}    
 {{- define "get-postgres-jdbc-url" -}}
-    {{- print "jdbc:postgresql://" (include "get-postgres-host" .) ":" .Values.postgres.port "/" .Values.postgres.database -}}
+    {{- print "jdbc:postgresql://" .Values.postgres.postgresDBHostAndPort "/" .Values.postgres.database -}}
 {{- end -}}
 {{- define "get-postgres-reactive-url" -}}
-    {{- print "postgresql://" (include "get-postgres-host" .) ":" .Values.postgres.port  "/" .Values.postgres.database -}}
+    {{- print "postgresql://" .Values.postgres.postgresDBHostAndPort  "/" .Values.postgres.database -}}
 {{- end -}}

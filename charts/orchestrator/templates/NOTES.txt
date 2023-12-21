@@ -11,7 +11,6 @@ Helm Release {{ .Release.Name }} installed in namespace {{ .Release.Namespace }}
 {{- $sonataFlowPlatformInstalled := $no }}
 {{- $dataIndexInstalled := $yes }}
 {{- $jobServiceInstalled := $yes }}
-{{- $postgresWorkflowsInstalled := $no }}
 {{- $timeout := "--timeout=5m" }}
 
 {{- if .Values.backstage.upstream.postgresql.enabled }}
@@ -41,10 +40,6 @@ Helm Release {{ .Release.Name }} installed in namespace {{ .Release.Namespace }}
 {{- $sonataFlowOperatorInstalled = $yes }}
 {{- end }}
 
-{{- if eq .Values.postgres.externalPostgresDBHost "" }}
-{{- $postgresWorkflowsInstalled = $yes }}
-{{- end }}
-
 {{- if .Values.includeCustomResources }}
 {{- $sonataFlowPlatformInstalled = $yes }}
 {{- end }}
@@ -60,7 +55,6 @@ SonataFlow Operator          {{ $sonataFlowOperatorInstalled }}        {{ .Value
 SonataFlowPlatform           {{ $sonataFlowPlatformInstalled }}        {{ .Values.orchestrator.namespace }}
 Data Index Service           {{ $dataIndexInstalled }}        {{ .Values.orchestrator.namespace }}
 Job Service                  {{ $jobServiceInstalled }}        {{ .Values.orchestrator.namespace }}
-Postgres DB - workflows      {{ $postgresWorkflowsInstalled }}        {{ .Values.orchestrator.namespace }}
 {{/* Empty line */}}
 
 {{- if .Values.includeCustomResources }}
@@ -97,9 +91,6 @@ Run the following commands to wait until the services are ready:
 {{- end }}
 {{- if eq $jobServiceInstalled $yes }}
   oc wait -n {{ .Values.orchestrator.namespace }} deploy/jobs-service --for=condition=Available {{ $timeout }}
-{{- end }}
-{{- if eq $postgresWorkflowsInstalled $yes }}
-  oc wait -n {{ .Values.orchestrator.namespace }} pod/postgres-db-0 --for=condition=Ready {{ $timeout }}
 {{- end }}
 {{- if eq $postgresBackstageInstalled $yes }}
   oc wait -n {{ .Release.Namespace }} pod/{{ .Release.Name }}-postgresql-0 --for=condition=Ready {{ $timeout }}
