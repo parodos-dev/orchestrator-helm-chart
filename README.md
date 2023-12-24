@@ -1,16 +1,13 @@
 # Orchestrator Helm Chart
-Helm chart to deploy the Orchestrator solution suite on OpenShift, including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator, Knative Eventing, Knative Serving, Data Index and Job Service.
+Helm chart to deploy the Orchestrator solution suite on OpenShift, including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator, Knative Eventing and Knative Serving.
 
 This chart will deploy the following on the target OpenShift cluster:
   - Janus IDP backstage
-  - SonataFlow Operator
+  - SonataFlow Operator (with Data-Index and Job Service)
   - OpenShift Serverless Operator
   - Knative Eventing
   - Knative Serving
-  - Data Index Service
-  - Job Service
-  - PostgreSQL Databases 
-  - Sample workflow (event-timeout)
+  - Sample workflow (greeting)
 
 ## Prerequisites
 - You logged in a Red Hat OpenShift Container Platform (version 4.13+) cluster as a cluster administrator.
@@ -25,10 +22,15 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
 ### Deploying PostgreSQL reference implementation
 Follow these steps to deploy a sample PostgreSQL instance in the `sonataflow-infra` namespace, with minimal requirements to deploy the Orchestrator.
+
+Note: replace the password of the `sonataflow-psql-postgresql` secret below in the following command with the desired one.
+
 ```console
+oc new-project sonataflow-infra
+oc create secret generic sonataflow-psql-postgresql --from-literal=postgres-username=postgres --from-literal=postgres-password=postgres
+
 git clone git@github.com:parodos-dev/orchestrator-helm-chart.git
 cd orchestrator-helm-chart/postgresql
-oc new-project sonataflow-infra
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install sonataflow-psql bitnami/postgresql --version 12.x.x -f ./values.yaml
 ```
@@ -39,142 +41,75 @@ Any changes to the first configuration must also be reported in the latter.
 
 ## Installation
 
-This helm chart deploys OpenShift Serverless Operator and SonataFlow operator as well as other components using custom resources (eg, KnativeEventing, KnativeServing CRs, SonataFlow, SonataFlowPlatform, etc) for the CRDs supported by these operators. Because the custom resources can only be deployed after the corresponding CRDs for the operator have been created and registered with the Kubernetes API Server, we use a two-phase deployment process as follows.
-
 Build helm dependency and create a new project for the installation:
 ```console
 git clone git@github.com:parodos-dev/orchestrator-helm-chart.git
 cd orchestrator-helm-chart/charts
 helm dep update orchestrator
-oc new-project orchestrator-install
+oc new-project orchestrator
 ```
-Perform a first pass installation:
-```console
-Replace `backstage.global.clusterRouterBase` with the route of your cluster ingress router. For example, if the route of
-your cluster ingress router is `apps.ocp413.lab.local`, then you should set `backstage.global.clusterRouterBase=apps.ocp413.lab.local`.
 
+Replace `backstage.global.clusterRouterBase` with the route of your cluster ingress router. For example, if the route of
+your cluster ingress router is `apps.ocp413.lab.local`, then you should set `backstage.global.clusterRouterBase` to `apps.ocp413.lab.local`.
+The value for it can be fetched by:
+```console
+oc get ingress.config.openshift.io/cluster -oyaml | yq '.spec.domain'
+apps.ocp413.lab.local
+```
+
+Install the chart:
+```console
 $ helm install orchestrator orchestrator --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
 NAME: orchestrator
-LAST DEPLOYED: Tue Nov  7 21:04:36 2023
-NAMESPACE: orchestrator-install
+LAST DEPLOYED: Tue Jan  2 23:17:54 2024
+NAMESPACE: orchestrator
 STATUS: deployed
 REVISION: 1
-NOTES:
-Helm Release orchestrator installed in namespace orchestrator-install.
+USER-SUPPLIED VALUES:
+backstage:
+  global:
+    clusterRouterBase: apps.ocp413.lab.local
 
 Components                   Installed   Namespace
 ====================================================================
-Backstage                    YES        orchestrator-install
-Postgres DB - Backstage      YES        orchestrator-install
-Red Hat Serverless Operator  YES        openshift-serverless
-KnativeServing               NO         knative-serving
-KnativeEventing              NO         knative-eventing
-SonataFlow Operator          YES        openshift-operators
-SonataFlowPlatform           NO         sonataflow-infra
-Data Index Service           YES        sonataflow-infra
-Job Service                  YES        sonataflow-infra
-Postgres DB - workflows      YES        sonataflow-infra
-
-No workflows deployed.
-
-Run the following commands to wait until the services are ready:
-  oc wait -n openshift-serverless deploy/knative-openshift --for=condition=Available --timeout=5m
-  oc wait -n openshift-operators deploy/sonataflow-operator-controller-manager --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra deploy/data-index --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra deploy/jobs-service --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra pod/postgres-db-0 --for=condition=Ready --timeout=5m
-  oc wait -n orchestrator-install pod/orchestrator-postgresql-0 --for=condition=Ready --timeout=5m
-  oc wait -n orchestrator-install deploy/orchestrator-backstage --for=condition=Available --timeout=5m
-```
-Now wait for at least 5 minutes and use commands below to check if the CRDs have been created in the cluster before proceeding to the next step.
-```console
-$ oc get crd | grep operator.knative.dev
-knativeeventings.operator.knative.dev                             2023-11-06T16:13:22Z
-knativeservings.operator.knative.dev                              2023-11-06T16:13:22Z
-```
-```console
-$ oc get crd | grep sonataflow.org
-sonataflowbuilds.sonataflow.org                                   2023-11-06T16:13:08Z
-sonataflowplatforms.sonataflow.org                                2023-11-06T16:13:08Z
-sonataflows.sonataflow.org                                        2023-11-06T16:13:08Z
-```
-Now, perform a 2nd pass installation using `helm upgrade` with `--set includeCustomResources=true` to deploy the remaining components with custom resources:
-```console
-$ helm upgrade orchestrator orchestrator --set includeCustomResources=true --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
-Release "orchestrator" has been upgraded. Happy Helming!
-NAME: orchestrator
-LAST DEPLOYED: Tue Nov  7 21:06:40 2023
-NAMESPACE: orchestrator-install
-STATUS: deployed
-REVISION: 2
-NOTES:
-Helm Release orchestrator installed in namespace orchestrator-install.
-
-Components                   Installed   Namespace
-====================================================================
-Backstage                    YES        orchestrator-install
-Postgres DB - Backstage      YES        orchestrator-install
-Red Hat Serverless Operator  YES        openshift-serverless
+Backstage                    YES        orchestrator
+Postgres DB - Backstage      YES        orchestrator
+Red Hat Serverless Operator  YES        openshift-serverless     
 KnativeServing               YES        knative-serving
 KnativeEventing              YES        knative-eventing
 SonataFlow Operator          YES        openshift-operators
 SonataFlowPlatform           YES        sonataflow-infra
 Data Index Service           YES        sonataflow-infra
 Job Service                  YES        sonataflow-infra
-Postgres DB - workflows      YES        sonataflow-infra
 
 Workflows deployed on namespace sonataflow-infra:
-event-timeout
+greeting
+```
 
 Run the following commands to wait until the services are ready:
-  oc wait -n openshift-serverless deploy/knative-openshift --for=condition=Available --timeout=5m
-  oc wait -n knative-eventing knativeeventing/knative-eventing --for=condition=Ready --timeout=5m
-  oc wait -n knative-serving knativeserving/knative-serving --for=condition=Ready --timeout=5m
-  oc wait -n openshift-operators deploy/sonataflow-operator-controller-manager --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra sonataflowplatform/sonataflow-platform --for=condition=Succeed --timeout=5m
-  oc wait -n sonataflow-infra deploy/data-index --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra deploy/jobs-service --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra pod/postgres-db-0 --for=condition=Ready --timeout=5m
-  oc wait -n orchestrator-install pod/orchestrator-postgresql-0 --for=condition=Ready --timeout=5m
-  oc wait -n orchestrator-install deploy/orchestrator-backstage --for=condition=Available --timeout=5m
-
-Run the following commands to wait until the workflow builds are done and workflows are running on namespace sonataflow-infra:
-  oc wait -n sonataflow-infra sonataflow/event-timeout --for=condition=Built --timeout=15m
-  oc wait -n sonataflow-infra sonataflow/event-timeout --for=condition=Running --timeout=5m
-```
-Wait and watch for the deployed components to be up and running. You will notice that a pod `event-timeout-1-build` will start running. SonataFlow operator uses this pod to build and push the images for the event-timout workflow into the local registry. Be patient, as this can take 10 to 20 minutes. Once it is done another pod for the workflow gets started. 
 ```console
-$ oc wait -n openshift-serverless deploy/knative-openshift --for=condition=Available --timeout=5m
+  oc wait -n openshift-serverless deploy/knative-openshift --for=condition=Available --timeout=5m
+  oc wait -n openshift-operators deploy/sonataflow-operator-controller-manager --for=condition=Available --timeout=5m
+  oc wait -n sonataflow-infra deploy/sonataflow-platform-data-index-service --for=condition=Available --timeout=5m
+  oc wait -n sonataflow-infra deploy/sonataflow-platform-jobs-service --for=condition=Available --timeout=5m
+  oc wait -n orchestrator pod/orchestrator-postgresql-0 --for=condition=Ready --timeout=5m
+  oc wait -n orchestrator deploy/orchestrator-backstage --for=condition=Available --timeout=5m
   oc wait -n knative-eventing knativeeventing/knative-eventing --for=condition=Ready --timeout=5m
   oc wait -n knative-serving knativeserving/knative-serving --for=condition=Ready --timeout=5m
-  oc wait -n openshift-operators deploy/sonataflow-operator-controller-manager --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra sonataflowplatform/sonataflow-platform --for=condition=Succeed --timeout=5m
-  oc wait -n sonataflow-infra deploy/data-index --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra deploy/jobs-service --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra pod/postgres-db-0 --for=condition=Ready --timeout=5m
-  oc wait -n orchestrator-install pod/orchestrator-postgresql-0 --for=condition=Ready --timeout=5m
-  oc wait -n orchestrator-install deploy/orchestrator-backstage --for=condition=Available --timeout=5m
+  oc wait -n sonataflow-infra sonataflow/greeting --for=condition=Running --timeout=5m
 
 deployment.apps/knative-openshift condition met
-knativeeventing.operator.knative.dev/knative-eventing condition met
-knativeserving.operator.knative.dev/knative-serving condition met
 deployment.apps/sonataflow-operator-controller-manager condition met
-sonataflowplatform.sonataflow.org/sonataflow-platform condition met
-deployment.apps/data-index condition met
-deployment.apps/jobs-service condition met
-pod/postgres-db-0 condition met
+deployment.apps/sonataflow-platform-data-index-service condition met
+deployment.apps/sonataflow-platform-jobs-service condition met
 pod/orchestrator-postgresql-0 condition met
 deployment.apps/orchestrator-backstage condition met
+knativeeventing.operator.knative.dev/knative-eventing condition met
+knativeserving.operator.knative.dev/knative-serving condition met
+sonataflow.sonataflow.org/greeting condition met
 ```
-Run the following commands to wait until the workflow builds are done and workflows are running:
-```console
-$ oc wait -n sonataflow-infra sonataflow/event-timeout --for=condition=Built --timeout=15m
-  oc wait -n sonataflow-infra sonataflow/event-timeout --for=condition=Running --timeout=5m
 
-sonataflow.sonataflow.org/event-timeout condition met
-sonataflow.sonataflow.org/event-timeout condition met
-```
-## Testing the Sample Workflow - Event Timeout
+## Testing the Sample Workflow - Greeting
 
 * Retrieve the route of the event timeout workflow service and save it environment variable $ROUTE.
 ```shell
@@ -222,54 +157,7 @@ set-cookie: da54ae0c1dede48a1bd1b52c3620cecc=bf774cafeae884d8642fba7b3e7e16f0; p
 ```
 
 ## Cleanup
-To remove the installation from the cluster, first remove the deployed custom resources using `helm upgrade` as below.
-```console
-$ helm upgrade orchestrator orchestrator --set includeCustomResources=false
-Release "orchestrator" has been upgraded. Happy Helming!
-NAME: orchestrator
-LAST DEPLOYED: Tue Nov  7 21:24:04 2023
-NAMESPACE: orchestrator-install
-STATUS: deployed
-REVISION: 3
-NOTES:
-Helm Release orchestrator installed in namespace orchestrator-install.
-
-Components                   Installed   Namespace
-====================================================================
-Backstage                    YES        orchestrator-install
-Postgres DB - Backstage      YES        orchestrator-install
-Red Hat Serverless Operator  YES        openshift-serverless
-KnativeServing               NO         knative-serving
-KnativeEventing              NO         knative-eventing
-SonataFlow Operator          YES        openshift-operators
-SonataFlowPlatform           NO         sonataflow-infra
-Data Index Service           YES        sonataflow-infra
-Job Service                  YES        sonataflow-infra
-Postgres DB - workflows      YES        sonataflow-infra
-
-No workflows deployed.
-
-Run the following commands to wait until the services are ready:
-  oc wait -n openshift-serverless deploy/knative-openshift --for=condition=Available --timeout=5m
-  oc wait -n openshift-operators deploy/sonataflow-operator-controller-manager --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra deploy/data-index --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra deploy/jobs-service --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra pod/postgres-db-0 --for=condition=Ready --timeout=5m
-  oc wait -n orchestrator-install pod/orchestrator-postgresql-0 --for=condition=Ready --timeout=5m
-  oc wait -n orchestrator-install deploy/orchestrator-backstage --for=condition=Available --timeout=5m
-```
-Wait until the following custom resources have been completely deleted before proceeding.
-```console
-$ oc get knativeeventing -n knative-eventing
-No resources found in knative-eventing namespace.
-$ oc get knativeserving -n knative-serving
-No resources found in knative-serving namespace.
-$ oc get sonataflow -n sonataflow-infra
-No resources found in sonataflow-infra namespace.
-$ oc get sonataflowplatform -n sonataflow-infra
-No resources found in sonataflow-infra namespace.
-```
-Now you can clean up the remaining components.
+To remove the installation from the cluster, run:
 ```console
 $ helm delete orchestrator
 release "orchestrator" uninstalled

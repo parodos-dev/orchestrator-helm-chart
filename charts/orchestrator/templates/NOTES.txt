@@ -9,8 +9,6 @@ Helm Release {{ .Release.Name }} installed in namespace {{ .Release.Namespace }}
 {{- $knativeEventingInstalled := $no }}
 {{- $sonataFlowOperatorInstalled := $no }} 
 {{- $sonataFlowPlatformInstalled := $no }}
-{{- $dataIndexInstalled := $yes }}
-{{- $jobServiceInstalled := $yes }}
 {{- $timeout := "--timeout=5m" }}
 
 {{- if .Values.backstage.upstream.postgresql.enabled }}
@@ -24,7 +22,6 @@ Helm Release {{ .Release.Name }} installed in namespace {{ .Release.Namespace }}
 {{- end }}
 {{- end }}
 
-{{- if .Values.includeCustomResources }}
 {{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" "knative-serving" .Release.Name) }}
 {{- $unmanagedKnativeEventingExists := include "unmanaged-resource-exists" (list "operator.knative.dev/v1beta1" "KnativeEventing" "knative-eventing" "knative-eventing" .Release.Name) }}
 {{- if eq $unmanagedKnativeEventingExists "false" }}
@@ -34,13 +31,9 @@ Helm Release {{ .Release.Name }} installed in namespace {{ .Release.Namespace }}
 {{- if eq $unmanagedKnativeServingExists "false" }}
 {{- $knativeServingInstalled = $yes }}
 {{- end }}
-{{- end }}
 
 {{- if .Values.sonataFlowOperator.enabled }}
 {{- $sonataFlowOperatorInstalled = $yes }}
-{{- end }}
-
-{{- if .Values.includeCustomResources }}
 {{- $sonataFlowPlatformInstalled = $yes }}
 {{- end }}
 
@@ -53,18 +46,14 @@ KnativeServing               {{ $knativeServingInstalled }}        knative-servi
 KnativeEventing              {{ $knativeEventingInstalled }}        knative-eventing
 SonataFlow Operator          {{ $sonataFlowOperatorInstalled }}        {{ .Values.sonataFlowOperator.subscription.namespace }}
 SonataFlowPlatform           {{ $sonataFlowPlatformInstalled }}        {{ .Values.orchestrator.namespace }}
-Data Index Service           {{ $dataIndexInstalled }}        {{ .Values.orchestrator.namespace }}
-Job Service                  {{ $jobServiceInstalled }}        {{ .Values.orchestrator.namespace }}
+Data Index Service           {{ $sonataFlowPlatformInstalled }}        {{ .Values.orchestrator.namespace }}
+Job Service                  {{ $sonataFlowPlatformInstalled }}        {{ .Values.orchestrator.namespace }}
 {{/* Empty line */}}
 
-{{- if .Values.includeCustomResources }}
 {{- if gt (len .Values.orchestrator.sonataflows) 0 }}
 Workflows deployed on namespace {{ .Values.orchestrator.namespace }}:
 {{- range $v := .Values.orchestrator.sonataflows }}
 {{ $v.name }}
-{{- end }}
-{{- else }}
-No workflows deployed.
 {{- end }}
 {{- else }}
 No workflows deployed.
@@ -86,11 +75,11 @@ Run the following commands to wait until the services are ready:
 {{- if eq $sonataFlowPlatformInstalled $yes }}
   oc wait -n {{ .Values.orchestrator.namespace }} sonataflowplatform/sonataflow-platform --for=condition=Succeed {{ $timeout }}
 {{- end }}
-{{- if eq $dataIndexInstalled $yes }}
-  oc wait -n {{ .Values.orchestrator.namespace }} deploy/data-index --for=condition=Available {{ $timeout }}
+{{- if eq $sonataFlowPlatformInstalled $yes }}
+  oc wait -n {{ .Values.orchestrator.namespace }} deploy/sonataflow-platform-data-index-service --for=condition=Available {{ $timeout }}
 {{- end }}
-{{- if eq $jobServiceInstalled $yes }}
-  oc wait -n {{ .Values.orchestrator.namespace }} deploy/jobs-service --for=condition=Available {{ $timeout }}
+{{- if eq $sonataFlowPlatformInstalled $yes }}
+  oc wait -n {{ .Values.orchestrator.namespace }} deploy/sonataflow-platform-jobs-service --for=condition=Available {{ $timeout }}
 {{- end }}
 {{- if eq $postgresBackstageInstalled $yes }}
   oc wait -n {{ .Release.Namespace }} pod/{{ .Release.Name }}-postgresql-0 --for=condition=Ready {{ $timeout }}
@@ -100,7 +89,7 @@ Run the following commands to wait until the services are ready:
 {{- end }}
 
 {{- $ns := .Values.orchestrator.namespace }}
-{{- if and .Values.includeCustomResources (gt (len .Values.orchestrator.sonataflows) 0) }}
+{{- if (gt (len .Values.orchestrator.sonataflows) 0) }}
 {{/* Empty line */}}
 Run the following commands to wait until the workflow builds are done and workflows are running on namespace {{ .Values.orchestrator.namespace }}:
 {{- range $v := .Values.orchestrator.sonataflows }}

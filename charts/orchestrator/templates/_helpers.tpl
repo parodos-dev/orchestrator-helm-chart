@@ -56,7 +56,7 @@ Returns custom hostname
     {{- end -}}
 {{- end -}}
 
-{{- define "get-default-coperator-namespace" -}}
+{{- define "get-default-operator-namespace" -}}
     {{- if .Capabilities.APIVersions.Has "route.openshift.io/v1" -}}
         {{- "openshift-operators" -}}
     {{- else -}}
@@ -72,11 +72,4 @@ Returns custom hostname
     {{- else }}
         {{- "true" -}}
     {{- end -}}
-{{- end -}}
-
-{{- define "get-postgres-jdbc-url" -}}
-    {{- print "jdbc:postgresql://" .Values.postgres.postgresDBHostAndPort "/" .Values.postgres.database -}}
-{{- end -}}
-{{- define "get-postgres-reactive-url" -}}
-    {{- print "postgresql://" .Values.postgres.postgresDBHostAndPort  "/" .Values.postgres.database -}}
 {{- end -}}
