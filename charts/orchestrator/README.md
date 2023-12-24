@@ -27,16 +27,11 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `serverlessOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
 | `serverlessOperator.subscription.pkgName` | name of the operator package | `"serverless-operator"` |
 | `serverlessOperator.subscription.sourceNamespace` | namespace of the catalog source | `"openshift-marketplace"` |
-| `postgres.externalPostgresDBHost` | host name of an existing Postgres DB used by dataindex and job service. If empty, a local Postgres DB is deployed | `""` |
-| `postgres.existingSecret` | name of existing secret to use for PostgreSQL credentials. | `""` |
-| `postgres.secretKeys.userPasswordKey` | name of key in existing secret to use for PostgreSQL credentials. Only used when `existingSecret` is set. | `"password"` |
+| `postgres.postgresDBHostAndPort` | host and port URL of an existing Postgres DB used by dataindex and job service | `"sonataflow-psql-postgresql.sonataflow-infra.svc.cluster.local:5432"` |
+| `postgres.authSecret.name` | name of existing secret to use for PostgreSQL credentials. | `"sonataflow-psql-postgresql"` |
+| `postgres.authSecret.passwordKey` | name of key in existing secret to use for PostgreSQL credentials | `"postgres-password"` |
 | `postgres.database` | database instance used by data index and job service | `"sonataflow"` |
 | `postgres.username` | database user name | `"postgres"` |
-| `postgres.password` | database password. Ignored if existingSecret is set. | `"postgres"` |
-| `postgres.storage` | the database storage size | `"2Gi"` |
-| `postgres.serviceName` | service name to access the database | `"postgres-db-service"` |
-| `postgres.port` | service port to access the database | `5432` |
-| `postgres.dataDir` | where the database data files are stored inside the container | `"/var/lib/postgresql/data/dbfiles"` |
 | `backstage.upstream.backstage.image.tag` | Hack to bypass bug in 'next' tag | `pr-814` |
 | `backstage.upstream.backstage.appConfig.orchestrator.catalog.environment` |  | `"development"` |
 | `orchestrator.namespace` | namespace where the data index, job service and workflows are deployed | `"sonataflow-infra"` |

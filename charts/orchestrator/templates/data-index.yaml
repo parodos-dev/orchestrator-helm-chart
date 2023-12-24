@@ -46,8 +46,8 @@ spec:
         - name: QUARKUS_DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: '{{- include "get-postgres-secret-name" . }}'
-              key: {{ .Values.postgres.secretKeys.userPasswordKey }}
+              name: '{{ .Values.postgres.authSecret.name }}'
+              key: {{ .Values.postgres.authSecret.passwordKey }}
         - name: QUARKUS_HTTP_CORS_ORIGINS
           value: "/.*/"
         - name: QUARKUS_PROFILE
@@ -62,22 +62,6 @@ spec:
           value: update
         - name: KOGITO_DATA_INDEX_PROPS
           value: "-Dquarkus.hibernate-orm.database.generation=update -Dquarkus.log.category.\"org.kie.kogito.index\".min-level=DEBUG -Dquarkus.log.category.\"org.kie.kogito.index\".level=DEBUG"
-      initContainers:
-        - name: init-postgres
-          image: busybox:1.36
-# https://access.redhat.com/solutions/7002730
-{{- if eq (include "is-openshift" .) "true" }}
-          securityContext:
-            runAsNonRoot: true
-            allowPrivilegeEscalation: false
-            seccompProfile:
-              type: RuntimeDefault
-            capabilities:
-              drop:
-              - ALL
-{{- end }}         
-          imagePullPolicy: IfNotPresent
-          command: ['sh', '-c', 'until nc -vz {{ include "get-postgres-host" . }}:{{ .Values.postgres.port }}; do echo "Waiting for postgres server"; sleep 3; done;']
 ---
 kind: Service
 apiVersion: v1

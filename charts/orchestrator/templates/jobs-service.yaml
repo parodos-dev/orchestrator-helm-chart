@@ -43,30 +43,14 @@ spec:
         - name: QUARKUS_DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: '{{- include "get-postgres-secret-name" . }}'
-              key: {{ .Values.postgres.secretKeys.userPasswordKey }}
+              name: '{{ .Values.postgres.authSecret.name }}'
+              key: {{ .Values.postgres.authSecret.passwordKey }}
         - name: KOGITO_JOBS_SERVICE_KNATIVE_EVENTS
           value: "false"
         - name: SCRIPT_DEBUG
           value: "false"
         - name: QUARKUS_LOG_LEVEL
           value: INFO
-      initContainers:
-        - name: init-postgres
-          image: busybox:1.36
-# https://access.redhat.com/solutions/7002730
-{{- if eq (include "is-openshift" .) "true" }}
-          securityContext:
-            runAsNonRoot: true
-            allowPrivilegeEscalation: false
-            seccompProfile:
-              type: RuntimeDefault
-            capabilities:
-              drop:
-              - ALL
-{{- end }}        
-          imagePullPolicy: IfNotPresent
-          command: ['sh', '-c', 'until nc -vz {{ include "get-postgres-host" . }}:{{ .Values.postgres.port }}; do echo "Waiting for postgres server"; sleep 3; done;']
 --- 
 kind: Service
 apiVersion: v1
