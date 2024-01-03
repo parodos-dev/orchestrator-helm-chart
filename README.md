@@ -113,49 +113,28 @@ sonataflow.sonataflow.org/greeting condition met
 
 ## Testing the Sample Workflow - Greeting
 
-* Retrieve the route of the event timeout workflow service and save it environment variable $ROUTE.
+* Retrieve the route of the Greeting workflow service and save it environment variable $ROUTE.
 ```shell
-$ ROUTE=`oc get route event-timeout -n sonataflow-infra -o=jsonpath='{.spec.host}'`
+$ ROUTE=`oc get route greeting -n sonataflow-infra -o=jsonpath='{.spec.host}'`
   echo $ROUTE
 ```
 Sample output:
 ```
-event-timeout-sonataflow-infra.apps.cluster-ffmlv.dynamic.opentlc.com
+greeting-sonataflow-infra.apps.ocp413.lab.local
 ```
-* Trigger the timeout workflow and save the workflow id from the response in environment variable $WORKFLOW_ID.
+* Trigger the greeting workflow and save the workflow id from the response in environment variable $WORKFLOW_ID.
 ```shell
-RESP=`curl -s -i -X POST -H 'Content-Type:application/json' -H 'Accept:application/json' -d '{}' 'http://'$ROUTE'/event-timeout'`
-WORKFLOW_ID=`echo "$RESP" | awk '/^\{/,/\}$/ {print}' | jq -r '.id'`
-echo $WORKFLOW_ID
+curl -s -k -X POST -H 'Content-Type:application/json' -H 'Accept:application/json' -d '{ "language": "Spanish" }' 'https://'$ROUTE'/greeting' | jq
 ```
 * Sample response
 ```
-6f80f479-1a5d-4bfb-8e2e-faaba76d0b63
-```
-
-* Run the following two commands within 60 seconds of the command above, as the workflow timeout is 60s. 
-* Trigger event1:
-```shell
-curl -i -X POST -H 'Content-Type: application/json' -d '{"datacontenttype": "application/json", "specversion":"1.0","id":"'${WORKFLOW_ID}'","source":"/local/curl","type":"event1_event_type","data": "{\"eventData\":\"Event1 sent from Command Line\"}", "kogitoprocrefid": "'${WORKFLOW_ID}'" }' http://$ROUTE
-```
-
-* Sample response
-```json
-HTTP/1.1 202 Accepted
-content-length: 0
-set-cookie: da54ae0c1dede48a1bd1b52c3620cecc=bf774cafeae884d8642fba7b3e7e16f0; path=/; HttpOnly
-```
-
-* Trigger event2:
-```shell
-curl -i -X POST -H 'Content-Type: application/json' -d '{"datacontenttype": "application/json", "specversion":"1.0","id":"'${WORKFLOW_ID}'","source":"/local/curl","type":"event2_event_type","data": "{\"eventData\":\"Event2 sent from Command Line\"}", "kogitoprocrefid": "'${WORKFLOW_ID}'" }' http://$ROUTE
-```
-
-* Sample response
-```json
-HTTP/1.1 202 Accepted
-content-length: 0
-set-cookie: da54ae0c1dede48a1bd1b52c3620cecc=bf774cafeae884d8642fba7b3e7e16f0; path=/; HttpOnly
+{
+  "id": "9cb41281-f827-4d66-aaa8-76ca2d0fb9e0",
+  "workflowdata": {
+    "language": "Spanish",
+    "greeting": "Saludos desde YAML Workflow, "
+  }
+}
 ```
 
 ## Cleanup
