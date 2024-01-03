@@ -2,7 +2,7 @@
 Orchestrator
 ===========
 
-Helm chart to deploy the Orchestrator solution suite on OpenShift, including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator,  Knative Eventing, Knative Serving, Data Index and Job Service. #magic___^_^___line
+Helm chart to deploy the Orchestrator solution suite on OpenShift, including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator, Knative Eventing and Knative Serving. #magic___^_^___line
 
 
 
@@ -17,7 +17,7 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `sonataFlowOperator.subscription.channel` | channel of an operator package to subscribe to | `"alpha"` |
 | `sonataFlowOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
 | `sonataFlowOperator.subscription.pkgName` | name of the operator package | `"sonataflow-operator"` |
-| `sonataFlowOperator.subscription.sourceImage` | catalog image of the development build. Unset it for the release build. | `"quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot"` |
+| `sonataFlowOperator.subscription.sourceImage` | catalog image of the development build. Unset it for the release build. | `"quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-02fd35b40"` |
 | `sonataFlowOperator.subscription.sourceNamespace` | namespace of the catalog source | `"openshift-marketplace"` |
 | `sonataFlowOperator.subscription.source` | name of the catalog source for the operator | `"sonataflow-operator"` |
 | `serverlessOperator.enabled` | whether the operator should be deployed by the chart | `true` |

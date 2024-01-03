@@ -1,7 +1,7 @@
 apiVersion: v2
 name: orchestrator
 description: >
-  Helm chart to deploy the Orchestrator solution suite on OpenShift, including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator,  Knative Eventing, Knative Serving, Data Index and Job Service. #magic___^_^___line
+  Helm chart to deploy the Orchestrator solution suite on OpenShift, including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator, Knative Eventing and Knative Serving. #magic___^_^___line
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives

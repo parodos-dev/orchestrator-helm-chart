@@ -39,6 +39,8 @@ Note: the default settings provided in [PostreSQL values](./postgresql/values.ya
 [Orchestrator values](./charts/orchestrator/values.yaml). 
 Any changes to the first configuration must also be reported in the latter.
 
+For OpenShift-related configuration in the chart visit [here](https://github.com/bitnami/charts/blob/main/bitnami/postgresql/README.md#differences-between-bitnami-postgresql-image-and-docker-official-image).
+
 ## Installation
 
 Build helm dependency and create a new project for the installation:
@@ -74,7 +76,7 @@ Components                   Installed   Namespace
 ====================================================================
 Backstage                    YES        orchestrator
 Postgres DB - Backstage      YES        orchestrator
-Red Hat Serverless Operator  YES        openshift-serverless     
+Red Hat Serverless Operator  YES        openshift-serverless
 KnativeServing               YES        knative-serving
 KnativeEventing              YES        knative-eventing
 SonataFlow Operator          YES        openshift-operators
