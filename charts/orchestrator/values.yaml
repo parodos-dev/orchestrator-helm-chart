@@ -1,32 +1,31 @@
-includeCustomResources: false  # set to true to have the custom resources (KnativeEventing, KnativeServing, SonataFlow and SonataFlowPlatform).
-
 sonataFlowOperator:
-  enabled: true  # whether the operator should be deployed by the chart
+  enabled: true # whether the operator should be deployed by the chart
   subscription:
-    namespace: openshift-operators  # namespace where the operator should be deployed
-    channel: alpha  # channel of an operator package to subscribe to
-    installPlanApproval: Automatic  # whether the update should be installed automatically
-    pkgName: sonataflow-operator  # name of the operator package
-    sourceImage: quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot  # catalog image of the development build. Unset it for the release build.
+    namespace: openshift-operators # namespace where the operator should be deployed
+    channel: alpha # channel of an operator package to subscribe to
+    installPlanApproval: Automatic # whether the update should be installed automatically
+    pkgName: sonataflow-operator # name of the operator package
+    sourceImage: quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-02fd35b40 # catalog image of the development build. Unset it for the release build.
     sourceNamespace: openshift-marketplace # namespace of the catalog source
-    source: sonataflow-operator  # name of the catalog source for the operator
+    source: sonataflow-operator # name of the catalog source for the operator
 
 serverlessOperator:
-  enabled: true  # whether the operator should be deployed by the chart
+  enabled: true # whether the operator should be deployed by the chart
   subscription:
-    namespace: openshift-serverless  # namespace where the operator should be deployed
-    channel: stable  # channel of an operator package to subscribe to
-    installPlanApproval: Automatic  # whether the update should be installed automatically
+    namespace: openshift-serverless # namespace where the operator should be deployed
+    channel: stable # channel of an operator package to subscribe to
+    installPlanApproval: Automatic # whether the update should be installed automatically
     pkgName: serverless-operator # name of the operator package
     sourceNamespace: openshift-marketplace # namespace of the catalog source
 
 postgres:
-  postgresDBHostAndPort: "sonataflow-psql-postgresql.sonataflow-infra.svc.cluster.local:5432"  # host and port of an existing Postgres DB used by dataindex and job service. Cannot be empty.
+  serviceName: "sonataflow-psql-postgresql" # The name of the Postgres DB service to be used by dataindex and job service. Cannot be empty.
+  serviceNamespace: "sonataflow-infra" # The namespace of the Postgres DB service to be used by dataindex and job service.
   authSecret:
-    name: "sonataflow-psql-postgresql"  # name of existing secret to use for PostgreSQL credentials. 
-    passwordKey: postgres-password  # name of key in existing secret to use for PostgreSQL credentials.
-  database: sonataflow  # existing database instance used by data index and job service
-  username: postgres  # database user name 
+    name: "sonataflow-psql-postgresql" # name of existing secret to use for PostgreSQL credentials.
+    userKey: postgres-username # name of key in existing secret to use for PostgreSQL credentials.
+    passwordKey: postgres-password # name of key in existing secret to use for PostgreSQL credentials.
+  database: sonataflow # existing database instance used by data index and job service
 
 # override Janus image with one with the orchestrator plugin
 backstage:
@@ -37,8 +36,8 @@ backstage:
       plugins:
         - disabled: false
           integrity: >-
-            sha512-uwGZRqe0IXFO9Xtsm106FxykFCIIa0htYIbo01yhUx4n2tjz6tvGhKGv7zeVaQYeGJ7AytQ1Y9p/xTHrF1PuZw==
-          package: '@caponetto-tests/backstage-plugin-orchestrator-backend-dynamic@0.0.3'
+            sha512-asBtNsRpAuy1JBRbK/9Qb+ChWtpU3p1HmDv/Y9PbNaLDEAlcGy5Aq+waEZ9N6x31wL9wTg0L64cS/d+IBG3e5A==
+          package: "@caponetto-tests/backstage-plugin-orchestrator-backend-dynamic@0.0.5"
           pluginConfig:
             orchestrator:
               sonataFlowService:
@@ -47,11 +46,11 @@ backstage:
                 port: 80
                 path: /
               editor:
-                path: 'https://sandbox.kie.org/swf-chrome-extension/0.32.0'
+                path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
         - disabled: false
           integrity: >-
-            sha512-re4v8pu+97DEdv3MAELP0iehHSG2HxlmE/JA7Ss/3ZfcM5bcH85DlsLrZS7cGAMiZSkKUn3q9d360pTCyeyasQ==
-          package: '@caponetto-tests/backstage-plugin-orchestrator@0.0.3'
+            sha512-5W80xP7Ojal9f/AiAEzChEtSz13cdd4krF+TtDaMs0enYB++HTOHjH7dmk5YM2BtmmP7H9Byh1i+IYkUJL5rIw==
+          package: "@caponetto-tests/backstage-plugin-orchestrator@0.0.5"
           pluginConfig:
             dynamicPlugins:
               frontend:
@@ -85,7 +84,18 @@ backstage:
                 clientSecret: "INSERT VALID CLIENT SECRET HERE"
         catalog:
           rules:
-            - allow: [ Component, System, Group, Resource, Location, Template, API, User, Domain ]
+            - allow:
+                [
+                  Component,
+                  System,
+                  Group,
+                  Resource,
+                  Location,
+                  Template,
+                  API,
+                  User,
+                  Domain,
+                ]
           locations:
             - type: url
               target: https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml
@@ -96,18 +106,10 @@ backstage:
         backend:
           csp:
             frame-src:
-              - 'https://sandbox.kie.org'
+              - "https://sandbox.kie.org"
 
 orchestrator:
-  namespace: sonataflow-infra  # namespace where the data index, job service and workflows are deployed
-  dataindex:
-    image: quay.io/kiegroup/kogito-data-index-postgresql:1.42 # image for data index
-    name: data-index-service # service name of the data index
-    port: 8080  # service port of the data index
-  jobsservice:
-    image: quay.io/kiegroup/kogito-jobs-service-postgresql:1.44 # image for job service
-    name: jobs-service-service  # service name of the job service
-    port: 8080  # service port of the job service
+  namespace: sonataflow-infra # namespace where the data index, job service and workflows are deployed
   sonataPlatform:
     resources:
       requests:
@@ -119,4 +121,3 @@ orchestrator:
   sonataflows: # workflows to get deployed - this option will be removed once the plugin will interact directly with the data-index
     - name: greeting
       image: quay.io/masayag/serverless-workflow-greeting:latest
-
