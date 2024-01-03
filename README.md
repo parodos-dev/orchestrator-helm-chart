@@ -1,11 +1,11 @@
 ## Orchestrator Helm Repository
 Helm chart to deploy the Orchestrator solution suite. The following components will be installed on the cluster:
-* Janus IDP backstage
-* SonataFlow Operator
-* OpenShift Serverless Operator
-* Knative Eventing
-* Knative Serving
-* Sample workflow
+- Janus IDP backstage
+- SonataFlow Operator (with Data-Index and Job Service)
+- OpenShift Serverless Operator
+- Knative Eventing
+- Knative Serving
+- Sample workflow (greeting)
 
 ## Usage
 
@@ -20,10 +20,15 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
 
 ### Deploying PostgreSQL reference implementation
 Follow these steps to deploy a sample PostgreSQL instance in the `sonataflow-infra` namespace, with minimal requirements to deploy the Orchestrator.
+
+Note: replace the password of the `sonataflow-psql-postgresql` secret below in the following command with the desired one.
+
 ```console
+oc new-project sonataflow-infra
+oc create secret generic sonataflow-psql-postgresql --from-literal=postgres-username=postgres --from-literal=postgres-password=postgres
+
 git clone git@github.com:parodos-dev/orchestrator-helm-chart.git
 cd orchestrator-helm-chart/postgresql
-oc new-project sonataflow-infra
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install sonataflow-psql bitnami/postgresql --version 12.x.x -f ./values.yaml
 ```
@@ -44,31 +49,22 @@ orchestrator	https://parodos-dev.github.io/orchestrator-helm-chart
 
 Create a namespace for the Orchestrator solution suite:
 ```console
-$ oc new-project orchestrator-install
+$ oc new-project orchestrator
 ```
 
-#### Perform a first pass installation
-
-Replace `backstage.global.clusterRouterBase` with the route of your cluster ingress router.
-For example, if the route of your cluster ingress router is `apps.ocp413.lab.local`, then you should 
-set `backstage.global.clusterRouterBase=apps.ocp413.lab.local`.
-
+Obtain the value for `backstage.global.clusterRouterBase` in the install command by:
 ```console
-$ helm install orchestrator orchestrator/orchestrator --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
+oc get ingress.config.openshift.io/cluster -oyaml | yq '.spec.domain'
+apps.ocp413.lab.local
 ```
-Follow the instructions in the output to complete the *first pass* installation.
 
-#### Perform a second pass installation
-Using `helm upgrade` with `--set includeCustomResources=true` to deploy the remaining components with custom resources:
+Set value for `CLUSTER_DOMAIN` and start installation:
 ```console
-$ helm upgrade orchestrator orchestrator/orchestrator --set includeCustomResources=true --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
+$ CLUSTER_DOMAIN=apps.ocp413.lab.local
+$ helm install orchestrator orchestrator/orchestrator --set backstage.global.clusterRouterBase=$CLUSTER_DOMAIN
 ```
 
 ### Uninstallation
-```console
-$ helm upgrade orchestrator orchestrator/orchestrator --set includeCustomResources=false
-```
-Followed by:
 ```console
 $ helm delete orchestrator
 release "orchestrator" uninstalled
