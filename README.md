@@ -111,6 +111,19 @@ knativeserving.operator.knative.dev/knative-serving condition met
 sonataflow.sonataflow.org/greeting condition met
 ```
 
+### Installation from OpenShift
+```shell
+cat << EOF | oc apply -f -
+apiVersion: helm.openshift.io/v1beta1
+kind: HelmChartRepository
+metadata:
+  name: orchestrator
+spec:
+  connectionConfig:
+    url: 'https://parodos-dev.github.io/orchestrator-helm-chart'
+EOF
+```
+
 ## Testing the Sample Workflow - Greeting
 
 * Retrieve the route of the Greeting workflow service and save it environment variable $ROUTE.
