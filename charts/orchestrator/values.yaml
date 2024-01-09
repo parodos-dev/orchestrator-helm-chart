@@ -5,7 +5,7 @@ sonataFlowOperator:
     channel: alpha # channel of an operator package to subscribe to
     installPlanApproval: Automatic # whether the update should be installed automatically
     pkgName: sonataflow-operator # name of the operator package
-    sourceImage: quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-labels # catalog image of the development build. Unset it for the release build.
+    sourceImage: quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-service-labels # catalog image of the development build. Unset it for the release build.
     sourceNamespace: openshift-marketplace # namespace of the catalog source
     source: sonataflow-operator # name of the catalog source for the operator
 
@@ -36,21 +36,18 @@ backstage:
       plugins:
         - disabled: false
           integrity: >-
-            sha512-PO+rs/qYLYUR0jEsLPEdO0pgCKZDtrm2qlPHb73jocOf6+81lnYjbNdV4nKi/XjRIQvr7BB0yTW3zg80nb8ToQ==
-          package: "@caponetto-tests/backstage-plugin-orchestrator-backend-dynamic@0.0.6-alpha3"
+            sha512-IWXacpKwDPGA5dVmQz2R0au2yGVsNj7dSwbZVWwSkjkMowN1PtUNDDF2I69w5CKLa6LEO7ByswdEj5moh046Bg==
+          package: "@caponetto-tests/backstage-plugin-orchestrator-backend-dynamic@0.0.6"
           pluginConfig:
             orchestrator:
-              sonataFlowService:
-                # this value will be replaced with a link to the data-index service once supported by the plugin and the operator
-                baseUrl: http://greeting.sonataflow-infra
-                port: 80
-                path: /
+              dataIndexService:
+                url: http://sonataflow-platform-data-index-service.sonataflow-infra
               editor:
                 path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
         - disabled: false
           integrity: >-
-            sha512-RANTNf1A/V/lY6sy3M1c7Gl7c3MJkzsqjpgygCtdVgaMHHbQ02oVkyGdgAzFEiYb6LUqmM/ei6XrRoXXTz/KNA==
-          package: "@caponetto-tests/backstage-plugin-orchestrator@0.0.6-alpha3"
+            sha512-VqQK+CuqGDUWdFdIPVO8OcrMjbmhdQeZMfEnDftS7j7LyNQoqirDB8r0H9GQSoaKVhJ8adC008Zd6t9b4GLrNw==
+          package: "@caponetto-tests/backstage-plugin-orchestrator@0.0.6"
           pluginConfig:
             dynamicPlugins:
               frontend:
