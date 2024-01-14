@@ -5,7 +5,7 @@ sonataFlowOperator:
     channel: alpha # channel of an operator package to subscribe to
     installPlanApproval: Automatic # whether the update should be installed automatically
     pkgName: sonataflow-operator # name of the operator package
-    sourceImage: quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-service-labels # catalog image of the development build. Unset it for the release build.
+    sourceImage: quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot # catalog image of the development build. Unset it for the release build.
     sourceNamespace: openshift-marketplace # namespace of the catalog source
     source: sonataflow-operator # name of the catalog source for the operator
 
@@ -36,8 +36,8 @@ backstage:
       plugins:
         - disabled: false
           integrity: >-
-            sha512-IWXacpKwDPGA5dVmQz2R0au2yGVsNj7dSwbZVWwSkjkMowN1PtUNDDF2I69w5CKLa6LEO7ByswdEj5moh046Bg==
-          package: "@caponetto-tests/backstage-plugin-orchestrator-backend-dynamic@0.0.6"
+            sha512-rcC7HxmwrkapXfZP/IisDcPXm9EDbyMFRFvI5tb6LEAfs0Kz3g0xyEz7vg6J/7G+utDF6lN67IhxrhV+FKxd4g==
+          package: "@caponetto-tests/backstage-plugin-orchestrator-backend-dynamic@0.0.8"
           pluginConfig:
             orchestrator:
               dataIndexService:
@@ -46,8 +46,8 @@ backstage:
                 path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
         - disabled: false
           integrity: >-
-            sha512-VqQK+CuqGDUWdFdIPVO8OcrMjbmhdQeZMfEnDftS7j7LyNQoqirDB8r0H9GQSoaKVhJ8adC008Zd6t9b4GLrNw==
-          package: "@caponetto-tests/backstage-plugin-orchestrator@0.0.6"
+            sha512-bEao8SgVeKJ7oPOW16OwhPYls2Qo+hLChEh23FJ76CZFjCgmzhfpnv4DR/AcxjLnLgWXJkS3B0lpZeTUzlwgqg==
+          package: "@caponetto-tests/backstage-plugin-orchestrator@0.0.8"
           pluginConfig:
             dynamicPlugins:
               frontend:
@@ -117,4 +117,4 @@ orchestrator:
         cpu: "500m"
   sonataflows: # workflows to get deployed - this option will be removed once the plugin will interact directly with the data-index
     - name: greeting
-      image: quay.io/masayag/serverless-workflow-greeting:latest
+      image: quay.io/orchestrator/serverless-workflow-greeting:latest
