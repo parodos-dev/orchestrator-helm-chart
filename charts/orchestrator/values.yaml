@@ -5,7 +5,7 @@ sonataFlowOperator:
     channel: alpha # channel of an operator package to subscribe to
     installPlanApproval: Automatic # whether the update should be installed automatically
     pkgName: sonataflow-operator # name of the operator package
-    sourceImage: quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-props # catalog image of the development build. Unset it for the release build.
+    sourceImage: quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot # catalog image of the development build. Unset it for the release build.
     sourceNamespace: openshift-marketplace # namespace of the catalog source
     source: sonataflow-operator # name of the catalog source for the operator
 
@@ -36,8 +36,8 @@ backstage:
       plugins:
         - disabled: false
           integrity: >-
-            sha512-XxSVZetbVh7afEyFvDk9l3FIAcul/r0NjBoNpvaqOBxxd0GPuYfxpVgipSoIwqw0NkW1opaMtMp18unTMchN+Q==
-          package: "@caponetto-tests/backstage-plugin-orchestrator-backend-dynamic@0.0.9"
+            sha512-xwLJA197QiblD4ziBGP6W7Lf7VOStdyNLc+MmIarYu54ivaUh5nhucw1bLTub1jjvgIJ/2fwcmhP8lGXI79pSg==
+          package: "@caponetto-tests/backstage-plugin-orchestrator-backend-dynamic@0.0.10"
           pluginConfig:
             orchestrator:
               dataIndexService:
@@ -46,8 +46,8 @@ backstage:
                 path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
         - disabled: false
           integrity: >-
-            sha512-5anu/WsUjW9A1eSvvRAbxWJXP6kOUpUvhtPNPJ9in5a5DE+77lCYc8x3gVU67InsGwpgJvoFcnZ08cPQbzCIwQ==
-          package: "@caponetto-tests/backstage-plugin-orchestrator@0.0.9"
+            sha512-7Wur8JlvVCPG9afbcTp3Cy/BLnFtep+NoL4Z6cCbeeM1MSinhT1QP+kppuu5St8LdXCShfm2WsPDaxq/mWxAtA==
+          package: "@caponetto-tests/backstage-plugin-orchestrator@0.0.10"
           pluginConfig:
             dynamicPlugins:
               frontend:
