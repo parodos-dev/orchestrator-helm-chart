@@ -111,6 +111,20 @@ knativeserving.operator.knative.dev/knative-serving condition met
 sonataflow.sonataflow.org/greeting condition met
 ```
 
+We need to use `initContainers` and `securityContext` in our Knative services, we have to tell Knative to enable that feature:
+```bash
+  oc patch configmap/config-features \
+    -n knative-serving \
+    --type merge \
+    -p '{"data":{"kubernetes.podspec-init-containers": "enabled", "kubernetes.podspec-securitycontext": "enabled"}}'
+
+```
+
+Also, `move2kube` instance runs as root so we need to allow the `default` service account to use `runAsUser`:
+```console
+oc -n sonataflow-infra adm policy add-scc-to-user anyuid -z default
+```
+
 ### Installation from OpenShift
 ```shell
 cat << EOF | oc apply -f -

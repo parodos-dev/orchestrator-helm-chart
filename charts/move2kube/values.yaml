@@ -1,0 +1,16 @@
+sshSecretName: sshkeys
+brokerName: default
+namespace: sonataflow-infra
+workflow:
+  name: serverless-workflow-m2k
+  image: quay.io/orchestrator/serverless-workflow-move2kube:latest
+  brokerURL: http://broker-ingress.knative-eventing.svc.cluster.local/sonataflow-infra/default
+  move2kubeURL: https://move2kube-route-sonataflow-infra.apps.cluster-8xfw6.dynamic.redhatworkshops.io
+  backstageNotificationURL: http://orchestrator-backstage.orchestrator/api/notifications/
+kfunction:
+  name: m2k-save-transformation-func
+  image: quay.io/orchestrator/serverless-workflow-m2k-kfunc:latest
+instance:
+  name: move2kube
+  image: quay.io/orchestrator/move2kube-ui:latest
+    
