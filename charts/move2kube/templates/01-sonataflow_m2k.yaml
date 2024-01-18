@@ -54,7 +54,7 @@ spec:
             functionRef:
               arguments:
                 project-id: .projectId
-                remote-source: '"git+ssh://" + .repositoryURL + "@" + .sourceBranch'
+                remote-source: '"git+" + (.repositoryURL|sub("http(s)://?";"ssh://")) + "@" + .sourceBranch'
                 workspace-id: .workspaceId
               invoke: sync
               refName: startPlanning
@@ -149,7 +149,7 @@ spec:
                 HEADER_Ce-Type: save-transformation
                 HEADER_Content-Type: application/json
                 branch: .targetBranch
-                gitRepo: .repositoryURL
+                gitRepo: (.repositoryURL|sub(\"http(s)?://\";\"ssh://\"))
                 projectId: .projectId
                 token: .token
                 transformId: .transformId
