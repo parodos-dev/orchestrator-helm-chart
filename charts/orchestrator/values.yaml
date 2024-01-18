@@ -36,8 +36,8 @@ backstage:
       plugins:
         - disabled: false
           integrity: >-
-            sha512-xwLJA197QiblD4ziBGP6W7Lf7VOStdyNLc+MmIarYu54ivaUh5nhucw1bLTub1jjvgIJ/2fwcmhP8lGXI79pSg==
-          package: "@caponetto-tests/backstage-plugin-orchestrator-backend-dynamic@0.0.10"
+            sha512-4BsB2jdgzBNYpE0IcFYmlEgfu6HJnD9uX8ZpzzYHTkMs8AU3aWWb3PZG0nu/y5s8m0kr4TBbS++gePwRdqDrgw==
+          package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@0.0.1"
           pluginConfig:
             orchestrator:
               dataIndexService:
@@ -46,12 +46,12 @@ backstage:
                 path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
         - disabled: false
           integrity: >-
-            sha512-7Wur8JlvVCPG9afbcTp3Cy/BLnFtep+NoL4Z6cCbeeM1MSinhT1QP+kppuu5St8LdXCShfm2WsPDaxq/mWxAtA==
-          package: "@caponetto-tests/backstage-plugin-orchestrator@0.0.10"
+            sha512-QYwZ5MTckS1gQQIQUBoOboiGefCtkcG+S8IFPiJ+6rPEtjzmUpVL5TmG1hXCUHWBMJP/+tKxlpNQib2SMInRnA==
+          package: "@janus-idp/backstage-plugin-orchestrator@1.0.0"
           pluginConfig:
             dynamicPlugins:
               frontend:
-                caponetto-tests.backstage-plugin-orchestrator:
+                janus-idp.backstage-plugin-orchestrator:
                   appIcons:
                     - importName: OrchestratorIcon
                       module: OrchestratorPlugin
