@@ -22,7 +22,7 @@ spec:
       enabled: true
       podTemplate:
         container:
-          image: "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest" # To be removed when stable version is released
+          image: {{ .Values.orchestrator.sonataPlatform.dataIndex.image }} 
           resources:
             limits:
               cpu: 500m
@@ -43,7 +43,7 @@ spec:
       enabled: true
       podTemplate:
         container:
-          image: "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest" # To be removed when stable version is released
+          image: {{ .Values.orchestrator.sonataPlatform.jobService.image }} 
       persistence:
         postgresql:
           secretRef:
