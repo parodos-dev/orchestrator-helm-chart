@@ -23,6 +23,10 @@ oc create secret generic sshkeys --from-file=id_rsa=${HOME}/.ssh/id_rsa --from-f
 ```
 If you change the name of the secret, you will also have to updated the value of `sshSecretName` in [values.yaml](values.yaml)
 
+If you want to use other ssh keys you should update the `from-file` parameters values to match your own.
+
+If you do not have ssh keys, you can generate them with `ssh-keygen` command. You can for instance refer to https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent 
+
 Note that those ssh keys needs to be added in your git repository as well. For bitbucket it should be on the account level (https://bitbucket.org/account/settings/ssh-keys/)
 
 # Installation
