@@ -14,7 +14,6 @@ data:
     quarkus.rest-client.notifications_yaml.url={{ .Values.workflow.backstageNotificationURL }}
 kind: ConfigMap
 metadata:
-  creationTimestamp: null
   labels:
     app: {{ .Values.workflow.name }}
     sonataflow.org/workflow-app: {{ .Values.workflow.name }}

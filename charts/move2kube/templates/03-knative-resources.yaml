@@ -116,3 +116,21 @@ spec:
       kind: Service
       name: {{ .Values.kfunction.name }}
 ---
+apiVersion: sources.knative.dev/v1
+kind: SinkBinding
+metadata:
+  name: {{ .Values.workflow.name }}-sb
+  namespace: {{ .Values.namespace }}
+spec:
+  subject:
+    apiVersion: v1/apps
+    kind: Deployment
+    selector:
+      matchLabels:
+        app: {{ .Values.workflow.name }}
+  sink:
+    ref:
+      apiVersion: eventing.knative.dev/v1
+      kind: Broker
+      name: {{ .Values.brokerName }}
+      namespace: {{ .Values.namespace }}

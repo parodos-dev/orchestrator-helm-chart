@@ -258,6 +258,3 @@ spec:
       - configMap:
           name: 01-{{ .Values.workflow.name }}-resources
         workflowPath: specs
-status:
-  address: {}
-  lastTimeRecoverAttempt: null
