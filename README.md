@@ -111,6 +111,10 @@ knativeserving.operator.knative.dev/knative-serving condition met
 sonataflow.sonataflow.org/greeting condition met
 ```
 
+### Move2Kube installation
+
+Follow [Move2Kube README](charts/move2kube/README.md)
+
 ### Installation from OpenShift
 ```shell
 cat << EOF | oc apply -f -
