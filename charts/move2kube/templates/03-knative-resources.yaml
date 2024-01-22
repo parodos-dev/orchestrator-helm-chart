@@ -83,11 +83,18 @@ spec:
               readOnly: true
               mountPath: "/home/jboss/.ssh/id_rsa.pub"
               subPath: id_rsa.pub
-
           readinessProbe:
             successThreshold: 1
             tcpSocket:
               port: 0
+          securityContext:
+            runAsUser: null
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: ["ALL"]
       volumes:
         - name: ssh-priv-key
           secret:
