@@ -1,11 +1,12 @@
 ## Orchestrator Helm Repository
 Helm chart to deploy the Orchestrator solution suite. The following components will be installed on the cluster:
-* Janus IDP backstage
-* SonataFlow Operator
-* OpenShift Serverless Operator
-* Knative Eventing
-* Knative Serving
-* Sample workflow
+- Janus IDP backstage
+- SonataFlow Operator (with Data-Index and Job Service)
+- OpenShift Serverless Operator
+- Knative Eventing
+- Knative Serving
+- Sample workflow (greeting)
+- Move2kube workflow
 
 ## Usage
 
@@ -63,6 +64,10 @@ Using `helm upgrade` with `--set includeCustomResources=true` to deploy the rema
 ```console
 $ helm upgrade orchestrator orchestrator/orchestrator --set includeCustomResources=true --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
 ```
+
+#### Move2kube installation
+
+Refer to [Move2kube installation guide](move2kube/README.md)
 
 ### Uninstallation
 ```console
