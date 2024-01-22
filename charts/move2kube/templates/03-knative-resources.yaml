@@ -52,7 +52,11 @@ spec:
           securityContext:
             runAsUser: 0
             allowPrivilegeEscalation: true
-          securityContext:
+            runAsNonRoot: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: ["ALL"]
           command: [ "sh", "-c", "cp /tmp/.ssh/id_rsa /etc/pre-install/. && chown 185 /etc/pre-install/id_rsa" ]
           volumeMounts:
             - name: ssh-priv-key
