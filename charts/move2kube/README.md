@@ -34,7 +34,7 @@ Note that those ssh keys needs to be added in your git repository as well. For b
 
 From `charts` folder run 
 ```console
-helm install move2kube move2kube
+helm install move2kube orchestrator/move2kube
 ```
 
 Get the route of the move2kube instance:
@@ -46,7 +46,10 @@ move2kube-route   move2kube-route-sonataflow-infra.apps.cluster-8xfw6.dynamic.re
 
 and run the following command to apply it to the `move2kubeURL` parameter:
 ```console
-helm upgrade move2kube move2kube --reuse-values --set move2kubeURL=<url> && oc -n sonataflow-infra scale deployment serverless-workflow-m2k --replicas=0 && oc -n sonataflow-infra scale deployment serverless-workflow-m2k --replicas=1
+oc -n sonataflow-infra delete ksvc m2k-save-transformation-func &&
+ helm upgrade move2kube move2kube --set workflow.move2kubeURL=<url> &&
+ oc -n sonataflow-infra scale deployment serverless-workflow-m2k --replicas=0 &&
+ oc -n sonataflow-infra scale deployment serverless-workflow-m2k --replicas=1
 ```
 
 In all of the aboce command, the namespace `sonataflow-infra` is used. Beware that the `namespace` shall be the same as the one specify in [values.yaml](values.yaml) under the `namespace` property.
