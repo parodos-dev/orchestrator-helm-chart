@@ -6,6 +6,7 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
 - Knative Eventing
 - Knative Serving
 - Sample workflow (greeting)
+- Move2kube workflow
 
 ## Usage
 
@@ -63,6 +64,10 @@ Set value for `CLUSTER_DOMAIN` and start installation:
 $ CLUSTER_DOMAIN=apps.ocp413.lab.local
 $ helm install orchestrator orchestrator/orchestrator --set backstage.global.clusterRouterBase=$CLUSTER_DOMAIN
 ```
+
+#### Move2kube installation
+
+Refer to [Move2kube installation guide](move2kube/README.md)
 
 ### Uninstallation
 ```console
