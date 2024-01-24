@@ -6,6 +6,7 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
 - Knative Eventing
 - Knative Serving
 - Sample workflow (greeting)
+- Move2kube workflow
 
 ## Usage
 
@@ -52,6 +53,10 @@ Create a namespace for the Orchestrator solution suite:
 $ oc new-project orchestrator
 $ helm install orchestrator orchestrator/orchestrator
 ```
+
+#### Move2kube installation
+
+Refer to [Move2kube installation guide](move2kube/README.md)
 
 ### Uninstallation
 ```console
