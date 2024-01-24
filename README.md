@@ -51,26 +51,15 @@ helm dep update orchestrator
 oc new-project orchestrator
 ```
 
-Replace `backstage.global.clusterRouterBase` with the route of your cluster ingress router. For example, if the route of
-your cluster ingress router is `apps.ocp413.lab.local`, then you should set `backstage.global.clusterRouterBase` to `apps.ocp413.lab.local`.
-The value for it can be fetched by:
-```console
-oc get ingress.config.openshift.io/cluster -oyaml | yq '.spec.domain'
-apps.ocp413.lab.local
-```
-
 Install the chart:
 ```console
-$ helm install orchestrator orchestrator --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
+$ helm install orchestrator orchestrator
 NAME: orchestrator
 LAST DEPLOYED: Tue Jan  2 23:17:54 2024
 NAMESPACE: orchestrator
 STATUS: deployed
 REVISION: 1
 USER-SUPPLIED VALUES:
-backstage:
-  global:
-    clusterRouterBase: apps.ocp413.lab.local
 
 Components                   Installed   Namespace
 ====================================================================
