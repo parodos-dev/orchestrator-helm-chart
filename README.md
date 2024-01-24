@@ -50,18 +50,7 @@ orchestrator	https://parodos-dev.github.io/orchestrator-helm-chart
 Create a namespace for the Orchestrator solution suite:
 ```console
 $ oc new-project orchestrator
-```
-
-Obtain the value for `backstage.global.clusterRouterBase` in the install command by:
-```console
-oc get ingress.config.openshift.io/cluster -oyaml | yq '.spec.domain'
-apps.ocp413.lab.local
-```
-
-Set value for `CLUSTER_DOMAIN` and start installation:
-```console
-$ CLUSTER_DOMAIN=apps.ocp413.lab.local
-$ helm install orchestrator orchestrator/orchestrator --set backstage.global.clusterRouterBase=$CLUSTER_DOMAIN
+$ helm install orchestrator orchestrator/orchestrator
 ```
 
 ### Uninstallation
