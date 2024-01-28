@@ -22,6 +22,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
 ### Deploying PostgreSQL reference implementation
 Follow these steps to deploy a sample PostgreSQL instance in the `sonataflow-infra` namespace, with minimal requirements to deploy the Orchestrator.
+This step is optional and can be replaced with running the orchestrator chart in devmode which uses ephemeral images for sonataflow services.
 
 Note: replace the password of the `sonataflow-psql-postgresql` secret below in the following command with the desired one.
 
@@ -51,9 +52,17 @@ helm dep update orchestrator
 oc new-project orchestrator
 ```
 
-Install the chart:
+Install the chart (expects DB configuration to be provided):
 ```console
 $ helm install orchestrator orchestrator
+```
+or install sonataflow services in ephemeral mode for evaluation purpose:
+```console
+$ helm install orchestrator orchestrator --set orchestrator.devmode=true
+```
+
+A sample output:
+```
 NAME: orchestrator
 LAST DEPLOYED: Tue Jan  2 23:17:54 2024
 NAMESPACE: orchestrator

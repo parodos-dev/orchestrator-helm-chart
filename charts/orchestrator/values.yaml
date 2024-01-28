@@ -36,8 +36,8 @@ backstage:
       plugins:
         - disabled: false
           integrity: >-
-            sha512-gy2Xb4rr87Q7AzCNDSJv2mkXu1IQwpGX0w8DHPKp7LYJRLt1J/gibXH7nzM6YAjVbfDb4IXDPbr1DNqgWc5eiw==
-          package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.0.1"
+            sha512-iVywjs0wOSgTFRV0n9k70+vkl92JF6jJaemqkIrooZAix1v8MiklsQe83bRrcASOh6SnQDbTIils+FHAWjV+qQ==
+          package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.0.2"
           pluginConfig:
             orchestrator:
               dataIndexService:
@@ -46,8 +46,8 @@ backstage:
                 path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
         - disabled: false
           integrity: >-
-            sha512-Ay+DepZUT7demGmy8EfgjOgncWewn2EvN0VQR/aNqWv8F7KnXLlRlZNhOTaPDOCsJVJtyisTNVcYOffmgKdGmw==
-          package: "@janus-idp/backstage-plugin-orchestrator@1.0.1"
+            sha512-Lmma6or08EnlM5va95VSz/P9sVbXZTA95kHs9JHjaZfdbcEj7J2oTjYXdKG+fd4yfVdl0tD7/QP9cfYCY98UIg==
+          package: "@janus-idp/backstage-plugin-orchestrator@1.1.1"
           pluginConfig:
             dynamicPlugins:
               frontend:
@@ -115,6 +115,7 @@ backstage:
               port: 5432
 
 orchestrator:
+  devmode: false # devmode runs sonataflow services in ephemeral mode (for a non-production use)
   namespace: sonataflow-infra # namespace where the data index, job service and workflows are deployed
   sonataPlatform:
     resources:

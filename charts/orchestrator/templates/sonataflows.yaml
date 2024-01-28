@@ -1,4 +1,5 @@
 {{- $ns := .Values.orchestrator.namespace }}
+{{ if .Values.orchestrator.devmode }}
 apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlowPlatform
 metadata:
@@ -6,9 +7,27 @@ metadata:
   namespace: {{ $ns }}
 spec:
   build:
-    config:
-      strategyOptions:
-        KanikoBuildCacheEnabled: "true"
+    template:
+      resources:
+        requests:
+          memory: {{ .Values.orchestrator.sonataPlatform.resources.requests.memory }}
+          cpu: {{ .Values.orchestrator.sonataPlatform.resources.requests.cpu }}
+        limits:
+          memory: {{ .Values.orchestrator.sonataPlatform.resources.limits.memory }}
+          cpu: {{ .Values.orchestrator.sonataPlatform.resources.limits.cpu }}
+  services:
+    dataIndex:
+      enabled: true
+    jobService:
+      enabled: true
+{{ else }}
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlowPlatform
+metadata:
+  name: sonataflow-platform
+  namespace: {{ $ns }}
+spec:
+  build:
     template:
       resources:
         requests:
@@ -23,13 +42,6 @@ spec:
       podTemplate:
         container:
           image: {{ .Values.orchestrator.sonataPlatform.dataIndex.image }} 
-          resources:
-            limits:
-              cpu: 500m
-              memory: 1Gi
-            requests:
-              cpu: 100m
-              memory: 512Mi
       persistence:
         postgresql:
           secretRef:
@@ -53,6 +65,7 @@ spec:
           serviceRef:
             name: {{ .Values.postgres.serviceName }}
             namespace: {{ .Values.postgres.serviceNamespace }}
+{{ end }}            
 ---
 apiVersion: v1
 data:
