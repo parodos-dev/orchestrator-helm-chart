@@ -21,6 +21,10 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
 
 ### Deploying PostgreSQL reference implementation
 Follow these steps to deploy a sample PostgreSQL instance in the `sonataflow-infra` namespace, with minimal requirements to deploy the Orchestrator.
+For non-production mode, skip this step and follow the section under Installation for non-production purpose.
+
+Note: replace the password of the `sonataflow-psql-postgresql` secret below in the following command with the desired one.
+
 ```console
 git clone git@github.com:parodos-dev/orchestrator-helm-chart.git
 cd orchestrator-helm-chart/postgresql
@@ -45,24 +49,14 @@ orchestrator	https://parodos-dev.github.io/orchestrator-helm-chart
 
 Create a namespace for the Orchestrator solution suite:
 ```console
-$ oc new-project orchestrator-install
+$ oc new-project orchestrator
+$ helm install orchestrator orchestrator/orchestrator
 ```
 
-#### Perform a first pass installation
-
-Replace `backstage.global.clusterRouterBase` with the route of your cluster ingress router.
-For example, if the route of your cluster ingress router is `apps.ocp413.lab.local`, then you should 
-set `backstage.global.clusterRouterBase=apps.ocp413.lab.local`.
-
+For non-production purpose, run:
 ```console
-$ helm install orchestrator orchestrator/orchestrator --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
-```
-Follow the instructions in the output to complete the *first pass* installation.
-
-#### Perform a second pass installation
-Using `helm upgrade` with `--set includeCustomResources=true` to deploy the remaining components with custom resources:
-```console
-$ helm upgrade orchestrator orchestrator/orchestrator --set includeCustomResources=true --set backstage.global.clusterRouterBase=apps.ocp413.lab.local
+$ oc new-project orchestrator
+$ helm install orchestrator orchestrator/orchestrator --set orchestrator.devmode=true
 ```
 
 #### Move2kube installation
