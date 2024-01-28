@@ -1,0 +1,2204 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": [
+        "sonataFlowOperator",
+        "serverlessOperator",
+        "postgres",
+        "backstage",
+        "orchestrator"
+    ],
+    "properties": {
+        "sonataFlowOperator": {
+            "type": "object",
+            "default": {},
+            "title": "The sonataFlowOperator Schema",
+            "required": [
+                "enabled",
+                "subscription"
+            ],
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The enabled Schema",
+                    "examples": [
+                        true
+                    ]
+                },
+                "subscription": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The subscription Schema",
+                    "required": [
+                        "namespace",
+                        "channel",
+                        "installPlanApproval",
+                        "pkgName",
+                        "sourceImage",
+                        "sourceNamespace",
+                        "source"
+                    ],
+                    "properties": {
+                        "namespace": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The namespace Schema",
+                            "examples": [
+                                "openshift-operators"
+                            ]
+                        },
+                        "channel": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The channel Schema",
+                            "examples": [
+                                "alpha"
+                            ]
+                        },
+                        "installPlanApproval": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The installPlanApproval Schema",
+                            "examples": [
+                                "Automatic"
+                            ]
+                        },
+                        "pkgName": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The pkgName Schema",
+                            "examples": [
+                                "sonataflow-operator"
+                            ]
+                        },
+                        "sourceImage": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The sourceImage Schema",
+                            "examples": [
+                                "quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot"
+                            ]
+                        },
+                        "sourceNamespace": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The sourceNamespace Schema",
+                            "examples": [
+                                "openshift-marketplace"
+                            ]
+                        },
+                        "source": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The source Schema",
+                            "examples": [
+                                "sonataflow-operator"
+                            ]
+                        }
+                    },
+                    "examples": [{
+                        "namespace": "openshift-operators",
+                        "channel": "alpha",
+                        "installPlanApproval": "Automatic",
+                        "pkgName": "sonataflow-operator",
+                        "sourceImage": "quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot",
+                        "sourceNamespace": "openshift-marketplace",
+                        "source": "sonataflow-operator"
+                    }]
+                }
+            },
+            "examples": [{
+                "enabled": true,
+                "subscription": {
+                    "namespace": "openshift-operators",
+                    "channel": "alpha",
+                    "installPlanApproval": "Automatic",
+                    "pkgName": "sonataflow-operator",
+                    "sourceImage": "quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot",
+                    "sourceNamespace": "openshift-marketplace",
+                    "source": "sonataflow-operator"
+                }
+            }]
+        },
+        "serverlessOperator": {
+            "type": "object",
+            "default": {},
+            "title": "The serverlessOperator Schema",
+            "required": [
+                "enabled",
+                "subscription"
+            ],
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The enabled Schema",
+                    "examples": [
+                        true
+                    ]
+                },
+                "subscription": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The subscription Schema",
+                    "required": [
+                        "namespace",
+                        "channel",
+                        "installPlanApproval",
+                        "pkgName",
+                        "sourceNamespace"
+                    ],
+                    "properties": {
+                        "namespace": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The namespace Schema",
+                            "examples": [
+                                "openshift-serverless"
+                            ]
+                        },
+                        "channel": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The channel Schema",
+                            "examples": [
+                                "stable"
+                            ]
+                        },
+                        "installPlanApproval": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The installPlanApproval Schema",
+                            "examples": [
+                                "Automatic"
+                            ]
+                        },
+                        "pkgName": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The pkgName Schema",
+                            "examples": [
+                                "serverless-operator"
+                            ]
+                        },
+                        "sourceNamespace": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The sourceNamespace Schema",
+                            "examples": [
+                                "openshift-marketplace"
+                            ]
+                        }
+                    },
+                    "examples": [{
+                        "namespace": "openshift-serverless",
+                        "channel": "stable",
+                        "installPlanApproval": "Automatic",
+                        "pkgName": "serverless-operator",
+                        "sourceNamespace": "openshift-marketplace"
+                    }]
+                }
+            },
+            "examples": [{
+                "enabled": true,
+                "subscription": {
+                    "namespace": "openshift-serverless",
+                    "channel": "stable",
+                    "installPlanApproval": "Automatic",
+                    "pkgName": "serverless-operator",
+                    "sourceNamespace": "openshift-marketplace"
+                }
+            }]
+        },
+        "postgres": {
+            "type": "object",
+            "default": {},
+            "title": "The postgres Schema",
+            "required": [
+                "serviceName",
+                "serviceNamespace",
+                "authSecret",
+                "database"
+            ],
+            "properties": {
+                "serviceName": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The serviceName Schema",
+                    "examples": [
+                        "sonataflow-psql-postgresql"
+                    ]
+                },
+                "serviceNamespace": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The serviceNamespace Schema",
+                    "examples": [
+                        "sonataflow-infra"
+                    ]
+                },
+                "authSecret": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The authSecret Schema",
+                    "required": [
+                        "name",
+                        "userKey",
+                        "passwordKey"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The name Schema",
+                            "examples": [
+                                "sonataflow-psql-postgresql"
+                            ]
+                        },
+                        "userKey": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The userKey Schema",
+                            "examples": [
+                                "postgres-username"
+                            ]
+                        },
+                        "passwordKey": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The passwordKey Schema",
+                            "examples": [
+                                "postgres-password"
+                            ]
+                        }
+                    },
+                    "examples": [{
+                        "name": "sonataflow-psql-postgresql",
+                        "userKey": "postgres-username",
+                        "passwordKey": "postgres-password"
+                    }]
+                },
+                "database": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The database Schema",
+                    "examples": [
+                        "sonataflow"
+                    ]
+                }
+            },
+            "examples": [{
+                "serviceName": "sonataflow-psql-postgresql",
+                "serviceNamespace": "sonataflow-infra",
+                "authSecret": {
+                    "name": "sonataflow-psql-postgresql",
+                    "userKey": "postgres-username",
+                    "passwordKey": "postgres-password"
+                },
+                "database": "sonataflow"
+            }]
+        },
+        "backstage": {
+            "type": "object",
+            "default": {},
+            "title": "The backstage Schema",
+            "required": [
+                "global",
+                "upstream"
+            ],
+            "properties": {
+                "global": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The global Schema",
+                    "required": [
+                        "dynamic"
+                    ],
+                    "properties": {
+                        "dynamic": {
+                            "type": "object",
+                            "default": {},
+                            "title": "The dynamic Schema",
+                            "required": [
+                                "includes",
+                                "plugins"
+                            ],
+                            "properties": {
+                                "includes": {
+                                    "type": "array",
+                                    "default": [],
+                                    "title": "The includes Schema",
+                                    "items": {
+                                        "type": "string",
+                                        "default": "",
+                                        "title": "A Schema",
+                                        "examples": [
+                                            "dynamic-plugins.default.yaml"
+                                        ]
+                                    },
+                                    "examples": [
+                                        [
+                                            "dynamic-plugins.default.yaml"]
+                                    ]
+                                },
+                                "plugins": {
+                                    "type": "array",
+                                    "default": [],
+                                    "title": "The plugins Schema",
+                                    "items": {
+                                        "type": "object",
+                                        "title": "A Schema",
+                                        "required": [
+                                            "disabled",
+                                            "package"
+                                        ],
+                                        "properties": {
+                                            "disabled": {
+                                                "type": "boolean",
+                                                "title": "The disabled Schema",
+                                                "examples": [
+                                                    false
+                                                ]
+                                            },
+                                            "integrity": {
+                                                "type": "string",
+                                                "title": "The integrity Schema",
+                                                "examples": [
+                                                    "sha512-iVywjs0wOSgTFRV0n9k70+vkl92JF6jJaemqkIrooZAix1v8MiklsQe83bRrcASOh6SnQDbTIils+FHAWjV+qQ==",
+                                                    "sha512-Lmma6or08EnlM5va95VSz/P9sVbXZTA95kHs9JHjaZfdbcEj7J2oTjYXdKG+fd4yfVdl0tD7/QP9cfYCY98UIg=="
+                                                ]
+                                            },
+                                            "package": {
+                                                "type": "string",
+                                                "title": "The package Schema",
+                                                "examples": [
+                                                    "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.0.2",
+                                                    "@janus-idp/backstage-plugin-orchestrator@1.1.1"
+                                                ]
+                                            },
+                                            "pluginConfig": {
+                                                "type": "object",
+                                                "title": "The pluginConfig Schema",
+                                                "properties": {
+                                                    "orchestrator": {
+                                                        "type": "object",
+                                                        "default": {},
+                                                        "title": "The orchestrator Schema",
+                                                        "required": [
+                                                            "dataIndexService",
+                                                            "editor"
+                                                        ],
+                                                        "properties": {
+                                                            "dataIndexService": {
+                                                                "type": "object",
+                                                                "default": {},
+                                                                "title": "The dataIndexService Schema",
+                                                                "required": [
+                                                                    "url"
+                                                                ],
+                                                                "properties": {
+                                                                    "url": {
+                                                                        "type": "string",
+                                                                        "default": "",
+                                                                        "title": "The url Schema",
+                                                                        "examples": [
+                                                                            "http://sonataflow-platform-data-index-service.sonataflow-infra"
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                "examples": [{
+                                                                    "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
+                                                                }]
+                                                            },
+                                                            "editor": {
+                                                                "type": "object",
+                                                                "default": {},
+                                                                "title": "The editor Schema",
+                                                                "required": [
+                                                                    "path"
+                                                                ],
+                                                                "properties": {
+                                                                    "path": {
+                                                                        "type": "string",
+                                                                        "default": "",
+                                                                        "title": "The path Schema",
+                                                                        "examples": [
+                                                                            "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                "examples": [{
+                                                                    "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+                                                                }]
+                                                            }
+                                                        },
+                                                        "examples": [{
+                                                            "dataIndexService": {
+                                                                "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
+                                                            },
+                                                            "editor": {
+                                                                "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+                                                            }
+                                                        }]
+                                                    },
+                                                    "dynamicPlugins": {
+                                                        "type": "object",
+                                                        "default": {},
+                                                        "title": "The dynamicPlugins Schema",
+                                                        "required": [
+                                                            "frontend"
+                                                        ],
+                                                        "properties": {
+                                                            "frontend": {
+                                                                "type": "object",
+                                                                "default": {},
+                                                                "title": "The frontend Schema",
+                                                                "required": [
+                                                                    "janus-idp.backstage-plugin-orchestrator"
+                                                                ],
+                                                                "properties": {
+                                                                    "janus-idp.backstage-plugin-orchestrator": {
+                                                                        "type": "object",
+                                                                        "default": {},
+                                                                        "title": "The janus-idp.backstage-plugin-orchestrator Schema",
+                                                                        "required": [
+                                                                            "appIcons",
+                                                                            "dynamicRoutes"
+                                                                        ],
+                                                                        "properties": {
+                                                                            "appIcons": {
+                                                                                "type": "array",
+                                                                                "default": [],
+                                                                                "title": "The appIcons Schema",
+                                                                                "items": {
+                                                                                    "type": "object",
+                                                                                    "default": {},
+                                                                                    "title": "A Schema",
+                                                                                    "required": [
+                                                                                        "importName",
+                                                                                        "module",
+                                                                                        "name"
+                                                                                    ],
+                                                                                    "properties": {
+                                                                                        "importName": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The importName Schema",
+                                                                                            "examples": [
+                                                                                                "OrchestratorIcon"
+                                                                                            ]
+                                                                                        },
+                                                                                        "module": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The module Schema",
+                                                                                            "examples": [
+                                                                                                "OrchestratorPlugin"
+                                                                                            ]
+                                                                                        },
+                                                                                        "name": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The name Schema",
+                                                                                            "examples": [
+                                                                                                "orchestratorIcon"
+                                                                                            ]
+                                                                                        }
+                                                                                    },
+                                                                                    "examples": [{
+                                                                                        "importName": "OrchestratorIcon",
+                                                                                        "module": "OrchestratorPlugin",
+                                                                                        "name": "orchestratorIcon"
+                                                                                    }]
+                                                                                },
+                                                                                "examples": [
+                                                                                    [{
+                                                                                        "importName": "OrchestratorIcon",
+                                                                                        "module": "OrchestratorPlugin",
+                                                                                        "name": "orchestratorIcon"
+                                                                                    }]
+                                                                                ]
+                                                                            },
+                                                                            "dynamicRoutes": {
+                                                                                "type": "array",
+                                                                                "default": [],
+                                                                                "title": "The dynamicRoutes Schema",
+                                                                                "items": {
+                                                                                    "type": "object",
+                                                                                    "default": {},
+                                                                                    "title": "A Schema",
+                                                                                    "required": [
+                                                                                        "importName",
+                                                                                        "menuItem",
+                                                                                        "module",
+                                                                                        "path"
+                                                                                    ],
+                                                                                    "properties": {
+                                                                                        "importName": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The importName Schema",
+                                                                                            "examples": [
+                                                                                                "OrchestratorPage"
+                                                                                            ]
+                                                                                        },
+                                                                                        "menuItem": {
+                                                                                            "type": "object",
+                                                                                            "default": {},
+                                                                                            "title": "The menuItem Schema",
+                                                                                            "required": [
+                                                                                                "icon",
+                                                                                                "text"
+                                                                                            ],
+                                                                                            "properties": {
+                                                                                                "icon": {
+                                                                                                    "type": "string",
+                                                                                                    "default": "",
+                                                                                                    "title": "The icon Schema",
+                                                                                                    "examples": [
+                                                                                                        "orchestratorIcon"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "text": {
+                                                                                                    "type": "string",
+                                                                                                    "default": "",
+                                                                                                    "title": "The text Schema",
+                                                                                                    "examples": [
+                                                                                                        "Orchestrator"
+                                                                                                    ]
+                                                                                                }
+                                                                                            },
+                                                                                            "examples": [{
+                                                                                                "icon": "orchestratorIcon",
+                                                                                                "text": "Orchestrator"
+                                                                                            }]
+                                                                                        },
+                                                                                        "module": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The module Schema",
+                                                                                            "examples": [
+                                                                                                "OrchestratorPlugin"
+                                                                                            ]
+                                                                                        },
+                                                                                        "path": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The path Schema",
+                                                                                            "examples": [
+                                                                                                "/orchestrator"
+                                                                                            ]
+                                                                                        }
+                                                                                    },
+                                                                                    "examples": [{
+                                                                                        "importName": "OrchestratorPage",
+                                                                                        "menuItem": {
+                                                                                            "icon": "orchestratorIcon",
+                                                                                            "text": "Orchestrator"
+                                                                                        },
+                                                                                        "module": "OrchestratorPlugin",
+                                                                                        "path": "/orchestrator"
+                                                                                    }]
+                                                                                },
+                                                                                "examples": [
+                                                                                    [{
+                                                                                        "importName": "OrchestratorPage",
+                                                                                        "menuItem": {
+                                                                                            "icon": "orchestratorIcon",
+                                                                                            "text": "Orchestrator"
+                                                                                        },
+                                                                                        "module": "OrchestratorPlugin",
+                                                                                        "path": "/orchestrator"
+                                                                                    }]
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        "examples": [{
+                                                                            "appIcons": [{
+                                                                                "importName": "OrchestratorIcon",
+                                                                                "module": "OrchestratorPlugin",
+                                                                                "name": "orchestratorIcon"
+                                                                            }],
+                                                                            "dynamicRoutes": [{
+                                                                                "importName": "OrchestratorPage",
+                                                                                "menuItem": {
+                                                                                    "icon": "orchestratorIcon",
+                                                                                    "text": "Orchestrator"
+                                                                                },
+                                                                                "module": "OrchestratorPlugin",
+                                                                                "path": "/orchestrator"
+                                                                            }]
+                                                                        }]
+                                                                    }
+                                                                },
+                                                                "examples": [{
+                                                                    "janus-idp.backstage-plugin-orchestrator": {
+                                                                        "appIcons": [{
+                                                                            "importName": "OrchestratorIcon",
+                                                                            "module": "OrchestratorPlugin",
+                                                                            "name": "orchestratorIcon"
+                                                                        }],
+                                                                        "dynamicRoutes": [{
+                                                                            "importName": "OrchestratorPage",
+                                                                            "menuItem": {
+                                                                                "icon": "orchestratorIcon",
+                                                                                "text": "Orchestrator"
+                                                                            },
+                                                                            "module": "OrchestratorPlugin",
+                                                                            "path": "/orchestrator"
+                                                                        }]
+                                                                    }
+                                                                }]
+                                                            }
+                                                        },
+                                                        "examples": [{
+                                                            "frontend": {
+                                                                "janus-idp.backstage-plugin-orchestrator": {
+                                                                    "appIcons": [{
+                                                                        "importName": "OrchestratorIcon",
+                                                                        "module": "OrchestratorPlugin",
+                                                                        "name": "orchestratorIcon"
+                                                                    }],
+                                                                    "dynamicRoutes": [{
+                                                                        "importName": "OrchestratorPage",
+                                                                        "menuItem": {
+                                                                            "icon": "orchestratorIcon",
+                                                                            "text": "Orchestrator"
+                                                                        },
+                                                                        "module": "OrchestratorPlugin",
+                                                                        "path": "/orchestrator"
+                                                                    }]
+                                                                }
+                                                            }
+                                                        }]
+                                                    }
+                                                },
+                                                "examples": [{
+                                                    "orchestrator": {
+                                                        "dataIndexService": {
+                                                            "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
+                                                        },
+                                                        "editor": {
+                                                            "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "dynamicPlugins": {
+                                                        "frontend": {
+                                                            "janus-idp.backstage-plugin-orchestrator": {
+                                                                "appIcons": [{
+                                                                    "importName": "OrchestratorIcon",
+                                                                    "module": "OrchestratorPlugin",
+                                                                    "name": "orchestratorIcon"
+                                                                }],
+                                                                "dynamicRoutes": [{
+                                                                    "importName": "OrchestratorPage",
+                                                                    "menuItem": {
+                                                                        "icon": "orchestratorIcon",
+                                                                        "text": "Orchestrator"
+                                                                    },
+                                                                    "module": "OrchestratorPlugin",
+                                                                    "path": "/orchestrator"
+                                                                }]
+                                                            }
+                                                        }
+                                                    }
+                                                }]
+                                            }
+                                        },
+                                        "examples": [{
+                                            "disabled": false,
+                                            "integrity": "sha512-iVywjs0wOSgTFRV0n9k70+vkl92JF6jJaemqkIrooZAix1v8MiklsQe83bRrcASOh6SnQDbTIils+FHAWjV+qQ==",
+                                            "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.0.2",
+                                            "pluginConfig": {
+                                                "orchestrator": {
+                                                    "dataIndexService": {
+                                                        "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
+                                                    },
+                                                    "editor": {
+                                                        "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "integrity": "sha512-Lmma6or08EnlM5va95VSz/P9sVbXZTA95kHs9JHjaZfdbcEj7J2oTjYXdKG+fd4yfVdl0tD7/QP9cfYCY98UIg==",
+                                            "package": "@janus-idp/backstage-plugin-orchestrator@1.1.1",
+                                            "pluginConfig": {
+                                                "dynamicPlugins": {
+                                                    "frontend": {
+                                                        "janus-idp.backstage-plugin-orchestrator": {
+                                                            "appIcons": [{
+                                                                "importName": "OrchestratorIcon",
+                                                                "module": "OrchestratorPlugin",
+                                                                "name": "orchestratorIcon"
+                                                            }],
+                                                            "dynamicRoutes": [{
+                                                                "importName": "OrchestratorPage",
+                                                                "menuItem": {
+                                                                    "icon": "orchestratorIcon",
+                                                                    "text": "Orchestrator"
+                                                                },
+                                                                "module": "OrchestratorPlugin",
+                                                                "path": "/orchestrator"
+                                                            }]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }]
+                                    },
+                                    "examples": [
+                                        [{
+                                            "disabled": false,
+                                            "integrity": "sha512-iVywjs0wOSgTFRV0n9k70+vkl92JF6jJaemqkIrooZAix1v8MiklsQe83bRrcASOh6SnQDbTIils+FHAWjV+qQ==",
+                                            "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.0.2",
+                                            "pluginConfig": {
+                                                "orchestrator": {
+                                                    "dataIndexService": {
+                                                        "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
+                                                    },
+                                                    "editor": {
+                                                        "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "integrity": "sha512-Lmma6or08EnlM5va95VSz/P9sVbXZTA95kHs9JHjaZfdbcEj7J2oTjYXdKG+fd4yfVdl0tD7/QP9cfYCY98UIg==",
+                                            "package": "@janus-idp/backstage-plugin-orchestrator@1.1.1",
+                                            "pluginConfig": {
+                                                "dynamicPlugins": {
+                                                    "frontend": {
+                                                        "janus-idp.backstage-plugin-orchestrator": {
+                                                            "appIcons": [{
+                                                                "importName": "OrchestratorIcon",
+                                                                "module": "OrchestratorPlugin",
+                                                                "name": "orchestratorIcon"
+                                                            }],
+                                                            "dynamicRoutes": [{
+                                                                "importName": "OrchestratorPage",
+                                                                "menuItem": {
+                                                                    "icon": "orchestratorIcon",
+                                                                    "text": "Orchestrator"
+                                                                },
+                                                                "module": "OrchestratorPlugin",
+                                                                "path": "/orchestrator"
+                                                            }]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }]
+                                    ]
+                                }
+                            },
+                            "examples": [{
+                                "includes": [
+                                    "dynamic-plugins.default.yaml"
+                                ],
+                                "plugins": [{
+                                    "disabled": false,
+                                    "integrity": "sha512-iVywjs0wOSgTFRV0n9k70+vkl92JF6jJaemqkIrooZAix1v8MiklsQe83bRrcASOh6SnQDbTIils+FHAWjV+qQ==",
+                                    "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.0.2",
+                                    "pluginConfig": {
+                                        "orchestrator": {
+                                            "dataIndexService": {
+                                                "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
+                                            },
+                                            "editor": {
+                                                "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "disabled": false,
+                                    "integrity": "sha512-Lmma6or08EnlM5va95VSz/P9sVbXZTA95kHs9JHjaZfdbcEj7J2oTjYXdKG+fd4yfVdl0tD7/QP9cfYCY98UIg==",
+                                    "package": "@janus-idp/backstage-plugin-orchestrator@1.1.1",
+                                    "pluginConfig": {
+                                        "dynamicPlugins": {
+                                            "frontend": {
+                                                "janus-idp.backstage-plugin-orchestrator": {
+                                                    "appIcons": [{
+                                                        "importName": "OrchestratorIcon",
+                                                        "module": "OrchestratorPlugin",
+                                                        "name": "orchestratorIcon"
+                                                    }],
+                                                    "dynamicRoutes": [{
+                                                        "importName": "OrchestratorPage",
+                                                        "menuItem": {
+                                                            "icon": "orchestratorIcon",
+                                                            "text": "Orchestrator"
+                                                        },
+                                                        "module": "OrchestratorPlugin",
+                                                        "path": "/orchestrator"
+                                                    }]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }]
+                            }]
+                        }
+                    },
+                    "examples": [{
+                        "dynamic": {
+                            "includes": [
+                                "dynamic-plugins.default.yaml"
+                            ],
+                            "plugins": [{
+                                "disabled": false,
+                                "integrity": "sha512-iVywjs0wOSgTFRV0n9k70+vkl92JF6jJaemqkIrooZAix1v8MiklsQe83bRrcASOh6SnQDbTIils+FHAWjV+qQ==",
+                                "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.0.2",
+                                "pluginConfig": {
+                                    "orchestrator": {
+                                        "dataIndexService": {
+                                            "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
+                                        },
+                                        "editor": {
+                                            "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "disabled": false,
+                                "integrity": "sha512-Lmma6or08EnlM5va95VSz/P9sVbXZTA95kHs9JHjaZfdbcEj7J2oTjYXdKG+fd4yfVdl0tD7/QP9cfYCY98UIg==",
+                                "package": "@janus-idp/backstage-plugin-orchestrator@1.1.1",
+                                "pluginConfig": {
+                                    "dynamicPlugins": {
+                                        "frontend": {
+                                            "janus-idp.backstage-plugin-orchestrator": {
+                                                "appIcons": [{
+                                                    "importName": "OrchestratorIcon",
+                                                    "module": "OrchestratorPlugin",
+                                                    "name": "orchestratorIcon"
+                                                }],
+                                                "dynamicRoutes": [{
+                                                    "importName": "OrchestratorPage",
+                                                    "menuItem": {
+                                                        "icon": "orchestratorIcon",
+                                                        "text": "Orchestrator"
+                                                    },
+                                                    "module": "OrchestratorPlugin",
+                                                    "path": "/orchestrator"
+                                                }]
+                                            }
+                                        }
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                },
+                "upstream": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The upstream Schema",
+                    "required": [
+                        "backstage"
+                    ],
+                    "properties": {
+                        "backstage": {
+                            "type": "object",
+                            "default": {},
+                            "title": "The backstage Schema",
+                            "required": [
+                                "image",
+                                "appConfig"
+                            ],
+                            "properties": {
+                                "image": {
+                                    "type": "object",
+                                    "default": {},
+                                    "title": "The image Schema",
+                                    "required": [
+                                        "tag"
+                                    ],
+                                    "properties": {
+                                        "tag": {
+                                            "type": "string",
+                                            "default": "",
+                                            "title": "The tag Schema",
+                                            "examples": [
+                                                "next"
+                                            ]
+                                        }
+                                    },
+                                    "examples": [{
+                                        "tag": "next"
+                                    }]
+                                },
+                                "appConfig": {
+                                    "type": "object",
+                                    "default": {},
+                                    "title": "The appConfig Schema",
+                                    "required": [
+                                        "integrations",
+                                        "auth",
+                                        "catalog",
+                                        "backend"
+                                    ],
+                                    "properties": {
+                                        "integrations": {
+                                            "type": "object",
+                                            "default": {},
+                                            "title": "The integrations Schema",
+                                            "required": [
+                                                "github"
+                                            ],
+                                            "properties": {
+                                                "github": {
+                                                    "type": "array",
+                                                    "default": [],
+                                                    "title": "The github Schema",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "default": {},
+                                                        "title": "A Schema",
+                                                        "required": [
+                                                            "host",
+                                                            "token"
+                                                        ],
+                                                        "properties": {
+                                                            "host": {
+                                                                "type": "string",
+                                                                "default": "",
+                                                                "title": "The host Schema",
+                                                                "examples": [
+                                                                    "github.com"
+                                                                ]
+                                                            },
+                                                            "token": {
+                                                                "type": "string",
+                                                                "default": "",
+                                                                "title": "The token Schema",
+                                                                "examples": [
+                                                                    "INSERT VALID TOKEN HERE"
+                                                                ]
+                                                            }
+                                                        },
+                                                        "examples": [{
+                                                            "host": "github.com",
+                                                            "token": "INSERT VALID TOKEN HERE"
+                                                        }]
+                                                    },
+                                                    "examples": [
+                                                        [{
+                                                            "host": "github.com",
+                                                            "token": "INSERT VALID TOKEN HERE"
+                                                        }]
+                                                    ]
+                                                }
+                                            },
+                                            "examples": [{
+                                                "github": [{
+                                                    "host": "github.com",
+                                                    "token": "INSERT VALID TOKEN HERE"
+                                                }]
+                                            }]
+                                        },
+                                        "auth": {
+                                            "type": "object",
+                                            "default": {},
+                                            "title": "The auth Schema",
+                                            "required": [
+                                                "environment",
+                                                "providers"
+                                            ],
+                                            "properties": {
+                                                "environment": {
+                                                    "type": "string",
+                                                    "default": "",
+                                                    "title": "The environment Schema",
+                                                    "examples": [
+                                                        "development"
+                                                    ]
+                                                },
+                                                "providers": {
+                                                    "type": "object",
+                                                    "default": {},
+                                                    "title": "The providers Schema",
+                                                    "required": [
+                                                        "github"
+                                                    ],
+                                                    "properties": {
+                                                        "github": {
+                                                            "type": "object",
+                                                            "default": {},
+                                                            "title": "The github Schema",
+                                                            "required": [
+                                                                "development"
+                                                            ],
+                                                            "properties": {
+                                                                "development": {
+                                                                    "type": "object",
+                                                                    "default": {},
+                                                                    "title": "The development Schema",
+                                                                    "required": [
+                                                                        "clientId",
+                                                                        "clientSecret"
+                                                                    ],
+                                                                    "properties": {
+                                                                        "clientId": {
+                                                                            "type": "string",
+                                                                            "default": "",
+                                                                            "title": "The clientId Schema",
+                                                                            "examples": [
+                                                                                "INSERT VALID CLIENT ID HERE"
+                                                                            ]
+                                                                        },
+                                                                        "clientSecret": {
+                                                                            "type": "string",
+                                                                            "default": "",
+                                                                            "title": "The clientSecret Schema",
+                                                                            "examples": [
+                                                                                "INSERT VALID CLIENT SECRET HERE"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "examples": [{
+                                                                        "clientId": "INSERT VALID CLIENT ID HERE",
+                                                                        "clientSecret": "INSERT VALID CLIENT SECRET HERE"
+                                                                    }]
+                                                                }
+                                                            },
+                                                            "examples": [{
+                                                                "development": {
+                                                                    "clientId": "INSERT VALID CLIENT ID HERE",
+                                                                    "clientSecret": "INSERT VALID CLIENT SECRET HERE"
+                                                                }
+                                                            }]
+                                                        }
+                                                    },
+                                                    "examples": [{
+                                                        "github": {
+                                                            "development": {
+                                                                "clientId": "INSERT VALID CLIENT ID HERE",
+                                                                "clientSecret": "INSERT VALID CLIENT SECRET HERE"
+                                                            }
+                                                        }
+                                                    }]
+                                                }
+                                            },
+                                            "examples": [{
+                                                "environment": "development",
+                                                "providers": {
+                                                    "github": {
+                                                        "development": {
+                                                            "clientId": "INSERT VALID CLIENT ID HERE",
+                                                            "clientSecret": "INSERT VALID CLIENT SECRET HERE"
+                                                        }
+                                                    }
+                                                }
+                                            }]
+                                        },
+                                        "catalog": {
+                                            "type": "object",
+                                            "default": {},
+                                            "title": "The catalog Schema",
+                                            "required": [
+                                                "rules",
+                                                "locations"
+                                            ],
+                                            "properties": {
+                                                "rules": {
+                                                    "type": "array",
+                                                    "default": [],
+                                                    "title": "The rules Schema",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "default": {},
+                                                        "title": "A Schema",
+                                                        "required": [
+                                                            "allow"
+                                                        ],
+                                                        "properties": {
+                                                            "allow": {
+                                                                "type": "array",
+                                                                "default": [],
+                                                                "title": "The allow Schema",
+                                                                "items": {
+                                                                    "type": "string",
+                                                                    "title": "A Schema",
+                                                                    "examples": [
+                                                                        "Component",
+                                                                        "System",
+                                                                        "Group",
+                                                                        "Resource",
+                                                                        "Location",
+                                                                        "Template",
+                                                                        "API",
+                                                                        "User",
+                                                                        "Domain"
+                                                                    ]
+                                                                },
+                                                                "examples": [
+                                                                    ["Component",
+                                                                        "System",
+                                                                        "Group",
+                                                                        "Resource",
+                                                                        "Location",
+                                                                        "Template",
+                                                                        "API",
+                                                                        "User",
+                                                                        "Domain"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "examples": [{
+                                                            "allow": [
+                                                                "Component",
+                                                                "System",
+                                                                "Group",
+                                                                "Resource",
+                                                                "Location",
+                                                                "Template",
+                                                                "API",
+                                                                "User",
+                                                                "Domain"
+                                                            ]
+                                                        }]
+                                                    },
+                                                    "examples": [
+                                                        [{
+                                                            "allow": [
+                                                                "Component",
+                                                                "System",
+                                                                "Group",
+                                                                "Resource",
+                                                                "Location",
+                                                                "Template",
+                                                                "API",
+                                                                "User",
+                                                                "Domain"
+                                                            ]
+                                                        }]
+                                                    ]
+                                                },
+                                                "locations": {
+                                                    "type": "array",
+                                                    "default": [],
+                                                    "title": "The locations Schema",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "title": "A Schema",
+                                                        "required": [
+                                                            "type",
+                                                            "target"
+                                                        ],
+                                                        "properties": {
+                                                            "type": {
+                                                                "type": "string",
+                                                                "title": "The type Schema",
+                                                                "examples": [
+                                                                    "url"
+                                                                ]
+                                                            },
+                                                            "target": {
+                                                                "type": "string",
+                                                                "title": "The target Schema",
+                                                                "examples": [
+                                                                    "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml",
+                                                                    "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml",
+                                                                    "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/template.yaml",
+                                                                    "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
+                                                                ]
+                                                            }
+                                                        },
+                                                        "examples": [{
+                                                            "type": "url",
+                                                            "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
+                                                        },
+                                                        {
+                                                            "type": "url",
+                                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
+                                                        },
+                                                        {
+                                                            "type": "url",
+                                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/template.yaml"
+                                                        },
+                                                        {
+                                                            "type": "url",
+                                                            "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
+                                                        }]
+                                                    },
+                                                    "examples": [
+                                                        [{
+                                                            "type": "url",
+                                                            "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
+                                                        },
+                                                        {
+                                                            "type": "url",
+                                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
+                                                        },
+                                                        {
+                                                            "type": "url",
+                                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/template.yaml"
+                                                        },
+                                                        {
+                                                            "type": "url",
+                                                            "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
+                                                        }]
+                                                    ]
+                                                }
+                                            },
+                                            "examples": [{
+                                                "rules": [{
+                                                    "allow": [
+                                                        "Component",
+                                                        "System",
+                                                        "Group",
+                                                        "Resource",
+                                                        "Location",
+                                                        "Template",
+                                                        "API",
+                                                        "User",
+                                                        "Domain"
+                                                    ]
+                                                }],
+                                                "locations": [{
+                                                    "type": "url",
+                                                    "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
+                                                },
+                                                {
+                                                    "type": "url",
+                                                    "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
+                                                },
+                                                {
+                                                    "type": "url",
+                                                    "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/template.yaml"
+                                                },
+                                                {
+                                                    "type": "url",
+                                                    "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
+                                                }]
+                                            }]
+                                        },
+                                        "backend": {
+                                            "type": "object",
+                                            "default": {},
+                                            "title": "The backend Schema",
+                                            "required": [
+                                                "csp",
+                                                "database"
+                                            ],
+                                            "properties": {
+                                                "csp": {
+                                                    "type": "object",
+                                                    "default": {},
+                                                    "title": "The csp Schema",
+                                                    "required": [
+                                                        "frame-src"
+                                                    ],
+                                                    "properties": {
+                                                        "frame-src": {
+                                                            "type": "array",
+                                                            "default": [],
+                                                            "title": "The frame-src Schema",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "default": "",
+                                                                "title": "A Schema",
+                                                                "examples": [
+                                                                    "https://sandbox.kie.org"
+                                                                ]
+                                                            },
+                                                            "examples": [
+                                                                [
+                                                                    "https://sandbox.kie.org"]
+                                                            ]
+                                                        }
+                                                    },
+                                                    "examples": [{
+                                                        "frame-src": [
+                                                            "https://sandbox.kie.org"
+                                                        ]
+                                                    }]
+                                                },
+                                                "database": {
+                                                    "type": "object",
+                                                    "default": {},
+                                                    "title": "The database Schema",
+                                                    "required": [
+                                                        "client",
+                                                        "connection"
+                                                    ],
+                                                    "properties": {
+                                                        "client": {
+                                                            "type": "string",
+                                                            "default": "",
+                                                            "title": "The client Schema",
+                                                            "examples": [
+                                                                "pg"
+                                                            ]
+                                                        },
+                                                        "connection": {
+                                                            "type": "object",
+                                                            "default": {},
+                                                            "title": "The connection Schema",
+                                                            "required": [
+                                                                "password",
+                                                                "user",
+                                                                "host",
+                                                                "port"
+                                                            ],
+                                                            "properties": {
+                                                                "password": {
+                                                                    "type": "string",
+                                                                    "default": "",
+                                                                    "title": "The password Schema",
+                                                                    "examples": [
+                                                                        "${POSTGRESQL_ADMIN_PASSWORD}"
+                                                                    ]
+                                                                },
+                                                                "user": {
+                                                                    "type": "string",
+                                                                    "default": "",
+                                                                    "title": "The user Schema",
+                                                                    "examples": [
+                                                                        "postgres"
+                                                                    ]
+                                                                },
+                                                                "host": {
+                                                                    "type": "string",
+                                                                    "default": "",
+                                                                    "title": "The host Schema",
+                                                                    "examples": [
+                                                                        "orchestrator-postgresql-hl.orchestrator.svc.cluster.local"
+                                                                    ]
+                                                                },
+                                                                "port": {
+                                                                    "type": "integer",
+                                                                    "default": 0,
+                                                                    "title": "The port Schema",
+                                                                    "examples": [
+                                                                        5432
+                                                                    ]
+                                                                }
+                                                            },
+                                                            "examples": [{
+                                                                "password": "${POSTGRESQL_ADMIN_PASSWORD}",
+                                                                "user": "postgres",
+                                                                "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
+                                                                "port": 5432
+                                                            }]
+                                                        }
+                                                    },
+                                                    "examples": [{
+                                                        "client": "pg",
+                                                        "connection": {
+                                                            "password": "${POSTGRESQL_ADMIN_PASSWORD}",
+                                                            "user": "postgres",
+                                                            "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
+                                                            "port": 5432
+                                                        }
+                                                    }]
+                                                }
+                                            },
+                                            "examples": [{
+                                                "csp": {
+                                                    "frame-src": [
+                                                        "https://sandbox.kie.org"
+                                                    ]
+                                                },
+                                                "database": {
+                                                    "client": "pg",
+                                                    "connection": {
+                                                        "password": "${POSTGRESQL_ADMIN_PASSWORD}",
+                                                        "user": "postgres",
+                                                        "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
+                                                        "port": 5432
+                                                    }
+                                                }
+                                            }]
+                                        }
+                                    },
+                                    "examples": [{
+                                        "integrations": {
+                                            "github": [{
+                                                "host": "github.com",
+                                                "token": "INSERT VALID TOKEN HERE"
+                                            }]
+                                        },
+                                        "auth": {
+                                            "environment": "development",
+                                            "providers": {
+                                                "github": {
+                                                    "development": {
+                                                        "clientId": "INSERT VALID CLIENT ID HERE",
+                                                        "clientSecret": "INSERT VALID CLIENT SECRET HERE"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "catalog": {
+                                            "rules": [{
+                                                "allow": [
+                                                    "Component",
+                                                    "System",
+                                                    "Group",
+                                                    "Resource",
+                                                    "Location",
+                                                    "Template",
+                                                    "API",
+                                                    "User",
+                                                    "Domain"
+                                                ]
+                                            }],
+                                            "locations": [{
+                                                "type": "url",
+                                                "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
+                                            },
+                                            {
+                                                "type": "url",
+                                                "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
+                                            },
+                                            {
+                                                "type": "url",
+                                                "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/template.yaml"
+                                            },
+                                            {
+                                                "type": "url",
+                                                "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
+                                            }]
+                                        },
+                                        "backend": {
+                                            "csp": {
+                                                "frame-src": [
+                                                    "https://sandbox.kie.org"
+                                                ]
+                                            },
+                                            "database": {
+                                                "client": "pg",
+                                                "connection": {
+                                                    "password": "${POSTGRESQL_ADMIN_PASSWORD}",
+                                                    "user": "postgres",
+                                                    "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
+                                                    "port": 5432
+                                                }
+                                            }
+                                        }
+                                    }]
+                                }
+                            },
+                            "examples": [{
+                                "image": {
+                                    "tag": "next"
+                                },
+                                "appConfig": {
+                                    "integrations": {
+                                        "github": [{
+                                            "host": "github.com",
+                                            "token": "INSERT VALID TOKEN HERE"
+                                        }]
+                                    },
+                                    "auth": {
+                                        "environment": "development",
+                                        "providers": {
+                                            "github": {
+                                                "development": {
+                                                    "clientId": "INSERT VALID CLIENT ID HERE",
+                                                    "clientSecret": "INSERT VALID CLIENT SECRET HERE"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "catalog": {
+                                        "rules": [{
+                                            "allow": [
+                                                "Component",
+                                                "System",
+                                                "Group",
+                                                "Resource",
+                                                "Location",
+                                                "Template",
+                                                "API",
+                                                "User",
+                                                "Domain"
+                                            ]
+                                        }],
+                                        "locations": [{
+                                            "type": "url",
+                                            "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
+                                        },
+                                        {
+                                            "type": "url",
+                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
+                                        },
+                                        {
+                                            "type": "url",
+                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/template.yaml"
+                                        },
+                                        {
+                                            "type": "url",
+                                            "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
+                                        }]
+                                    },
+                                    "backend": {
+                                        "csp": {
+                                            "frame-src": [
+                                                "https://sandbox.kie.org"
+                                            ]
+                                        },
+                                        "database": {
+                                            "client": "pg",
+                                            "connection": {
+                                                "password": "${POSTGRESQL_ADMIN_PASSWORD}",
+                                                "user": "postgres",
+                                                "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
+                                                "port": 5432
+                                            }
+                                        }
+                                    }
+                                }
+                            }]
+                        }
+                    },
+                    "examples": [{
+                        "backstage": {
+                            "image": {
+                                "tag": "next"
+                            },
+                            "appConfig": {
+                                "integrations": {
+                                    "github": [{
+                                        "host": "github.com",
+                                        "token": "INSERT VALID TOKEN HERE"
+                                    }]
+                                },
+                                "auth": {
+                                    "environment": "development",
+                                    "providers": {
+                                        "github": {
+                                            "development": {
+                                                "clientId": "INSERT VALID CLIENT ID HERE",
+                                                "clientSecret": "INSERT VALID CLIENT SECRET HERE"
+                                            }
+                                        }
+                                    }
+                                },
+                                "catalog": {
+                                    "rules": [{
+                                        "allow": [
+                                            "Component",
+                                            "System",
+                                            "Group",
+                                            "Resource",
+                                            "Location",
+                                            "Template",
+                                            "API",
+                                            "User",
+                                            "Domain"
+                                        ]
+                                    }],
+                                    "locations": [{
+                                        "type": "url",
+                                        "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
+                                    },
+                                    {
+                                        "type": "url",
+                                        "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
+                                    },
+                                    {
+                                        "type": "url",
+                                        "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/template.yaml"
+                                    },
+                                    {
+                                        "type": "url",
+                                        "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
+                                    }]
+                                },
+                                "backend": {
+                                    "csp": {
+                                        "frame-src": [
+                                            "https://sandbox.kie.org"
+                                        ]
+                                    },
+                                    "database": {
+                                        "client": "pg",
+                                        "connection": {
+                                            "password": "${POSTGRESQL_ADMIN_PASSWORD}",
+                                            "user": "postgres",
+                                            "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
+                                            "port": 5432
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }]
+                }
+            },
+            "examples": [{
+                "global": {
+                    "dynamic": {
+                        "includes": [
+                            "dynamic-plugins.default.yaml"
+                        ],
+                        "plugins": [{
+                            "disabled": false,
+                            "integrity": "sha512-iVywjs0wOSgTFRV0n9k70+vkl92JF6jJaemqkIrooZAix1v8MiklsQe83bRrcASOh6SnQDbTIils+FHAWjV+qQ==",
+                            "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.0.2",
+                            "pluginConfig": {
+                                "orchestrator": {
+                                    "dataIndexService": {
+                                        "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
+                                    },
+                                    "editor": {
+                                        "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "disabled": false,
+                            "integrity": "sha512-Lmma6or08EnlM5va95VSz/P9sVbXZTA95kHs9JHjaZfdbcEj7J2oTjYXdKG+fd4yfVdl0tD7/QP9cfYCY98UIg==",
+                            "package": "@janus-idp/backstage-plugin-orchestrator@1.1.1",
+                            "pluginConfig": {
+                                "dynamicPlugins": {
+                                    "frontend": {
+                                        "janus-idp.backstage-plugin-orchestrator": {
+                                            "appIcons": [{
+                                                "importName": "OrchestratorIcon",
+                                                "module": "OrchestratorPlugin",
+                                                "name": "orchestratorIcon"
+                                            }],
+                                            "dynamicRoutes": [{
+                                                "importName": "OrchestratorPage",
+                                                "menuItem": {
+                                                    "icon": "orchestratorIcon",
+                                                    "text": "Orchestrator"
+                                                },
+                                                "module": "OrchestratorPlugin",
+                                                "path": "/orchestrator"
+                                            }]
+                                        }
+                                    }
+                                }
+                            }
+                        }]
+                    }
+                },
+                "upstream": {
+                    "backstage": {
+                        "image": {
+                            "tag": "next"
+                        },
+                        "appConfig": {
+                            "integrations": {
+                                "github": [{
+                                    "host": "github.com",
+                                    "token": "INSERT VALID TOKEN HERE"
+                                }]
+                            },
+                            "auth": {
+                                "environment": "development",
+                                "providers": {
+                                    "github": {
+                                        "development": {
+                                            "clientId": "INSERT VALID CLIENT ID HERE",
+                                            "clientSecret": "INSERT VALID CLIENT SECRET HERE"
+                                        }
+                                    }
+                                }
+                            },
+                            "catalog": {
+                                "rules": [{
+                                    "allow": [
+                                        "Component",
+                                        "System",
+                                        "Group",
+                                        "Resource",
+                                        "Location",
+                                        "Template",
+                                        "API",
+                                        "User",
+                                        "Domain"
+                                    ]
+                                }],
+                                "locations": [{
+                                    "type": "url",
+                                    "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
+                                },
+                                {
+                                    "type": "url",
+                                    "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
+                                },
+                                {
+                                    "type": "url",
+                                    "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/template.yaml"
+                                },
+                                {
+                                    "type": "url",
+                                    "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
+                                }]
+                            },
+                            "backend": {
+                                "csp": {
+                                    "frame-src": [
+                                        "https://sandbox.kie.org"
+                                    ]
+                                },
+                                "database": {
+                                    "client": "pg",
+                                    "connection": {
+                                        "password": "${POSTGRESQL_ADMIN_PASSWORD}",
+                                        "user": "postgres",
+                                        "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
+                                        "port": 5432
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }]
+        },
+        "orchestrator": {
+            "type": "object",
+            "default": {},
+            "title": "The orchestrator Schema",
+            "required": [
+                "devmode",
+                "namespace",
+                "sonataPlatform",
+                "sonataflows"
+            ],
+            "properties": {
+                "devmode": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The devmode Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "namespace": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The namespace Schema",
+                    "examples": [
+                        "sonataflow-infra"
+                    ]
+                },
+                "sonataPlatform": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The sonataPlatform Schema",
+                    "required": [
+                        "resources",
+                        "dataIndex",
+                        "jobService"
+                    ],
+                    "properties": {
+                        "resources": {
+                            "type": "object",
+                            "default": {},
+                            "title": "The resources Schema",
+                            "required": [
+                                "requests",
+                                "limits"
+                            ],
+                            "properties": {
+                                "requests": {
+                                    "type": "object",
+                                    "default": {},
+                                    "title": "The requests Schema",
+                                    "required": [
+                                        "memory",
+                                        "cpu"
+                                    ],
+                                    "properties": {
+                                        "memory": {
+                                            "type": "string",
+                                            "default": "",
+                                            "title": "The memory Schema",
+                                            "examples": [
+                                                "64Mi"
+                                            ]
+                                        },
+                                        "cpu": {
+                                            "type": "string",
+                                            "default": "",
+                                            "title": "The cpu Schema",
+                                            "examples": [
+                                                "250m"
+                                            ]
+                                        }
+                                    },
+                                    "examples": [{
+                                        "memory": "64Mi",
+                                        "cpu": "250m"
+                                    }]
+                                },
+                                "limits": {
+                                    "type": "object",
+                                    "default": {},
+                                    "title": "The limits Schema",
+                                    "required": [
+                                        "memory",
+                                        "cpu"
+                                    ],
+                                    "properties": {
+                                        "memory": {
+                                            "type": "string",
+                                            "default": "",
+                                            "title": "The memory Schema",
+                                            "examples": [
+                                                "1Gi"
+                                            ]
+                                        },
+                                        "cpu": {
+                                            "type": "string",
+                                            "default": "",
+                                            "title": "The cpu Schema",
+                                            "examples": [
+                                                "500m"
+                                            ]
+                                        }
+                                    },
+                                    "examples": [{
+                                        "memory": "1Gi",
+                                        "cpu": "500m"
+                                    }]
+                                }
+                            },
+                            "examples": [{
+                                "requests": {
+                                    "memory": "64Mi",
+                                    "cpu": "250m"
+                                },
+                                "limits": {
+                                    "memory": "1Gi",
+                                    "cpu": "500m"
+                                }
+                            }]
+                        },
+                        "dataIndex": {
+                            "type": "object",
+                            "default": {},
+                            "title": "The dataIndex Schema",
+                            "required": [
+                                "image"
+                            ],
+                            "properties": {
+                                "image": {
+                                    "type": "string",
+                                    "default": "",
+                                    "title": "The image Schema",
+                                    "examples": [
+                                        "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest"
+                                    ]
+                                }
+                            },
+                            "examples": [{
+                                "image": "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest"
+                            }]
+                        },
+                        "jobService": {
+                            "type": "object",
+                            "default": {},
+                            "title": "The jobService Schema",
+                            "required": [
+                                "image"
+                            ],
+                            "properties": {
+                                "image": {
+                                    "type": "string",
+                                    "default": "",
+                                    "title": "The image Schema",
+                                    "examples": [
+                                        "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
+                                    ]
+                                }
+                            },
+                            "examples": [{
+                                "image": "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
+                            }]
+                        }
+                    },
+                    "examples": [{
+                        "resources": {
+                            "requests": {
+                                "memory": "64Mi",
+                                "cpu": "250m"
+                            },
+                            "limits": {
+                                "memory": "1Gi",
+                                "cpu": "500m"
+                            }
+                        },
+                        "dataIndex": {
+                            "image": "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest"
+                        },
+                        "jobService": {
+                            "image": "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
+                        }
+                    }]
+                },
+                "sonataflows": {
+                    "type": "array",
+                    "default": [],
+                    "title": "The sonataflows Schema",
+                    "items": {
+                        "type": "object",
+                        "default": {},
+                        "title": "A Schema",
+                        "required": [
+                            "name",
+                            "image"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "default": "",
+                                "title": "The name Schema",
+                                "examples": [
+                                    "greeting"
+                                ]
+                            },
+                            "image": {
+                                "type": "string",
+                                "default": "",
+                                "title": "The image Schema",
+                                "examples": [
+                                    "quay.io/orchestrator/serverless-workflow-greeting:latest"
+                                ]
+                            }
+                        },
+                        "examples": [{
+                            "name": "greeting",
+                            "image": "quay.io/orchestrator/serverless-workflow-greeting:latest"
+                        }]
+                    },
+                    "examples": [
+                        [{
+                            "name": "greeting",
+                            "image": "quay.io/orchestrator/serverless-workflow-greeting:latest"
+                        }]
+                    ]
+                }
+            },
+            "examples": [{
+                "devmode": false,
+                "namespace": "sonataflow-infra",
+                "sonataPlatform": {
+                    "resources": {
+                        "requests": {
+                            "memory": "64Mi",
+                            "cpu": "250m"
+                        },
+                        "limits": {
+                            "memory": "1Gi",
+                            "cpu": "500m"
+                        }
+                    },
+                    "dataIndex": {
+                        "image": "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest"
+                    },
+                    "jobService": {
+                        "image": "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
+                    }
+                },
+                "sonataflows": [{
+                    "name": "greeting",
+                    "image": "quay.io/orchestrator/serverless-workflow-greeting:latest"
+                }]
+            }]
+        }
+    },
+    "examples": [{
+        "sonataFlowOperator": {
+            "enabled": true,
+            "subscription": {
+                "namespace": "openshift-operators",
+                "channel": "alpha",
+                "installPlanApproval": "Automatic",
+                "pkgName": "sonataflow-operator",
+                "sourceImage": "quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot",
+                "sourceNamespace": "openshift-marketplace",
+                "source": "sonataflow-operator"
+            }
+        },
+        "serverlessOperator": {
+            "enabled": true,
+            "subscription": {
+                "namespace": "openshift-serverless",
+                "channel": "stable",
+                "installPlanApproval": "Automatic",
+                "pkgName": "serverless-operator",
+                "sourceNamespace": "openshift-marketplace"
+            }
+        },
+        "postgres": {
+            "serviceName": "sonataflow-psql-postgresql",
+            "serviceNamespace": "sonataflow-infra",
+            "authSecret": {
+                "name": "sonataflow-psql-postgresql",
+                "userKey": "postgres-username",
+                "passwordKey": "postgres-password"
+            },
+            "database": "sonataflow"
+        },
+        "backstage": {
+            "global": {
+                "dynamic": {
+                    "includes": [
+                        "dynamic-plugins.default.yaml"
+                    ],
+                    "plugins": [{
+                        "disabled": false,
+                        "integrity": "sha512-iVywjs0wOSgTFRV0n9k70+vkl92JF6jJaemqkIrooZAix1v8MiklsQe83bRrcASOh6SnQDbTIils+FHAWjV+qQ==",
+                        "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.0.2",
+                        "pluginConfig": {
+                            "orchestrator": {
+                                "dataIndexService": {
+                                    "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
+                                },
+                                "editor": {
+                                    "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "disabled": false,
+                        "integrity": "sha512-Lmma6or08EnlM5va95VSz/P9sVbXZTA95kHs9JHjaZfdbcEj7J2oTjYXdKG+fd4yfVdl0tD7/QP9cfYCY98UIg==",
+                        "package": "@janus-idp/backstage-plugin-orchestrator@1.1.1",
+                        "pluginConfig": {
+                            "dynamicPlugins": {
+                                "frontend": {
+                                    "janus-idp.backstage-plugin-orchestrator": {
+                                        "appIcons": [{
+                                            "importName": "OrchestratorIcon",
+                                            "module": "OrchestratorPlugin",
+                                            "name": "orchestratorIcon"
+                                        }],
+                                        "dynamicRoutes": [{
+                                            "importName": "OrchestratorPage",
+                                            "menuItem": {
+                                                "icon": "orchestratorIcon",
+                                                "text": "Orchestrator"
+                                            },
+                                            "module": "OrchestratorPlugin",
+                                            "path": "/orchestrator"
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                    }]
+                }
+            },
+            "upstream": {
+                "backstage": {
+                    "image": {
+                        "tag": "next"
+                    },
+                    "appConfig": {
+                        "integrations": {
+                            "github": [{
+                                "host": "github.com",
+                                "token": "INSERT VALID TOKEN HERE"
+                            }]
+                        },
+                        "auth": {
+                            "environment": "development",
+                            "providers": {
+                                "github": {
+                                    "development": {
+                                        "clientId": "INSERT VALID CLIENT ID HERE",
+                                        "clientSecret": "INSERT VALID CLIENT SECRET HERE"
+                                    }
+                                }
+                            }
+                        },
+                        "catalog": {
+                            "rules": [{
+                                "allow": [
+                                    "Component",
+                                    "System",
+                                    "Group",
+                                    "Resource",
+                                    "Location",
+                                    "Template",
+                                    "API",
+                                    "User",
+                                    "Domain"
+                                ]
+                            }],
+                            "locations": [{
+                                "type": "url",
+                                "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
+                            },
+                            {
+                                "type": "url",
+                                "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
+                            },
+                            {
+                                "type": "url",
+                                "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/template.yaml"
+                            },
+                            {
+                                "type": "url",
+                                "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
+                            }]
+                        },
+                        "backend": {
+                            "csp": {
+                                "frame-src": [
+                                    "https://sandbox.kie.org"
+                                ]
+                            },
+                            "database": {
+                                "client": "pg",
+                                "connection": {
+                                    "password": "${POSTGRESQL_ADMIN_PASSWORD}",
+                                    "user": "postgres",
+                                    "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
+                                    "port": 5432
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "orchestrator": {
+            "devmode": false,
+            "namespace": "sonataflow-infra",
+            "sonataPlatform": {
+                "resources": {
+                    "requests": {
+                        "memory": "64Mi",
+                        "cpu": "250m"
+                    },
+                    "limits": {
+                        "memory": "1Gi",
+                        "cpu": "500m"
+                    }
+                },
+                "dataIndex": {
+                    "image": "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest"
+                },
+                "jobService": {
+                    "image": "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
+                }
+            },
+            "sonataflows": [{
+                "name": "greeting",
+                "image": "quay.io/orchestrator/serverless-workflow-greeting:latest"
+            }]
+        }
+    }]
+}
