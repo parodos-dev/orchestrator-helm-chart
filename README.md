@@ -21,6 +21,7 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
 
 ### Deploying PostgreSQL reference implementation
 Follow these steps to deploy a sample PostgreSQL instance in the `sonataflow-infra` namespace, with minimal requirements to deploy the Orchestrator.
+For non-production mode, skip this step and follow the section under Installation for non-production purpose.
 
 Note: replace the password of the `sonataflow-psql-postgresql` secret below in the following command with the desired one.
 
@@ -52,6 +53,12 @@ Create a namespace for the Orchestrator solution suite:
 ```console
 $ oc new-project orchestrator
 $ helm install orchestrator orchestrator/orchestrator
+```
+
+For non-production purpose, run:
+```console
+$ oc new-project orchestrator
+$ helm install orchestrator orchestrator/orchestrator --set orchestrator.devmode=true
 ```
 
 #### Move2kube installation
