@@ -15,7 +15,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.9
+version: 0.1.10
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -25,4 +25,4 @@ appVersion: "latest"
 
 # This is an icon to Parodos project. In the future we might design a dedicated logo for the Orchestrator.
 # However, since the entire development is done under the Parodos organization, we'll use it.
-icon: https://github.com/parodos-dev/parodos-dev.github.io/blob/main/assets/images/parodos-logo-darkbg.png?raw=true
+icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
