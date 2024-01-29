@@ -1,6 +1,5 @@
-{{/*
-Returns custom hostname
-*/}}
+{{/* Helepr functions */}}
+
 {{- define "unmanaged-resource-exists" -}}
     {{- $api := index . 0 -}}
     {{- $kind := index . 1 -}}

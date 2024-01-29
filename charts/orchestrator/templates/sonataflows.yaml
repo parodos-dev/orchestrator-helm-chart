@@ -1,5 +1,15 @@
 {{- $ns := .Values.orchestrator.namespace }}
 {{ if .Values.orchestrator.devmode }}
+{{- $namespace := (lookup "v1" "Namespace" "" $ns) }}
+{{- if $namespace }}
+# Namespace exist, do nothing.
+{{- else }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ $ns }}
+{{- end }}
+---  
 apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlowPlatform
 metadata:
