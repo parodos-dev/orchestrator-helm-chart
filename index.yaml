@@ -3,6 +3,17 @@ entries:
   move2kube:
   - apiVersion: v2
     appVersion: latest
+    created: "2024-01-29T10:43:22.520448156Z"
+    description: 'Helm chart to deploy the move2kube workflow. #magic___^_^___line '
+    digest: c8fb7611a27e0748cbf541c715cf0fec421ccdd08faf15e3b4542883cef9a420
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: move2kube
+    type: application
+    urls:
+    - https://github.com/parodos-dev/orchestrator-helm-chart/releases/download/move2kube-0.1.10/move2kube-0.1.10.tgz
+    version: 0.1.10
+  - apiVersion: v2
+    appVersion: latest
     created: "2024-01-28T21:22:18.417476416Z"
     description: 'Helm chart to deploy the move2kube workflow. #magic___^_^___line '
     digest: 46285692e4033254438fac8779a1da3640a781809f38462e9d73aa13c1f0dd6c
@@ -35,6 +46,23 @@ entries:
     - https://github.com/parodos-dev/orchestrator-helm-chart/releases/download/move2kube-0.1.7/move2kube-0.1.7.tgz
     version: 0.1.7
   orchestrator:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2024-01-29T10:43:22.737962365Z"
+    dependencies:
+    - name: backstage
+      repository: https://janus-idp.github.io/helm-backstage
+      version: 2.12.1
+    description: 'Helm chart to deploy the Orchestrator solution suite on OpenShift,
+      including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator,
+      Knative Eventing and Knative Serving. #magic___^_^___line '
+    digest: 6d06a2e92e097c48a6aa9054d7ddc9b82c9c90fc19cebfb6473f9327ba504128
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: orchestrator
+    type: application
+    urls:
+    - https://github.com/parodos-dev/orchestrator-helm-chart/releases/download/orchestrator-0.1.10/orchestrator-0.1.10.tgz
+    version: 0.1.10
   - apiVersion: v2
     appVersion: 0.0.1
     created: "2024-01-28T21:22:18.567738146Z"
@@ -201,4 +229,4 @@ entries:
     urls:
     - https://github.com/parodos-dev/orchestrator-helm-chart/releases/download/orchestrator-0.1.0/orchestrator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-01-28T21:22:18.567797726Z"
+generated: "2024-01-29T10:43:22.738004223Z"
