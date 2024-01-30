@@ -63,6 +63,31 @@ backstage:
                         text: Orchestrator
                       module: OrchestratorPlugin
                       path: /orchestrator
+        - disabled: false
+          integrity: >-
+            sha512-hjhsFz/+xjlAWcJMmR1FBmHOYfJSc+9VZLL5UYAE+gNH61+FfHEoA2dFnZ3RHj97qUuJmtgHxG3+kZCrTtaGuA==
+          package: "@janus-idp/plugin-notifications@1.1.4"
+          pluginConfig:
+            dynamicPlugins:
+              frontend:
+                janus-idp.backstage-plugin-notifications:
+                  appIcons:
+                    - name: notificationsIcon
+                      module: NotificationsPlugin
+                      importName: NotificationsActiveIcon
+                  dynamicRoutes:
+                    - path: /notifications
+                      importName: NotificationsPage
+                      module: NotificationsPlugin
+                      menuItem:
+                        icon: notificationsIcon
+                        text: Notifications
+                      config:
+                        pollingIntervalMs: 5000
+        - disabled: false
+          integrity: >-
+            sha512-dlznNhYpbXIgEnet5kZbxguu3FNaj4r1EQqGbthTrRxuhELELdZasmNMqWCHFIMXVNlcMDaOVBwWlGt+JAB+bg==
+          package: "@janus-idp/plugin-notifications-backend-dynamic@1.1.1"
   upstream:
     backstage:
       image:

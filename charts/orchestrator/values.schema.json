@@ -354,6 +354,7 @@
                                         "title": "A Schema",
                                         "required": [
                                             "disabled",
+                                            "integrity",
                                             "package"
                                         ],
                                         "properties": {
@@ -369,7 +370,9 @@
                                                 "title": "The integrity Schema",
                                                 "examples": [
                                                     "sha512-iVywjs0wOSgTFRV0n9k70+vkl92JF6jJaemqkIrooZAix1v8MiklsQe83bRrcASOh6SnQDbTIils+FHAWjV+qQ==",
-                                                    "sha512-Lmma6or08EnlM5va95VSz/P9sVbXZTA95kHs9JHjaZfdbcEj7J2oTjYXdKG+fd4yfVdl0tD7/QP9cfYCY98UIg=="
+                                                    "sha512-Lmma6or08EnlM5va95VSz/P9sVbXZTA95kHs9JHjaZfdbcEj7J2oTjYXdKG+fd4yfVdl0tD7/QP9cfYCY98UIg==",
+                                                    "sha512-hjhsFz/+xjlAWcJMmR1FBmHOYfJSc+9VZLL5UYAE+gNH61+FfHEoA2dFnZ3RHj97qUuJmtgHxG3+kZCrTtaGuA==",
+                                                    "sha512-dlznNhYpbXIgEnet5kZbxguu3FNaj4r1EQqGbthTrRxuhELELdZasmNMqWCHFIMXVNlcMDaOVBwWlGt+JAB+bg=="
                                                 ]
                                             },
                                             "package": {
@@ -377,7 +380,9 @@
                                                 "title": "The package Schema",
                                                 "examples": [
                                                     "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.0.2",
-                                                    "@janus-idp/backstage-plugin-orchestrator@1.1.1"
+                                                    "@janus-idp/backstage-plugin-orchestrator@1.1.1",
+                                                    "@janus-idp/plugin-notifications@1.1.4",
+                                                    "@janus-idp/plugin-notifications@1.1.1"
                                                 ]
                                             },
                                             "pluginConfig": {
@@ -447,7 +452,6 @@
                                                     },
                                                     "dynamicPlugins": {
                                                         "type": "object",
-                                                        "default": {},
                                                         "title": "The dynamicPlugins Schema",
                                                         "required": [
                                                             "frontend"
@@ -455,11 +459,7 @@
                                                         "properties": {
                                                             "frontend": {
                                                                 "type": "object",
-                                                                "default": {},
                                                                 "title": "The frontend Schema",
-                                                                "required": [
-                                                                    "janus-idp.backstage-plugin-orchestrator"
-                                                                ],
                                                                 "properties": {
                                                                     "janus-idp.backstage-plugin-orchestrator": {
                                                                         "type": "object",
@@ -633,6 +633,210 @@
                                                                                 "path": "/orchestrator"
                                                                             }]
                                                                         }]
+                                                                    },
+                                                                    "janus-idp.backstage-plugin-notifications": {
+                                                                        "type": "object",
+                                                                        "default": {},
+                                                                        "title": "The janus-idp.backstage-plugin-notifications Schema",
+                                                                        "required": [
+                                                                            "appIcons",
+                                                                            "dynamicRoutes"
+                                                                        ],
+                                                                        "properties": {
+                                                                            "appIcons": {
+                                                                                "type": "array",
+                                                                                "default": [],
+                                                                                "title": "The appIcons Schema",
+                                                                                "items": {
+                                                                                    "type": "object",
+                                                                                    "default": {},
+                                                                                    "title": "A Schema",
+                                                                                    "required": [
+                                                                                        "name",
+                                                                                        "module",
+                                                                                        "importName"
+                                                                                    ],
+                                                                                    "properties": {
+                                                                                        "name": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The name Schema",
+                                                                                            "examples": [
+                                                                                                "notificationsIcon"
+                                                                                            ]
+                                                                                        },
+                                                                                        "module": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The module Schema",
+                                                                                            "examples": [
+                                                                                                "NotificationsPlugin"
+                                                                                            ]
+                                                                                        },
+                                                                                        "importName": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The importName Schema",
+                                                                                            "examples": [
+                                                                                                "NotificationsActiveIcon"
+                                                                                            ]
+                                                                                        }
+                                                                                    },
+                                                                                    "examples": [{
+                                                                                        "name": "notificationsIcon",
+                                                                                        "module": "NotificationsPlugin",
+                                                                                        "importName": "NotificationsActiveIcon"
+                                                                                    }]
+                                                                                },
+                                                                                "examples": [
+                                                                                    [{
+                                                                                        "name": "notificationsIcon",
+                                                                                        "module": "NotificationsPlugin",
+                                                                                        "importName": "NotificationsActiveIcon"
+                                                                                    }]
+                                                                                ]
+                                                                            },
+                                                                            "dynamicRoutes": {
+                                                                                "type": "array",
+                                                                                "default": [],
+                                                                                "title": "The dynamicRoutes Schema",
+                                                                                "items": {
+                                                                                    "type": "object",
+                                                                                    "default": {},
+                                                                                    "title": "A Schema",
+                                                                                    "required": [
+                                                                                        "path",
+                                                                                        "importName",
+                                                                                        "module",
+                                                                                        "menuItem",
+                                                                                        "config"
+                                                                                    ],
+                                                                                    "properties": {
+                                                                                        "path": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The path Schema",
+                                                                                            "examples": [
+                                                                                                "/notifications"
+                                                                                            ]
+                                                                                        },
+                                                                                        "importName": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The importName Schema",
+                                                                                            "examples": [
+                                                                                                "NotificationsPage"
+                                                                                            ]
+                                                                                        },
+                                                                                        "module": {
+                                                                                            "type": "string",
+                                                                                            "default": "",
+                                                                                            "title": "The module Schema",
+                                                                                            "examples": [
+                                                                                                "NotificationsPlugin"
+                                                                                            ]
+                                                                                        },
+                                                                                        "menuItem": {
+                                                                                            "type": "object",
+                                                                                            "default": {},
+                                                                                            "title": "The menuItem Schema",
+                                                                                            "required": [
+                                                                                                "icon",
+                                                                                                "text"
+                                                                                            ],
+                                                                                            "properties": {
+                                                                                                "icon": {
+                                                                                                    "type": "string",
+                                                                                                    "default": "",
+                                                                                                    "title": "The icon Schema",
+                                                                                                    "examples": [
+                                                                                                        "notificationsIcon"
+                                                                                                    ]
+                                                                                                },
+                                                                                                "text": {
+                                                                                                    "type": "string",
+                                                                                                    "default": "",
+                                                                                                    "title": "The text Schema",
+                                                                                                    "examples": [
+                                                                                                        "Notifications"
+                                                                                                    ]
+                                                                                                }
+                                                                                            },
+                                                                                            "examples": [{
+                                                                                                "icon": "notificationsIcon",
+                                                                                                "text": "Notifications"
+                                                                                            }]
+                                                                                        },
+                                                                                        "config": {
+                                                                                            "type": "object",
+                                                                                            "default": {},
+                                                                                            "title": "The config Schema",
+                                                                                            "required": [
+                                                                                                "pollingIntervalMs"
+                                                                                            ],
+                                                                                            "properties": {
+                                                                                                "pollingIntervalMs": {
+                                                                                                    "type": "integer",
+                                                                                                    "default": 0,
+                                                                                                    "title": "The pollingIntervalMs Schema",
+                                                                                                    "examples": [
+                                                                                                        5000
+                                                                                                    ]
+                                                                                                }
+                                                                                            },
+                                                                                            "examples": [{
+                                                                                                "pollingIntervalMs": 5000
+                                                                                            }]
+                                                                                        }
+                                                                                    },
+                                                                                    "examples": [{
+                                                                                        "path": "/notifications",
+                                                                                        "importName": "NotificationsPage",
+                                                                                        "module": "NotificationsPlugin",
+                                                                                        "menuItem": {
+                                                                                            "icon": "notificationsIcon",
+                                                                                            "text": "Notifications"
+                                                                                        },
+                                                                                        "config": {
+                                                                                            "pollingIntervalMs": 5000
+                                                                                        }
+                                                                                    }]
+                                                                                },
+                                                                                "examples": [
+                                                                                    [{
+                                                                                        "path": "/notifications",
+                                                                                        "importName": "NotificationsPage",
+                                                                                        "module": "NotificationsPlugin",
+                                                                                        "menuItem": {
+                                                                                            "icon": "notificationsIcon",
+                                                                                            "text": "Notifications"
+                                                                                        },
+                                                                                        "config": {
+                                                                                            "pollingIntervalMs": 5000
+                                                                                        }
+                                                                                    }]
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        "examples": [{
+                                                                            "appIcons": [{
+                                                                                "name": "notificationsIcon",
+                                                                                "module": "NotificationsPlugin",
+                                                                                "importName": "NotificationsActiveIcon"
+                                                                            }],
+                                                                            "dynamicRoutes": [{
+                                                                                "path": "/notifications",
+                                                                                "importName": "NotificationsPage",
+                                                                                "module": "NotificationsPlugin",
+                                                                                "menuItem": {
+                                                                                    "icon": "notificationsIcon",
+                                                                                    "text": "Notifications"
+                                                                                },
+                                                                                "config": {
+                                                                                    "pollingIntervalMs": 5000
+                                                                                }
+                                                                            }]
+                                                                        }]
                                                                     }
                                                                 },
                                                                 "examples": [{
@@ -650,6 +854,27 @@
                                                                             },
                                                                             "module": "OrchestratorPlugin",
                                                                             "path": "/orchestrator"
+                                                                        }]
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "janus-idp.backstage-plugin-notifications": {
+                                                                        "appIcons": [{
+                                                                            "name": "notificationsIcon",
+                                                                            "module": "NotificationsPlugin",
+                                                                            "importName": "NotificationsActiveIcon"
+                                                                        }],
+                                                                        "dynamicRoutes": [{
+                                                                            "path": "/notifications",
+                                                                            "importName": "NotificationsPage",
+                                                                            "module": "NotificationsPlugin",
+                                                                            "menuItem": {
+                                                                                "icon": "notificationsIcon",
+                                                                                "text": "Notifications"
+                                                                            },
+                                                                            "config": {
+                                                                                "pollingIntervalMs": 5000
+                                                                            }
                                                                         }]
                                                                     }
                                                                 }]
@@ -671,6 +896,29 @@
                                                                         },
                                                                         "module": "OrchestratorPlugin",
                                                                         "path": "/orchestrator"
+                                                                    }]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "frontend": {
+                                                                "janus-idp.backstage-plugin-notifications": {
+                                                                    "appIcons": [{
+                                                                        "name": "notificationsIcon",
+                                                                        "module": "NotificationsPlugin",
+                                                                        "importName": "NotificationsActiveIcon"
+                                                                    }],
+                                                                    "dynamicRoutes": [{
+                                                                        "path": "/notifications",
+                                                                        "importName": "NotificationsPage",
+                                                                        "module": "NotificationsPlugin",
+                                                                        "menuItem": {
+                                                                            "icon": "notificationsIcon",
+                                                                            "text": "Notifications"
+                                                                        },
+                                                                        "config": {
+                                                                            "pollingIntervalMs": 5000
+                                                                        }
                                                                     }]
                                                                 }
                                                             }
@@ -704,6 +952,31 @@
                                                                     },
                                                                     "module": "OrchestratorPlugin",
                                                                     "path": "/orchestrator"
+                                                                }]
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "dynamicPlugins": {
+                                                        "frontend": {
+                                                            "janus-idp.backstage-plugin-notifications": {
+                                                                "appIcons": [{
+                                                                    "name": "notificationsIcon",
+                                                                    "module": "NotificationsPlugin",
+                                                                    "importName": "NotificationsActiveIcon"
+                                                                }],
+                                                                "dynamicRoutes": [{
+                                                                    "path": "/notifications",
+                                                                    "importName": "NotificationsPage",
+                                                                    "module": "NotificationsPlugin",
+                                                                    "menuItem": {
+                                                                        "icon": "notificationsIcon",
+                                                                        "text": "Notifications"
+                                                                    },
+                                                                    "config": {
+                                                                        "pollingIntervalMs": 5000
+                                                                    }
                                                                 }]
                                                             }
                                                         }
@@ -752,6 +1025,41 @@
                                                     }
                                                 }
                                             }
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "integrity": "sha512-hjhsFz/+xjlAWcJMmR1FBmHOYfJSc+9VZLL5UYAE+gNH61+FfHEoA2dFnZ3RHj97qUuJmtgHxG3+kZCrTtaGuA==",
+                                            "package": "@janus-idp/plugin-notifications@1.1.4",
+                                            "pluginConfig": {
+                                                "dynamicPlugins": {
+                                                    "frontend": {
+                                                        "janus-idp.backstage-plugin-notifications": {
+                                                            "appIcons": [{
+                                                                "name": "notificationsIcon",
+                                                                "module": "NotificationsPlugin",
+                                                                "importName": "NotificationsActiveIcon"
+                                                            }],
+                                                            "dynamicRoutes": [{
+                                                                "path": "/notifications",
+                                                                "importName": "NotificationsPage",
+                                                                "module": "NotificationsPlugin",
+                                                                "menuItem": {
+                                                                    "icon": "notificationsIcon",
+                                                                    "text": "Notifications"
+                                                                },
+                                                                "config": {
+                                                                    "pollingIntervalMs": 5000
+                                                                }
+                                                            }]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "integrity": "sha512-dlznNhYpbXIgEnet5kZbxguu3FNaj4r1EQqGbthTrRxuhELELdZasmNMqWCHFIMXVNlcMDaOVBwWlGt+JAB+bg==",
+                                            "package": "@janus-idp/plugin-notifications@1.1.1"
                                         }]
                                     },
                                     "examples": [
@@ -796,6 +1104,41 @@
                                                     }
                                                 }
                                             }
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "integrity": "sha512-hjhsFz/+xjlAWcJMmR1FBmHOYfJSc+9VZLL5UYAE+gNH61+FfHEoA2dFnZ3RHj97qUuJmtgHxG3+kZCrTtaGuA==",
+                                            "package": "@janus-idp/plugin-notifications@1.1.4",
+                                            "pluginConfig": {
+                                                "dynamicPlugins": {
+                                                    "frontend": {
+                                                        "janus-idp.backstage-plugin-notifications": {
+                                                            "appIcons": [{
+                                                                "name": "notificationsIcon",
+                                                                "module": "NotificationsPlugin",
+                                                                "importName": "NotificationsActiveIcon"
+                                                            }],
+                                                            "dynamicRoutes": [{
+                                                                "path": "/notifications",
+                                                                "importName": "NotificationsPage",
+                                                                "module": "NotificationsPlugin",
+                                                                "menuItem": {
+                                                                    "icon": "notificationsIcon",
+                                                                    "text": "Notifications"
+                                                                },
+                                                                "config": {
+                                                                    "pollingIntervalMs": 5000
+                                                                }
+                                                            }]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "integrity": "sha512-dlznNhYpbXIgEnet5kZbxguu3FNaj4r1EQqGbthTrRxuhELELdZasmNMqWCHFIMXVNlcMDaOVBwWlGt+JAB+bg==",
+                                            "package": "@janus-idp/plugin-notifications@1.1.1"
                                         }]
                                     ]
                                 }
@@ -845,6 +1188,41 @@
                                             }
                                         }
                                     }
+                                },
+                                {
+                                    "disabled": false,
+                                    "integrity": "sha512-hjhsFz/+xjlAWcJMmR1FBmHOYfJSc+9VZLL5UYAE+gNH61+FfHEoA2dFnZ3RHj97qUuJmtgHxG3+kZCrTtaGuA==",
+                                    "package": "@janus-idp/plugin-notifications@1.1.4",
+                                    "pluginConfig": {
+                                        "dynamicPlugins": {
+                                            "frontend": {
+                                                "janus-idp.backstage-plugin-notifications": {
+                                                    "appIcons": [{
+                                                        "name": "notificationsIcon",
+                                                        "module": "NotificationsPlugin",
+                                                        "importName": "NotificationsActiveIcon"
+                                                    }],
+                                                    "dynamicRoutes": [{
+                                                        "path": "/notifications",
+                                                        "importName": "NotificationsPage",
+                                                        "module": "NotificationsPlugin",
+                                                        "menuItem": {
+                                                            "icon": "notificationsIcon",
+                                                            "text": "Notifications"
+                                                        },
+                                                        "config": {
+                                                            "pollingIntervalMs": 5000
+                                                        }
+                                                    }]
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "disabled": false,
+                                    "integrity": "sha512-dlznNhYpbXIgEnet5kZbxguu3FNaj4r1EQqGbthTrRxuhELELdZasmNMqWCHFIMXVNlcMDaOVBwWlGt+JAB+bg==",
+                                    "package": "@janus-idp/plugin-notifications@1.1.1"
                                 }]
                             }]
                         }
@@ -895,6 +1273,41 @@
                                         }
                                     }
                                 }
+                            },
+                            {
+                                "disabled": false,
+                                "integrity": "sha512-hjhsFz/+xjlAWcJMmR1FBmHOYfJSc+9VZLL5UYAE+gNH61+FfHEoA2dFnZ3RHj97qUuJmtgHxG3+kZCrTtaGuA==",
+                                "package": "@janus-idp/plugin-notifications@1.1.4",
+                                "pluginConfig": {
+                                    "dynamicPlugins": {
+                                        "frontend": {
+                                            "janus-idp.backstage-plugin-notifications": {
+                                                "appIcons": [{
+                                                    "name": "notificationsIcon",
+                                                    "module": "NotificationsPlugin",
+                                                    "importName": "NotificationsActiveIcon"
+                                                }],
+                                                "dynamicRoutes": [{
+                                                    "path": "/notifications",
+                                                    "importName": "NotificationsPage",
+                                                    "module": "NotificationsPlugin",
+                                                    "menuItem": {
+                                                        "icon": "notificationsIcon",
+                                                        "text": "Notifications"
+                                                    },
+                                                    "config": {
+                                                        "pollingIntervalMs": 5000
+                                                    }
+                                                }]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "disabled": false,
+                                "integrity": "sha512-dlznNhYpbXIgEnet5kZbxguu3FNaj4r1EQqGbthTrRxuhELELdZasmNMqWCHFIMXVNlcMDaOVBwWlGt+JAB+bg==",
+                                "package": "@janus-idp/plugin-notifications@1.1.1"
                             }]
                         }
                     }]
@@ -1686,6 +2099,41 @@
                                     }
                                 }
                             }
+                        },
+                        {
+                            "disabled": false,
+                            "integrity": "sha512-hjhsFz/+xjlAWcJMmR1FBmHOYfJSc+9VZLL5UYAE+gNH61+FfHEoA2dFnZ3RHj97qUuJmtgHxG3+kZCrTtaGuA==",
+                            "package": "@janus-idp/plugin-notifications@1.1.4",
+                            "pluginConfig": {
+                                "dynamicPlugins": {
+                                    "frontend": {
+                                        "janus-idp.backstage-plugin-notifications": {
+                                            "appIcons": [{
+                                                "name": "notificationsIcon",
+                                                "module": "NotificationsPlugin",
+                                                "importName": "NotificationsActiveIcon"
+                                            }],
+                                            "dynamicRoutes": [{
+                                                "path": "/notifications",
+                                                "importName": "NotificationsPage",
+                                                "module": "NotificationsPlugin",
+                                                "menuItem": {
+                                                    "icon": "notificationsIcon",
+                                                    "text": "Notifications"
+                                                },
+                                                "config": {
+                                                    "pollingIntervalMs": 5000
+                                                }
+                                            }]
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "disabled": false,
+                            "integrity": "sha512-dlznNhYpbXIgEnet5kZbxguu3FNaj4r1EQqGbthTrRxuhELELdZasmNMqWCHFIMXVNlcMDaOVBwWlGt+JAB+bg==",
+                            "package": "@janus-idp/plugin-notifications@1.1.1"
                         }]
                     }
                 },
@@ -2097,6 +2545,41 @@
                                 }
                             }
                         }
+                    },
+                    {
+                        "disabled": false,
+                        "integrity": "sha512-hjhsFz/+xjlAWcJMmR1FBmHOYfJSc+9VZLL5UYAE+gNH61+FfHEoA2dFnZ3RHj97qUuJmtgHxG3+kZCrTtaGuA==",
+                        "package": "@janus-idp/plugin-notifications@1.1.4",
+                        "pluginConfig": {
+                            "dynamicPlugins": {
+                                "frontend": {
+                                    "janus-idp.backstage-plugin-notifications": {
+                                        "appIcons": [{
+                                            "name": "notificationsIcon",
+                                            "module": "NotificationsPlugin",
+                                            "importName": "NotificationsActiveIcon"
+                                        }],
+                                        "dynamicRoutes": [{
+                                            "path": "/notifications",
+                                            "importName": "NotificationsPage",
+                                            "module": "NotificationsPlugin",
+                                            "menuItem": {
+                                                "icon": "notificationsIcon",
+                                                "text": "Notifications"
+                                            },
+                                            "config": {
+                                                "pollingIntervalMs": 5000
+                                            }
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "disabled": false,
+                        "integrity": "sha512-dlznNhYpbXIgEnet5kZbxguu3FNaj4r1EQqGbthTrRxuhELELdZasmNMqWCHFIMXVNlcMDaOVBwWlGt+JAB+bg==",
+                        "package": "@janus-idp/plugin-notifications@1.1.1"
                     }]
                 }
             },
