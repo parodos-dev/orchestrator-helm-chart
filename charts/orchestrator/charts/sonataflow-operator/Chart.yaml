@@ -1,0 +1,20 @@
+apiVersion: v2
+name: sonataFlowOperator
+description: |
+  A Helm chart to install the sonataflow (serverless workflows) operator 
+  on OpenShift or Kubernetes. Use openshift or kubernetes tags for the target platform
+type: application
+version: 0.2.0
+appVersion: "1.0.0"
+
+dependencies:
+  - name: openshift
+    repository: file://charts/openshift
+    version: 0.2.0
+    tags: 
+      - openshift
+  - name: kubernetes
+    repository: file://charts/kubernetes
+    version: 0.2.0
+    tags: 
+      - kubernetes

@@ -1,0 +1,24 @@
+dataindex:
+  image: quay.io/kiegroup/kogito-data-index-ephemeral
+
+  #image: quay.io/rgolangh/kogito-serverless-operator:v1
+  #Use the image built by masayag for the dataindex deployed by
+  #the sonataflowplatform
+  #When switching to latest or Moti's image make sure to go back and 
+  #remove the data-index deployment yaml from templates/ and add the necessary
+  #changes to sonataflowplatform. see https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/charts/orchestrator/templates/sonataflows.yaml#L20
+  #image: quay.io/masayag/kogito-serverless-operator:2.0.0-02fd35b40
+  #  image: quay.io/kiegroup/kogito-serverless-operator-nightly:main-2024-01-16
+  #
+  #  Moti's fix for appensing the events queue details
+image: quay.io/masayag/kogito-serverless-operator:latest
+
+subscription:
+  namespace: openshift-operators # namespace where the operator should be deployed
+  channel: alpha # channel of an operator package to subscribe to
+  installPlanApproval: Automatic # whether the update should be installed automatically
+  pkgName: sonataflow-operator # name of the operator package
+  sourceImage: quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot # catalog image of the development build. Unset it for the release build.
+  sourceNamespace: openshift-marketplace # namespace of the catalog source
+  source: sonataflow-operator # name of the catalog source for the operator
+

@@ -1,0 +1,2 @@
+operator:
+  image: quay.io/masayag/kogito-serverless-operator:latest

@@ -1,0 +1,110 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "OpenShift Serverless Schema",
+    "required": [
+        "subscription"
+    ],
+    "properties": {
+        "subscription": {
+            "type": "object",
+            "default": {},
+            "title": "The subscription Schema",
+            "required": [
+                "namespace",
+                "channel",
+                "installPlanApproval",
+                "pkgName",
+                "sourceImage",
+                "sourceNamespace",
+                "source"
+            ],
+            "properties": {
+                "namespace": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The namespace Schema",
+                    "examples": [
+                        "openshift-operators"
+                    ]
+                },
+                "channel": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The channel Schema",
+                    "examples": [
+                        "alpha"
+                    ]
+                },
+                "installPlanApproval": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The installPlanApproval Schema",
+                    "examples": [
+                        "Automatic"
+                    ]
+                },
+                "pkgName": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The pkgName Schema",
+                    "examples": [
+                        "sonataflow-operator"
+                    ]
+                },
+                "sourceImage": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The sourceImage Schema",
+                    "examples": [
+                        "quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot"
+                    ]
+                },
+                "sourceNamespace": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The sourceNamespace Schema",
+                    "examples": [
+                        "openshift-marketplace"
+                    ]
+                },
+                "source": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The source Schema",
+                    "examples": [
+                        "sonataflow-operator"
+                    ]
+                }
+            },
+            "examples": [
+                {
+                    "namespace": "openshift-operators",
+                    "channel": "alpha",
+                    "installPlanApproval": "Automatic",
+                    "pkgName": "sonataflow-operator",
+                    "sourceImage": "quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot",
+                    "sourceNamespace": "openshift-marketplace",
+                    "source": "sonataflow-operator"
+                }
+            ]
+        }
+    },
+    "examples": [
+        {
+            "enabled": true,
+            "subscription": {
+                "namespace": "openshift-operators",
+                "channel": "alpha",
+                "installPlanApproval": "Automatic",
+                "pkgName": "sonataflow-operator",
+                "sourceImage": "quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot",
+                "sourceNamespace": "openshift-marketplace",
+                "source": "sonataflow-operator"
+            }
+        }
+    ]
+}
+

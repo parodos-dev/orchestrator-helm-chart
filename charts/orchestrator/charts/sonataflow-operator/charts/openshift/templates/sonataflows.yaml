@@ -1,83 +1,82 @@
-{{- $ns := .Values.orchestrator.namespace }}
-{{- if .Values.orchestrator.devmode }}
-  {{- $namespace := (lookup "v1" "Namespace" "" $ns) }}
-  {{- if $namespace }}
+{{- $ns := .Values.global.orchestrator.namespace }}
+{{ if .Values.global.orchestrator.devmode }}
+{{- $namespace := (lookup "v1" "Namespace" "" $ns) }}
+{{- if $namespace }}
 # Namespace exist, do nothing.
-  {{- else }}
+{{- else }}
 apiVersion: v1
 kind: Namespace
 metadata:
   name: {{ $ns }}
----
-  {{- end }}
-apiVersion: sonataflow.org/v1alpha08
-kind: SonataFlowPlatform
-metadata:
-  name: sonataflow-platform
-  namespace: {{ $ns }}
-spec:
-  build:
-    template:
-      resources:
-        requests:
-          memory: {{ .Values.orchestrator.sonataPlatform.resources.requests.memory }}
-          cpu: {{ .Values.orchestrator.sonataPlatform.resources.requests.cpu }}
-        limits:
-          memory: {{ .Values.orchestrator.sonataPlatform.resources.limits.memory }}
-          cpu: {{ .Values.orchestrator.sonataPlatform.resources.limits.cpu }}
-  services:
-    dataIndex:
-      enabled: true
-    jobService:
-      enabled: true
----      
-{{- else }}
-apiVersion: sonataflow.org/v1alpha08
-kind: SonataFlowPlatform
-metadata:
-  name: sonataflow-platform
-  namespace: {{ $ns }}
-spec:
-  build:
-    template:
-      resources:
-        requests:
-          memory: {{ .Values.orchestrator.sonataPlatform.resources.requests.memory }}
-          cpu: {{ .Values.orchestrator.sonataPlatform.resources.requests.cpu }}
-        limits:
-          memory: {{ .Values.orchestrator.sonataPlatform.resources.limits.memory }}
-          cpu: {{ .Values.orchestrator.sonataPlatform.resources.limits.cpu }}
-  services:
-    dataIndex:
-      enabled: true
-      podTemplate:
-        container:
-          image: {{ .Values.orchestrator.sonataPlatform.dataIndex.image }} 
-      persistence:
-        postgresql:
-          secretRef:
-            name: {{ .Values.postgres.authSecret.name }}
-            userKey: {{ .Values.postgres.authSecret.userKey }}
-            passwordKey: {{ .Values.postgres.authSecret.passwordKey }}
-          serviceRef:
-            name: {{ .Values.postgres.serviceName }}
-            namespace: {{ .Values.postgres.serviceNamespace }}
-    jobService:
-      enabled: true
-      podTemplate:
-        container:
-          image: {{ .Values.orchestrator.sonataPlatform.jobService.image }} 
-      persistence:
-        postgresql:
-          secretRef:
-            name: {{ .Values.postgres.authSecret.name }}
-            userKey: {{ .Values.postgres.authSecret.userKey }}
-            passwordKey: {{ .Values.postgres.authSecret.passwordKey }}
-          serviceRef:
-            name: {{ .Values.postgres.serviceName }}
-            namespace: {{ .Values.postgres.serviceNamespace }}
----
 {{- end }}
+---  
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlowPlatform
+metadata:
+  name: sonataflow-platform
+  namespace: {{ $ns }}
+spec:
+  build:
+    template:
+      resources:
+        requests:
+          memory: {{ .Values.global.orchestrator.sonataPlatform.resources.requests.memory }}
+          cpu: {{ .Values.global.orchestrator.sonataPlatform.resources.requests.cpu }}
+        limits:
+          memory: {{ .Values.global.orchestrator.sonataPlatform.resources.limits.memory }}
+          cpu: {{ .Values.global.orchestrator.sonataPlatform.resources.limits.cpu }}
+  services:
+    dataIndex:
+      enabled: true
+    jobService:
+      enabled: true
+{{ else }}
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlowPlatform
+metadata:
+  name: sonataflow-platform
+  namespace: {{ $ns }}
+spec:
+  build:
+    template:
+      resources:
+        requests:
+          memory: {{ .Values.global.orchestrator.sonataPlatform.resources.requests.memory }}
+          cpu: {{ .Values.global.orchestrator.sonataPlatform.resources.requests.cpu }}
+        limits:
+          memory: {{ .Values.global.orchestrator.sonataPlatform.resources.limits.memory }}
+          cpu: {{ .Values.global.orchestrator.sonataPlatform.resources.limits.cpu }}
+  services:
+    dataIndex:
+      enabled: true
+      podTemplate:
+        container:
+          image: {{ .Values.global.orchestrator.sonataPlatform.dataIndex.image }} 
+      persistence:
+        postgresql:
+          secretRef:
+            name: {{ .Values.global.postgres.authSecret.name }}
+            userKey: {{ .Values.global.postgres.authSecret.userKey }}
+            passwordKey: {{ .Values.global.postgres.authSecret.passwordKey }}
+          serviceRef:
+            name: {{ .Values.global.postgres.serviceName }}
+            namespace: {{ .Values.global.postgres.serviceNamespace }}
+    jobService:
+      enabled: true
+      podTemplate:
+        container:
+          image: {{ .Values.global.orchestrator.sonataPlatform.jobService.image }} 
+      persistence:
+        postgresql:
+          secretRef:
+            name: {{ .Values.global.postgres.authSecret.name }}
+            userKey: {{ .Values.global.postgres.authSecret.userKey }}
+            passwordKey: {{ .Values.global.postgres.authSecret.passwordKey }}
+          serviceRef:
+            name: {{ .Values.global.postgres.serviceName }}
+            namespace: {{ .Values.global.postgres.serviceNamespace }}
+{{ end }}            
+---
 apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlowClusterPlatform
 metadata:
@@ -87,7 +86,7 @@ spec:
     name: sonataflow-platform
     namespace: {{ $ns }}
 ---
-{{- if or .Values.orchestrator.deployWorkflow .Values.orchestrator.devmode }}
+{{- if or .Values.global.orchestrator.deployWorkflow .Values.global.orchestrator.devmode }}
 apiVersion: v1
 data:
   greeting.sw.input-schema.json: |
@@ -154,7 +153,7 @@ metadata:
   namespace: {{ $ns }}
 ---
 {{- $greetingImage := "" }}
-  {{- range .Values.orchestrator.sonataflows }}
+  {{- range .Values.global.orchestrator.sonataflows }}
     {{- if eq .name "greeting" }}
       {{- $greetingImage = .image }}
     {{- end }}

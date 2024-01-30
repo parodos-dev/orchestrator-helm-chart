@@ -26,3 +26,24 @@ appVersion: "0.0.1"
 # This is an icon to Parodos project. In the future we might design a dedicated logo for the Orchestrator.
 # However, since the entire development is done under the Parodos organization, we'll use it.
 icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+
+dependencies:
+  - name: backstage
+    repository: https://redhat-developer.github.io/rhdh-chart
+    version: "2.13.3"
+  - name: developerPortal
+    repository: "file://charts/developer-portal" 
+    version: "0.1.0"
+  - name: serverlessOperator
+    repository: "file://charts/serverless-operator"
+    version: "0.2.0"
+    condition: serverlessOperator.enabled
+  - name: sonataFlowOperator
+    repository: "file://charts/sonataflow-operator"
+    version: "0.2.0"
+    condition: sonataFlowOperator.enabled
+  - name: workflows
+    repository: https://parodos.dev/serverless-workflows-helm
+    version: "0.2.0"
+    condition: workflows.enabled
+

@@ -1,0 +1,17 @@
+openshift:
+  subscription:
+    namespace: openshift-serverless # namespace where the operator should be deployed
+    channel: stable # channel of an operator package to subscribe to
+    installPlanApproval: Automatic # whether the update should be installed automatically
+    pkgName: serverless-operator # name of the operator package
+    sourceNamespace: openshift-marketplace # namespace of the catalog source
+    # FIXME move to top level root chart values.yaml
+    source: foobar
+    sourceImage: barbaz
+
+
+
+tags:
+  openshift: false
+  kubernetes: false
+

@@ -1,0 +1,9 @@
+dependencies:
+- name: openshift
+  repository: file://charts/openshift
+  version: 0.2.0
+- name: kubernetes
+  repository: file://charts/kubernetes
+  version: 0.2.0
+digest: sha256:08c1b0dc27489a5187b050108b1afb02a488b5d1974ee18610750bef9dbd5ae1
+generated: "2024-02-07T12:04:31.802513836+02:00"

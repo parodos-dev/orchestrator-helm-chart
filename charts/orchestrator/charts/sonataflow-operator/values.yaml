@@ -1,18 +1,13 @@
+#openshift:
+#  enabled: {{ .Values.global.openshift }}
+  # to be overriden by the openshift sub-chart
+  # recommneded to do this from the parent chart
+  # using sonataFlowOperator.openshift.subscription
+
 tags:
-  openshift: true
+  openshift: false
   kubernetes: false
-  
-sonataFlowOperator:
-  enabled: true # whether the operator should be deployed by the chart
 
-serverlessOperator:
-  enabled: true
-
-developerPortal:
-  enabled: true
-
-workflows:
-  enabled: true
 
 global:
   orchestrator:
@@ -33,6 +28,7 @@ global:
     sonataflows: # workflows to get deployed - this option will be removed once the plugin will interact directly with the data-index
       - name: greeting
         image: quay.io/orchestrator/serverless-workflow-greeting:latest
+
   postgres:
     serviceName: "sonataflow-psql-postgresql" # The name of the Postgres DB service to be used by dataindex and job service. Cannot be empty.
     serviceNamespace: "sonataflow-infra" # The namespace of the Postgres DB service to be used by dataindex and job service.

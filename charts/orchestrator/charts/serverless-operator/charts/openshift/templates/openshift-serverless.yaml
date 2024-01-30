@@ -1,37 +1,30 @@
-{{- if .Values.serverlessOperator.enabled }}
-{{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" .Values.serverlessOperator.subscription.namespace .Release.Name) }}
-{{- if and (eq $unmanagedNamespaceExists "false") .Values.serverlessOperator.enabled }}
+{{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" .Values.subscription.namespace .Release.Name) }}
+{{- if and (eq $unmanagedNamespaceExists "false") .Values.enabled }}
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ .Values.serverlessOperator.subscription.namespace }}
+  name: {{ .Values.subscription.namespace }}
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   name: serverless-operator-group
-  namespace: {{ .Values.serverlessOperator.subscription.namespace }}
+  namespace: {{ .Values.subscription.namespace }}
 spec: {}
 ---
-{{- end }}
-{{- $unmanagedSubscriptionExists := include "unmanaged-resource-exists" (list "operators.coreos.com/v1alpha1" "Subscription" .Values.serverlessOperator.subscription.namespace "serverless-operator" .Release.Name) }}
+{{- $unmanagedSubscriptionExists := include "unmanaged-resource-exists" (list "operators.coreos.com/v1alpha1" "Subscription" .Values.subscription.namespace "serverless-operator" .Release.Name) }}
 {{- if eq $unmanagedSubscriptionExists "false" }}
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: serverless-operator
-  namespace: {{ .Values.serverlessOperator.subscription.namespace }}
+  namespace: {{ .Values.subscription.namespace }}
 spec:
-  channel: {{ .Values.serverlessOperator.subscription.channel }}
+  channel: {{ .Values.subscription.channel }}
   installPlanApproval: Automatic
-  {{- if eq (include "is-openshift" .) "true" }}
   name: serverless-operator
   source: redhat-operators
-  {{- else }}
-  name: knative-operator
-  source: {{ .Values.serverlessOperator.subscription.source | default (include "get-default-catalogsource-name" .) | quote }}
-  {{- end }}
-  sourceNamespace: {{ .Values.serverlessOperator.subscription.sourceNamespace | default (include "get-default-catalogsource-namespace" .) | quote }}
+  sourceNamespace: {{ .Values.subscription.sourceNamespace | default (include "get-default-catalogsource-namespace" .) | quote }}
 ---
 {{- end }}
 {{- end }}

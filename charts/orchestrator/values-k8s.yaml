@@ -1,0 +1,34 @@
+global:
+  # false means k8s
+  openshift: false
+  host: localhost # Specify your own Ingress host
+
+tags:
+  kubernetes: true
+  openshift: false
+
+backstage:
+  route:
+    enabled: false  # OpenShift Routes do not exist on vanilla Kubernetes
+  upstream:
+    ingress:
+      enabled: true  # Use Kubernetes Ingress instead of OpenShift Route
+    backstage:
+      resources:
+        limits:
+          memory: 2Gi
+          cpu: 1000m
+        requests:
+          memory: 800Mi
+          cpu: 200m
+      appConfig:
+        app:
+          baseUrl: http://localhost:9090
+        backend:
+          baseUrl: http://localhost:9090
+          cors:
+            origin: http://localhost:9090
+      podSecurityContext:  # Vanilla Kubernetes doesn't feature OpenShift default SCCs with dynamic UIDs, adjust accordingly to the deployed image
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001

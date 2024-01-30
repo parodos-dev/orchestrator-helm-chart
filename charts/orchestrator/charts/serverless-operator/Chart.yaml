@@ -1,0 +1,17 @@
+apiVersion: v2
+name: serverlessOperator
+description: |
+  A Helm chart to install the serverless infrastructure
+  on OpenShift or Kubernetes. Use the value openshift.enable or kubernetes.enable
+type: application
+version: 0.2.0
+appVersion: "1.0.0"
+dependencies:
+  - name: openshift
+    repository: file://charts/openshift
+    tags:
+      - openshift
+  - name: kubernetes
+    repository: file://charts/kubernetes
+    tags:
+      - kubernetes
