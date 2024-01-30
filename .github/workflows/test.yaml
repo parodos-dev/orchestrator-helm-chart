@@ -14,8 +14,3 @@ jobs:
           cd charts/orchestrator
           helm dep up
           helm lint
-      - name: Move2Kube Helm Lint
-        run: |
-          cd charts/move2kube
-          helm dep up
-          helm lint

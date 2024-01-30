@@ -109,9 +109,9 @@ knativeserving.operator.knative.dev/knative-serving condition met
 sonataflow.sonataflow.org/greeting condition met
 ```
 
-### Move2Kube installation
+### Workflow installation
 
-Follow [Move2Kube README](charts/move2kube/README.md)
+Follow [Workflows Installation](https://www.parodos.dev/serverless-workflows-helm/)
 
 ### Installation from OpenShift
 ```shell
