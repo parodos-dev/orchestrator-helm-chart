@@ -6,7 +6,6 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
 - Knative Eventing
 - Knative Serving
 - Sample workflow (greeting)
-- Move2kube workflow
 
 ## Usage
 
@@ -61,9 +60,9 @@ $ oc new-project orchestrator
 $ helm install orchestrator orchestrator/orchestrator --set orchestrator.devmode=true
 ```
 
-#### Move2kube installation
+#### Workflow installation
 
-Refer to [Move2kube installation guide](move2kube/README.md)
+Refer to [Workflows Installation](https://www.parodos.dev/serverless-workflows-helm/)
 
 ### Uninstallation
 ```console
