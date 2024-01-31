@@ -354,7 +354,6 @@
                                         "title": "A Schema",
                                         "required": [
                                             "disabled",
-                                            "integrity",
                                             "package"
                                         ],
                                         "properties": {

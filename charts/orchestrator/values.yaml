@@ -36,8 +36,8 @@ backstage:
       plugins:
         - disabled: false
           integrity: >-
-            sha512-iVywjs0wOSgTFRV0n9k70+vkl92JF6jJaemqkIrooZAix1v8MiklsQe83bRrcASOh6SnQDbTIils+FHAWjV+qQ==
-          package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.0.2"
+            sha512-9Y2Y0QashRJSwWYMW9npqzbO4NNEqno7p9BnKDMKydnygpV/vQJSh6NV1ALYwVa9P9fy59QLkdIQ0EBbFNzHbw==
+          package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.1.0"
           pluginConfig:
             orchestrator:
               dataIndexService:
@@ -46,8 +46,8 @@ backstage:
                 path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
         - disabled: false
           integrity: >-
-            sha512-Lmma6or08EnlM5va95VSz/P9sVbXZTA95kHs9JHjaZfdbcEj7J2oTjYXdKG+fd4yfVdl0tD7/QP9cfYCY98UIg==
-          package: "@janus-idp/backstage-plugin-orchestrator@1.1.1"
+            sha512-UrUUy6qlta4oRQg9r7EwkClls++a9FoL8zTM1xLW6bg4f1WQuohDhzdWfCfQtBxaBdjkRW/8jp38s2y4Oic8hQ==
+          package: "@janus-idp/backstage-plugin-orchestrator@1.2.0"
           pluginConfig:
             dynamicPlugins:
               frontend:
@@ -64,9 +64,7 @@ backstage:
                       module: OrchestratorPlugin
                       path: /orchestrator
         - disabled: false
-          integrity: >-
-            sha512-hjhsFz/+xjlAWcJMmR1FBmHOYfJSc+9VZLL5UYAE+gNH61+FfHEoA2dFnZ3RHj97qUuJmtgHxG3+kZCrTtaGuA==
-          package: "@janus-idp/plugin-notifications@1.1.4"
+          package: "./dynamic-plugins/dist/janus-idp-plugin-notifications"
           pluginConfig:
             dynamicPlugins:
               frontend:
@@ -85,13 +83,11 @@ backstage:
                       config:
                         pollingIntervalMs: 5000
         - disabled: false
-          integrity: >-
-            sha512-dlznNhYpbXIgEnet5kZbxguu3FNaj4r1EQqGbthTrRxuhELELdZasmNMqWCHFIMXVNlcMDaOVBwWlGt+JAB+bg==
-          package: "@janus-idp/plugin-notifications-backend-dynamic@1.1.1"
+          package: "./dynamic-plugins/dist/janus-idp-plugin-notifications-backend-dynamic"
   upstream:
     backstage:
       image:
-        tag: next
+        tag: pr-896
       appConfig:
         integrations:
           github:
