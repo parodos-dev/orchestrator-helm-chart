@@ -15,8 +15,9 @@ This chart will deploy the following on the target OpenShift cluster:
 - [Operator Lifecycle Manager (OLM)](https://olm.operatorframework.io/docs/getting-started/) has been installed in your cluster.
 - Your cluster has a [default storage class](https://docs.openshift.com/container-platform/4.13/storage/container_storage_interface/persistent-storage-csi-sc-manage.html) provisioned.
 - [Helm](https://helm.sh/docs/intro/install/) v3.9+ is installed.
-- [PostgreSQL](https://www.postgresql.org/) database is avalable with credentials to manage the tablespace.
+- [PostgreSQL](https://www.postgresql.org/) database is avalable with credentials to manage the tablespace (optional).
   - A [reference implementation](#postgresql-deployment-reference-implementation) is provided for your convenience.
+- A Github API Token - in order to import items into the catalog, there is a need for GITHUB_TOKEN with the permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions: repo (all), admin:org (read:org) and user (read:user, user:email).
   
 Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL 8 images which are not supported on the ARM64 architecture. Consequently, deployment of this helm chart on an [OpenShift Local](https://www.redhat.com/sysadmin/install-openshift-local) cluster on Macbook laptops with M1/M2 chips is not supported.
 
@@ -52,13 +53,17 @@ helm dep update orchestrator
 oc new-project orchestrator
 ```
 
-Install the chart (expects DB configuration to be provided):
+Install the chart (expects DB configuration to be provided), set value for $GITHUB_TOKEN:
 ```console
-$ helm install orchestrator orchestrator
+$ helm install orchestrator orchestrator \
+    --set backstage.upstream.backstage.appConfig.integrations.github[0].host=github.com \
+    --set backstage.upstream.backstage.appConfig.integrations.github[0].token=$GITHUB_TOKEN
 ```
 or install sonataflow services in ephemeral mode for evaluation purpose:
 ```console
-$ helm install orchestrator orchestrator --set orchestrator.devmode=true
+$ helm install orchestrator orchestrator --set orchestrator.devmode=true \
+    --set backstage.upstream.backstage.appConfig.integrations.github[0].host=github.com \
+    --set backstage.upstream.backstage.appConfig.integrations.github[0].token=$GITHUB_TOKEN
 ```
 
 A sample output:
