@@ -17,6 +17,7 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
 - [Helm](https://helm.sh/docs/intro/install/) v3.9+ is installed.
 - [PostgreSQL](https://www.postgresql.org/) database is avalable with credentials to manage the tablespace.
   - A [reference implementation](#postgresql-deployment-reference-implementation) is provided for your convenience.
+- A Github API Token - in order to import items into the catalog, there is a need for GITHUB_TOKEN with the permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include at least the following permissions: repo (all), admin:org (read:org) and user (read:user, user:email).
 
 ### Deploying PostgreSQL reference implementation
 Follow these steps to deploy a sample PostgreSQL instance in the `sonataflow-infra` namespace, with minimal requirements to deploy the Orchestrator.
@@ -51,13 +52,17 @@ orchestrator	https://parodos-dev.github.io/orchestrator-helm-chart
 Create a namespace for the Orchestrator solution suite:
 ```console
 $ oc new-project orchestrator
-$ helm install orchestrator orchestrator/orchestrator
+$ helm install orchestrator orchestrator/orchestrator \
+    --set backstage.upstream.backstage.appConfig.integrations.github[0].host=github.com \
+    --set backstage.upstream.backstage.appConfig.integrations.github[0].token=$GITHUB_TOKEN
 ```
 
 For non-production purpose, run:
 ```console
 $ oc new-project orchestrator
-$ helm install orchestrator orchestrator/orchestrator --set orchestrator.devmode=true
+$ helm install orchestrator orchestrator/orchestrator --set orchestrator.devmode=true \
+    --set backstage.upstream.backstage.appConfig.integrations.github[0].host=github.com \
+    --set backstage.upstream.backstage.appConfig.integrations.github[0].token=$GITHUB_TOKEN
 ```
 
 #### Workflow installation
