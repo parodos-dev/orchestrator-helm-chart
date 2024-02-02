@@ -56,14 +56,14 @@ oc new-project orchestrator
 Install the chart (expects DB configuration to be provided), set value for $GITHUB_TOKEN:
 ```console
 $ helm install orchestrator orchestrator \
-    --set backstage.upstream.backstage.appConfig.integrations.github[0].host=github.com \
-    --set backstage.upstream.backstage.appConfig.integrations.github[0].token=$GITHUB_TOKEN
+    --set "backstage.upstream.backstage.appConfig.integrations.github[0].host"=github.com \
+    --set "backstage.upstream.backstage.appConfig.integrations.github[0].token"=$GITHUB_TOKEN
 ```
 or install sonataflow services in ephemeral mode for evaluation purpose:
 ```console
 $ helm install orchestrator orchestrator --set orchestrator.devmode=true \
-    --set backstage.upstream.backstage.appConfig.integrations.github[0].host=github.com \
-    --set backstage.upstream.backstage.appConfig.integrations.github[0].token=$GITHUB_TOKEN
+    --set "backstage.upstream.backstage.appConfig.integrations.github[0].host"=github.com \
+    --set "backstage.upstream.backstage.appConfig.integrations.github[0].token"=$GITHUB_TOKEN
 ```
 
 A sample output:
