@@ -1,15 +1,15 @@
 {{- $ns := .Values.orchestrator.namespace }}
-{{ if .Values.orchestrator.devmode }}
-{{- $namespace := (lookup "v1" "Namespace" "" $ns) }}
-{{- if $namespace }}
+{{- if .Values.orchestrator.devmode }}
+  {{- $namespace := (lookup "v1" "Namespace" "" $ns) }}
+  {{- if $namespace }}
 # Namespace exist, do nothing.
-{{- else }}
+  {{- else }}
 apiVersion: v1
 kind: Namespace
 metadata:
   name: {{ $ns }}
-{{- end }}
----  
+---
+  {{- end }}
 apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlowPlatform
 metadata:
@@ -30,7 +30,8 @@ spec:
       enabled: true
     jobService:
       enabled: true
-{{ else }}
+---      
+{{- else }}
 apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlowPlatform
 metadata:
@@ -75,7 +76,16 @@ spec:
           serviceRef:
             name: {{ .Values.postgres.serviceName }}
             namespace: {{ .Values.postgres.serviceNamespace }}
-{{ end }}            
+---
+{{- end }}
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlowClusterPlatform
+metadata:
+  name: cluster-platform
+spec:
+  platformRef:
+    name: sonataflow-platform
+    namespace: {{ $ns }}
 ---
 apiVersion: v1
 data:
