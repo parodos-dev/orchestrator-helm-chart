@@ -51,16 +51,16 @@ Create a namespace for the Orchestrator solution suite:
 ```console
 $ oc new-project orchestrator
 $ helm install orchestrator orchestrator/orchestrator \
-    --set backstage.upstream.backstage.appConfig.integrations.github[0].host=github.com \
-    --set backstage.upstream.backstage.appConfig.integrations.github[0].token=$GITHUB_TOKEN
+    --set "backstage.upstream.backstage.appConfig.integrations.github[0].host"=github.com \
+    --set "backstage.upstream.backstage.appConfig.integrations.github[0].token"=$GITHUB_TOKEN
 ```
 
 For non-production purpose, run:
 ```console
 $ oc new-project orchestrator
 $ helm install orchestrator orchestrator/orchestrator --set orchestrator.devmode=true \
-    --set backstage.upstream.backstage.appConfig.integrations.github[0].host=github.com \
-    --set backstage.upstream.backstage.appConfig.integrations.github[0].token=$GITHUB_TOKEN
+    --set "backstage.upstream.backstage.appConfig.integrations.github[0].host"=github.com \
+    --set "backstage.upstream.backstage.appConfig.integrations.github[0].token"=$GITHUB_TOKEN
 ```
 
 #### Workflow installation
