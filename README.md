@@ -1,5 +1,7 @@
 # Orchestrator Helm Chart
-Helm chart to deploy the Orchestrator solution suite on OpenShift, including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator, Knative Eventing and Knative Serving.
+Helm chart to deploy the Orchestrator solution suite on OpenShift or Kubernetes, including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator, Knative Eventing and Knative Serving.
+
+All the instruction here are relevant for installation on OpenShift. For installing on Kubernetes see [INSTALL-k8s.md](INSTALL-k8s.md)
 
 This chart will deploy the following on the target OpenShift cluster:
   - Janus IDP backstage
