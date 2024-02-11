@@ -7,7 +7,8 @@
     "required": [
         "sonataFlowOperator",
         "serverlessOperator",
-        "backstage",
+        "rhdhOperator",
+        "postgres",
         "orchestrator"
     ],
     "properties": {
@@ -79,7 +80,7 @@
                             "default": "",
                             "title": "The sourceImage Schema",
                             "examples": [
-                                "quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot"
+                                "quay.io/masayag/kogito-serverless-operator-catalog:v999.0.0-snapshot"
                             ]
                         },
                         "sourceNamespace": {
@@ -104,7 +105,7 @@
                         "channel": "alpha",
                         "installPlanApproval": "Automatic",
                         "pkgName": "sonataflow-operator",
-                        "sourceImage": "quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot",
+                        "sourceImage": "quay.io/masayag/kogito-serverless-operator-catalog:v999.0.0-snapshot",
                         "sourceNamespace": "openshift-marketplace",
                         "source": "sonataflow-operator"
                     }]
@@ -117,7 +118,7 @@
                     "channel": "alpha",
                     "installPlanApproval": "Automatic",
                     "pkgName": "sonataflow-operator",
-                    "sourceImage": "quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot",
+                    "sourceImage": "quay.io/masayag/kogito-serverless-operator-catalog:v999.0.0-snapshot",
                     "sourceNamespace": "openshift-marketplace",
                     "source": "sonataflow-operator"
                 }
@@ -213,6 +214,165 @@
                 }
             }]
         },
+        "rhdhOperator": {
+            "type": "object",
+            "default": {},
+            "title": "The rhdhOperator Schema",
+            "required": [
+                "enabled",
+                "github",
+                "subscription"
+            ],
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The enabled Schema",
+                    "examples": [
+                        true
+                    ]
+                },
+                "github": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The github Schema",
+                    "required": [
+                        "token",
+                        "clientId",
+                        "clientSecret"
+                    ],
+                    "properties": {
+                        "token": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The token Schema",
+                            "examples": [
+                                ""
+                            ]
+                        },
+                        "clientId": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The clientId Schema",
+                            "examples": [
+                                ""
+                            ]
+                        },
+                        "clientSecret": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The clientSecret Schema",
+                            "examples": [
+                                ""
+                            ]
+                        }
+                    },
+                    "examples": [{
+                        "token": "",
+                        "clientId": "",
+                        "clientSecret": ""
+                    }]
+                },
+                "subscription": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The subscription Schema",
+                    "required": [
+                        "namespace",
+                        "channel",
+                        "installPlanApproval",
+                        "pkgName",
+                        "sourceImage",
+                        "sourceNamespace",
+                        "source"
+                    ],
+                    "properties": {
+                        "namespace": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The namespace Schema",
+                            "examples": [
+                                "backstage-system"
+                            ]
+                        },
+                        "channel": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The channel Schema",
+                            "examples": [
+                                "alpha"
+                            ]
+                        },
+                        "installPlanApproval": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The installPlanApproval Schema",
+                            "examples": [
+                                "Automatic"
+                            ]
+                        },
+                        "pkgName": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The pkgName Schema",
+                            "examples": [
+                                "backstage-operator"
+                            ]
+                        },
+                        "sourceImage": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The sourceImage Schema",
+                            "examples": [
+                                "quay.io/janus-idp/operator-catalog:0.1.0"
+                            ]
+                        },
+                        "sourceNamespace": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The sourceNamespace Schema",
+                            "examples": [
+                                "openshift-marketplace"
+                            ]
+                        },
+                        "source": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The source Schema",
+                            "examples": [
+                                "rhdh-operator"
+                            ]
+                        }
+                    },
+                    "examples": [{
+                        "namespace": "backstage-system",
+                        "channel": "alpha",
+                        "installPlanApproval": "Automatic",
+                        "pkgName": "backstage-operator",
+                        "sourceImage": "quay.io/janus-idp/operator-catalog:0.1.0",
+                        "sourceNamespace": "openshift-marketplace",
+                        "source": "rhdh-operator"
+                    }]
+                }
+            },
+            "examples": [{
+                "enabled": true,
+                "github": {
+                    "token": "",
+                    "clientId": "",
+                    "clientSecret": ""
+                },
+                "subscription": {
+                    "namespace": "backstage-system",
+                    "channel": "alpha",
+                    "installPlanApproval": "Automatic",
+                    "pkgName": "backstage-operator",
+                    "sourceImage": "quay.io/janus-idp/operator-catalog:0.1.0",
+                    "sourceNamespace": "openshift-marketplace",
+                    "source": "rhdh-operator"
+                }
+            }]
+        },
         "postgres": {
             "type": "object",
             "default": {},
@@ -299,1929 +459,6 @@
                     "passwordKey": "postgres-password"
                 },
                 "database": "sonataflow"
-            }]
-        },
-        "backstage": {
-            "type": "object",
-            "default": {},
-            "title": "The backstage Schema",
-            "required": [
-                "global",
-                "upstream"
-            ],
-            "properties": {
-                "global": {
-                    "type": "object",
-                    "default": {},
-                    "title": "The global Schema",
-                    "required": [
-                        "dynamic"
-                    ],
-                    "properties": {
-                        "dynamic": {
-                            "type": "object",
-                            "default": {},
-                            "title": "The dynamic Schema",
-                            "required": [
-                                "includes",
-                                "plugins"
-                            ],
-                            "properties": {
-                                "includes": {
-                                    "type": "array",
-                                    "default": [],
-                                    "title": "The includes Schema",
-                                    "items": {
-                                        "type": "string",
-                                        "default": "",
-                                        "title": "A Schema",
-                                        "examples": [
-                                            "dynamic-plugins.default.yaml"
-                                        ]
-                                    },
-                                    "examples": [
-                                        [
-                                            "dynamic-plugins.default.yaml"]
-                                    ]
-                                },
-                                "plugins": {
-                                    "type": "array",
-                                    "default": [],
-                                    "title": "The plugins Schema",
-                                    "items": {
-                                        "type": "object",
-                                        "title": "A Schema",
-                                        "required": [
-                                            "disabled",
-                                            "package"
-                                        ],
-                                        "properties": {
-                                            "disabled": {
-                                                "type": "boolean",
-                                                "title": "The disabled Schema",
-                                                "examples": [
-                                                    false
-                                                ]
-                                            },
-                                            "integrity": {
-                                                "type": "string",
-                                                "title": "The integrity Schema",
-                                                "examples": [
-                                                    "sha512-/ZQZI6bssyYT1D2+LW/pqpdIFJJXCW5RC0Ti49YdyminEbAYmjhjKxEHagKRaxwYhmCHbJezkuqrUAern/xcbA==",
-                                                    "sha512-RjtUkE1JxzEQhFGgpEW3yCtdLTf6B+FvNAVhWC6xkETk7BwGz+RO8CeDUVyXwuf6OJg1w347gZIjV64naqA+UA=="
-                                                ]
-                                            },
-                                            "package": {
-                                                "type": "string",
-                                                "title": "The package Schema",
-                                                "examples": [
-                                                    "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.2.0",
-                                                    "@janus-idp/backstage-plugin-orchestrator@1.3.0",
-                                                    "./dynamic-plugins/dist/janus-idp-plugin-notifications",
-                                                    "./dynamic-plugins/dist/janus-idp-plugin-notifications-backend-dynamic"
-                                                ]
-                                            },
-                                            "pluginConfig": {
-                                                "type": "object",
-                                                "title": "The pluginConfig Schema",
-                                                "properties": {
-                                                    "orchestrator": {
-                                                        "type": "object",
-                                                        "default": {},
-                                                        "title": "The orchestrator Schema",
-                                                        "required": [
-                                                            "dataIndexService",
-                                                            "editor"
-                                                        ],
-                                                        "properties": {
-                                                            "dataIndexService": {
-                                                                "type": "object",
-                                                                "default": {},
-                                                                "title": "The dataIndexService Schema",
-                                                                "required": [
-                                                                    "url"
-                                                                ],
-                                                                "properties": {
-                                                                    "url": {
-                                                                        "type": "string",
-                                                                        "default": "",
-                                                                        "title": "The url Schema",
-                                                                        "examples": [
-                                                                            "http://sonataflow-platform-data-index-service.sonataflow-infra"
-                                                                        ]
-                                                                    }
-                                                                },
-                                                                "examples": [{
-                                                                    "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
-                                                                }]
-                                                            },
-                                                            "editor": {
-                                                                "type": "object",
-                                                                "default": {},
-                                                                "title": "The editor Schema",
-                                                                "required": [
-                                                                    "path"
-                                                                ],
-                                                                "properties": {
-                                                                    "path": {
-                                                                        "type": "string",
-                                                                        "default": "",
-                                                                        "title": "The path Schema",
-                                                                        "examples": [
-                                                                            "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
-                                                                        ]
-                                                                    }
-                                                                },
-                                                                "examples": [{
-                                                                    "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
-                                                                }]
-                                                            }
-                                                        },
-                                                        "examples": [{
-                                                            "dataIndexService": {
-                                                                "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
-                                                            },
-                                                            "editor": {
-                                                                "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
-                                                            }
-                                                        }]
-                                                    },
-                                                    "dynamicPlugins": {
-                                                        "type": "object",
-                                                        "title": "The dynamicPlugins Schema",
-                                                        "properties": {
-                                                            "frontend": {
-                                                                "type": "object",
-                                                                "title": "The frontend Schema",
-                                                                "properties": {
-                                                                    "janus-idp.backstage-plugin-orchestrator": {
-                                                                        "type": "object",
-                                                                        "default": {},
-                                                                        "title": "The janus-idp.backstage-plugin-orchestrator Schema",
-                                                                        "required": [
-                                                                            "appIcons",
-                                                                            "dynamicRoutes"
-                                                                        ],
-                                                                        "properties": {
-                                                                            "appIcons": {
-                                                                                "type": "array",
-                                                                                "default": [],
-                                                                                "title": "The appIcons Schema",
-                                                                                "items": {
-                                                                                    "type": "object",
-                                                                                    "default": {},
-                                                                                    "title": "A Schema",
-                                                                                    "required": [
-                                                                                        "importName",
-                                                                                        "module",
-                                                                                        "name"
-                                                                                    ],
-                                                                                    "properties": {
-                                                                                        "importName": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The importName Schema",
-                                                                                            "examples": [
-                                                                                                "OrchestratorIcon"
-                                                                                            ]
-                                                                                        },
-                                                                                        "module": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The module Schema",
-                                                                                            "examples": [
-                                                                                                "OrchestratorPlugin"
-                                                                                            ]
-                                                                                        },
-                                                                                        "name": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The name Schema",
-                                                                                            "examples": [
-                                                                                                "orchestratorIcon"
-                                                                                            ]
-                                                                                        }
-                                                                                    },
-                                                                                    "examples": [{
-                                                                                        "importName": "OrchestratorIcon",
-                                                                                        "module": "OrchestratorPlugin",
-                                                                                        "name": "orchestratorIcon"
-                                                                                    }]
-                                                                                },
-                                                                                "examples": [
-                                                                                    [{
-                                                                                        "importName": "OrchestratorIcon",
-                                                                                        "module": "OrchestratorPlugin",
-                                                                                        "name": "orchestratorIcon"
-                                                                                    }]
-                                                                                ]
-                                                                            },
-                                                                            "dynamicRoutes": {
-                                                                                "type": "array",
-                                                                                "default": [],
-                                                                                "title": "The dynamicRoutes Schema",
-                                                                                "items": {
-                                                                                    "type": "object",
-                                                                                    "default": {},
-                                                                                    "title": "A Schema",
-                                                                                    "required": [
-                                                                                        "importName",
-                                                                                        "menuItem",
-                                                                                        "module",
-                                                                                        "path"
-                                                                                    ],
-                                                                                    "properties": {
-                                                                                        "importName": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The importName Schema",
-                                                                                            "examples": [
-                                                                                                "OrchestratorPage"
-                                                                                            ]
-                                                                                        },
-                                                                                        "menuItem": {
-                                                                                            "type": "object",
-                                                                                            "default": {},
-                                                                                            "title": "The menuItem Schema",
-                                                                                            "required": [
-                                                                                                "icon",
-                                                                                                "text"
-                                                                                            ],
-                                                                                            "properties": {
-                                                                                                "icon": {
-                                                                                                    "type": "string",
-                                                                                                    "default": "",
-                                                                                                    "title": "The icon Schema",
-                                                                                                    "examples": [
-                                                                                                        "orchestratorIcon"
-                                                                                                    ]
-                                                                                                },
-                                                                                                "text": {
-                                                                                                    "type": "string",
-                                                                                                    "default": "",
-                                                                                                    "title": "The text Schema",
-                                                                                                    "examples": [
-                                                                                                        "Orchestrator"
-                                                                                                    ]
-                                                                                                }
-                                                                                            },
-                                                                                            "examples": [{
-                                                                                                "icon": "orchestratorIcon",
-                                                                                                "text": "Orchestrator"
-                                                                                            }]
-                                                                                        },
-                                                                                        "module": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The module Schema",
-                                                                                            "examples": [
-                                                                                                "OrchestratorPlugin"
-                                                                                            ]
-                                                                                        },
-                                                                                        "path": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The path Schema",
-                                                                                            "examples": [
-                                                                                                "/orchestrator"
-                                                                                            ]
-                                                                                        }
-                                                                                    },
-                                                                                    "examples": [{
-                                                                                        "importName": "OrchestratorPage",
-                                                                                        "menuItem": {
-                                                                                            "icon": "orchestratorIcon",
-                                                                                            "text": "Orchestrator"
-                                                                                        },
-                                                                                        "module": "OrchestratorPlugin",
-                                                                                        "path": "/orchestrator"
-                                                                                    }]
-                                                                                },
-                                                                                "examples": [
-                                                                                    [{
-                                                                                        "importName": "OrchestratorPage",
-                                                                                        "menuItem": {
-                                                                                            "icon": "orchestratorIcon",
-                                                                                            "text": "Orchestrator"
-                                                                                        },
-                                                                                        "module": "OrchestratorPlugin",
-                                                                                        "path": "/orchestrator"
-                                                                                    }]
-                                                                                ]
-                                                                            }
-                                                                        },
-                                                                        "examples": [{
-                                                                            "appIcons": [{
-                                                                                "importName": "OrchestratorIcon",
-                                                                                "module": "OrchestratorPlugin",
-                                                                                "name": "orchestratorIcon"
-                                                                            }],
-                                                                            "dynamicRoutes": [{
-                                                                                "importName": "OrchestratorPage",
-                                                                                "menuItem": {
-                                                                                    "icon": "orchestratorIcon",
-                                                                                    "text": "Orchestrator"
-                                                                                },
-                                                                                "module": "OrchestratorPlugin",
-                                                                                "path": "/orchestrator"
-                                                                            }]
-                                                                        }]
-                                                                    },
-                                                                    "janus-idp.backstage-plugin-notifications": {
-                                                                        "type": "object",
-                                                                        "default": {},
-                                                                        "title": "The janus-idp.backstage-plugin-notifications Schema",
-                                                                        "required": [
-                                                                            "appIcons",
-                                                                            "dynamicRoutes"
-                                                                        ],
-                                                                        "properties": {
-                                                                            "appIcons": {
-                                                                                "type": "array",
-                                                                                "default": [],
-                                                                                "title": "The appIcons Schema",
-                                                                                "items": {
-                                                                                    "type": "object",
-                                                                                    "default": {},
-                                                                                    "title": "A Schema",
-                                                                                    "required": [
-                                                                                        "name",
-                                                                                        "module",
-                                                                                        "importName"
-                                                                                    ],
-                                                                                    "properties": {
-                                                                                        "name": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The name Schema",
-                                                                                            "examples": [
-                                                                                                "notificationsIcon"
-                                                                                            ]
-                                                                                        },
-                                                                                        "module": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The module Schema",
-                                                                                            "examples": [
-                                                                                                "NotificationsPlugin"
-                                                                                            ]
-                                                                                        },
-                                                                                        "importName": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The importName Schema",
-                                                                                            "examples": [
-                                                                                                "NotificationsActiveIcon"
-                                                                                            ]
-                                                                                        }
-                                                                                    },
-                                                                                    "examples": [{
-                                                                                        "name": "notificationsIcon",
-                                                                                        "module": "NotificationsPlugin",
-                                                                                        "importName": "NotificationsActiveIcon"
-                                                                                    }]
-                                                                                },
-                                                                                "examples": [
-                                                                                    [{
-                                                                                        "name": "notificationsIcon",
-                                                                                        "module": "NotificationsPlugin",
-                                                                                        "importName": "NotificationsActiveIcon"
-                                                                                    }]
-                                                                                ]
-                                                                            },
-                                                                            "dynamicRoutes": {
-                                                                                "type": "array",
-                                                                                "default": [],
-                                                                                "title": "The dynamicRoutes Schema",
-                                                                                "items": {
-                                                                                    "type": "object",
-                                                                                    "default": {},
-                                                                                    "title": "A Schema",
-                                                                                    "required": [
-                                                                                        "path",
-                                                                                        "importName",
-                                                                                        "module",
-                                                                                        "menuItem",
-                                                                                        "config"
-                                                                                    ],
-                                                                                    "properties": {
-                                                                                        "path": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The path Schema",
-                                                                                            "examples": [
-                                                                                                "/notifications"
-                                                                                            ]
-                                                                                        },
-                                                                                        "importName": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The importName Schema",
-                                                                                            "examples": [
-                                                                                                "NotificationsPage"
-                                                                                            ]
-                                                                                        },
-                                                                                        "module": {
-                                                                                            "type": "string",
-                                                                                            "default": "",
-                                                                                            "title": "The module Schema",
-                                                                                            "examples": [
-                                                                                                "NotificationsPlugin"
-                                                                                            ]
-                                                                                        },
-                                                                                        "menuItem": {
-                                                                                            "type": "object",
-                                                                                            "default": {},
-                                                                                            "title": "The menuItem Schema",
-                                                                                            "required": [
-                                                                                                "icon",
-                                                                                                "text"
-                                                                                            ],
-                                                                                            "properties": {
-                                                                                                "icon": {
-                                                                                                    "type": "string",
-                                                                                                    "default": "",
-                                                                                                    "title": "The icon Schema",
-                                                                                                    "examples": [
-                                                                                                        "notificationsIcon"
-                                                                                                    ]
-                                                                                                },
-                                                                                                "text": {
-                                                                                                    "type": "string",
-                                                                                                    "default": "",
-                                                                                                    "title": "The text Schema",
-                                                                                                    "examples": [
-                                                                                                        "Notifications"
-                                                                                                    ]
-                                                                                                }
-                                                                                            },
-                                                                                            "examples": [{
-                                                                                                "icon": "notificationsIcon",
-                                                                                                "text": "Notifications"
-                                                                                            }]
-                                                                                        },
-                                                                                        "config": {
-                                                                                            "type": "object",
-                                                                                            "default": {},
-                                                                                            "title": "The config Schema",
-                                                                                            "required": [
-                                                                                                "pollingIntervalMs"
-                                                                                            ],
-                                                                                            "properties": {
-                                                                                                "pollingIntervalMs": {
-                                                                                                    "type": "integer",
-                                                                                                    "default": 0,
-                                                                                                    "title": "The pollingIntervalMs Schema",
-                                                                                                    "examples": [
-                                                                                                        5000
-                                                                                                    ]
-                                                                                                }
-                                                                                            },
-                                                                                            "examples": [{
-                                                                                                "pollingIntervalMs": 5000
-                                                                                            }]
-                                                                                        }
-                                                                                    },
-                                                                                    "examples": [{
-                                                                                        "path": "/notifications",
-                                                                                        "importName": "NotificationsPage",
-                                                                                        "module": "NotificationsPlugin",
-                                                                                        "menuItem": {
-                                                                                            "icon": "notificationsIcon",
-                                                                                            "text": "Notifications"
-                                                                                        },
-                                                                                        "config": {
-                                                                                            "pollingIntervalMs": 5000
-                                                                                        }
-                                                                                    }]
-                                                                                },
-                                                                                "examples": [
-                                                                                    [{
-                                                                                        "path": "/notifications",
-                                                                                        "importName": "NotificationsPage",
-                                                                                        "module": "NotificationsPlugin",
-                                                                                        "menuItem": {
-                                                                                            "icon": "notificationsIcon",
-                                                                                            "text": "Notifications"
-                                                                                        },
-                                                                                        "config": {
-                                                                                            "pollingIntervalMs": 5000
-                                                                                        }
-                                                                                    }]
-                                                                                ]
-                                                                            }
-                                                                        },
-                                                                        "examples": [{
-                                                                            "appIcons": [{
-                                                                                "name": "notificationsIcon",
-                                                                                "module": "NotificationsPlugin",
-                                                                                "importName": "NotificationsActiveIcon"
-                                                                            }],
-                                                                            "dynamicRoutes": [{
-                                                                                "path": "/notifications",
-                                                                                "importName": "NotificationsPage",
-                                                                                "module": "NotificationsPlugin",
-                                                                                "menuItem": {
-                                                                                    "icon": "notificationsIcon",
-                                                                                    "text": "Notifications"
-                                                                                },
-                                                                                "config": {
-                                                                                    "pollingIntervalMs": 5000
-                                                                                }
-                                                                            }]
-                                                                        }]
-                                                                    }
-                                                                },
-                                                                "examples": [{
-                                                                    "janus-idp.backstage-plugin-orchestrator": {
-                                                                        "appIcons": [{
-                                                                            "importName": "OrchestratorIcon",
-                                                                            "module": "OrchestratorPlugin",
-                                                                            "name": "orchestratorIcon"
-                                                                        }],
-                                                                        "dynamicRoutes": [{
-                                                                            "importName": "OrchestratorPage",
-                                                                            "menuItem": {
-                                                                                "icon": "orchestratorIcon",
-                                                                                "text": "Orchestrator"
-                                                                            },
-                                                                            "module": "OrchestratorPlugin",
-                                                                            "path": "/orchestrator"
-                                                                        }]
-                                                                    }
-                                                                },
-                                                                {
-                                                                    "janus-idp.backstage-plugin-notifications": {
-                                                                        "appIcons": [{
-                                                                            "name": "notificationsIcon",
-                                                                            "module": "NotificationsPlugin",
-                                                                            "importName": "NotificationsActiveIcon"
-                                                                        }],
-                                                                        "dynamicRoutes": [{
-                                                                            "path": "/notifications",
-                                                                            "importName": "NotificationsPage",
-                                                                            "module": "NotificationsPlugin",
-                                                                            "menuItem": {
-                                                                                "icon": "notificationsIcon",
-                                                                                "text": "Notifications"
-                                                                            },
-                                                                            "config": {
-                                                                                "pollingIntervalMs": 5000
-                                                                            }
-                                                                        }]
-                                                                    }
-                                                                }]
-                                                            }
-                                                        },
-                                                        "examples": [{
-                                                            "frontend": {
-                                                                "janus-idp.backstage-plugin-orchestrator": {
-                                                                    "appIcons": [{
-                                                                        "importName": "OrchestratorIcon",
-                                                                        "module": "OrchestratorPlugin",
-                                                                        "name": "orchestratorIcon"
-                                                                    }],
-                                                                    "dynamicRoutes": [{
-                                                                        "importName": "OrchestratorPage",
-                                                                        "menuItem": {
-                                                                            "icon": "orchestratorIcon",
-                                                                            "text": "Orchestrator"
-                                                                        },
-                                                                        "module": "OrchestratorPlugin",
-                                                                        "path": "/orchestrator"
-                                                                    }]
-                                                                }
-                                                            }
-                                                        },
-                                                        {
-                                                            "frontend": {
-                                                                "janus-idp.backstage-plugin-notifications": {
-                                                                    "appIcons": [{
-                                                                        "name": "notificationsIcon",
-                                                                        "module": "NotificationsPlugin",
-                                                                        "importName": "NotificationsActiveIcon"
-                                                                    }],
-                                                                    "dynamicRoutes": [{
-                                                                        "path": "/notifications",
-                                                                        "importName": "NotificationsPage",
-                                                                        "module": "NotificationsPlugin",
-                                                                        "menuItem": {
-                                                                            "icon": "notificationsIcon",
-                                                                            "text": "Notifications"
-                                                                        },
-                                                                        "config": {
-                                                                            "pollingIntervalMs": 5000
-                                                                        }
-                                                                    }]
-                                                                }
-                                                            }
-                                                        }]
-                                                    }
-                                                },
-                                                "examples": [{
-                                                    "orchestrator": {
-                                                        "dataIndexService": {
-                                                            "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
-                                                        },
-                                                        "editor": {
-                                                            "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
-                                                        }
-                                                    }
-                                                },
-                                                {
-                                                    "dynamicPlugins": {
-                                                        "frontend": {
-                                                            "janus-idp.backstage-plugin-orchestrator": {
-                                                                "appIcons": [{
-                                                                    "importName": "OrchestratorIcon",
-                                                                    "module": "OrchestratorPlugin",
-                                                                    "name": "orchestratorIcon"
-                                                                }],
-                                                                "dynamicRoutes": [{
-                                                                    "importName": "OrchestratorPage",
-                                                                    "menuItem": {
-                                                                        "icon": "orchestratorIcon",
-                                                                        "text": "Orchestrator"
-                                                                    },
-                                                                    "module": "OrchestratorPlugin",
-                                                                    "path": "/orchestrator"
-                                                                }]
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                {
-                                                    "dynamicPlugins": {
-                                                        "frontend": {
-                                                            "janus-idp.backstage-plugin-notifications": {
-                                                                "appIcons": [{
-                                                                    "name": "notificationsIcon",
-                                                                    "module": "NotificationsPlugin",
-                                                                    "importName": "NotificationsActiveIcon"
-                                                                }],
-                                                                "dynamicRoutes": [{
-                                                                    "path": "/notifications",
-                                                                    "importName": "NotificationsPage",
-                                                                    "module": "NotificationsPlugin",
-                                                                    "menuItem": {
-                                                                        "icon": "notificationsIcon",
-                                                                        "text": "Notifications"
-                                                                    },
-                                                                    "config": {
-                                                                        "pollingIntervalMs": 5000
-                                                                    }
-                                                                }]
-                                                            }
-                                                        }
-                                                    }
-                                                }]
-                                            }
-                                        },
-                                        "examples": [{
-                                            "disabled": false,
-                                            "integrity": "sha512-/ZQZI6bssyYT1D2+LW/pqpdIFJJXCW5RC0Ti49YdyminEbAYmjhjKxEHagKRaxwYhmCHbJezkuqrUAern/xcbA==",
-                                            "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.2.0",
-                                            "pluginConfig": {
-                                                "orchestrator": {
-                                                    "dataIndexService": {
-                                                        "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
-                                                    },
-                                                    "editor": {
-                                                        "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "disabled": false,
-                                            "integrity": "sha512-RjtUkE1JxzEQhFGgpEW3yCtdLTf6B+FvNAVhWC6xkETk7BwGz+RO8CeDUVyXwuf6OJg1w347gZIjV64naqA+UA==",
-                                            "package": "@janus-idp/backstage-plugin-orchestrator@1.3.0",
-                                            "pluginConfig": {
-                                                "dynamicPlugins": {
-                                                    "frontend": {
-                                                        "janus-idp.backstage-plugin-orchestrator": {
-                                                            "appIcons": [{
-                                                                "importName": "OrchestratorIcon",
-                                                                "module": "OrchestratorPlugin",
-                                                                "name": "orchestratorIcon"
-                                                            }],
-                                                            "dynamicRoutes": [{
-                                                                "importName": "OrchestratorPage",
-                                                                "menuItem": {
-                                                                    "icon": "orchestratorIcon",
-                                                                    "text": "Orchestrator"
-                                                                },
-                                                                "module": "OrchestratorPlugin",
-                                                                "path": "/orchestrator"
-                                                            }]
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "disabled": false,
-                                            "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications",
-                                            "pluginConfig": {
-                                                "dynamicPlugins": {
-                                                    "frontend": {
-                                                        "janus-idp.backstage-plugin-notifications": {
-                                                            "appIcons": [{
-                                                                "name": "notificationsIcon",
-                                                                "module": "NotificationsPlugin",
-                                                                "importName": "NotificationsActiveIcon"
-                                                            }],
-                                                            "dynamicRoutes": [{
-                                                                "path": "/notifications",
-                                                                "importName": "NotificationsPage",
-                                                                "module": "NotificationsPlugin",
-                                                                "menuItem": {
-                                                                    "icon": "notificationsIcon",
-                                                                    "text": "Notifications"
-                                                                },
-                                                                "config": {
-                                                                    "pollingIntervalMs": 5000
-                                                                }
-                                                            }]
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "disabled": false,
-                                            "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications-backend-dynamic"
-                                        }]
-                                    },
-                                    "examples": [
-                                        [{
-                                            "disabled": false,
-                                            "integrity": "sha512-/ZQZI6bssyYT1D2+LW/pqpdIFJJXCW5RC0Ti49YdyminEbAYmjhjKxEHagKRaxwYhmCHbJezkuqrUAern/xcbA==",
-                                            "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.2.0",
-                                            "pluginConfig": {
-                                                "orchestrator": {
-                                                    "dataIndexService": {
-                                                        "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
-                                                    },
-                                                    "editor": {
-                                                        "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "disabled": false,
-                                            "integrity": "sha512-RjtUkE1JxzEQhFGgpEW3yCtdLTf6B+FvNAVhWC6xkETk7BwGz+RO8CeDUVyXwuf6OJg1w347gZIjV64naqA+UA==",
-                                            "package": "@janus-idp/backstage-plugin-orchestrator@1.3.0",
-                                            "pluginConfig": {
-                                                "dynamicPlugins": {
-                                                    "frontend": {
-                                                        "janus-idp.backstage-plugin-orchestrator": {
-                                                            "appIcons": [{
-                                                                "importName": "OrchestratorIcon",
-                                                                "module": "OrchestratorPlugin",
-                                                                "name": "orchestratorIcon"
-                                                            }],
-                                                            "dynamicRoutes": [{
-                                                                "importName": "OrchestratorPage",
-                                                                "menuItem": {
-                                                                    "icon": "orchestratorIcon",
-                                                                    "text": "Orchestrator"
-                                                                },
-                                                                "module": "OrchestratorPlugin",
-                                                                "path": "/orchestrator"
-                                                            }]
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "disabled": false,
-                                            "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications",
-                                            "pluginConfig": {
-                                                "dynamicPlugins": {
-                                                    "frontend": {
-                                                        "janus-idp.backstage-plugin-notifications": {
-                                                            "appIcons": [{
-                                                                "name": "notificationsIcon",
-                                                                "module": "NotificationsPlugin",
-                                                                "importName": "NotificationsActiveIcon"
-                                                            }],
-                                                            "dynamicRoutes": [{
-                                                                "path": "/notifications",
-                                                                "importName": "NotificationsPage",
-                                                                "module": "NotificationsPlugin",
-                                                                "menuItem": {
-                                                                    "icon": "notificationsIcon",
-                                                                    "text": "Notifications"
-                                                                },
-                                                                "config": {
-                                                                    "pollingIntervalMs": 5000
-                                                                }
-                                                            }]
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "disabled": false,
-                                            "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications-backend-dynamic"
-                                        }]
-                                    ]
-                                }
-                            },
-                            "examples": [{
-                                "includes": [
-                                    "dynamic-plugins.default.yaml"
-                                ],
-                                "plugins": [{
-                                    "disabled": false,
-                                    "integrity": "sha512-/ZQZI6bssyYT1D2+LW/pqpdIFJJXCW5RC0Ti49YdyminEbAYmjhjKxEHagKRaxwYhmCHbJezkuqrUAern/xcbA==",
-                                    "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.2.0",
-                                    "pluginConfig": {
-                                        "orchestrator": {
-                                            "dataIndexService": {
-                                                "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
-                                            },
-                                            "editor": {
-                                                "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
-                                            }
-                                        }
-                                    }
-                                },
-                                {
-                                    "disabled": false,
-                                    "integrity": "sha512-RjtUkE1JxzEQhFGgpEW3yCtdLTf6B+FvNAVhWC6xkETk7BwGz+RO8CeDUVyXwuf6OJg1w347gZIjV64naqA+UA==",
-                                    "package": "@janus-idp/backstage-plugin-orchestrator@1.3.0",
-                                    "pluginConfig": {
-                                        "dynamicPlugins": {
-                                            "frontend": {
-                                                "janus-idp.backstage-plugin-orchestrator": {
-                                                    "appIcons": [{
-                                                        "importName": "OrchestratorIcon",
-                                                        "module": "OrchestratorPlugin",
-                                                        "name": "orchestratorIcon"
-                                                    }],
-                                                    "dynamicRoutes": [{
-                                                        "importName": "OrchestratorPage",
-                                                        "menuItem": {
-                                                            "icon": "orchestratorIcon",
-                                                            "text": "Orchestrator"
-                                                        },
-                                                        "module": "OrchestratorPlugin",
-                                                        "path": "/orchestrator"
-                                                    }]
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                {
-                                    "disabled": false,
-                                    "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications",
-                                    "pluginConfig": {
-                                        "dynamicPlugins": {
-                                            "frontend": {
-                                                "janus-idp.backstage-plugin-notifications": {
-                                                    "appIcons": [{
-                                                        "name": "notificationsIcon",
-                                                        "module": "NotificationsPlugin",
-                                                        "importName": "NotificationsActiveIcon"
-                                                    }],
-                                                    "dynamicRoutes": [{
-                                                        "path": "/notifications",
-                                                        "importName": "NotificationsPage",
-                                                        "module": "NotificationsPlugin",
-                                                        "menuItem": {
-                                                            "icon": "notificationsIcon",
-                                                            "text": "Notifications"
-                                                        },
-                                                        "config": {
-                                                            "pollingIntervalMs": 5000
-                                                        }
-                                                    }]
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                {
-                                    "disabled": false,
-                                    "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications-backend-dynamic"
-                                }]
-                            }]
-                        }
-                    },
-                    "examples": [{
-                        "dynamic": {
-                            "includes": [
-                                "dynamic-plugins.default.yaml"
-                            ],
-                            "plugins": [{
-                                "disabled": false,
-                                "integrity": "sha512-/ZQZI6bssyYT1D2+LW/pqpdIFJJXCW5RC0Ti49YdyminEbAYmjhjKxEHagKRaxwYhmCHbJezkuqrUAern/xcbA==",
-                                "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.2.0",
-                                "pluginConfig": {
-                                    "orchestrator": {
-                                        "dataIndexService": {
-                                            "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
-                                        },
-                                        "editor": {
-                                            "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                "disabled": false,
-                                "integrity": "sha512-RjtUkE1JxzEQhFGgpEW3yCtdLTf6B+FvNAVhWC6xkETk7BwGz+RO8CeDUVyXwuf6OJg1w347gZIjV64naqA+UA==",
-                                "package": "@janus-idp/backstage-plugin-orchestrator@1.3.0",
-                                "pluginConfig": {
-                                    "dynamicPlugins": {
-                                        "frontend": {
-                                            "janus-idp.backstage-plugin-orchestrator": {
-                                                "appIcons": [{
-                                                    "importName": "OrchestratorIcon",
-                                                    "module": "OrchestratorPlugin",
-                                                    "name": "orchestratorIcon"
-                                                }],
-                                                "dynamicRoutes": [{
-                                                    "importName": "OrchestratorPage",
-                                                    "menuItem": {
-                                                        "icon": "orchestratorIcon",
-                                                        "text": "Orchestrator"
-                                                    },
-                                                    "module": "OrchestratorPlugin",
-                                                    "path": "/orchestrator"
-                                                }]
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                "disabled": false,
-                                "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications",
-                                "pluginConfig": {
-                                    "dynamicPlugins": {
-                                        "frontend": {
-                                            "janus-idp.backstage-plugin-notifications": {
-                                                "appIcons": [{
-                                                    "name": "notificationsIcon",
-                                                    "module": "NotificationsPlugin",
-                                                    "importName": "NotificationsActiveIcon"
-                                                }],
-                                                "dynamicRoutes": [{
-                                                    "path": "/notifications",
-                                                    "importName": "NotificationsPage",
-                                                    "module": "NotificationsPlugin",
-                                                    "menuItem": {
-                                                        "icon": "notificationsIcon",
-                                                        "text": "Notifications"
-                                                    },
-                                                    "config": {
-                                                        "pollingIntervalMs": 5000
-                                                    }
-                                                }]
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                "disabled": false,
-                                "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications-backend-dynamic"
-                            }]
-                        }
-                    }]
-                },
-                "upstream": {
-                    "type": "object",
-                    "default": {},
-                    "title": "The upstream Schema",
-                    "required": [
-                        "backstage"
-                    ],
-                    "properties": {
-                        "backstage": {
-                            "type": "object",
-                            "default": {},
-                            "title": "The backstage Schema",
-                            "required": [
-                                "image",
-                                "appConfig"
-                            ],
-                            "properties": {
-                                "image": {
-                                    "type": "object",
-                                    "default": {},
-                                    "title": "The image Schema",
-                                    "required": [
-                                        "tag"
-                                    ],
-                                    "properties": {
-                                        "tag": {
-                                            "type": "string",
-                                            "default": "",
-                                            "title": "The tag Schema",
-                                            "examples": [
-                                                "pr-896"
-                                            ]
-                                        }
-                                    },
-                                    "examples": [{
-                                        "tag": "pr-896"
-                                    }]
-                                },
-                                "appConfig": {
-                                    "type": "object",
-                                    "default": {},
-                                    "title": "The appConfig Schema",
-                                    "required": [
-                                        "integrations",
-                                        "auth",
-                                        "catalog",
-                                        "backend"
-                                    ],
-                                    "properties": {
-                                        "integrations": {
-                                            "type": "object",
-                                            "default": {},
-                                            "title": "The integrations Schema",
-                                            "required": [
-                                                "github"
-                                            ],
-                                            "properties": {
-                                                "github": {
-                                                    "type": "array",
-                                                    "default": [],
-                                                    "title": "The github Schema",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "default": {},
-                                                        "title": "A Schema",
-                                                        "required": [
-                                                            "host",
-                                                            "token"
-                                                        ],
-                                                        "properties": {
-                                                            "host": {
-                                                                "type": "string",
-                                                                "default": "",
-                                                                "title": "The host Schema",
-                                                                "examples": [
-                                                                    "github.com"
-                                                                ]
-                                                            },
-                                                            "token": {
-                                                                "type": "string",
-                                                                "default": "",
-                                                                "title": "The token Schema",
-                                                                "examples": [
-                                                                    "INSERT VALID TOKEN HERE"
-                                                                ]
-                                                            }
-                                                        },
-                                                        "examples": [{
-                                                            "host": "github.com",
-                                                            "token": "INSERT VALID TOKEN HERE"
-                                                        }]
-                                                    },
-                                                    "examples": [
-                                                        [{
-                                                            "host": "github.com",
-                                                            "token": "INSERT VALID TOKEN HERE"
-                                                        }]
-                                                    ]
-                                                }
-                                            },
-                                            "examples": [{
-                                                "github": [{
-                                                    "host": "github.com",
-                                                    "token": "INSERT VALID TOKEN HERE"
-                                                }]
-                                            }]
-                                        },
-                                        "auth": {
-                                            "type": "object",
-                                            "default": {},
-                                            "title": "The auth Schema",
-                                            "required": [
-                                                "environment",
-                                                "providers"
-                                            ],
-                                            "properties": {
-                                                "environment": {
-                                                    "type": "string",
-                                                    "default": "",
-                                                    "title": "The environment Schema",
-                                                    "examples": [
-                                                        "development"
-                                                    ]
-                                                },
-                                                "providers": {
-                                                    "type": "object",
-                                                    "default": {},
-                                                    "title": "The providers Schema",
-                                                    "required": [
-                                                        "github"
-                                                    ],
-                                                    "properties": {
-                                                        "github": {
-                                                            "type": "object",
-                                                            "default": {},
-                                                            "title": "The github Schema",
-                                                            "required": [
-                                                                "development"
-                                                            ],
-                                                            "properties": {
-                                                                "development": {
-                                                                    "type": "object",
-                                                                    "default": {},
-                                                                    "title": "The development Schema",
-                                                                    "required": [
-                                                                        "clientId",
-                                                                        "clientSecret"
-                                                                    ],
-                                                                    "properties": {
-                                                                        "clientId": {
-                                                                            "type": "string",
-                                                                            "default": "",
-                                                                            "title": "The clientId Schema",
-                                                                            "examples": [
-                                                                                "INSERT VALID CLIENT ID HERE"
-                                                                            ]
-                                                                        },
-                                                                        "clientSecret": {
-                                                                            "type": "string",
-                                                                            "default": "",
-                                                                            "title": "The clientSecret Schema",
-                                                                            "examples": [
-                                                                                "INSERT VALID CLIENT SECRET HERE"
-                                                                            ]
-                                                                        }
-                                                                    },
-                                                                    "examples": [{
-                                                                        "clientId": "INSERT VALID CLIENT ID HERE",
-                                                                        "clientSecret": "INSERT VALID CLIENT SECRET HERE"
-                                                                    }]
-                                                                }
-                                                            },
-                                                            "examples": [{
-                                                                "development": {
-                                                                    "clientId": "INSERT VALID CLIENT ID HERE",
-                                                                    "clientSecret": "INSERT VALID CLIENT SECRET HERE"
-                                                                }
-                                                            }]
-                                                        }
-                                                    },
-                                                    "examples": [{
-                                                        "github": {
-                                                            "development": {
-                                                                "clientId": "INSERT VALID CLIENT ID HERE",
-                                                                "clientSecret": "INSERT VALID CLIENT SECRET HERE"
-                                                            }
-                                                        }
-                                                    }]
-                                                }
-                                            },
-                                            "examples": [{
-                                                "environment": "development",
-                                                "providers": {
-                                                    "github": {
-                                                        "development": {
-                                                            "clientId": "INSERT VALID CLIENT ID HERE",
-                                                            "clientSecret": "INSERT VALID CLIENT SECRET HERE"
-                                                        }
-                                                    }
-                                                }
-                                            }]
-                                        },
-                                        "catalog": {
-                                            "type": "object",
-                                            "default": {},
-                                            "title": "The catalog Schema",
-                                            "required": [
-                                                "rules",
-                                                "locations"
-                                            ],
-                                            "properties": {
-                                                "rules": {
-                                                    "type": "array",
-                                                    "default": [],
-                                                    "title": "The rules Schema",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "default": {},
-                                                        "title": "A Schema",
-                                                        "required": [
-                                                            "allow"
-                                                        ],
-                                                        "properties": {
-                                                            "allow": {
-                                                                "type": "array",
-                                                                "default": [],
-                                                                "title": "The allow Schema",
-                                                                "items": {
-                                                                    "type": "string",
-                                                                    "title": "A Schema",
-                                                                    "examples": [
-                                                                        "Component",
-                                                                        "System",
-                                                                        "Group",
-                                                                        "Resource",
-                                                                        "Location",
-                                                                        "Template",
-                                                                        "API",
-                                                                        "User",
-                                                                        "Domain"
-                                                                    ]
-                                                                },
-                                                                "examples": [
-                                                                    ["Component",
-                                                                        "System",
-                                                                        "Group",
-                                                                        "Resource",
-                                                                        "Location",
-                                                                        "Template",
-                                                                        "API",
-                                                                        "User",
-                                                                        "Domain"
-                                                                    ]
-                                                                ]
-                                                            }
-                                                        },
-                                                        "examples": [{
-                                                            "allow": [
-                                                                "Component",
-                                                                "System",
-                                                                "Group",
-                                                                "Resource",
-                                                                "Location",
-                                                                "Template",
-                                                                "API",
-                                                                "User",
-                                                                "Domain"
-                                                            ]
-                                                        }]
-                                                    },
-                                                    "examples": [
-                                                        [{
-                                                            "allow": [
-                                                                "Component",
-                                                                "System",
-                                                                "Group",
-                                                                "Resource",
-                                                                "Location",
-                                                                "Template",
-                                                                "API",
-                                                                "User",
-                                                                "Domain"
-                                                            ]
-                                                        }]
-                                                    ]
-                                                },
-                                                "locations": {
-                                                    "type": "array",
-                                                    "default": [],
-                                                    "title": "The locations Schema",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "title": "A Schema",
-                                                        "required": [
-                                                            "type",
-                                                            "target"
-                                                        ],
-                                                        "properties": {
-                                                            "type": {
-                                                                "type": "string",
-                                                                "title": "The type Schema",
-                                                                "examples": [
-                                                                    "url"
-                                                                ]
-                                                            },
-                                                            "target": {
-                                                                "type": "string",
-                                                                "title": "The target Schema",
-                                                                "examples": [
-                                                                    "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml",
-                                                                    "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml",
-                                                                    "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/infrastructure/template.yaml",
-                                                                    "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/assessment/template.yaml",
-                                                                    "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
-                                                                ]
-                                                            }
-                                                        },
-                                                        "examples": [{
-                                                            "type": "url",
-                                                            "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
-                                                        },
-                                                        {
-                                                            "type": "url",
-                                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
-                                                        },
-                                                        {
-                                                            "type": "url",
-                                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/infrastructure/template.yaml"
-                                                        },
-                                                        {
-                                                            "type": "url",
-                                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/assessment/template.yaml"
-                                                        },
-                                                        {
-                                                            "type": "url",
-                                                            "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
-                                                        }]
-                                                    },
-                                                    "examples": [
-                                                        [{
-                                                            "type": "url",
-                                                            "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
-                                                        },
-                                                        {
-                                                            "type": "url",
-                                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
-                                                        },
-                                                        {
-                                                            "type": "url",
-                                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/infrastructure/template.yaml"
-                                                        },
-                                                        {
-                                                            "type": "url",
-                                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/assessment/template.yaml"
-                                                        },
-                                                        {
-                                                            "type": "url",
-                                                            "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
-                                                        }]
-                                                    ]
-                                                }
-                                            },
-                                            "examples": [{
-                                                "rules": [{
-                                                    "allow": [
-                                                        "Component",
-                                                        "System",
-                                                        "Group",
-                                                        "Resource",
-                                                        "Location",
-                                                        "Template",
-                                                        "API",
-                                                        "User",
-                                                        "Domain"
-                                                    ]
-                                                }],
-                                                "locations": [{
-                                                    "type": "url",
-                                                    "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
-                                                },
-                                                {
-                                                    "type": "url",
-                                                    "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
-                                                },
-                                                {
-                                                    "type": "url",
-                                                    "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/infrastructure/template.yaml"
-                                                },
-                                                {
-                                                    "type": "url",
-                                                    "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/assessment/template.yaml"
-                                                },
-                                                {
-                                                    "type": "url",
-                                                    "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
-                                                }]
-                                            }]
-                                        },
-                                        "backend": {
-                                            "type": "object",
-                                            "default": {},
-                                            "title": "The backend Schema",
-                                            "required": [
-                                                "csp",
-                                                "database"
-                                            ],
-                                            "properties": {
-                                                "csp": {
-                                                    "type": "object",
-                                                    "default": {},
-                                                    "title": "The csp Schema",
-                                                    "required": [
-                                                        "frame-src"
-                                                    ],
-                                                    "properties": {
-                                                        "frame-src": {
-                                                            "type": "array",
-                                                            "default": [],
-                                                            "title": "The frame-src Schema",
-                                                            "items": {
-                                                                "type": "string",
-                                                                "default": "",
-                                                                "title": "A Schema",
-                                                                "examples": [
-                                                                    "https://sandbox.kie.org"
-                                                                ]
-                                                            },
-                                                            "examples": [
-                                                                [
-                                                                    "https://sandbox.kie.org"]
-                                                            ]
-                                                        }
-                                                    },
-                                                    "examples": [{
-                                                        "frame-src": [
-                                                            "https://sandbox.kie.org"
-                                                        ]
-                                                    }]
-                                                },
-                                                "database": {
-                                                    "type": "object",
-                                                    "default": {},
-                                                    "title": "The database Schema",
-                                                    "required": [
-                                                        "client",
-                                                        "connection"
-                                                    ],
-                                                    "properties": {
-                                                        "client": {
-                                                            "type": "string",
-                                                            "default": "",
-                                                            "title": "The client Schema",
-                                                            "examples": [
-                                                                "pg"
-                                                            ]
-                                                        },
-                                                        "connection": {
-                                                            "type": "object",
-                                                            "default": {},
-                                                            "title": "The connection Schema",
-                                                            "required": [
-                                                                "password",
-                                                                "user",
-                                                                "host",
-                                                                "port"
-                                                            ],
-                                                            "properties": {
-                                                                "password": {
-                                                                    "type": "string",
-                                                                    "default": "",
-                                                                    "title": "The password Schema",
-                                                                    "examples": [
-                                                                        "${POSTGRESQL_ADMIN_PASSWORD}"
-                                                                    ]
-                                                                },
-                                                                "user": {
-                                                                    "type": "string",
-                                                                    "default": "",
-                                                                    "title": "The user Schema",
-                                                                    "examples": [
-                                                                        "postgres"
-                                                                    ]
-                                                                },
-                                                                "host": {
-                                                                    "type": "string",
-                                                                    "default": "",
-                                                                    "title": "The host Schema",
-                                                                    "examples": [
-                                                                        "orchestrator-postgresql-hl.orchestrator.svc.cluster.local"
-                                                                    ]
-                                                                },
-                                                                "port": {
-                                                                    "type": "integer",
-                                                                    "default": 0,
-                                                                    "title": "The port Schema",
-                                                                    "examples": [
-                                                                        5432
-                                                                    ]
-                                                                }
-                                                            },
-                                                            "examples": [{
-                                                                "password": "${POSTGRESQL_ADMIN_PASSWORD}",
-                                                                "user": "postgres",
-                                                                "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
-                                                                "port": 5432
-                                                            }]
-                                                        }
-                                                    },
-                                                    "examples": [{
-                                                        "client": "pg",
-                                                        "connection": {
-                                                            "password": "${POSTGRESQL_ADMIN_PASSWORD}",
-                                                            "user": "postgres",
-                                                            "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
-                                                            "port": 5432
-                                                        }
-                                                    }]
-                                                }
-                                            },
-                                            "examples": [{
-                                                "csp": {
-                                                    "frame-src": [
-                                                        "https://sandbox.kie.org"
-                                                    ]
-                                                },
-                                                "database": {
-                                                    "client": "pg",
-                                                    "connection": {
-                                                        "password": "${POSTGRESQL_ADMIN_PASSWORD}",
-                                                        "user": "postgres",
-                                                        "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
-                                                        "port": 5432
-                                                    }
-                                                }
-                                            }]
-                                        }
-                                    },
-                                    "examples": [{
-                                        "integrations": {
-                                            "github": [{
-                                                "host": "github.com",
-                                                "token": "INSERT VALID TOKEN HERE"
-                                            }]
-                                        },
-                                        "auth": {
-                                            "environment": "development",
-                                            "providers": {
-                                                "github": {
-                                                    "development": {
-                                                        "clientId": "INSERT VALID CLIENT ID HERE",
-                                                        "clientSecret": "INSERT VALID CLIENT SECRET HERE"
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        "catalog": {
-                                            "rules": [{
-                                                "allow": [
-                                                    "Component",
-                                                    "System",
-                                                    "Group",
-                                                    "Resource",
-                                                    "Location",
-                                                    "Template",
-                                                    "API",
-                                                    "User",
-                                                    "Domain"
-                                                ]
-                                            }],
-                                            "locations": [{
-                                                "type": "url",
-                                                "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
-                                            },
-                                            {
-                                                "type": "url",
-                                                "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
-                                            },
-                                            {
-                                                "type": "url",
-                                                "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/infrastructure/template.yaml"
-                                            },
-                                            {
-                                                "type": "url",
-                                                "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/assessment/template.yaml"
-                                            },
-                                            {
-                                                "type": "url",
-                                                "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
-                                            }]
-                                        },
-                                        "backend": {
-                                            "csp": {
-                                                "frame-src": [
-                                                    "https://sandbox.kie.org"
-                                                ]
-                                            },
-                                            "database": {
-                                                "client": "pg",
-                                                "connection": {
-                                                    "password": "${POSTGRESQL_ADMIN_PASSWORD}",
-                                                    "user": "postgres",
-                                                    "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
-                                                    "port": 5432
-                                                }
-                                            }
-                                        }
-                                    }]
-                                }
-                            },
-                            "examples": [{
-                                "image": {
-                                    "tag": "pr-896"
-                                },
-                                "appConfig": {
-                                    "integrations": {
-                                        "github": [{
-                                            "host": "github.com",
-                                            "token": "INSERT VALID TOKEN HERE"
-                                        }]
-                                    },
-                                    "auth": {
-                                        "environment": "development",
-                                        "providers": {
-                                            "github": {
-                                                "development": {
-                                                    "clientId": "INSERT VALID CLIENT ID HERE",
-                                                    "clientSecret": "INSERT VALID CLIENT SECRET HERE"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "catalog": {
-                                        "rules": [{
-                                            "allow": [
-                                                "Component",
-                                                "System",
-                                                "Group",
-                                                "Resource",
-                                                "Location",
-                                                "Template",
-                                                "API",
-                                                "User",
-                                                "Domain"
-                                            ]
-                                        }],
-                                        "locations": [{
-                                            "type": "url",
-                                            "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
-                                        },
-                                        {
-                                            "type": "url",
-                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
-                                        },
-                                        {
-                                            "type": "url",
-                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/infrastructure/template.yaml"
-                                        },
-                                        {
-                                            "type": "url",
-                                            "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/assessment/template.yaml"
-                                        },
-                                        {
-                                            "type": "url",
-                                            "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
-                                        }]
-                                    },
-                                    "backend": {
-                                        "csp": {
-                                            "frame-src": [
-                                                "https://sandbox.kie.org"
-                                            ]
-                                        },
-                                        "database": {
-                                            "client": "pg",
-                                            "connection": {
-                                                "password": "${POSTGRESQL_ADMIN_PASSWORD}",
-                                                "user": "postgres",
-                                                "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
-                                                "port": 5432
-                                            }
-                                        }
-                                    }
-                                }
-                            }]
-                        }
-                    },
-                    "examples": [{
-                        "backstage": {
-                            "image": {
-                                "tag": "pr-896"
-                            },
-                            "appConfig": {
-                                "integrations": {
-                                    "github": [{
-                                        "host": "github.com",
-                                        "token": "INSERT VALID TOKEN HERE"
-                                    }]
-                                },
-                                "auth": {
-                                    "environment": "development",
-                                    "providers": {
-                                        "github": {
-                                            "development": {
-                                                "clientId": "INSERT VALID CLIENT ID HERE",
-                                                "clientSecret": "INSERT VALID CLIENT SECRET HERE"
-                                            }
-                                        }
-                                    }
-                                },
-                                "catalog": {
-                                    "rules": [{
-                                        "allow": [
-                                            "Component",
-                                            "System",
-                                            "Group",
-                                            "Resource",
-                                            "Location",
-                                            "Template",
-                                            "API",
-                                            "User",
-                                            "Domain"
-                                        ]
-                                    }],
-                                    "locations": [{
-                                        "type": "url",
-                                        "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
-                                    },
-                                    {
-                                        "type": "url",
-                                        "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
-                                    },
-                                    {
-                                        "type": "url",
-                                        "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/infrastructure/template.yaml"
-                                    },
-                                    {
-                                        "type": "url",
-                                        "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/assessment/template.yaml"
-                                    },
-                                    {
-                                        "type": "url",
-                                        "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
-                                    }]
-                                },
-                                "backend": {
-                                    "csp": {
-                                        "frame-src": [
-                                            "https://sandbox.kie.org"
-                                        ]
-                                    },
-                                    "database": {
-                                        "client": "pg",
-                                        "connection": {
-                                            "password": "${POSTGRESQL_ADMIN_PASSWORD}",
-                                            "user": "postgres",
-                                            "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
-                                            "port": 5432
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }]
-                }
-            },
-            "examples": [{
-                "global": {
-                    "dynamic": {
-                        "includes": [
-                            "dynamic-plugins.default.yaml"
-                        ],
-                        "plugins": [{
-                            "disabled": false,
-                            "integrity": "sha512-/ZQZI6bssyYT1D2+LW/pqpdIFJJXCW5RC0Ti49YdyminEbAYmjhjKxEHagKRaxwYhmCHbJezkuqrUAern/xcbA==",
-                            "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.2.0",
-                            "pluginConfig": {
-                                "orchestrator": {
-                                    "dataIndexService": {
-                                        "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
-                                    },
-                                    "editor": {
-                                        "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "disabled": false,
-                            "integrity": "sha512-RjtUkE1JxzEQhFGgpEW3yCtdLTf6B+FvNAVhWC6xkETk7BwGz+RO8CeDUVyXwuf6OJg1w347gZIjV64naqA+UA==",
-                            "package": "@janus-idp/backstage-plugin-orchestrator@1.3.0",
-                            "pluginConfig": {
-                                "dynamicPlugins": {
-                                    "frontend": {
-                                        "janus-idp.backstage-plugin-orchestrator": {
-                                            "appIcons": [{
-                                                "importName": "OrchestratorIcon",
-                                                "module": "OrchestratorPlugin",
-                                                "name": "orchestratorIcon"
-                                            }],
-                                            "dynamicRoutes": [{
-                                                "importName": "OrchestratorPage",
-                                                "menuItem": {
-                                                    "icon": "orchestratorIcon",
-                                                    "text": "Orchestrator"
-                                                },
-                                                "module": "OrchestratorPlugin",
-                                                "path": "/orchestrator"
-                                            }]
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "disabled": false,
-                            "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications",
-                            "pluginConfig": {
-                                "dynamicPlugins": {
-                                    "frontend": {
-                                        "janus-idp.backstage-plugin-notifications": {
-                                            "appIcons": [{
-                                                "name": "notificationsIcon",
-                                                "module": "NotificationsPlugin",
-                                                "importName": "NotificationsActiveIcon"
-                                            }],
-                                            "dynamicRoutes": [{
-                                                "path": "/notifications",
-                                                "importName": "NotificationsPage",
-                                                "module": "NotificationsPlugin",
-                                                "menuItem": {
-                                                    "icon": "notificationsIcon",
-                                                    "text": "Notifications"
-                                                },
-                                                "config": {
-                                                    "pollingIntervalMs": 5000
-                                                }
-                                            }]
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "disabled": false,
-                            "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications-backend-dynamic"
-                        }]
-                    }
-                },
-                "upstream": {
-                    "backstage": {
-                        "image": {
-                            "tag": "pr-896"
-                        },
-                        "appConfig": {
-                            "integrations": {
-                                "github": [{
-                                    "host": "github.com",
-                                    "token": "INSERT VALID TOKEN HERE"
-                                }]
-                            },
-                            "auth": {
-                                "environment": "development",
-                                "providers": {
-                                    "github": {
-                                        "development": {
-                                            "clientId": "INSERT VALID CLIENT ID HERE",
-                                            "clientSecret": "INSERT VALID CLIENT SECRET HERE"
-                                        }
-                                    }
-                                }
-                            },
-                            "catalog": {
-                                "rules": [{
-                                    "allow": [
-                                        "Component",
-                                        "System",
-                                        "Group",
-                                        "Resource",
-                                        "Location",
-                                        "Template",
-                                        "API",
-                                        "User",
-                                        "Domain"
-                                    ]
-                                }],
-                                "locations": [{
-                                    "type": "url",
-                                    "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
-                                },
-                                {
-                                    "type": "url",
-                                    "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
-                                },
-                                {
-                                    "type": "url",
-                                    "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/infrastructure/template.yaml"
-                                },
-                                {
-                                    "type": "url",
-                                    "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/assessment/template.yaml"
-                                },
-                                {
-                                    "type": "url",
-                                    "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
-                                }]
-                            },
-                            "backend": {
-                                "csp": {
-                                    "frame-src": [
-                                        "https://sandbox.kie.org"
-                                    ]
-                                },
-                                "database": {
-                                    "client": "pg",
-                                    "connection": {
-                                        "password": "${POSTGRESQL_ADMIN_PASSWORD}",
-                                        "user": "postgres",
-                                        "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
-                                        "port": 5432
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }]
         },
         "orchestrator": {
@@ -2485,7 +722,7 @@
                 "channel": "alpha",
                 "installPlanApproval": "Automatic",
                 "pkgName": "sonataflow-operator",
-                "sourceImage": "quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot",
+                "sourceImage": "quay.io/masayag/kogito-serverless-operator-catalog:v999.0.0-snapshot",
                 "sourceNamespace": "openshift-marketplace",
                 "source": "sonataflow-operator"
             }
@@ -2500,6 +737,23 @@
                 "sourceNamespace": "openshift-marketplace"
             }
         },
+        "rhdhOperator": {
+            "enabled": true,
+            "github": {
+                "token": "",
+                "clientId": "",
+                "clientSecret": ""
+            },
+            "subscription": {
+                "namespace": "backstage-system",
+                "channel": "alpha",
+                "installPlanApproval": "Automatic",
+                "pkgName": "backstage-operator",
+                "sourceImage": "quay.io/janus-idp/operator-catalog:0.1.0",
+                "sourceNamespace": "openshift-marketplace",
+                "source": "rhdh-operator"
+            }
+        },
         "postgres": {
             "serviceName": "sonataflow-psql-postgresql",
             "serviceNamespace": "sonataflow-infra",
@@ -2509,167 +763,6 @@
                 "passwordKey": "postgres-password"
             },
             "database": "sonataflow"
-        },
-        "backstage": {
-            "global": {
-                "dynamic": {
-                    "includes": [
-                        "dynamic-plugins.default.yaml"
-                    ],
-                    "plugins": [{
-                        "disabled": false,
-                        "integrity": "sha512-/ZQZI6bssyYT1D2+LW/pqpdIFJJXCW5RC0Ti49YdyminEbAYmjhjKxEHagKRaxwYhmCHbJezkuqrUAern/xcbA==",
-                        "package": "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.2.0",
-                        "pluginConfig": {
-                            "orchestrator": {
-                                "dataIndexService": {
-                                    "url": "http://sonataflow-platform-data-index-service.sonataflow-infra"
-                                },
-                                "editor": {
-                                    "path": "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "disabled": false,
-                        "integrity": "sha512-RjtUkE1JxzEQhFGgpEW3yCtdLTf6B+FvNAVhWC6xkETk7BwGz+RO8CeDUVyXwuf6OJg1w347gZIjV64naqA+UA==",
-                        "package": "@janus-idp/backstage-plugin-orchestrator@1.3.0",
-                        "pluginConfig": {
-                            "dynamicPlugins": {
-                                "frontend": {
-                                    "janus-idp.backstage-plugin-orchestrator": {
-                                        "appIcons": [{
-                                            "importName": "OrchestratorIcon",
-                                            "module": "OrchestratorPlugin",
-                                            "name": "orchestratorIcon"
-                                        }],
-                                        "dynamicRoutes": [{
-                                            "importName": "OrchestratorPage",
-                                            "menuItem": {
-                                                "icon": "orchestratorIcon",
-                                                "text": "Orchestrator"
-                                            },
-                                            "module": "OrchestratorPlugin",
-                                            "path": "/orchestrator"
-                                        }]
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "disabled": false,
-                        "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications",
-                        "pluginConfig": {
-                            "dynamicPlugins": {
-                                "frontend": {
-                                    "janus-idp.backstage-plugin-notifications": {
-                                        "appIcons": [{
-                                            "name": "notificationsIcon",
-                                            "module": "NotificationsPlugin",
-                                            "importName": "NotificationsActiveIcon"
-                                        }],
-                                        "dynamicRoutes": [{
-                                            "path": "/notifications",
-                                            "importName": "NotificationsPage",
-                                            "module": "NotificationsPlugin",
-                                            "menuItem": {
-                                                "icon": "notificationsIcon",
-                                                "text": "Notifications"
-                                            },
-                                            "config": {
-                                                "pollingIntervalMs": 5000
-                                            }
-                                        }]
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "disabled": false,
-                        "package": "./dynamic-plugins/dist/janus-idp-plugin-notifications-backend-dynamic"
-                    }]
-                }
-            },
-            "upstream": {
-                "backstage": {
-                    "image": {
-                        "tag": "pr-896"
-                    },
-                    "appConfig": {
-                        "integrations": {
-                            "github": [{
-                                "host": "github.com",
-                                "token": "INSERT VALID TOKEN HERE"
-                            }]
-                        },
-                        "auth": {
-                            "environment": "development",
-                            "providers": {
-                                "github": {
-                                    "development": {
-                                        "clientId": "INSERT VALID CLIENT ID HERE",
-                                        "clientSecret": "INSERT VALID CLIENT SECRET HERE"
-                                    }
-                                }
-                            }
-                        },
-                        "catalog": {
-                            "rules": [{
-                                "allow": [
-                                    "Component",
-                                    "System",
-                                    "Group",
-                                    "Resource",
-                                    "Location",
-                                    "Template",
-                                    "API",
-                                    "User",
-                                    "Domain"
-                                ]
-                            }],
-                            "locations": [{
-                                "type": "url",
-                                "target": "https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml"
-                            },
-                            {
-                                "type": "url",
-                                "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml"
-                            },
-                            {
-                                "type": "url",
-                                "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/infrastructure/template.yaml"
-                            },
-                            {
-                                "type": "url",
-                                "target": "https://github.com/parodos-dev/workflow-software-templates/blob/main/template/assessment/template.yaml"
-                            },
-                            {
-                                "type": "url",
-                                "target": "https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml"
-                            }]
-                        },
-                        "backend": {
-                            "csp": {
-                                "frame-src": [
-                                    "https://sandbox.kie.org"
-                                ]
-                            },
-                            "database": {
-                                "client": "pg",
-                                "connection": {
-                                    "password": "${POSTGRESQL_ADMIN_PASSWORD}",
-                                    "user": "postgres",
-                                    "host": "orchestrator-postgresql-hl.orchestrator.svc.cluster.local",
-                                    "port": 5432
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         },
         "orchestrator": {
             "devmode": false,

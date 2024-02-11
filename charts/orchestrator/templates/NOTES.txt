@@ -11,10 +11,6 @@ Helm Release {{ .Release.Name }} installed in namespace {{ .Release.Namespace }}
 {{- $sonataFlowPlatformInstalled := $no }}
 {{- $timeout := "--timeout=5m" }}
 
-{{- if .Values.backstage.upstream.postgresql.enabled }}
-{{- $postgresBackstageInstalled = $yes }}
-{{- end }}
-
 {{- if .Values.serverlessOperator.enabled }}
 {{- $unmanagedSubscriptionExists := include "unmanaged-resource-exists" (list "operators.coreos.com/v1alpha1" "Subscription" .Values.serverlessOperator.subscription.namespace "serverless-operator" .Release.Name) }}
 {{- if eq $unmanagedSubscriptionExists "false" }}
@@ -39,8 +35,8 @@ Helm Release {{ .Release.Name }} installed in namespace {{ .Release.Namespace }}
 
 Components                   Installed   Namespace
 ====================================================================
-Backstage                    {{ $backstageInstalled }}        {{ .Release.Namespace }}
-Postgres DB - Backstage      {{ $postgresBackstageInstalled }}        {{ .Release.Namespace }}
+Backstage                    {{ $backstageInstalled }}        {{ .Values.rhdhOperator.subscription.namespace }}
+Postgres DB - Backstage      {{ $postgresBackstageInstalled }}        {{ .Values.rhdhOperator.subscription.namespace }}
 Red Hat Serverless Operator  {{ $serverlessOperatorInstalled }}        {{ .Values.serverlessOperator.subscription.namespace }}     
 KnativeServing               {{ $knativeServingInstalled }}        knative-serving
 KnativeEventing              {{ $knativeEventingInstalled }}        knative-eventing
@@ -82,10 +78,11 @@ Run the following commands to wait until the services are ready:
   oc wait -n {{ .Values.orchestrator.namespace }} deploy/sonataflow-platform-jobs-service --for=condition=Available {{ $timeout }}
 {{- end }}
 {{- if eq $postgresBackstageInstalled $yes }}
-  oc wait -n {{ .Release.Namespace }} pod/{{ .Release.Name }}-postgresql-0 --for=condition=Ready {{ $timeout }}
+  oc wait -n {{ .Values.rhdhOperator.subscription.namespace }} pod/backstage-psql-backstage-0 --for=condition=Ready {{ $timeout }}
 {{- end }}
 {{- if eq $backstageInstalled $yes }}
-  oc wait -n {{ .Release.Namespace }} deploy/{{ .Release.Name }}-backstage --for=condition=Available {{ $timeout }}
+  oc wait -n {{ .Values.rhdhOperator.subscription.namespace }} backstage backstage --for=condition=Deployed=True
+  oc wait -n {{ .Values.rhdhOperator.subscription.namespace }} deploy/backstage-backstage --for=condition=Available {{ $timeout }}
 {{- end }}
 
 {{- $ns := .Values.orchestrator.namespace }}
@@ -93,7 +90,6 @@ Run the following commands to wait until the services are ready:
 {{/* Empty line */}}
 Run the following commands to wait until the workflow builds are done and workflows are running on namespace {{ .Values.orchestrator.namespace }}:
 {{- range $v := .Values.orchestrator.sonataflows }}
-  oc wait -n {{ $ns }} sonataflow/{{ $v.name }} --for=condition=Built --timeout=15m
   oc wait -n {{ $ns }} sonataflow/{{ $v.name }} --for=condition=Running {{ $timeout }}
 {{- end }}
 {{- end }}

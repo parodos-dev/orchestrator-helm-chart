@@ -72,3 +72,16 @@
         {{- "true" -}}
     {{- end -}}
 {{- end -}}
+
+{{- define "cluster.domain" -}}
+    {{- if .Capabilities.APIVersions.Has "config.openshift.io/v1/Ingress" -}}  
+        {{- $cluster := (lookup "config.openshift.io/v1" "Ingress" "" "cluster") -}}
+        {{- if and (hasKey $cluster "spec") (hasKey $cluster.spec "domain") -}}
+            {{- printf "%s" $cluster.spec.domain -}}
+        {{- else -}}
+            {{ fail "Unable to obtain cluster domain, OCP Ingress Resource is missing `spec.domain` field." }}
+        {{- end }}
+    {{- else -}}
+        {{ fail "Unable to obtain cluster domain, config.openshift.io/v1/Ingress is missing" }}
+    {{- end -}}
+{{- end -}}
