@@ -21,7 +21,7 @@ jobs:
 
       - name: Add dependencies
         run: |
-          helm repo add backstage https://janus-idp.github.io/helm-backstage
+          helm repo add backstage https://redhat-developer.github.io/rhdh-chart
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
