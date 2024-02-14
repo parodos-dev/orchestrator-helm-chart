@@ -1,6 +1,6 @@
 dependencies:
 - name: backstage
-  repository: https://janus-idp.github.io/helm-backstage
-  version: 2.12.5
-digest: sha256:2a905c910fa784a6ccb0bd5295c4ed332641113ac8d7722a5df3319e0a1fd4c3
-generated: "2024-02-04T12:17:33.707251298+02:00"
+  repository: https://redhat-developer.github.io/rhdh-chart
+  version: 2.13.3
+digest: sha256:6f54e7bba87514fea3c18011c6fe39370af22170e351b5df0787883e9a65efbc
+generated: "2024-02-14T10:44:30.976345587+02:00"

@@ -36,8 +36,8 @@ backstage:
       plugins:
         - disabled: false
           integrity: >-
-            sha512-/ZQZI6bssyYT1D2+LW/pqpdIFJJXCW5RC0Ti49YdyminEbAYmjhjKxEHagKRaxwYhmCHbJezkuqrUAern/xcbA==
-          package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.2.0"
+            sha512-oZzK9dzRHvUSgKP3lZsubeSX7vxnNCopcStIZS86qvlf4DXxmttWHmID/B8WOWRMnG0fK7TsSd7qWFIz0OUMkQ==
+          package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.2.2"
           pluginConfig:
             orchestrator:
               dataIndexService:
@@ -46,8 +46,8 @@ backstage:
                 path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
         - disabled: false
           integrity: >-
-            sha512-RjtUkE1JxzEQhFGgpEW3yCtdLTf6B+FvNAVhWC6xkETk7BwGz+RO8CeDUVyXwuf6OJg1w347gZIjV64naqA+UA==
-          package: "@janus-idp/backstage-plugin-orchestrator@1.3.0"
+            sha512-rO+LKCyqS8eL0kSISFnRDJEeOZru+8Un6vh4kLI4WWtIFb94Wcuy0c/AtvRKvTax3mMP2n+Erp5GiqvF1wRkfA==
+          package: "@janus-idp/backstage-plugin-orchestrator@1.4.0"
           pluginConfig:
             dynamicPlugins:
               frontend:
@@ -64,7 +64,9 @@ backstage:
                       module: OrchestratorPlugin
                       path: /orchestrator
         - disabled: false
-          package: "./dynamic-plugins/dist/janus-idp-plugin-notifications"
+          package: "@janus-idp/plugin-notifications@1.1.6"
+          integrity: >-
+            sha512-wt0rn8O03Y/KpmQKbZ3JRkawhTgmSLlVUDm/k3zBsNdBZc5yBTQggC2ohJ1gTYirduMsuZ8FH1ftunjN5Mb/Hw==
           pluginConfig:
             dynamicPlugins:
               frontend:
@@ -83,11 +85,13 @@ backstage:
                       config:
                         pollingIntervalMs: 5000
         - disabled: false
-          package: "./dynamic-plugins/dist/janus-idp-plugin-notifications-backend-dynamic"
+          package: "@janus-idp/plugin-notifications-backend-dynamic@1.2.0"
+          integrity: >-
+            sha512-CHFRYd4Jm6Lsn5iNglejFx+aMgH3yYZDGJk7lMBRBjTpOuFzZk/4Qw4kTvC2arVbRnopDmaDrj3zPKGy5KWNRg==
   upstream:
     backstage:
       image:
-        tag: pr-896
+        tag: next
       appConfig:
         integrations:
           github:
