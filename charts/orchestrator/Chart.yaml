@@ -29,5 +29,5 @@ icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/a
 
 dependencies:
   - name: backstage
-    repository: https://janus-idp.github.io/helm-backstage
-    version: "2.12.5"
+    repository: https://redhat-developer.github.io/rhdh-chart
+    version: "2.13.3"
