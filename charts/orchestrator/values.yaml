@@ -5,7 +5,7 @@ sonataFlowOperator:
     channel: alpha # channel of an operator package to subscribe to
     installPlanApproval: Automatic # whether the update should be installed automatically
     pkgName: sonataflow-operator # name of the operator package
-    sourceImage: quay.io/masayag/kogito-serverless-operator-catalog:v2.0.0-snapshot # catalog image of the development build. Unset it for the release build.
+    sourceImage: quay.io/masayag/kogito-serverless-operator-catalog:v999.0.0-snapshot # catalog image of the development build. Unset it for the release build.
     sourceNamespace: openshift-marketplace # namespace of the catalog source
     source: sonataflow-operator # name of the catalog source for the operator
 
