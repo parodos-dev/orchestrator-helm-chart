@@ -124,9 +124,9 @@ backstage:
             - type: url
               target: https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml
             - type: url
-              target: https://github.com/parodos-dev/workflow-software-templates/blob/main/template/infrastructure/template.yaml
+              target: https://github.com/parodos-dev/workflow-software-templates/blob/main/scaffolder-templates/basic-workflow/template.yaml
             - type: url
-              target: https://github.com/parodos-dev/workflow-software-templates/blob/main/template/assessment/template.yaml
+              target: https://github.com/parodos-dev/workflow-software-templates/blob/main/scaffolder-templates/complex-assessment-workflow/template.yaml
             - type: url
               target: https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml
         backend:
