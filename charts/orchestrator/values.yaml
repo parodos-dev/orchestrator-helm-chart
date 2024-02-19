@@ -36,8 +36,8 @@ backstage:
       plugins:
         - disabled: false
           integrity: >-
-            sha512-oZzK9dzRHvUSgKP3lZsubeSX7vxnNCopcStIZS86qvlf4DXxmttWHmID/B8WOWRMnG0fK7TsSd7qWFIz0OUMkQ==
-          package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.2.2"
+            sha512-kDbhP8Cq3PJFLJ6bwTRJwllxU71bnH7SkC3I3HqX6K9TVIqSKwyI8MNGYMRHoTlxwHH+4fASmFBPfEtIpMVLTA==
+          package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.3.1"
           pluginConfig:
             orchestrator:
               dataIndexService:
@@ -46,8 +46,8 @@ backstage:
                 path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
         - disabled: false
           integrity: >-
-            sha512-rO+LKCyqS8eL0kSISFnRDJEeOZru+8Un6vh4kLI4WWtIFb94Wcuy0c/AtvRKvTax3mMP2n+Erp5GiqvF1wRkfA==
-          package: "@janus-idp/backstage-plugin-orchestrator@1.4.0"
+            sha512-LeWPeeWChuscjJyAYla8R8hTj9sztfSRWyOZxP9akr8KRqkfI7CDFpvscpBT020k9AG6v5AfGn0job9DC9mFSg==
+          package: "@janus-idp/backstage-plugin-orchestrator@1.4.3"
           pluginConfig:
             dynamicPlugins:
               frontend:
