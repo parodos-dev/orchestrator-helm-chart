@@ -1,0 +1,215 @@
+{{- if .Values.rhdhOperator.enabled }}
+{{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" .Values.rhdhOperator.subscription.namespace .Release.Name) }}
+{{- if and (eq $unmanagedNamespaceExists "false") .Values.rhdhOperator.enabled }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.rhdhOperator.subscription.namespace }}
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: rhdh-operator-group
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+spec: {}
+---
+{{- end }}
+{{- if ne .Values.rhdhOperator.subscription.sourceImage "" }}
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: {{ .Values.rhdhOperator.subscription.source }}
+  namespace: openshift-marketplace
+spec:
+  displayName: RHDH Operator (Development)
+  image: {{ .Values.rhdhOperator.subscription.sourceImage }}
+  sourceType: grpc
+---
+{{- end }}
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: rhdh-operator
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+spec:
+  channel: {{ .Values.rhdhOperator.subscription.channel }}
+  installPlanApproval: Automatic
+  name: {{ .Values.rhdhOperator.subscription.pkgName }}
+  source: {{ .Values.rhdhOperator.subscription.source }}
+  sourceNamespace: {{ .Values.rhdhOperator.subscription.sourceNamespace | default (include "get-default-catalogsource-namespace" .) | quote }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backstage-backend-auth-secret
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+stringData:
+  BACKEND_SECRET: {{ randAlphaNum 24 | nospace | b64enc }}
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: app-config-rhdh
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+data:
+  "app-config-rhdh.yaml": |
+    app:
+      title: Red Hat Developer Hub
+      baseUrl: https://backstage-backstage-{{ .Values.rhdhOperator.subscription.namespace }}.{{ include "cluster.domain" . }}
+    backend:
+      auth:
+        keys:
+          - secret: "${BACKEND_SECRET}"
+      baseUrl: https://backstage-backstage-{{ .Values.rhdhOperator.subscription.namespace }}.{{ include "cluster.domain" . }}
+      csp:
+        frame-src:
+          - "https://sandbox.kie.org"
+      cors:
+        origin: https://backstage-backstage-{{ .Values.rhdhOperator.subscription.namespace }}.{{ include "cluster.domain" . }}
+      database:
+        client: pg
+        connection:
+          password: ${POSTGRESQL_ADMIN_PASSWORD}
+          user: ${POSTGRES_USER}
+          host: ${POSTGRES_HOST}
+          port: ${POSTGRES_PORT}
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: dynamic-plugins-rhdh
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+data:
+  "dynamic-plugins.yaml": |
+    includes:
+      - dynamic-plugins.default.yaml
+    plugins:
+      - disabled: false
+        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.3.1"
+        integrity: >-
+          sha512-kDbhP8Cq3PJFLJ6bwTRJwllxU71bnH7SkC3I3HqX6K9TVIqSKwyI8MNGYMRHoTlxwHH+4fASmFBPfEtIpMVLTA==
+        pluginConfig:
+          orchestrator:
+            dataIndexService:
+              url: http://sonataflow-platform-data-index-service.{{ .Values.orchestrator.namespace }}
+            editor:
+              path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+      - disabled: false
+        package: "@janus-idp/backstage-plugin-orchestrator@1.4.3"
+        integrity: >-
+          sha512-LeWPeeWChuscjJyAYla8R8hTj9sztfSRWyOZxP9akr8KRqkfI7CDFpvscpBT020k9AG6v5AfGn0job9DC9mFSg==
+        pluginConfig:
+          dynamicPlugins:
+            frontend:
+              janus-idp.backstage-plugin-orchestrator:
+                appIcons:
+                  - importName: OrchestratorIcon
+                    module: OrchestratorPlugin
+                    name: orchestratorIcon
+                dynamicRoutes:
+                  - importName: OrchestratorPage
+                    menuItem:
+                      icon: orchestratorIcon
+                      text: Orchestrator
+                    module: OrchestratorPlugin
+                    path: /orchestrator
+      - disabled: false
+        package: "@janus-idp/plugin-notifications@1.1.6"
+        integrity: >-
+          sha512-wt0rn8O03Y/KpmQKbZ3JRkawhTgmSLlVUDm/k3zBsNdBZc5yBTQggC2ohJ1gTYirduMsuZ8FH1ftunjN5Mb/Hw==
+        pluginConfig:
+          dynamicPlugins:
+            frontend:
+              janus-idp.backstage-plugin-notifications:
+                appIcons:
+                  - name: notificationsIcon
+                    module: NotificationsPlugin
+                    importName: NotificationsActiveIcon
+                dynamicRoutes:
+                  - path: /notifications
+                    importName: NotificationsPage
+                    module: NotificationsPlugin
+                    menuItem:
+                      icon: notificationsIcon
+                      text: Notifications
+                    config:
+                      pollingIntervalMs: 5000
+      - disabled: false
+        package: "@janus-idp/plugin-notifications-backend-dynamic@1.2.0"
+        integrity: >-
+          sha512-CHFRYd4Jm6Lsn5iNglejFx+aMgH3yYZDGJk7lMBRBjTpOuFzZk/4Qw4kTvC2arVbRnopDmaDrj3zPKGy5KWNRg==
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config-rhdh-auth
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+data:
+  app-config-auth.gh.yaml: |
+{{- if ne .Values.rhdhOperator.github.token "" }}
+    integrations:
+      github:
+        - host: github.com
+          token: {{ .Values.rhdhOperator.github.token }}  
+    auth:
+      environment: development
+{{- end }}      
+{{- if ne .Values.rhdhOperator.github.clientId "" }}
+      providers:
+        github:
+          development:
+            clientId: {{ .Values.rhdhOperator.github.clientId }}
+            clientSecret: {{ .Values.rhdhOperator.github.clientSecret }}
+{{- end }}
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: app-config-rhdh-catalog
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+data:
+  "app-config-catalog.yaml": |
+    catalog:
+      rules:
+        - allow:
+            [
+              Component,
+              System,
+              Group,
+              Resource,
+              Location,
+              Template,
+              API,
+              User,
+              Domain,
+            ]
+      locations:
+        - type: url
+          target: https://github.com/janus-idp/backstage-plugins/blob/main/plugins/notifications-backend/users.yaml
+        - type: url
+          target: https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml
+        - type: url
+          target: https://github.com/parodos-dev/workflow-software-templates/blob/main/scaffolder-templates/basic-workflow/template.yaml
+        - type: url
+          target: https://github.com/parodos-dev/workflow-software-templates/blob/main/scaffolder-templates/complex-assessment-workflow/template.yaml
+        - type: url
+          target: https://github.com/redhat-developer/red-hat-developer-hub-software-templates/blob/main/templates.yaml
+---
+apiVersion: rhdh.redhat.com/v1alpha1
+kind: Backstage
+metadata:
+  name: backstage
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+spec:
+  application:
+    appConfig:
+      configMaps:
+        - name: app-config-rhdh
+        - name: app-config-rhdh-auth
+        - name: app-config-rhdh-catalog
+    dynamicPluginsConfigMapName: dynamic-plugins-rhdh
+    extraEnvs:
+      secrets:
+        - name: backstage-backend-auth-secret
+          key: BACKEND_SECRET
+{{- end }}
