@@ -79,7 +79,7 @@
         {{- if and (hasKey $cluster "spec") (hasKey $cluster.spec "domain") -}}
             {{- printf "%s" $cluster.spec.domain -}}
         {{- else -}}
-            {{ fail "Unable to obtain cluster domain, OCP Ingress Resource is missing `spec.domain` field." }}
+            {{ fail "Unable to obtain cluster domain, OCP Ingress Resource is missing the `spec.domain` field." }}
         {{- end }}
     {{- else -}}
         {{ fail "Unable to obtain cluster domain, config.openshift.io/v1/Ingress is missing" }}
