@@ -12,5 +12,4 @@ jobs:
       - name: Orchestartor Helm Lint
         run: |
           cd charts/orchestrator
-          helm dep up
           helm lint
