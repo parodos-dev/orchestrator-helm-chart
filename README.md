@@ -52,17 +52,14 @@ orchestrator	https://parodos-dev.github.io/orchestrator-helm-chart
 Create a namespace for the Orchestrator solution suite:
 ```console
 $ oc new-project orchestrator
-$ helm install orchestrator orchestrator/orchestrator \
-    --set "backstage.upstream.backstage.appConfig.integrations.github[0].host"=github.com \
-    --set "backstage.upstream.backstage.appConfig.integrations.github[0].token"=$GITHUB_TOKEN
+$ helm install orchestrator orchestrator/orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
 
 For non-production purpose, run:
 ```console
 $ oc new-project orchestrator
 $ helm install orchestrator orchestrator/orchestrator --set orchestrator.devmode=true \
-    --set "backstage.upstream.backstage.appConfig.integrations.github[0].host"=github.com \
-    --set "backstage.upstream.backstage.appConfig.integrations.github[0].token"=$GITHUB_TOKEN
+     --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
 
 #### Workflow installation
@@ -75,6 +72,13 @@ $ helm delete orchestrator
 release "orchestrator" uninstalled
 ```
 
+Note that the CRDs created during the installation process will remain in the cluster. To clean the rest of the resources, run:
+```console
+oc delete csv sonataflow-operator.v999.0.0-snapshot -n openshift-operators
+oc get crd -o name | grep -e 'sonataflow' -e rhdh | xargs oc delete
+oc delete pvc --all -n orchestrator
+oc delete ns backstage-system
+```
 
 ## Helm index
 [https://parodos-dev.github.io/orchestrator-helm-chart/index.yaml](https://parodos-dev.github.io/orchestrator-helm-chart/index.yaml)
