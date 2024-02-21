@@ -45,6 +45,10 @@ metadata:
   namespace: {{ .Values.rhdhOperator.subscription.namespace }}
 stringData:
   BACKEND_SECRET: {{ randAlphaNum 24 | nospace | b64enc }}
+{{- if ne .Values.rhdhOperator.k8s.clusterToken "" }}
+  K8S_CLUSTER_URL: https://api.{{ include "cluster.domain" . }}:6443
+  K8S_CLUSTER_TOKEN: {{ .Values.rhdhOperator.k8s.clusterToken }}
+{{- end }}
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -84,6 +88,66 @@ data:
     includes:
       - dynamic-plugins.default.yaml
     plugins:
+{{- if ne .Values.rhdhOperator.k8s.clusterToken "" }}
+      - package: ./dynamic-plugins/dist/backstage-plugin-kubernetes-backend-dynamic
+        disabled: false
+        pluginConfig:
+          kubernetes:
+            customResources:
+              - group: 'tekton.dev'
+                apiVersion: 'v1beta1'
+                plural: 'pipelines'
+              - group: 'tekton.dev'
+                apiVersion: 'v1beta1'
+                plural: 'pipelineruns'
+              - group: 'tekton.dev'
+                apiVersion: 'v1beta1'
+                plural: 'taskruns'
+              - group: 'route.openshift.io'
+                apiVersion: 'v1'
+                plural: 'routes'
+            serviceLocatorMethod:
+              type: 'multiTenant'
+            clusterLocatorMethods:
+              - type: 'config'
+                clusters:
+                  - name: 'OpenShift Orchestrator Demo'
+                    url: ${K8S_CLUSTER_URL}
+                    authProvider: 'serviceAccount'
+                    skipTLSVerify: true
+                    serviceAccountToken: ${K8S_CLUSTER_TOKEN}
+      - package: ./dynamic-plugins/dist/backstage-plugin-kubernetes
+        disabled: false
+        pluginConfig:
+          dynamicPlugins:
+            frontend:
+              backstage.plugin-kubernetes:
+                mountPoints:
+                  - mountPoint: entity.page.kubernetes/cards
+                    importName: EntityKubernetesContent
+                    config:
+                      layout:
+                        gridColumn: "1 / -1"
+                      if:
+                        anyOf:
+                          - hasAnnotation: backstage.io/kubernetes-id
+                          - hasAnnotation: backstage.io/kubernetes-namespace
+      - package: ./dynamic-plugins/dist/janus-idp-backstage-plugin-tekton
+        disabled: false
+        pluginConfig:
+          dynamicPlugins:
+            frontend:
+              janus-idp.backstage-plugin-tekton:
+                mountPoints:
+                  - mountPoint: entity.page.ci/cards
+                    importName: TektonCI
+                    config:
+                      layout:
+                        gridColumn: "1 / -1"
+                      if:
+                        allOf:
+                          - isTektonCIAvailable
+{{- end }}
       - disabled: false
         package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.4.2"
         integrity: >-
@@ -212,4 +276,10 @@ spec:
       secrets:
         - name: backstage-backend-auth-secret
           key: BACKEND_SECRET
+{{- if ne .Values.rhdhOperator.k8s.clusterToken "" }}
+        - name: backstage-backend-auth-secret
+          key: K8S_CLUSTER_URL
+        - name: backstage-backend-auth-secret
+          key: K8S_CLUSTER_TOKEN
+{{- end }}
 {{- end }}
