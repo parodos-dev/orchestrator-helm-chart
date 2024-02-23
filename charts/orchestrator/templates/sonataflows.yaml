@@ -87,6 +87,7 @@ spec:
     name: sonataflow-platform
     namespace: {{ $ns }}
 ---
+{{- if or .Values.orchestrator.deployWorkflow .Values.orchestrator.devmode }}
 apiVersion: v1
 data:
   greeting.sw.input-schema.json: |
@@ -170,6 +171,7 @@ metadata:
   labels:
     app: greeting
     sonataflow.org/workflow-app: greeting
+    backstage.io/kubernetes-id: greeting
   name: greeting
   namespace: {{ $ns }}
 spec:
@@ -233,3 +235,4 @@ spec:
       - configMap:
           name: 01-greeting-resources
         workflowPath: specs
+{{- end }}

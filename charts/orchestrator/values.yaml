@@ -24,6 +24,9 @@ rhdhOperator:
     token: ""
     clientId: ""
     clientSecret: ""
+  k8s:
+    clusterToken: ""
+    clusterUrl: ""
   subscription:
     namespace: backstage-system # namespace where the operator should be deployed
     channel: alpha # channel of an operator package to subscribe to

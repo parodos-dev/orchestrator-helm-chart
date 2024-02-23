@@ -62,6 +62,14 @@ $ helm install orchestrator orchestrator --set orchestrator.devmode=true \
     --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
 
+To enable the K8s and Tekton (OpenShift Pipelines) plugins in Backstage, install by:
+```console
+$ helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
+    --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL
+```
+The $K8S_CLUSTER_TOKEN should provide access to resources as detailed [here](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/tekton#prerequisites) and $K8S_CLUSTER_URL from the output of `oc cluster-info` (API server URL, e.g. https://api.cluster-domain:6443).
+
+
 A sample output:
 ```
 NAME: orchestrator
