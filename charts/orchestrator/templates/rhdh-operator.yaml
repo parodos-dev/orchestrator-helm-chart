@@ -135,9 +135,9 @@ data:
                     config:
                       pollingIntervalMs: 5000
       - disabled: false
-        package: "@janus-idp/plugin-notifications-backend-dynamic@1.2.1"
+        package: "@janus-idp/plugin-notifications-backend-dynamic@1.2.2"
         integrity: >-
-          sha512-Zr3roQ4LA6lkjrcidbZmfiYFcHAVbO6auLZDGs2N5JFcNUX+Sh/htFl84PsEgMKCI9+gud2WJtDyD7Y7xSSJSw==
+          sha512-Rg9CkvEeha3JZYY2nXb+4do0uAMwgL41NdurAoePGknZ6zMpJPwRKHOS7dUP9ZTCxOVGqM8kisaJ62+ylJp/tQ==
 ---
 apiVersion: v1
 kind: ConfigMap
