@@ -221,6 +221,7 @@
             "required": [
                 "enabled",
                 "github",
+                "k8s",
                 "subscription"
             ],
             "properties": {
@@ -271,6 +272,37 @@
                         "token": "",
                         "clientId": "",
                         "clientSecret": ""
+                    }]
+                },
+                "k8s": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The k8s Schema",
+                    "required": [
+                        "clusterToken",
+                        "clusterUrl"
+                    ],
+                    "properties": {
+                        "clusterToken": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The clusterToken Schema",
+                            "examples": [
+                                ""
+                            ]
+                        },
+                        "clusterUrl": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The clusterUrl Schema",
+                            "examples": [
+                                ""
+                            ]
+                        }
+                    },
+                    "examples": [{
+                        "clusterToken": "",
+                        "clusterUrl": ""
                     }]
                 },
                 "subscription": {
@@ -361,6 +393,10 @@
                     "token": "",
                     "clientId": "",
                     "clientSecret": ""
+                },
+                "k8s": {
+                    "clusterToken": "",
+                    "clusterUrl": ""
                 },
                 "subscription": {
                     "namespace": "backstage-system",
@@ -743,6 +779,10 @@
                 "token": "",
                 "clientId": "",
                 "clientSecret": ""
+            },
+            "k8s": {
+                "clusterToken": "",
+                "clusterUrl": ""
             },
             "subscription": {
                 "namespace": "backstage-system",
