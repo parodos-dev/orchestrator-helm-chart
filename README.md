@@ -10,12 +10,12 @@ This chart will deploy the following on the target OpenShift cluster:
   - Sample workflow (greeting)
 
 ## Prerequisites
-- You logged in a Red Hat OpenShift Container Platform (version 4.13+) cluster as a cluster administrator.
+- You logged in to a Red Hat OpenShift Container Platform (version 4.13+) cluster as a cluster administrator.
 - [OpenShift CLI (oc)](https://docs.openshift.com/container-platform/4.13/cli_reference/openshift_cli/getting-started-cli.html) is installed.
 - [Operator Lifecycle Manager (OLM)](https://olm.operatorframework.io/docs/getting-started/) has been installed in your cluster.
 - Your cluster has a [default storage class](https://docs.openshift.com/container-platform/4.13/storage/container_storage_interface/persistent-storage-csi-sc-manage.html) provisioned.
 - [Helm](https://helm.sh/docs/intro/install/) v3.9+ is installed.
-- [PostgreSQL](https://www.postgresql.org/) database is avalable with credentials to manage the tablespace (optional).
+- [PostgreSQL](https://www.postgresql.org/) database is available with credentials to manage the tablespace (optional).
   - A [reference implementation](#postgresql-deployment-reference-implementation) is provided for your convenience.
 - A Github API Token - in order to import items into the catalog, there is a need for GITHUB_TOKEN with the permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions: repo (all), admin:org (read:org) and user (read:user, user:email).
   
@@ -56,7 +56,7 @@ Install the chart (expects DB configuration to be provided), set value for $GITH
 ```console
 $ helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
-or install sonataflow services in ephemeral mode for evaluation purpose:
+or install sonataflow services in ephemeral mode for evaluation purposes:
 ```console
 $ helm install orchestrator orchestrator --set orchestrator.devmode=true \
     --set rhdhOperator.github.token=$GITHUB_TOKEN
@@ -148,7 +148,7 @@ Sample output:
 ```
 greeting-sonataflow-infra.apps.ocp413.lab.local
 ```
-* Trigger the greeting workflow and save the workflow id from the response in environment variable $WORKFLOW_ID.
+* Trigger the greeting workflow and save the workflow ID from the response in the environment variable $WORKFLOW_ID.
 ```shell
 curl -s -k -X POST -H 'Content-Type:application/json' -H 'Accept:application/json' -d '{ "language": "Spanish" }' 'https://'$ROUTE'/greeting' | jq
 ```
@@ -188,24 +188,24 @@ $ frigate gen --no-deps . > README.md
 ### Updating plugins version
 The Orchestrator includes the orchestrator and the notification plugins.
 Overall, there are 4 plugins:
-* [notifications](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/notifications) - [@janus-idp/plugin-notifications in npmjs](https://www.npmjs.com/package/@janus-idp/plugin-notifications)
-* [notifications-backend](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/notifications-backend) - [@janus-idp/plugin-notifications-backend-dynamic in npmjs](https://www.npmjs.com/package/@janus-idp/plugin-notifications-backend-dynamic)
-* [orchestrator](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/orchestrator) - [@janus-idp/backstage-plugin-orchestrator in npmjs](https://www.npmjs.com/package/@janus-idp/backstage-plugin-orchestrator)
-* [orchestrator-backend](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/orchestrator-backend) - [@janus-idp/backstage-plugin-orchestrator-backend-dynamic in npmjs](https://www.npmjs.com/package/@janus-idp/backstage-plugin-orchestrator-backend-dynamic)
+* [notifications](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/notifications) - [@janus-idp/plugin-notifications](https://www.npmjs.com/package/@janus-idp/plugin-notifications) in npmjs
+* [notifications-backend](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/notifications-backend) - [@janus-idp/plugin-notifications-backend-dynamic](https://www.npmjs.com/package/@janus-idp/plugin-notifications-backend-dynamic) in npmjs
+* [orchestrator](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/orchestrator) - [@janus-idp/backstage-plugin-orchestrator](https://www.npmjs.com/package/@janus-idp/backstage-plugin-orchestrator) in npmjs
+* [orchestrator-backend](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/orchestrator-backend) - [@janus-idp/backstage-plugin-orchestrator-backend-dynamic](https://www.npmjs.com/package/@janus-idp/backstage-plugin-orchestrator-backend-dynamic) in npmjs
 
-The plugins are configured by the `dynamic-plugins-rhdh` configmap in [RHDH operator configuraiton](./charts/orchestrator/templates/rhdh-operator.yaml).
-To update plugins versions, use the npmjs package name and run the following command:
+The plugins are configured by the `dynamic-plugins-rhdh` configmap in [RHDH operator configuration](./charts/orchestrator/templates/rhdh-operator.yaml).
+To update plugin versions, use the npmjs package name and run the following command:
 ```console
 PLUGIN_NAME=@janus-idp/backstage-plugin-orchestrator-backend-dynamic
 curl -s -q https://registry.npmjs.com/${PLUGIN_NAME} | jq -r '.versions | keys_unsorted[-1] as $latest_version | .[$latest_version] | "        package: \"\(.name)@\(.version)\"\n        integrity: >-\n          \(.dist.integrity)"'
 ```
-The expected output should look like:
+The expected output should look like this:
 ```console
         package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.3.1"
         integrity: >-
           sha512-kDbhP8Cq3PJFLJ6bwTRJwllxU71bnH7SkC3I3HqX6K9TVIqSKwyI8MNGYMRHoTlxwHH+4fASmFBPfEtIpMVLTA==
 ```
-It can be pasted directly in the configmap, to override the existing values, in the correct plugins configuration.          
+It can be pasted directly into the configmap, to override the existing values, in the correct plugin configuration.          
 
 ## Documentation
 See [Helm Chart Documentation](./charts/orchestrator/README.md) for information about the values used by the helm chart.
