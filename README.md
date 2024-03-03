@@ -194,18 +194,7 @@ Overall, there are 4 plugins:
 * [orchestrator-backend](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/orchestrator-backend) - [@janus-idp/backstage-plugin-orchestrator-backend-dynamic](https://www.npmjs.com/package/@janus-idp/backstage-plugin-orchestrator-backend-dynamic) in npmjs
 
 The plugins are configured by the `dynamic-plugins-rhdh` configmap in [RHDH operator configuration](./charts/orchestrator/templates/rhdh-operator.yaml).
-To update plugin versions, use the npmjs package name and run the following command:
-```console
-PLUGIN_NAME=@janus-idp/backstage-plugin-orchestrator-backend-dynamic
-curl -s -q https://registry.npmjs.com/${PLUGIN_NAME} | jq -r '.versions | keys_unsorted[-1] as $latest_version | .[$latest_version] | "        package: \"\(.name)@\(.version)\"\n        integrity: >-\n          \(.dist.integrity)"'
-```
-The expected output should look like this:
-```console
-        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.3.1"
-        integrity: >-
-          sha512-kDbhP8Cq3PJFLJ6bwTRJwllxU71bnH7SkC3I3HqX6K9TVIqSKwyI8MNGYMRHoTlxwHH+4fASmFBPfEtIpMVLTA==
-```
-It can be pasted directly into the configmap, to override the existing values, in the correct plugin configuration.          
+To update plugin versions, use the npmjs package name, use the script: [update_plugins_version.sh](./update_plugins_version.sh)
 
 ## Documentation
 See [Helm Chart Documentation](./charts/orchestrator/README.md) for information about the values used by the helm chart.
