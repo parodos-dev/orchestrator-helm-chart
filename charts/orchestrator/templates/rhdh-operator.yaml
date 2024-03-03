@@ -49,6 +49,13 @@ stringData:
   K8S_CLUSTER_URL: {{ .Values.rhdhOperator.k8s.clusterUrl }}
   K8S_CLUSTER_TOKEN: {{ .Values.rhdhOperator.k8s.clusterToken }}
 {{- end }}
+{{- if ne .Values.rhdhOperator.github.token "" }}
+  GITHUB_TOKEN: {{ .Values.rhdhOperator.github.token }}
+{{- end }}
+{{- if ne .Values.rhdhOperator.github.clientId "" }}
+  GITHUB_CLIENT_ID: {{ .Values.rhdhOperator.github.clientId }}
+  GITHUB_CLIENT_SECRET: {{ .Values.rhdhOperator.github.clientSecret }}
+{{- end }}
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -214,7 +221,7 @@ data:
     integrations:
       github:
         - host: github.com
-          token: {{ .Values.rhdhOperator.github.token }}  
+          token: ${GITHUB_TOKEN}
     auth:
       environment: development
 {{- end }}      
@@ -222,8 +229,8 @@ data:
       providers:
         github:
           development:
-            clientId: {{ .Values.rhdhOperator.github.clientId }}
-            clientSecret: {{ .Values.rhdhOperator.github.clientSecret }}
+            clientId: ${GITHUB_CLIENT_ID}
+            clientSecret: ${GITHUB_CLIENT_SECRET}
 {{- end }}
 ---
 kind: ConfigMap
@@ -273,11 +280,4 @@ spec:
     extraEnvs:
       secrets:
         - name: backstage-backend-auth-secret
-          key: BACKEND_SECRET
-{{- if ne .Values.rhdhOperator.k8s.clusterToken "" }}
-        - name: backstage-backend-auth-secret
-          key: K8S_CLUSTER_URL
-        - name: backstage-backend-auth-secret
-          key: K8S_CLUSTER_TOKEN
-{{- end }}
 {{- end }}
