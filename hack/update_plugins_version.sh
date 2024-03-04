@@ -4,7 +4,7 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # File path to the YAML template relative to the script's directory
-TEMPLATE_FILE="${SCRIPT_DIR}/charts/orchestrator/templates/rhdh-operator.yaml"
+TEMPLATE_FILE="${SCRIPT_DIR}/../charts/orchestrator/templates/rhdh-operator.yaml"
 
 # Define PLUGINS list
 PLUGINS=(
@@ -28,8 +28,6 @@ update_plugins_in_yaml() {
     PLUGIN_VERSION=$(get_plugin_info "$PLUGIN_NAME" | cut -d '#' -f 1)
     PLUGIN_INTEGRITY=$(get_plugin_info "$PLUGIN_NAME" | cut -d '#' -f 2)
     # Update YAML file
-    #sed -i "s|${PLUGIN_NAME//\//\\/}@.*|${PLUGIN_NAME}@${PLUGIN_VERSION}\"|g" $1
-    #sed -i "/${PLUGIN_NAME//\//\\/}/{n;n;s|\(^\s*\)\(sha512\).*|\1${PLUGIN_INTEGRITY}|}" $1
     sed -i "s|${PLUGIN_NAME//\//\\/}@.*|${PLUGIN_NAME}@${PLUGIN_VERSION}\"|g; /${PLUGIN_NAME//\//\\/}/{n;n;s|\(^\s*\)\(sha512\).*|\1${PLUGIN_INTEGRITY}|}" "$1"
   done
 }
