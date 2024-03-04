@@ -3,6 +3,19 @@ entries:
   orchestrator:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2024-03-04T00:31:45.04455638Z"
+    description: 'Helm chart to deploy the Orchestrator solution suite on OpenShift,
+      including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator,
+      Knative Eventing and Knative Serving. '
+    digest: fdfbb7bdc00aa77a35b0eaa97414bcaa3b7a5e52e55108baf1ac156a9b277842
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: orchestrator
+    type: application
+    urls:
+    - https://github.com/parodos-dev/orchestrator-helm-chart/releases/download/orchestrator-0.1.31/orchestrator-0.1.31.tgz
+    version: 0.1.31
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2024-03-04T00:01:23.320965322Z"
     description: 'Helm chart to deploy the Orchestrator solution suite on OpenShift,
       including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator,
@@ -462,4 +475,4 @@ entries:
     urls:
     - https://github.com/parodos-dev/orchestrator-helm-chart/releases/download/orchestrator-0.1.0/orchestrator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-04T00:01:23.321151058Z"
+generated: "2024-03-04T00:31:45.044843295Z"
