@@ -1,0 +1,19 @@
+This chart will install Janus-IDP + Serverless Workflows.
+
+It is under development and meant for non-prod environment for now
+
+To get Jauns-IDP's route location:
+    $ oc get route {{ .Release.Name }}-backstage -o jsonpath='https://{ .spec.host }{"\n"}'
+
+To get the serverless workflow operator status:
+    $ oc get deploy -n sonataflow-operator-system 
+
+To get the serverless workflow status:
+    $ oc get sf {{ .Values.flowName }} -n {{ .Release.Namespace }}
+
+To get the devmode deployment status
+    $ oc get deploy devmode -n {{ .Release.Namespace }}
+
+Use Janus-IDP workflows plugins to manage your deployed workflows. Explore the various templates
+with type 'workflows' and run them. You should see a template with the name {{ .Values.flowName }}
+For more data click on the 'workflows...' side-panel entry.

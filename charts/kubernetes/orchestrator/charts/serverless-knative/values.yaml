@@ -1,0 +1,6 @@
+openshift:
+  enabled: false
+
+kubernetes:
+  enabled: false
+

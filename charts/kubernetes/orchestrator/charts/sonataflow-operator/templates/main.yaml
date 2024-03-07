@@ -1,0 +1,9 @@
+{{- if .Values.global.openshift }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: subcm
+spec:
+  data:
+    foo: bar
+{{- end }}

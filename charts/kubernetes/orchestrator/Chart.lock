@@ -1,0 +1,18 @@
+dependencies:
+- name: backstage
+  repository: https://janus-idp.github.io/helm-backstage
+  version: 2.11.4
+- name: postgresql-persistent
+  repository: https://sclorg.github.io/helm-charts
+  version: 0.0.3
+- name: serverless-knative
+  repository: file://charts/serverless-knative
+  version: 0.1.0
+- name: sonataflow-operator
+  repository: file://charts/sonataflow-operator
+  version: 0.1.2
+- name: workflows
+  repository: https://parodos.dev/serverless-workflows-helm
+  version: 0.2.0
+digest: sha256:5874b15e474aea3aff995387183299e9527622568d4cd8c51fa0eb393e5cf83d
+generated: "2024-03-06T10:21:07.413541087+02:00"

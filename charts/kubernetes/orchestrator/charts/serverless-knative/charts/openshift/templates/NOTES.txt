@@ -1,0 +1,29 @@
+{{ .Release.Name }} of {{ .Chart.Name }} installed
+
+Installed components:
+=======================
+{{- $serverlessOperatorInstalled := include "is-resource-installed" (list "operators.coreos.com/v1alpha1" "Subscription" "openshift-serverless" "serverless-operator" .Release.Name) }}
+{{- $serverlessOperatorNamespaceInstalled := include "is-resource-installed" (list "v1" "Namespace" "" "openshift-serverless" .Release.Name) }}
+{{- $knativeServingInstalled := include "is-resource-installed" (list "operator.knative.dev/v1beta1" "KnativeServing" "knative-serving" "knative-serving" .Release.Name) }}
+{{- $knativeServingNamespaceInstalled := include "is-resource-installed" (list "v1" "Namespace" "" "knative-serving" .Release.Name) }}
+{{- $knativeEventingInstalled := include "is-resource-installed" (list "operator.knative.dev/v1beta1" "KnativeEventing" "knative-eventing" "knative-eventing" .Release.Name) }}
+{{- $knativeEventingNamespaceInstalled := include "is-resource-installed" (list "v1" "Namespace" "" "knative-eventing" .Release.Name) }}
+
+openshift-serverless Namespace: {{ $serverlessOperatorNamespaceInstalled }}
+Red Hat Serverless Operator: {{ $serverlessOperatorInstalled }}
+knative-serving Namespace: {{ $knativeServingNamespaceInstalled }}
+KnativeServing in knative-serving namespace: {{ $knativeServingInstalled }}
+knative-eventing Namespace: {{ $knativeEventingNamespaceInstalled }}
+KnativeEventing in knative-eventing namespace: {{ $knativeEventingInstalled }}
+{{/* Empty line */}}
+
+Run the following to verify the release status and export the configuration:
+  helm status {{ .Release.Name }}
+  helm get all {{ .Release.Name }}
+
+{{/* Empty line */}}
+
+Run the following to wait until the services are ready:
+  oc wait -n knative-eventing knativeeventing/knative-eventing --for=condition=Ready --timeout=5m
+  oc wait -n knative-serving knativeserving/knative-serving --for=condition=Ready --timeout=5m
+
