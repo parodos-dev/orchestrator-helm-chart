@@ -1,0 +1,12 @@
+dependencies:
+- name: backstage
+  repository: https://janus-idp.github.io/helm-backstage
+  version: 2.11.4
+- name: postgresql-persistent
+  repository: https://sclorg.github.io/helm-charts
+  version: 0.0.3
+- name: workflows
+  repository: https://parodos.dev/serverless-workflows-helm
+  version: 0.2.0
+digest: sha256:4859540e046c3b205efe9df617b9d73f964bdc0352b4b360ba1dbb3c3a54a6bc
+generated: "2024-04-04T20:06:24.888575923+03:00"
