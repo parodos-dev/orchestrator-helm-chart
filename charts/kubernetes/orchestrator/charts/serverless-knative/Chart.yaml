@@ -1,0 +1,16 @@
+apiVersion: v2
+name: serverless-knative
+description: |
+  A Helm chart to install the serverless infrastructure
+  on OpenShift or Kubernetes. Use the value openshift.enable or kubernetes.enable
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+dependencies:
+  - name: openshift
+    repository: file://charts/openshift
+    condition: openshift.enabled
+  - name: kubernetes
+    repository: file://charts/kubernetes
+    condition: kubernetes.enabled

@@ -1,0 +1,9 @@
+dependencies:
+- name: openshift
+  repository: file://openshift
+  version: 0.1.0
+- name: kubernetes
+  repository: file://kubernetes
+  version: 0.1.0
+digest: sha256:a86a2724942c912b1515729f371c8ea34ba59b91d15fd599809f0691928ef468
+generated: "2023-11-16T15:49:37.198296096+02:00"
