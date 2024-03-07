@@ -1,11 +1,11 @@
-name: Release OpenShift Charts
+name: Release Kubernetes Charts
 
 on:
   push:
     branches:
       - main
     paths:
-      - charts/openshift
+      - charts/kubernetes
 
 jobs:
   release-openshift:
@@ -25,6 +25,6 @@ jobs:
         uses: helm/chart-releaser-action@v1.5.0
         with:
           config: chart-releaser.yaml
-          charts_dir: charts/openshift
+          charts_dir: charts/kubernetes
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
