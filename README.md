@@ -7,7 +7,9 @@ This chart will deploy the following on the target OpenShift cluster:
   - OpenShift Serverless Operator
   - Knative Eventing
   - Knative Serving
-  - Sample workflow (greeting)
+  - ArgoCD `orchestrator` project (optional: enabled by default)
+  - Tekton tasks and build pipeline (optional: enabled by default)
+  - Sample workflow (greeting, `devmode` only)
 
 ## Prerequisites
 - You logged in to a Red Hat OpenShift Container Platform (version 4.13+) cluster as a cluster administrator.
@@ -18,7 +20,11 @@ This chart will deploy the following on the target OpenShift cluster:
 - [PostgreSQL](https://www.postgresql.org/) database is available with credentials to manage the tablespace (optional).
   - A [reference implementation](#postgresql-deployment-reference-implementation) is provided for your convenience.
 - A Github API Token - in order to import items into the catalog, there is a need for GITHUB_TOKEN with the permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions: repo (all), admin:org (read:org) and user (read:user, user:email).
-  
+- `ArgoCD/Red Hat GitOps` operator is installed and one instance of `ArgoCD` exists in a given namespace (later referenced by `ARGOCD_NAMESPACE` env var)
+  - Validated API is `argoproj.io/v1alpha1/AppProject`
+- `Tekton/Red Hat Pipelines` operator is installed in a given namespace (later referenced by `ARGOCD_NAMESPACE` env var)
+  - Validated APIs are `tekton.dev/v1beta1/Task` and `tekton.dev/v1/Pipeline`
+
 Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL 8 images which are not supported on the ARM64 architecture. Consequently, deployment of this helm chart on an [OpenShift Local](https://www.redhat.com/sysadmin/install-openshift-local) cluster on Macbook laptops with M1/M2 chips is not supported.
 
 ### Deploying PostgreSQL reference implementation
@@ -62,13 +68,21 @@ $ helm install orchestrator orchestrator --set orchestrator.devmode=true \
     --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
 
-To enable the K8s and Tekton (OpenShift Pipelines) plugins in Backstage, install by:
+To enable the K8s, Tekton (OpenShift Pipelines) and ArgoCD (OpenShift GitOps) plugins in Backstage, install by:
 ```console
 $ helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
-    --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL
+    --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
+    --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
+    --set argocd.password=$ARGOCD_PASSWORD
 ```
 The $K8S_CLUSTER_TOKEN should provide access to resources as detailed [here](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/tekton#prerequisites) and $K8S_CLUSTER_URL from the output of `oc cluster-info` (API server URL, e.g. https://api.cluster-domain:6443).
 
+To skip installing the Tekton (OpenShift Pipelines) and ArgoCD (OpenShift GitOps)resources, install by:
+```console
+$ helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
+    --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
+    --set argocd.enabled=false --set tekton.enabled=false
+```
 
 A sample output:
 ```
@@ -90,6 +104,16 @@ SonataFlow Operator          YES        openshift-operators
 SonataFlowPlatform           YES        sonataflow-infra
 Data Index Service           YES        sonataflow-infra
 Job Service                  YES        sonataflow-infra
+Tekton pipeline              YES        sonataflow-infra
+Tekton task                  YES        sonataflow-infra
+ArgoCD project               YES        janus-argocd
+
+====================================================================
+Prerequisites check:
+The required CRD tekton.dev/v1beta1/Task is already installed.
+The required CRD tekton.dev/v1/Pipeline is already installed.
+The required CRD argoproj.io/v1alpha1/AppProject is already installed.
+====================================================================
 
 Workflows deployed on namespace sonataflow-infra:
 greeting

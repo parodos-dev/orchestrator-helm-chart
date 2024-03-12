@@ -65,3 +65,13 @@ orchestrator:
   sonataflows: # workflows to get deployed - this option will be removed once the plugin will interact directly with the data-index
     - name: greeting
       image: quay.io/orchestrator/serverless-workflow-greeting:latest
+
+tekton:
+  enabled: true # whether to create the Tekton pipeline resources
+
+argocd:
+  enabled: true # whether to install the ArgoCD plugin and create the AppProject
+  url: ""
+  namespace: argocd
+  username: admin
+  password: ""
