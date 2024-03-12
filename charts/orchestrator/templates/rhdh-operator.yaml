@@ -156,9 +156,9 @@ data:
                           - isTektonCIAvailable
 {{- end }}
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.4.11"
+        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.5.3"
         integrity: >-
-          sha512-hxB0hyPelyzWkNEUWFNslNbXH1seQ+5mddSyqp+lILFNmTgOZfn+JqDk6mxHGPDqBYOiNuM67P1+FKVjvr5DHw==
+          sha512-l1MJIrZeXp9nOQpxFF5cw1ItOgA/p4xhGjKN12sg4Re8GC1qL+5hik+lA1BjMxAN6nKGWsLdFkgqLWa6jQuQFw==
         pluginConfig:
           orchestrator:
             dataIndexService:
@@ -166,9 +166,9 @@ data:
             editor:
               path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator@1.7.1"
+        package: "@janus-idp/backstage-plugin-orchestrator@1.7.8"
         integrity: >-
-          sha512-Fr1YsANW2zGIqt/s2QKUHJaC+gqZOVoIF2TLAKNgVojdJg34C24jsl9RaoTtQHA56b5gxkF9xcYGP1zGb1iQqw==
+          sha512-wJtu4Vhx3qjEiTe/i0Js2Jc0nz8B3ZIImJdul02KcyKmXNSKm3/rEiWo6AKaXUk/giRYscZQ1jTqlw/nz7xqeQ==
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -185,9 +185,9 @@ data:
                     module: OrchestratorPlugin
                     path: /orchestrator
       - disabled: false
-        package: "@janus-idp/plugin-notifications@1.1.11"
+        package: "@janus-idp/plugin-notifications@1.1.12"
         integrity: >-
-          sha512-42gGC6e9Ws4kjQz1AdOxu2pAHyOnpdkSi/UodSvzywo1TW9mut71rXAnOCu6hkvgVfTuMHuzm5tC/x1UruQ18A==
+          sha512-GCdEuHRQek3ay428C8C4wWgxjNpNwCXgIdFbUUFGCLLkBFSaOEw+XaBvWaBGtQ5BLgE3jQEUxa+422uzSYC5oQ==
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -206,9 +206,9 @@ data:
                     config:
                       pollingIntervalMs: 5000
       - disabled: false
-        package: "@janus-idp/plugin-notifications-backend-dynamic@1.3.3"
+        package: "@janus-idp/plugin-notifications-backend-dynamic@1.3.6"
         integrity: >-
-          sha512-Ow4mzndQysOXXfZIdtl2vMZZeNZ9SLN1U/AXBLXPehmXHMfI3O3kroSXsSzkKbQ/4yXj7yl6wnZhM7nRIk8CIg==
+          sha512-Qd8pniy1yRx+x7LnwjzQ6k9zP+C1yex24MaCcx7dGDPT/XbTokwoSZr4baSSn8jUA6P45NUUevu1d629mG4JGQ==
 ---
 apiVersion: v1
 kind: ConfigMap
