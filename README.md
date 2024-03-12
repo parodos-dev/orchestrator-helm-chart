@@ -5,7 +5,6 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
 - OpenShift Serverless Operator
 - Knative Eventing
 - Knative Serving
-- Sample workflow (greeting)
 
 ## Usage
 
@@ -39,24 +38,24 @@ Any changes to the first configuration must also be reported in the latter.
 
 ### Installation
 ```
-$ helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
+helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
 "orchestrator" has been added to your repositories
 
-$ helm repo list
+helm repo list
 NAME        	URL                                                  
 orchestrator	https://parodos-dev.github.io/orchestrator-helm-chart
 ```
 
 Create a namespace for the Orchestrator solution suite:
 ```console
-$ oc new-project orchestrator
-$ helm install orchestrator orchestrator/orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
+oc new-project orchestrator
+helm install orchestrator orchestrator/orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
 
 For non-production purpose, run:
 ```console
-$ oc new-project orchestrator
-$ helm install orchestrator orchestrator/orchestrator --set orchestrator.devmode=true \
+oc new-project orchestrator
+helm install orchestrator orchestrator/orchestrator --set orchestrator.devmode=true \
      --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
 
