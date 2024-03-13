@@ -46,15 +46,6 @@ Data Index Service           {{ $sonataFlowPlatformInstalled }}        {{ .Value
 Job Service                  {{ $sonataFlowPlatformInstalled }}        {{ .Values.orchestrator.namespace }}
 {{/* Empty line */}}
 
-{{- if gt (len .Values.orchestrator.sonataflows) 0 }}
-Workflows deployed on namespace {{ .Values.orchestrator.namespace }}:
-{{- range $v := .Values.orchestrator.sonataflows }}
-{{ $v.name }}
-{{- end }}
-{{- else }}
-No workflows deployed.
-{{- end }}
-
 Run the following commands to wait until the services are ready:
 {{- if eq $serverlessOperatorInstalled $yes }}
   oc wait -n {{ .Values.serverlessOperator.subscription.namespace }} deploy/knative-openshift --for=condition=Available {{ $timeout }}
@@ -83,13 +74,4 @@ Run the following commands to wait until the services are ready:
 {{- if eq $backstageInstalled $yes }}
   oc wait -n {{ .Values.rhdhOperator.subscription.namespace }} backstage backstage --for=condition=Deployed=True
   oc wait -n {{ .Values.rhdhOperator.subscription.namespace }} deploy/backstage-backstage --for=condition=Available {{ $timeout }}
-{{- end }}
-
-{{- $ns := .Values.orchestrator.namespace }}
-{{- if (gt (len .Values.orchestrator.sonataflows) 0) }}
-{{/* Empty line */}}
-Run the following commands to wait until the workflow builds are done and workflows are running on namespace {{ .Values.orchestrator.namespace }}:
-{{- range $v := .Values.orchestrator.sonataflows }}
-  oc wait -n {{ $ns }} sonataflow/{{ $v.name }} --for=condition=Running {{ $timeout }}
-{{- end }}
 {{- end }}
