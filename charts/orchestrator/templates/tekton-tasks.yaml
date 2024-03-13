@@ -175,12 +175,6 @@ spec:
       image: registry.access.redhat.com/ubi9-minimal
       workingDir: $(workspaces.workflow-source.path)
       script: |
-        echo "--pwd"
-        pwd
-        echo "--ls"
-        ls
-        echo "--ls /workspace/*"
-        ls /workspace/*
         ROOT=/workspace/workflow
         TARGET=flat
         mkdir -p flat
@@ -195,13 +189,6 @@ spec:
         fi
 
         curl -L https://raw.githubusercontent.com/parodos-dev/serverless-workflows/main/pipeline/workflow-builder.Dockerfile -o flat/workflow-builder.Dockerfile
-
-        echo "--ls /workspace"
-        ls /workspace
-        echo "--ls /workspace/*"
-        ls /workspace/*
-        echo "--ls -l flat"
-        ls -l flat
 ---
 apiVersion: tekton.dev/v1
 kind: Task
@@ -220,16 +207,9 @@ spec:
       image: registry.access.redhat.com/ubi9-minimal
       workingDir: $(workspaces.workflow-source.path)/flat/$(params.workflowId)
       script: |
-        echo "--pwd"
-        pwd
-        echo "--ls"
-        ls
         curl -L https://github.com/rgolangh/kie-tools/releases/download/0.0.2/kn-workflow-linux-amd64 -o kn-workflow
         chmod +x kn-workflow
-        echo "Installed kn-workflow"
         ./kn-workflow gen-manifest --namespace ""
-        echo "--ls manifests"
-        ls manifests
 ---
 apiVersion: tekton.dev/v1
 kind: Task
@@ -251,15 +231,7 @@ spec:
       image: registry.access.redhat.com/ubi9-minimal
       workingDir: $(workspaces.workflow-config.path)/workflow-config
       script: |
-        echo "--pwd"
-        pwd
-        echo "--ls"
-        ls
-        echo "--ls ../.."
-        ls ../..
         cp $(workspaces.workflow-source.path)/flat/$(params.workflowId)/manifests/* kustomize/base
-        echo "--ls kustomize/base"
-        ls kustomize/base
         microdnf install -y findutils && microdnf clean all
         ./updater.sh $(params.workflowId) $(params.imageTag)
 {{- end }}

@@ -143,20 +143,13 @@ spec:
         - name: GIT_SCRIPT
           value: |
             WORKFLOW_COMMIT=$(tasks.fetch-workflow.results.commit)
-            echo "WORKFLOW_COMMIT is $WORKFLOW_COMMIT"
 
             eval "$(ssh-agent -s)"
             ssh-add "${PARAM_USER_HOME}"/.ssh/id_rsa
 
-            # git config --global --add safe.directory /workspace/source/workflow
-            # git clone $(params.gitUrl) workflow
             cd workflow-config
             git add .
-            echo "--git status"
-            git status
-            echo "--git diff"
             git diff
-            # git config --global --list
             # TODO: create PR
             git commit -m "Deployment for workflow commit $WORKFLOW_COMMIT from $(params.gitUrl)"
             # TODO: parametrize branch
