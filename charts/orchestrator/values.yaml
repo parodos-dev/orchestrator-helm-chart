@@ -63,3 +63,12 @@ orchestrator:
     jobService:
       image: "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest" # To be removed when stable version is released
 
+tekton:
+  enabled: true # whether to create the Tekton pipeline resources
+
+argocd:
+  enabled: true # whether to install the ArgoCD plugin and create the AppProject
+  url: ""
+  namespace: argocd
+  username: admin
+  password: ""

@@ -49,6 +49,11 @@ stringData:
   K8S_CLUSTER_URL: {{ .Values.rhdhOperator.k8s.clusterUrl }}
   K8S_CLUSTER_TOKEN: {{ .Values.rhdhOperator.k8s.clusterToken }}
 {{- end }}
+{{- if .Values.argocd.enabled }}
+  ARGOCD_URL: {{ .Values.argocd.url }}
+  ARGOCD_USERNAME: {{ .Values.argocd.username }}
+  ARGOCD_PASSWORD: {{ .Values.argocd.password }}
+{{- end }}
 {{- if ne .Values.rhdhOperator.github.token "" }}
   GITHUB_TOKEN: {{ .Values.rhdhOperator.github.token }}
 {{- end }}
@@ -154,6 +159,23 @@ data:
                       if:
                         allOf:
                           - isTektonCIAvailable
+{{- end }}
+{{- if .Values.argocd.enabled }}
+      - disabled: false
+        package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd-backend-dynamic
+        pluginConfig:
+          argocd:
+            appLocatorMethods:
+            - instances:
+              - name: main
+                url: ${ARGOCD_URL}
+                username: ${ARGOCD_USERNAME}
+                password: ${ARGOCD_PASSWORD}
+              type: config
+      - disabled: false
+        package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd
+      - disabled: false
+        package: ./dynamic-plugins/dist/roadiehq-scaffolder-backend-argocd-dynamic
 {{- end }}
       - disabled: false
         package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.5.3"
