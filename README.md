@@ -9,7 +9,6 @@ This chart will deploy the following on the target OpenShift cluster:
   - Knative Serving
   - ArgoCD `orchestrator` project (optional: enabled by default)
   - Tekton tasks and build pipeline (optional: enabled by default)
-  - Sample workflow (greeting, `devmode` only)
 
 ## Prerequisites
 - You logged in to a Red Hat OpenShift Container Platform (version 4.13+) cluster as a cluster administrator.
@@ -123,9 +122,6 @@ The required CRD tekton.dev/v1beta1/Task is already installed.
 The required CRD tekton.dev/v1/Pipeline is already installed.
 The required CRD argoproj.io/v1alpha1/AppProject is already installed.
 ====================================================================
-
-Workflows deployed on namespace sonataflow-infra:
-greeting
 ```
 
 Run the following commands to wait until the services are ready:
