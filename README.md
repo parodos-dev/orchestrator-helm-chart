@@ -19,9 +19,9 @@ This chart will deploy the following on the target OpenShift cluster:
 - [PostgreSQL](https://www.postgresql.org/) database is available with credentials to manage the tablespace (optional).
   - A [reference implementation](#postgresql-deployment-reference-implementation) is provided for your convenience.
 - A Github API Token - in order to import items into the catalog, there is a need for GITHUB_TOKEN with the permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions: repo (all), admin:org (read:org) and user (read:user, user:email).
-- `ArgoCD/Red Hat GitOps` operator is installed and one instance of `ArgoCD` exists in a given namespace (later referenced by `ARGOCD_NAMESPACE` env var)
+- `ArgoCD/OpenShift GitOps` operator is installed and one instance of `ArgoCD` exists in a given namespace (later referenced by `ARGOCD_NAMESPACE` env var)
   - Validated API is `argoproj.io/v1alpha1/AppProject`
-- `Tekton/Red Hat Pipelines` operator is installed in the orchestrator namespace (e.g. `orchestrator.namespace` release value)
+- `Tekton/OpenShift Pipelines` operator is installed in the orchestrator namespace (e.g. `orchestrator.namespace` release value)
   - Validated APIs are `tekton.dev/v1beta1/Task` and `tekton.dev/v1/Pipeline`
 
 Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL 8 images which are not supported on the ARM64 architecture. Consequently, deployment of this helm chart on an [OpenShift Local](https://www.redhat.com/sysadmin/install-openshift-local) cluster on Macbook laptops with M1/M2 chips is not supported.
