@@ -504,8 +504,7 @@
             "required": [
                 "devmode",
                 "namespace",
-                "sonataPlatform",
-                "sonataflows"
+                "sonataPlatform"
             ],
             "properties": {
                 "devmode": {
@@ -678,48 +677,6 @@
                             "image": "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
                         }
                     }]
-                },
-                "sonataflows": {
-                    "type": "array",
-                    "default": [],
-                    "title": "The sonataflows Schema",
-                    "items": {
-                        "type": "object",
-                        "default": {},
-                        "title": "A Schema",
-                        "required": [
-                            "name",
-                            "image"
-                        ],
-                        "properties": {
-                            "name": {
-                                "type": "string",
-                                "default": "",
-                                "title": "The name Schema",
-                                "examples": [
-                                    "greeting"
-                                ]
-                            },
-                            "image": {
-                                "type": "string",
-                                "default": "",
-                                "title": "The image Schema",
-                                "examples": [
-                                    "quay.io/orchestrator/serverless-workflow-greeting:latest"
-                                ]
-                            }
-                        },
-                        "examples": [{
-                            "name": "greeting",
-                            "image": "quay.io/orchestrator/serverless-workflow-greeting:latest"
-                        }]
-                    },
-                    "examples": [
-                        [{
-                            "name": "greeting",
-                            "image": "quay.io/orchestrator/serverless-workflow-greeting:latest"
-                        }]
-                    ]
                 }
             },
             "examples": [{
@@ -742,11 +699,7 @@
                     "jobService": {
                         "image": "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
                     }
-                },
-                "sonataflows": [{
-                    "name": "greeting",
-                    "image": "quay.io/orchestrator/serverless-workflow-greeting:latest"
-                }]
+                }
             }]
         }
     },
@@ -824,11 +777,7 @@
                 "jobService": {
                     "image": "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
                 }
-            },
-            "sonataflows": [{
-                "name": "greeting",
-                "image": "quay.io/orchestrator/serverless-workflow-greeting:latest"
-            }]
+            }
         }
     }]
 }
