@@ -62,9 +62,6 @@ orchestrator:
       image: "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest" # To be removed when stable version is released
     jobService:
       image: "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest" # To be removed when stable version is released
-  sonataflows: # workflows to get deployed - this option will be removed once the plugin will interact directly with the data-index
-    - name: greeting
-      image: quay.io/orchestrator/serverless-workflow-greeting:latest
 
 tekton:
   enabled: true # whether to create the Tekton pipeline resources
