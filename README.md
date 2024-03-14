@@ -46,17 +46,30 @@ NAME        	URL
 orchestrator	https://parodos-dev.github.io/orchestrator-helm-chart
 ```
 
-Create a namespace for the Orchestrator solution suite:
+Create a namespace for the Orchestrator solution suite (optional):
 ```console
 oc new-project orchestrator
+```
+
+#### Install the chart with Orchestrator plugin and Notifications plugin
+This installation expects DB configuration to be provided.
+Set value for $GITHUB_TOKEN and run:
+```console
 helm install orchestrator orchestrator/orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
 
-For non-production purpose, run:
+#### For non-production purpose, run:
 ```console
-oc new-project orchestrator
 helm install orchestrator orchestrator/orchestrator --set orchestrator.devmode=true \
      --set rhdhOperator.github.token=$GITHUB_TOKEN
+```
+
+#### To enable the K8s, Tekton (OpenShift Pipelines) and ArgoCD (OpenShift GitOps) plugins in Backstage, run:
+```console
+helm install orchestrator orchestrator/orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
+    --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
+    --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
+    --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
 ```
 
 #### Workflow installation
