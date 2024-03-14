@@ -82,15 +82,15 @@ helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_T
 ### Install the chart with sonataflow services in ephemeral mode for evaluation purposes
 ```console
 helm install orchestrator orchestrator --set orchestrator.devmode=true \
-    --set rhdhOperator.github.token=$GITHUB_TOKEN
+  --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
 
 ### Install the chart with enabling the K8s, Tekton (OpenShift Pipelines) and ArgoCD (OpenShift GitOps) plugins in Backstage:
 ```console
-$ helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
-    --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
-    --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
-    --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
+helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
+  --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
+  --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
+  --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
 ```
 The $K8S_CLUSTER_TOKEN should provide access to resources as detailed [here](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/tekton#prerequisites) and $K8S_CLUSTER_URL from the output of `oc cluster-info` (API server URL, e.g. https://api.cluster-domain:6443).
 
