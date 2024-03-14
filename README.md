@@ -72,31 +72,27 @@ cd orchestrator-helm-chart/charts
 oc new-project orchestrator
 ```
 
-Install the chart (expects DB configuration to be provided), set value for $GITHUB_TOKEN:
+### Install the chart with Orchestrator plugin and Notifications plugin
+This installation expects DB configuration to be provided.
+Set value for $GITHUB_TOKEN and run:
 ```console
 helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
-or install sonataflow services in ephemeral mode for evaluation purposes:
+
+### Install the chart with sonataflow services in ephemeral mode for evaluation purposes
 ```console
 helm install orchestrator orchestrator --set orchestrator.devmode=true \
     --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
 
-To enable the K8s, Tekton (OpenShift Pipelines) and ArgoCD (OpenShift GitOps) plugins in Backstage, install by:
+### Install the chart with enabling the K8s, Tekton (OpenShift Pipelines) and ArgoCD (OpenShift GitOps) plugins in Backstage:
 ```console
 $ helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
     --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
     --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
-    --set argocd.password=$ARGOCD_PASSWORD
+    --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
 ```
 The $K8S_CLUSTER_TOKEN should provide access to resources as detailed [here](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/tekton#prerequisites) and $K8S_CLUSTER_URL from the output of `oc cluster-info` (API server URL, e.g. https://api.cluster-domain:6443).
-
-To skip installing the Tekton (OpenShift Pipelines) and ArgoCD (OpenShift GitOps)resources, install by:
-```console
-$ helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
-    --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
-    --set argocd.enabled=false --set tekton.enabled=false
-```
 
 A sample output:
 ```
