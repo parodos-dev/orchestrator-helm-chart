@@ -58,6 +58,12 @@ Any changes to the first configuration must also be reported in the latter.
 For OpenShift-related configuration in the chart visit [here](https://github.com/bitnami/charts/blob/main/bitnami/postgresql/README.md#differences-between-bitnami-postgresql-image-and-docker-official-image).
 
 ## Installation
+**Note: ArgoCD and workflow namespace**
+If you manually the created the workflow namespaces (e.g., `sonatflow-infra`), run this command to add the required label that allows
+ArgoCD deploying instances there:
+```console
+oc label ns sonataflow-infra argocd.argoproj.io/managed-by=$ARGOCD_NAMESPACE
+```
 
 Build helm dependency and create a new project for the installation:
 ```console

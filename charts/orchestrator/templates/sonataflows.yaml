@@ -8,6 +8,8 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: {{ $ns }}
+  label:
+    argocd.argoproj.io/managed-by: {{ .Values.argocd.namespace }}
 ---
   {{- end }}
 apiVersion: sonataflow.org/v1alpha08
