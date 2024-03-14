@@ -53,8 +53,8 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `orchestrator.sonataPlatform.resources.limits.cpu` |  | `"500m"` |
 | `orchestrator.sonataPlatform.dataIndex.image` | To be removed when stable version is released | `"quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest"` |
 | `orchestrator.sonataPlatform.jobService.image` | To be removed when stable version is released | `"quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"` |
-| `tekton.enabled` | whether to create the Tekton pipeline resources | `true` |
-| `argocd.enabled` | whether to install the ArgoCD plugin and create the AppProject | `true` |
+| `tekton.enabled` | whether to create the Tekton pipeline resources | `false` |
+| `argocd.enabled` | whether to install the ArgoCD plugin and create the AppProject | `false` |
 | `argocd.url` |  | `""` |
 | `argocd.namespace` |  | `"argocd"` |
 | `argocd.username` |  | `"admin"` |

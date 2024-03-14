@@ -864,10 +864,10 @@
             }
         },
         "tekton": {
-            "enabled": true
+            "enabled": false
         },
         "argocd": {
-            "enabled": true,
+            "enabled": false,
             "url": "",
             "namespace": "argocd",
             "username": "admin",
