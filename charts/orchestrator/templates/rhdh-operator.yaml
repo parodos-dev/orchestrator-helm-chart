@@ -174,8 +174,40 @@ data:
               type: config
       - disabled: false
         package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd
+        pluginConfig:
+          dynamicPlugins:
+            frontend:
+              roadiehq.backstage-plugin-argo-cd:
+                mountPoints:
+                  - mountPoint: entity.page.overview/cards
+                    importName: EntityArgoCDOverviewCard
+                    config:
+                      layout:
+                        gridColumnEnd:
+                          lg: "span 8"
+                          xs: "span 12"
+                      if:
+                        allOf:
+                          - isArgocdAvailable
+                  - mountPoint: entity.page.cd/cards
+                    importName: EntityArgoCDHistoryCard
+                    config:
+                      layout:
+                        gridColumn: "1 / -1"
+                      if:
+                        allOf:
+                          - isArgocdAvailable
       - disabled: false
         package: ./dynamic-plugins/dist/roadiehq-scaffolder-backend-argocd-dynamic
+        pluginConfig:
+          argocd:
+            appLocatorMethods:
+            - instances:
+              - name: main
+                url: ${ARGOCD_URL}
+                username: ${ARGOCD_USERNAME}
+                password: ${ARGOCD_PASSWORD}
+              type: config
 {{- end }}
       - disabled: false
         package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.5.3"
@@ -282,9 +314,9 @@ data:
         - type: url
           target: https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml
         - type: url
-          target: https://github.com/parodos-dev/workflow-software-templates/blob/tekton-demo/scaffolder-templates/basic-workflow/template.yaml
+          target: https://github.com/parodos-dev/workflow-software-templates/blob/main/scaffolder-templates/basic-workflow/template.yaml
         - type: url
-          target: https://github.com/parodos-dev/workflow-software-templates/blob/tekton-demo/scaffolder-templates/complex-assessment-workflow/template.yaml
+          target: https://github.com/parodos-dev/workflow-software-templates/blob/main/scaffolder-templates/complex-assessment-workflow/template.yaml
 ---
 apiVersion: rhdh.redhat.com/v1alpha1
 kind: Backstage
