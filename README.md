@@ -59,10 +59,10 @@ For OpenShift-related configuration in the chart visit [here](https://github.com
 
 ## Installation
 **Note: ArgoCD and workflow namespace**
-If you manually the created the workflow namespaces (e.g., `sonatflow-infra`), run this command to add the required label that allows
+If you manually the created the workflow namespaces (e.g., $WORKFLOW_NAMESPACE), run this command to add the required label that allows
 ArgoCD deploying instances there:
 ```console
-oc label ns sonataflow-infra argocd.argoproj.io/managed-by=$ARGOCD_NAMESPACE
+oc label ns $WORKFLOW_NAMESPACE argocd.argoproj.io/managed-by=$ARGOCD_NAMESPACE
 ```
 
 Build helm dependency and create a new project for the installation:
