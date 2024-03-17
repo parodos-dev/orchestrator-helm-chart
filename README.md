@@ -18,7 +18,7 @@ This chart will deploy the following on the target OpenShift cluster:
 - [Helm](https://helm.sh/docs/intro/install/) v3.9+ is installed.
 - [PostgreSQL](https://www.postgresql.org/) database is available with credentials to manage the tablespace (optional).
   - A [reference implementation](#postgresql-deployment-reference-implementation) is provided for your convenience.
-- A Github API Token - in order to import items into the catalog, there is a need for GITHUB_TOKEN with the permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions: repo (all), admin:org (read:org) and user (read:user, user:email).
+- A Github API Token - to import items into the catalog, there is a need for GITHUB_TOKEN with the permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions: repo (all), admin:org (read:org) and user (read:user, user:email).
 - `ArgoCD/OpenShift GitOps` operator is installed and one instance of `ArgoCD` exists in a given namespace (later referenced by `ARGOCD_NAMESPACE` env var)
   - Validated API is `argoproj.io/v1alpha1/AppProject`
 - `Tekton/OpenShift Pipelines` operator is installed in the orchestrator namespace (e.g. `orchestrator.namespace` release value)
@@ -152,19 +152,6 @@ knativeserving.operator.knative.dev/knative-serving condition met
 ### Workflow installation
 
 Follow [Workflows Installation](https://www.parodos.dev/serverless-workflows-helm/)
-
-### Installation from OpenShift
-```shell
-cat << EOF | oc apply -f -
-apiVersion: helm.openshift.io/v1beta1
-kind: HelmChartRepository
-metadata:
-  name: orchestrator
-spec:
-  connectionConfig:
-    url: 'https://parodos-dev.github.io/orchestrator-helm-chart'
-EOF
-```
 
 ## Cleanup
 To remove the installation from the cluster, run:
