@@ -24,13 +24,8 @@ metadata:
 spec:
   channel: {{ .Values.serverlessOperator.subscription.channel }}
   installPlanApproval: Automatic
-  {{- if eq (include "is-openshift" .) "true" }}
   name: serverless-operator
   source: redhat-operators
-  {{- else }}
-  name: knative-operator
-  source: {{ .Values.serverlessOperator.subscription.source | default (include "get-default-catalogsource-name" .) | quote }}
-  {{- end }}
   sourceNamespace: {{ .Values.serverlessOperator.subscription.sourceNamespace | default (include "get-default-catalogsource-namespace" .) | quote }}
 ---
 {{- end }}

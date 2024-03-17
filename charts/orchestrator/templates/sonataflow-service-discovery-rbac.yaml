@@ -1,49 +1,46 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   name: service-discovery-role
   namespace: {{ .Values.orchestrator.namespace }}
 rules:
   - apiGroups:
-      - ""
-    resources:
-      - pods
-      - services
-    verbs:
-      - get
-      - list
-  - apiGroups:
       - apps
     resources:
-      - deployments
+      - statefulset
       - statefulsets
     verbs:
       - get
       - list
+      - watch
   - apiGroups:
       - networking.k8s.io
     resources:
+      - ingress
       - ingresses
     verbs:
       - get
       - list
-  # Knative
+      - watch
   - apiGroups:
       - serving.knative.dev
     resources:
+      - service
       - services
     verbs:
       - get
       - list
-## Specific to Openshift
-{{- if eq (include "is-openshift" .) "true" }}
+      - watch
   - apiGroups:
-      - route.openshift.io
+      - eventing.knative.dev
     resources:
-      - routes
+      - broker
+      - brokers
     verbs:
       - get
       - list
+      - watch
   - apiGroups:
       - apps.openshift.io
     resources:
@@ -51,7 +48,15 @@ rules:
     verbs:
       - get
       - list
-{{- end }}
+      - watch
+  - apiGroups:
+      - route.openshift.io
+    resources:
+      - routes
+    verbs:
+      - get
+      - list
+      - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
