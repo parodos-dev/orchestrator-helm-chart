@@ -52,9 +52,6 @@ spec:
   services:
     dataIndex:
       enabled: true
-      podTemplate:
-        container:
-          image: {{ .Values.orchestrator.sonataPlatform.dataIndex.image }} 
       persistence:
         postgresql:
           secretRef:
@@ -66,9 +63,6 @@ spec:
             namespace: {{ .Values.postgres.serviceNamespace }}
     jobService:
       enabled: true
-      podTemplate:
-        container:
-          image: {{ .Values.orchestrator.sonataPlatform.jobService.image }} 
       persistence:
         postgresql:
           secretRef:

@@ -358,7 +358,7 @@
                             "default": "",
                             "title": "The sourceImage Schema",
                             "examples": [
-                                "quay.io/janus-idp/operator-catalog:0.1.0"
+                                "quay.io/janus-idp/operator-catalog:0.2.0"
                             ]
                         },
                         "sourceNamespace": {
@@ -383,7 +383,7 @@
                         "channel": "alpha",
                         "installPlanApproval": "Automatic",
                         "pkgName": "backstage-operator",
-                        "sourceImage": "quay.io/janus-idp/operator-catalog:0.1.0",
+                        "sourceImage": "quay.io/janus-idp/operator-catalog:0.2.0",
                         "sourceNamespace": "openshift-marketplace",
                         "source": "rhdh-operator"
                     }]
@@ -405,7 +405,7 @@
                     "channel": "alpha",
                     "installPlanApproval": "Automatic",
                     "pkgName": "backstage-operator",
-                    "sourceImage": "quay.io/janus-idp/operator-catalog:0.1.0",
+                    "sourceImage": "quay.io/janus-idp/operator-catalog:0.2.0",
                     "sourceNamespace": "openshift-marketplace",
                     "source": "rhdh-operator"
                 }
@@ -530,9 +530,7 @@
                     "default": {},
                     "title": "The sonataPlatform Schema",
                     "required": [
-                        "resources",
-                        "dataIndex",
-                        "jobService"
+                        "resources"
                     ],
                     "properties": {
                         "resources": {
@@ -617,48 +615,6 @@
                                     "cpu": "500m"
                                 }
                             }]
-                        },
-                        "dataIndex": {
-                            "type": "object",
-                            "default": {},
-                            "title": "The dataIndex Schema",
-                            "required": [
-                                "image"
-                            ],
-                            "properties": {
-                                "image": {
-                                    "type": "string",
-                                    "default": "",
-                                    "title": "The image Schema",
-                                    "examples": [
-                                        "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest"
-                                    ]
-                                }
-                            },
-                            "examples": [{
-                                "image": "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest"
-                            }]
-                        },
-                        "jobService": {
-                            "type": "object",
-                            "default": {},
-                            "title": "The jobService Schema",
-                            "required": [
-                                "image"
-                            ],
-                            "properties": {
-                                "image": {
-                                    "type": "string",
-                                    "default": "",
-                                    "title": "The image Schema",
-                                    "examples": [
-                                        "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
-                                    ]
-                                }
-                            },
-                            "examples": [{
-                                "image": "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
-                            }]
                         }
                     },
                     "examples": [{
@@ -671,12 +627,6 @@
                                 "memory": "1Gi",
                                 "cpu": "500m"
                             }
-                        },
-                        "dataIndex": {
-                            "image": "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest"
-                        },
-                        "jobService": {
-                            "image": "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
                         }
                     }]
                 }
@@ -694,12 +644,6 @@
                             "memory": "1Gi",
                             "cpu": "500m"
                         }
-                    },
-                    "dataIndex": {
-                        "image": "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest"
-                    },
-                    "jobService": {
-                        "image": "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
                     }
                 }
             }]
@@ -717,12 +661,12 @@
                     "default": false,
                     "title": "The enabled Schema",
                     "examples": [
-                        true
+                        false
                     ]
                 }
             },
             "examples": [{
-                "enabled": true
+                "enabled": false
             }]
         },
         "argocd": {
@@ -742,7 +686,7 @@
                     "default": false,
                     "title": "The enabled Schema",
                     "examples": [
-                        true
+                        false
                     ]
                 },
                 "url": {
@@ -779,7 +723,7 @@
                 }
             },
             "examples": [{
-                "enabled": true,
+                "enabled": false,
                 "url": "",
                 "namespace": "argocd",
                 "username": "admin",
@@ -826,7 +770,7 @@
                 "channel": "alpha",
                 "installPlanApproval": "Automatic",
                 "pkgName": "backstage-operator",
-                "sourceImage": "quay.io/janus-idp/operator-catalog:0.1.0",
+                "sourceImage": "quay.io/janus-idp/operator-catalog:0.2.0",
                 "sourceNamespace": "openshift-marketplace",
                 "source": "rhdh-operator"
             }
@@ -854,12 +798,6 @@
                         "memory": "1Gi",
                         "cpu": "500m"
                     }
-                },
-                "dataIndex": {
-                    "image": "quay.io/kiegroup/kogito-data-index-postgresql-nightly:latest"
-                },
-                "jobService": {
-                    "image": "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:latest"
                 }
             }
         },

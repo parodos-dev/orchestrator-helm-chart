@@ -31,14 +31,6 @@
     {{- end -}}
 {{- end -}}
 
-{{- define "is-openshift" -}}
-    {{- if .Capabilities.APIVersions.Has "route.openshift.io/v1" -}}
-        {{- "true" -}}
-    {{- else -}}
-        {{- "false" -}}
-    {{- end -}}
-{{- end -}}
-
 {{- define "get-default-catalogsource-name" -}}
     {{- if .Capabilities.APIVersions.Has "route.openshift.io/v1" -}}
         {{- "community-operators" -}}
