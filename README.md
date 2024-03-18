@@ -7,8 +7,8 @@ This chart will deploy the following on the target OpenShift cluster:
   - OpenShift Serverless Operator
   - Knative Eventing
   - Knative Serving
-  - ArgoCD `orchestrator` project (optional: enabled by default)
-  - Tekton tasks and build pipeline (optional: enabled by default)
+  - ArgoCD `orchestrator` project (optional: disabled by default)
+  - Tekton tasks and build pipeline (optional: disabled by default)
 
 ## Prerequisites
 - You logged in to a Red Hat OpenShift Container Platform (version 4.13+) cluster as a cluster administrator.
