@@ -53,7 +53,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-delete
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded # add ,hook-failed once verified
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed once verified
     "helm.sh/hook-weight": "-1"    
 spec:
   template:
@@ -63,7 +63,7 @@ spec:
       serviceAccountName: {{ .Release.Name }}-knative-cleanup
       containers:
         - name: cleanup
-          image: bitnami/kubectl # replace with registry.redhat.io/openshift4/ose-cli:latest
+          image: registry.redhat.io/openshift4/ose-cli:latest
           command:
             - "bin/bash"
             - "-c"
