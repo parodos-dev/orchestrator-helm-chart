@@ -89,7 +89,7 @@ Follow Helm Chart installation instructions [here](https://docs.openshift.com/co
 
 ### Workflow installation
 
-Refer to [Workflows Installation](https://www.parodos.dev/serverless-workflows-helm/)
+Refer to [Workflows Installation](https://www.parodos.dev/serverless-workflows-config/)
 
 ### Uninstallation
 ```console
