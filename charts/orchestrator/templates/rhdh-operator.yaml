@@ -1,5 +1,5 @@
 {{- if .Values.rhdhOperator.enabled }}
-{{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" .Values.rhdhOperator.subscription.namespace .Release.Name) }}
+{{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" .Values.rhdhOperator.subscription.namespace .Release.Name .Capabilities.APIVersions ) }}
 {{- if and (eq $unmanagedNamespaceExists "false") .Values.rhdhOperator.enabled }}
 apiVersion: v1
 kind: Namespace
@@ -44,23 +44,20 @@ metadata:
   name: backstage-backend-auth-secret
   namespace: {{ .Values.rhdhOperator.subscription.namespace }}
 stringData:
-  BACKEND_SECRET: {{ randAlphaNum 24 | nospace | b64enc }}
-{{- if ne .Values.rhdhOperator.k8s.clusterToken "" }}
+{{- $old_secret := lookup "v1" "Secret" .Values.rhdhOperator.subscription.namespace "backstage-backend-auth-secret" }}
+{{- $generated_secret := randAlphaNum 24 | nospace | b64enc }}
+  BACKEND_SECRET: {{ $old_secret | dig "data" "BACKEND_SECRET" $generated_secret | b64dec }}
+  {{- if ne .Values.rhdhOperator.k8s.clusterToken "" }}
   K8S_CLUSTER_URL: {{ .Values.rhdhOperator.k8s.clusterUrl }}
   K8S_CLUSTER_TOKEN: {{ .Values.rhdhOperator.k8s.clusterToken }}
-{{- end }}
-{{- if .Values.argocd.enabled }}
-  ARGOCD_URL: {{ .Values.argocd.url }}
-  ARGOCD_USERNAME: {{ .Values.argocd.username }}
-  ARGOCD_PASSWORD: {{ .Values.argocd.password }}
-{{- end }}
-{{- if ne .Values.rhdhOperator.github.token "" }}
+  {{- end }}
+  {{- if ne .Values.rhdhOperator.github.token "" }}
   GITHUB_TOKEN: {{ .Values.rhdhOperator.github.token }}
-{{- end }}
-{{- if ne .Values.rhdhOperator.github.clientId "" }}
+  {{- end }}
+  {{- if ne .Values.rhdhOperator.github.clientId "" }}
   GITHUB_CLIENT_ID: {{ .Values.rhdhOperator.github.clientId }}
   GITHUB_CLIENT_SECRET: {{ .Values.rhdhOperator.github.clientSecret }}
-{{- end }}
+  {{- end }}
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -323,6 +320,10 @@ kind: Backstage
 metadata:
   name: backstage
   namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": hook-fail
+    "helm.sh/hook-weight": "2" # Is created after the job to wait for the crd to be available    
 spec:
   application:
     appConfig:
@@ -334,4 +335,6 @@ spec:
     extraEnvs:
       secrets:
         - name: backstage-backend-auth-secret
+    replicas: 1
+{{ include "wait-for-crd-available" (dict "releaseName" .Release.Name "releaseNamespace" .Release.Namespace "apiGroup" "rhdh.redhat.com" "resourceName" "backstages") }}
 {{- end }}
