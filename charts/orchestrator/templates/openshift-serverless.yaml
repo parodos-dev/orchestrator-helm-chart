@@ -25,9 +25,9 @@ metadata:
 spec:
   channel: {{ .Values.serverlessOperator.subscription.channel }}
   installPlanApproval: Automatic
-  name: serverless-operator
+  name: {{ .Values.serverlessOperator.subscription.name }}
   source: redhat-operators
-  sourceNamespace: {{ .Values.serverlessOperator.subscription.sourceNamespace | default (include "get-default-catalogsource-namespace" .) | quote }}
+  sourceNamespace: openshift-marketplace
   {{- end }}
   {{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" "knative-serving" .Release.Name .Capabilities.APIVersions) }}
   {{- if eq $unmanagedNamespaceExists "false" }}

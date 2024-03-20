@@ -14,18 +14,6 @@ metadata:
 spec: {}
 ---
 {{- end }}
-{{- if ne .Values.rhdhOperator.subscription.sourceImage "" }}
-apiVersion: operators.coreos.com/v1alpha1
-kind: CatalogSource
-metadata:
-  name: {{ .Values.rhdhOperator.subscription.source }}
-  namespace: openshift-marketplace
-spec:
-  displayName: RHDH Operator (Development)
-  image: {{ .Values.rhdhOperator.subscription.sourceImage }}
-  sourceType: grpc
----
-{{- end }}
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
@@ -34,9 +22,9 @@ metadata:
 spec:
   channel: {{ .Values.rhdhOperator.subscription.channel }}
   installPlanApproval: Automatic
-  name: {{ .Values.rhdhOperator.subscription.pkgName }}
-  source: {{ .Values.rhdhOperator.subscription.source }}
-  sourceNamespace: {{ .Values.rhdhOperator.subscription.sourceNamespace | default (include "get-default-catalogsource-namespace" .) | quote }}
+  name: {{ .Values.rhdhOperator.subscription.name }}
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
 ---
 apiVersion: v1
 kind: Secret

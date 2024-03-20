@@ -13,32 +13,25 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | Parameter                | Description             | Default        |
 | ------------------------ | ----------------------- | -------------- |
 | `sonataFlowOperator.enabled` | whether the operator should be deployed by the chart | `true` |
-| `sonataFlowOperator.subscription.namespace` | namespace where the operator should be deployed | `"openshift-operators"` |
+| `sonataFlowOperator.subscription.namespace` | namespace where the operator should be deployed | `"openshift-serverless-logic"` |
 | `sonataFlowOperator.subscription.channel` | channel of an operator package to subscribe to | `"alpha"` |
 | `sonataFlowOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
-| `sonataFlowOperator.subscription.pkgName` | name of the operator package | `"sonataflow-operator"` |
-| `sonataFlowOperator.subscription.sourceImage` | catalog image of the development build. Unset it for the release build. | `"quay.io/masayag/kogito-serverless-operator-catalog:v999.0.0-snapshot"` |
-| `sonataFlowOperator.subscription.sourceNamespace` | namespace of the catalog source | `"openshift-marketplace"` |
-| `sonataFlowOperator.subscription.source` | name of the catalog source for the operator | `"sonataflow-operator"` |
+| `sonataFlowOperator.subscription.name` | name of the operator package | `"logic-operator-rhel8"` |
 | `serverlessOperator.enabled` | whether the operator should be deployed by the chart | `true` |
 | `serverlessOperator.subscription.namespace` | namespace where the operator should be deployed | `"openshift-serverless"` |
 | `serverlessOperator.subscription.channel` | channel of an operator package to subscribe to | `"stable"` |
 | `serverlessOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
-| `serverlessOperator.subscription.pkgName` | name of the operator package | `"serverless-operator"` |
-| `serverlessOperator.subscription.sourceNamespace` | namespace of the catalog source | `"openshift-marketplace"` |
+| `serverlessOperator.subscription.name` | name of the operator package | `"serverless-operator"` |
 | `rhdhOperator.enabled` | whether the operator should be deployed by the chart | `true` |
 | `rhdhOperator.github.token` | An authentication token as expected by GitHub. Required for importing resource to the catalog, launching software templates and more. | `""` |
 | `rhdhOperator.github.clientId` | The client ID that you generated on GitHub, for GitHub authentication (requires GitHub App). | `""` |
 | `rhdhOperator.github.clientSecret` | The client secret tied to the generated client ID. | `""` |
 | `rhdhOperator.k8s.clusterToken` | Kubernetes API bearer token used for authentication. | `""` |
 | `rhdhOperator.k8s.clusterUrl` | API url of the kubernetes cluster | `""` |
-| `rhdhOperator.subscription.namespace` | namespace where the operator should be deployed | `"backstage-system"` |
-| `rhdhOperator.subscription.channel` | channel of an operator package to subscribe to | `"alpha"` |
+| `rhdhOperator.subscription.namespace` | namespace where the operator should be deployed | `"rhdh-operator"` |
+| `rhdhOperator.subscription.channel` | channel of an operator package to subscribe to | `"fast"` |
 | `rhdhOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
-| `rhdhOperator.subscription.pkgName` | name of the operator package | `"backstage-operator"` |
-| `rhdhOperator.subscription.sourceImage` |  | `"quay.io/janus-idp/operator-catalog:0.2.0"` |
-| `rhdhOperator.subscription.sourceNamespace` | namespace of the catalog source | `"openshift-marketplace"` |
-| `rhdhOperator.subscription.source` | name of the catalog source for the operator | `"rhdh-operator"` |
+| `rhdhOperator.subscription.name` | name of the operator package | `"rhdh"` |
 | `postgres.serviceName` | The name of the Postgres DB service to be used by platform services. Cannot be empty. | `"sonataflow-psql-postgresql"` |
 | `postgres.serviceNamespace` | The namespace of the Postgres DB service to be used by platform services. | `"sonataflow-infra"` |
 | `postgres.authSecret.name` | name of existing secret to use for PostgreSQL credentials. | `"sonataflow-psql-postgresql"` |
