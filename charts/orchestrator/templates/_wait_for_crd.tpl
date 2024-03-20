@@ -50,7 +50,7 @@ metadata:
   namespace: {{ .releaseNamespace }}
   annotations:
     "helm.sh/hook": post-install
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded # add ,hook-failed once verified
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
     "helm.sh/hook-weight": "1"    
 spec:
   template:
@@ -67,7 +67,7 @@ spec:
           - "-c"
         args:
           - |
-            echo "Wait for condition"
+            echo "Wait for availability of CRD {{ printf "%s.%s" .resourceName .apiGroup }}"
             count=60
             while [[ count -ne 0 ]]
             do

@@ -114,14 +114,14 @@ spec:
             - "-c"
           args:
             - |
+              kubectl get crd sonataflowclusterplatforms.sonataflow.org
+              if [ $? -eq 0 ]; then
+                kubectl delete sonataflowclusterplatforms.sonataflow.org cluster-platform
+              fi
               kubectl get crd sonataflowplatforms.sonataflow.org
               if [ $? -eq 0 ]; then
                 kubectl delete -n {{ .Values.orchestrator.namespace }} sonataflowplatforms.sonataflow.org sonataflow-platform
               fi
-              kubectl get crd sonataflowclusterplatforms.sonataflow.org
-              if [ $? -eq 0 ]; then
-                kubectl delete sonataflowclusterplatforms.sonataflow.org cluster-platform
-              fi              
   {{- if .Values.orchestrator.devmode }}
               kubectl delete namespace {{ .Values.orchestrator.namespace }}
   {{- end }}
