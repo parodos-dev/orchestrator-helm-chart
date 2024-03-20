@@ -59,7 +59,7 @@ For OpenShift-related configuration in the chart visit [here](https://github.com
 
 ## Installation
 **Note: ArgoCD and workflow namespace**
-If you manually the created the workflow namespaces (e.g., $WORKFLOW_NAMESPACE), run this command to add the required label that allows
+If you manually created the workflow namespaces (e.g., $WORKFLOW_NAMESPACE), run this command to add the required label that allows
 ArgoCD deploying instances there:
 ```console
 oc label ns $WORKFLOW_NAMESPACE argocd.argoproj.io/managed-by=$ARGOCD_NAMESPACE
@@ -151,7 +151,7 @@ knativeserving.operator.knative.dev/knative-serving condition met
 
 ### Workflow installation
 
-Follow [Workflows Installation](https://www.parodos.dev/serverless-workflows-helm/)
+Follow [Workflows Installation](https://www.parodos.dev/serverless-workflows-config/)
 
 ## Cleanup
 To remove the installation from the cluster, run:
