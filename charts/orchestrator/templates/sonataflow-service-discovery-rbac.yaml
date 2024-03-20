@@ -1,6 +1,7 @@
+{{- if .Values.sonataFlowOperator.enabled }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: service-discovery-role
   namespace: {{ .Values.orchestrator.namespace }}
@@ -17,7 +18,6 @@ rules:
   - apiGroups:
       - networking.k8s.io
     resources:
-      - ingress
       - ingresses
     verbs:
       - get
@@ -26,7 +26,6 @@ rules:
   - apiGroups:
       - serving.knative.dev
     resources:
-      - service
       - services
     verbs:
       - get
@@ -35,7 +34,6 @@ rules:
   - apiGroups:
       - eventing.knative.dev
     resources:
-      - broker
       - brokers
     verbs:
       - get
@@ -70,3 +68,5 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: default
+    namespace: {{ .Values.orchestrator.namespace }}
+{{- end }}

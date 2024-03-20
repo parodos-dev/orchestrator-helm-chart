@@ -6,17 +6,22 @@
     {{- $namespace := index . 2 -}}
     {{- $name := index . 3 -}}
     {{- $releaseName := index . 4 -}}
+    {{- $apiCapabilities := index . 5 -}}
     {{- $unmanagedSubscriptionExists := "true" -}}
-    {{- $existingOperator := lookup $api $kind $namespace $name -}}
-    {{- if empty $existingOperator -}}
-        {{- "false" -}}
-    {{- else -}}
-        {{- $isManagedResource := include "is-managed-resource" (list $existingOperator $releaseName) -}}
-        {{- if eq $isManagedResource "true" -}}
+    {{- if $apiCapabilities.Has (printf "%s/%s" $api $kind) }}
+        {{- $existingOperator := lookup $api $kind $namespace $name -}}
+        {{- if empty $existingOperator -}}
             {{- "false" -}}
         {{- else -}}
-            {{- "true" -}}
+            {{- $isManagedResource := include "is-managed-resource" (list $existingOperator $releaseName) -}}
+            {{- if eq $isManagedResource "true" -}}
+                {{- "false" -}}
+            {{- else -}}
+                {{- "true" -}}
+            {{- end -}}
         {{- end -}}
+    {{- else -}}
+        {{- "false" -}}
     {{- end -}}
 {{- end -}}
 
@@ -80,7 +85,7 @@
 
 
 {{- define "install-tekton-task" -}}
-  {{- if and (or .Values.orchestrator.devmode .Values.tekton.enabled) (ne .Values.rhdhOperator.k8s.clusterToken "") (.Capabilities.APIVersions.Has "tekton.dev/v1beta1/Task") }}
+  {{- if and (or .Values.orchestrator.devmode .Values.tekton.enabled) (ne .Values.rhdhOperator.k8s.clusterToken "") (.Capabilities.APIVersions.Has "tekton.dev/v1/Task") }}
         {{- "true" -}}
     {{- else }}
         {{- "false" -}}

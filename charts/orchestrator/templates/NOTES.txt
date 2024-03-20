@@ -15,18 +15,18 @@ Helm Release {{ .Release.Name }} installed in namespace {{ .Release.Namespace }}
 {{- $timeout := "--timeout=5m" }}
 
 {{- if .Values.serverlessOperator.enabled }}
-{{- $unmanagedSubscriptionExists := include "unmanaged-resource-exists" (list "operators.coreos.com/v1alpha1" "Subscription" .Values.serverlessOperator.subscription.namespace "serverless-operator" .Release.Name) }}
+{{- $unmanagedSubscriptionExists := include "unmanaged-resource-exists" (list "operators.coreos.com/v1alpha1" "Subscription" .Values.serverlessOperator.subscription.namespace "serverless-operator" .Release.Name .Capabilities.APIVersions ) }}
 {{- if eq $unmanagedSubscriptionExists "false" }}
 {{- $serverlessOperatorInstalled = $yes }}
 {{- end }}
 {{- end }}
 
-{{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" "knative-serving" .Release.Name) }}
-{{- $unmanagedKnativeEventingExists := include "unmanaged-resource-exists" (list "operator.knative.dev/v1beta1" "KnativeEventing" "knative-eventing" "knative-eventing" .Release.Name) }}
+{{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" "knative-serving" .Release.Name .Capabilities.APIVersions) }}
+{{- $unmanagedKnativeEventingExists := include "unmanaged-resource-exists" (list "operator.knative.dev/v1beta1" "KnativeEventing" "knative-eventing" "knative-eventing" .Release.Name .Capabilities.APIVersions ) }}
 {{- if eq $unmanagedKnativeEventingExists "false" }}
 {{- $knativeEventingInstalled = $yes }}
 {{- end }}
-{{- $unmanagedKnativeServingExists := include "unmanaged-resource-exists" (list "operator.knative.dev/v1beta1" "KnativeServing" "knative-serving" "knative-serving" .Release.Name) }}
+{{- $unmanagedKnativeServingExists := include "unmanaged-resource-exists" (list "operator.knative.dev/v1beta1" "KnativeServing" "knative-serving" "knative-serving" .Release.Name .Capabilities.APIVersions ) }}
 {{- if eq $unmanagedKnativeServingExists "false" }}
 {{- $knativeServingInstalled = $yes }}
 {{- end }}
@@ -65,8 +65,8 @@ ArgoCD project               {{ $argocdInstalled }}        {{ .Values.argocd.nam
 {{/* Empty line */}}
 ====================================================================
 Prerequisites check:
-{{- if not (.Capabilities.APIVersions.Has "tekton.dev/v1beta1/Task") }}
-WARN: CRD for tekton.dev/v1beta1/Task is not installed
+{{- if not (.Capabilities.APIVersions.Has "tekton.dev/v1/Task") }}
+WARN: CRD for tekton.dev/v1/Task is not installed
 {{- else }}
 The required CRD tekton.dev/v1beta1/Task is already installed.
 {{- end }}
