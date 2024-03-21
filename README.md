@@ -1,14 +1,14 @@
 # Orchestrator Helm Chart
-Helm chart to deploy the Orchestrator solution suite on OpenShift, including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator, Knative Eventing, and Knative Serving.
+Helm chart to deploy the Orchestrator solution suite. The following components will be installed on the cluster:
 
 This chart will deploy the following on the target OpenShift cluster:
-  - Janus IDP backstage
-  - SonataFlow Operator (with Data-Index and Job Service)
-  - OpenShift Serverless Operator
+- RHDH (Red Hat Developer Hub) Backstage
+- OpenShift Serverless Logic Operator (with Data-Index and Job Service)
+- OpenShift Serverless Operator
   - Knative Eventing
   - Knative Serving
-  - ArgoCD `orchestrator` project (optional: disabled by default)
-  - Tekton tasks and build pipeline (optional: disabled by default)
+- ArgoCD `orchestrator` project (optional: disabled by default)
+- Tekton tasks and build pipeline (optional: disabled by default)
 
 ## Prerequisites
 - You logged in to a Red Hat OpenShift Container Platform (version 4.13+) cluster as a cluster administrator.
