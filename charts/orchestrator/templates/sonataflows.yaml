@@ -11,13 +11,12 @@
 {{- end }}
 
 {{- if .Values.sonataFlowOperator.enabled }}
-  {{- $ns := .Values.orchestrator.namespace }}
   {{- if .Values.orchestrator.devmode }}
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ $ns }}
+  name: {{ .Values.orchestrator.namespace }}
   labels:
     {{- if .Values.argocd.enabled }}
     argocd.argoproj.io/managed-by: {{ .Values.argocd.namespace }}
@@ -28,7 +27,7 @@ apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlowPlatform
 metadata:
   name: sonataflow-platform
-  namespace: {{ $ns }}
+  namespace: {{ .Values.orchestrator.namespace }}
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-delete-policy": hook-fail
@@ -66,6 +65,6 @@ metadata:
 spec:
   platformRef:
     name: sonataflow-platform
-    namespace: {{ $ns }}
+    namespace: {{ .Values.orchestrator.namespace }}
 {{ include "wait-for-crd-available" (dict "releaseName" .Release.Name "releaseNamespace" .Release.Namespace "apiGroup" "sonataflow.org" "resourceName" "sonataflowclusterplatforms") }}
 {{- end }}

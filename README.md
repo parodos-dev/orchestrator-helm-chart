@@ -1,14 +1,14 @@
 # Orchestrator Helm Chart
-Helm chart to deploy the Orchestrator solution suite on OpenShift, including Janus IDP backstage, SonataFlow Operator, OpenShift Serverless Operator, Knative Eventing, and Knative Serving.
+Helm chart to deploy the Orchestrator solution suite. The following components will be installed on the cluster:
 
 This chart will deploy the following on the target OpenShift cluster:
-  - Janus IDP backstage
-  - SonataFlow Operator (with Data-Index and Job Service)
-  - OpenShift Serverless Operator
+- RHDH (Red Hat Developer Hub) Backstage
+- OpenShift Serverless Logic Operator (with Data-Index and Job Service)
+- OpenShift Serverless Operator
   - Knative Eventing
   - Knative Serving
-  - ArgoCD `orchestrator` project (optional: disabled by default)
-  - Tekton tasks and build pipeline (optional: disabled by default)
+- ArgoCD `orchestrator` project (optional: disabled by default)
+- Tekton tasks and build pipeline (optional: disabled by default)
 
 ## Prerequisites
 - You logged in to a Red Hat OpenShift Container Platform (version 4.13+) cluster as a cluster administrator.
@@ -97,56 +97,62 @@ The $K8S_CLUSTER_TOKEN should provide access to resources as detailed [here](htt
 A sample output:
 ```
 NAME: orchestrator
-LAST DEPLOYED: Tue Jan  2 23:17:54 2024
+LAST DEPLOYED: Thu Mar 21 14:31:09 2024
 NAMESPACE: orchestrator
 STATUS: deployed
 REVISION: 1
+TEST SUITE: None
 USER-SUPPLIED VALUES:
 
 Components                   Installed   Namespace
 ====================================================================
-Backstage                    YES        backstage-system
-Postgres DB - Backstage      NO         backstage-system
+Backstage                    YES        rhdh-operator
+Postgres DB - Backstage      NO         rhdh-operator
 Red Hat Serverless Operator  YES        openshift-serverless
 KnativeServing               YES        knative-serving
 KnativeEventing              YES        knative-eventing
-SonataFlow Operator          YES        openshift-operators
+SonataFlow Operator          YES        openshift-serverless-logic
 SonataFlowPlatform           YES        sonataflow-infra
 Data Index Service           YES        sonataflow-infra
 Job Service                  YES        sonataflow-infra
-Tekton pipeline              YES        sonataflow-infra
-Tekton task                  YES        sonataflow-infra
-ArgoCD project               YES        janus-argocd
+Tekton pipeline              NO         sonataflow-infra
+Tekton task                  NO         sonataflow-infra
+ArgoCD project               NO         argocd
 
 ====================================================================
 Prerequisites check:
 The required CRD tekton.dev/v1beta1/Task is already installed.
 The required CRD tekton.dev/v1/Pipeline is already installed.
-The required CRD argoproj.io/v1alpha1/AppProject is already installed.
+WARN: CRD for argoproj.io/v1alpha1/AppProject is not installed
 ====================================================================
-```
+
 
 Run the following commands to wait until the services are ready:
-```console
   oc wait -n openshift-serverless deploy/knative-openshift --for=condition=Available --timeout=5m
-  oc wait -n openshift-operators deploy/sonataflow-operator-controller-manager --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra deploy/sonataflow-platform-data-index-service --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra deploy/sonataflow-platform-jobs-service --for=condition=Available --timeout=5m
-  oc wait -n backstage-system pod/backstage-psql-backstage-0 --for=condition=Ready --timeout=5m
-  oc wait -n backstage-system backstage backstage --for=condition=Deployed=True
-  oc wait -n backstage-system deploy/backstage-backstage --for=condition=Available --timeout=5m
   oc wait -n knative-eventing knativeeventing/knative-eventing --for=condition=Ready --timeout=5m
   oc wait -n knative-serving knativeserving/knative-serving --for=condition=Ready --timeout=5m
+  oc wait -n openshift-serverless-logic deploy/logic-operator-rhel8-controller-manager --for=condition=Available --timeout=5m
+  oc wait -n sonataflow-infra sonataflowplatform/sonataflow-platform --for=condition=Succeed --timeout=5m
+  oc wait -n sonataflow-infra deploy/sonataflow-platform-data-index-service --for=condition=Available --timeout=5m
+  oc wait -n sonataflow-infra deploy/sonataflow-platform-jobs-service --for=condition=Available --timeout=5m
+  oc wait -n rhdh-operator backstage backstage --for=condition=Deployed=True
+  oc wait -n rhdh-operator deploy/backstage-backstage --for=condition=Available --timeout=5m
 
+In case of a CR deployment failure, check the logs of the pods created by the corresponding job to deploy the failed CRs instance. The jobs are always
+deleted after the deployment of the chart is completed.
+```
+
+Run the commands to wait until the services are ready should produce the following output:
+```console
 deployment.apps/knative-openshift condition met
-deployment.apps/sonataflow-operator-controller-manager condition met
-deployment.apps/sonataflow-platform-data-index-service condition met
-deployment.apps/sonataflow-platform-jobs-service condition met
-pod/backstage-psql-backstage-0 condition met
-backstage.rhdh.redhat.com/backstage condition met
-deployment.apps/backstage-backstage condition met
 knativeeventing.operator.knative.dev/knative-eventing condition met
 knativeserving.operator.knative.dev/knative-serving condition met
+deployment.apps/logic-operator-rhel8-controller-manager condition met
+sonataflowplatform.sonataflow.org/sonataflow-platform condition met
+deployment.apps/sonataflow-platform-data-index-service condition met
+deployment.apps/sonataflow-platform-jobs-service condition met
+backstage.rhdh.redhat.com/backstage condition met
+deployment.apps/backstage-backstage condition met
 ```
 
 ### Workflow installation
