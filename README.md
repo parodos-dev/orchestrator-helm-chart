@@ -1,10 +1,10 @@
 ## Orchestrator Helm Repository
 Helm chart to deploy the Orchestrator solution suite. The following components will be installed on the cluster:
-- Janus IDP backstage
-- SonataFlow Operator (with Data-Index and Job Service)
+- RHDH (Red Hat Developer Hub) Backstage
+- OpenShift Serverless Logic Operator (with Data-Index and Job Service)
 - OpenShift Serverless Operator
-- Knative Eventing
-- Knative Serving
+  - Knative Eventing
+  - Knative Serving
 
 ## Usage
 
@@ -39,11 +39,23 @@ Note: the default settings provided in [PostreSQL values](./postgresql/values.ya
 Any changes to the first configuration must also be reported in the latter.
 
 ### Installation
-```
+Add the repository:
+```bash
 helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
-"orchestrator" has been added to your repositories
+```
 
+Expect result:
+```
+"orchestrator" has been added to your repositories
+```
+
+Verify the repository is shown:
+```
 helm repo list
+```
+
+Expect result:
+```
 NAME        	URL                                                  
 orchestrator	https://parodos-dev.github.io/orchestrator-helm-chart
 ```
@@ -99,12 +111,12 @@ helm delete orchestrator
 release "orchestrator" uninstalled
 ```
 
-Note that the CRDs created during the installation process will remain in the cluster. To clean the rest of the resources, run:
+Note that the CRDs created during the installation process will remain in the cluster.
+To comprehensively remove the remaining resources, which **cannot** be recovered once deleted, execute the following command:
 ```console
-oc delete csv sonataflow-operator.v999.0.0-snapshot -n openshift-operators
 oc get crd -o name | grep -e 'sonataflow' -e rhdh | xargs oc delete
 oc delete pvc --all -n orchestrator
-oc delete ns backstage-system
+oc delete ns orchestrator
 ```
 
 ## Helm index
