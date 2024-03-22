@@ -54,8 +54,8 @@ tekton:
   enabled: false # whether to create the Tekton pipeline resources
 
 argocd:
-  enabled: false # whether to install the ArgoCD plugin and create the AppProject
+  enabled: false # whether to install the ArgoCD plugin and create the orchestrator AppProject
   url: ""
-  namespace: argocd
+  namespace: orchestrator-gitops
   username: admin
   password: ""

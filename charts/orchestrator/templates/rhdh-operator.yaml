@@ -39,6 +39,11 @@ stringData:
   K8S_CLUSTER_URL: {{ .Values.rhdhOperator.k8s.clusterUrl }}
   K8S_CLUSTER_TOKEN: {{ .Values.rhdhOperator.k8s.clusterToken }}
   {{- end }}
+{{- if .Values.argocd.enabled }}
+  ARGOCD_URL: {{ .Values.argocd.url }}
+  ARGOCD_USERNAME: {{ .Values.argocd.username }}
+  ARGOCD_PASSWORD: {{ .Values.argocd.password }}
+{{- end }}
   {{- if ne .Values.rhdhOperator.github.token "" }}
   GITHUB_TOKEN: {{ .Values.rhdhOperator.github.token }}
   {{- end }}
