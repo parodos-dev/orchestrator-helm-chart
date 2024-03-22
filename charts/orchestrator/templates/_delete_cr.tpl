@@ -1,9 +1,11 @@
-{{- if .Values.sonataFlowOperator.enabled }}
+{{- define "delete-cr-on-uninstall" }}
+  {{ $resourceAPIGroup := printf "%s.%s" .kind .apiGroup }}
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ .Release.Name }}-sonataflow-hook-cleanup
-  namespace: {{ .Release.Namespace }}
+  name: {{ printf "%s-%s-cleanup" .releaseName .kind }}
+  namespace: {{ .releaseNamespace }}
   annotations:
     "helm.sh/hook": pre-delete
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
@@ -12,7 +14,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ .Release.Name }}-sonataflow-hook-cleanup
+  name: {{ printf "%s-%s-cleanup" .releaseName .kind }}
   annotations:
     "helm.sh/hook": pre-delete
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
@@ -24,78 +26,79 @@ rules:
     - customresourcedefinitions
     verbs:
     - get
-  - apiGroups:
-    - sonataflow.org
+{{- if not (hasKey . "targetNamespace") }}
+  - apiGroups: # Tackling cluster scoped resources such as sonataflowclusterplatform
+    - {{ .apiGroup }}
     resources:
-    - sonataflowclusterplatforms
+    - {{ .kind }}
     verbs:
+    - get
+    - list
     - delete
+{{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ .Release.Name }}-sonataflow-hook-cleanup
+  name: {{ printf "%s-%s-cleanup" .releaseName .kind }}
   annotations:
     "helm.sh/hook": pre-delete
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
     "helm.sh/hook-weight": "0"
 subjects:
   - kind: ServiceAccount
-    name: {{ .Release.Name }}-sonataflow-hook-cleanup
-    namespace: {{ .Release.Namespace }}
+    name: {{ printf "%s-%s-cleanup" .releaseName .kind }}
+    namespace: {{ .releaseNamespace }}
 roleRef:
   kind: ClusterRole
-  name: {{ .Release.Name }}-sonataflow-hook-cleanup
-  apiGroup: rbac.authorization.k8s.io    
+  name: {{ printf "%s-%s-cleanup" .releaseName .kind }}
+  apiGroup: rbac.authorization.k8s.io 
 ---
+{{- if (hasKey . "targetNamespace") }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: {{ .Release.Name }}-sonataflow-hook-cleanup
-  namespace: {{ .Values.orchestrator.namespace }}
+  name: {{ printf "%s-%s-cleanup" .releaseName .kind }}
+  namespace: {{ .targetNamespace }}
   annotations:
     "helm.sh/hook": pre-delete
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
     "helm.sh/hook-weight": "0"    
 rules:
   - apiGroups:
-    - sonataflow.org
+    - {{ .apiGroup }}
     resources:
-    - sonataflowplatforms
+    - {{ .kind}}
     verbs:
+    - get
+    - list
     - delete
-  {{- if .Values.orchestrator.devmode }}
-  - apiGroups:
-    - ""
-    resources:
-    - namespaces
-    verbs:
-    - delete
-  {{- end }}
+    - patch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ .Release.Name }}-sonataflow-hook-cleanup
-  namespace: {{ .Values.orchestrator.namespace }}
+  name: {{ printf "%s-%s-cleanup" .releaseName .kind }}
+  namespace: {{ .targetNamespace }}
   annotations:
     "helm.sh/hook": pre-delete
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
     "helm.sh/hook-weight": "0"    
 subjects:
   - kind: ServiceAccount
-    name: {{ .Release.Name }}-sonataflow-hook-cleanup
-    namespace: {{ .Release.Namespace }}
+    name: {{ printf "%s-%s-cleanup" .releaseName .kind }}
+    namespace: {{ .releaseNamespace }}
 roleRef:
   kind: Role
-  name: {{ .Release.Name }}-sonataflow-hook-cleanup
+  name: {{ printf "%s-%s-cleanup" .releaseName .kind }}
   apiGroup: rbac.authorization.k8s.io
+{{- end }}
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Release.Name }}-sonataflow-hook-cleanup
-  namespace: {{ .Release.Namespace }}
+  name: {{ printf "%s-%s-cleanup" .releaseName .kind }}
+  namespace: {{ .releaseNamespace }}
   annotations:
     "helm.sh/hook": pre-delete
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
@@ -103,9 +106,9 @@ metadata:
 spec:
   template:
     metadata:
-      name: {{ .Release.Name }}-sonataflow-hook-cleanup
+      name: {{ printf "%s-%s-cleanup" .releaseName .kind }}
     spec:
-      serviceAccountName: {{ .Release.Name }}-sonataflow-hook-cleanup
+      serviceAccountName: {{ printf "%s-%s-cleanup" .releaseName .kind }}
       containers:
         - name: cleanup
           image: registry.redhat.io/openshift4/ose-cli:latest
@@ -114,17 +117,14 @@ spec:
             - "-c"
           args:
             - |
-              kubectl get crd sonataflowclusterplatforms.sonataflow.org
+              echo "Cleanup Job for CR {{ .kind }} of {{ $resourceAPIGroup }} started"
+              kubectl get crd {{ $resourceAPIGroup }}
               if [ $? -eq 0 ]; then
-                kubectl delete sonataflowclusterplatforms.sonataflow.org cluster-platform
+                kubectl get {{ if (hasKey . "targetNamespace") }} -n {{ .targetNamespace }} {{ end }} {{ $resourceAPIGroup }} {{ .resourceName }}
+                if [ $? -eq 0 ]; then
+                  kubectl delete {{ if (hasKey . "targetNamespace") }} -n {{ .targetNamespace }} {{ end }} {{ $resourceAPIGroup }} {{ .resourceName }}
+                fi
               fi
-              kubectl get crd sonataflowplatforms.sonataflow.org
-              if [ $? -eq 0 ]; then
-                kubectl delete -n {{ .Values.orchestrator.namespace }} sonataflowplatforms.sonataflow.org sonataflow-platform
-              fi
-  {{- if .Values.orchestrator.devmode }}
-              kubectl delete namespace {{ .Values.orchestrator.namespace }}
-  {{- end }}
-              echo "Job finished"
-      restartPolicy: Never    
+              echo "Cleanup Job finished"
+      restartPolicy: Never
 {{- end }}

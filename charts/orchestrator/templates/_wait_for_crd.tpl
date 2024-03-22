@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ printf "%s-crd-%s" .releaseName .resourceName }}
+  name: {{ printf "%s-%s-crd-availability-check" .releaseName .kind }}
   namespace: {{ .releaseNamespace }}
   annotations:
     "helm.sh/hook": post-install
@@ -13,7 +13,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ printf "%s-crd-%s" .releaseName .resourceName }}
+  name: {{ printf "%s-%s-crd-availability-check" .releaseName .kind }}
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
@@ -29,24 +29,24 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ printf "%s-crd-%s" .releaseName .resourceName }}
+  name: {{ printf "%s-%s-crd-availability-check" .releaseName .kind }}
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
     "helm.sh/hook-weight": "0"
 subjects:
   - kind: ServiceAccount
-    name: {{ printf "%s-crd-%s" .releaseName .resourceName }}
+    name: {{ printf "%s-%s-crd-availability-check" .releaseName .kind }}
     namespace: {{ .releaseNamespace }}
 roleRef:
   kind: ClusterRole
-  name: {{ printf "%s-crd-%s" .releaseName .resourceName }}
+  name: {{ printf "%s-%s-crd-availability-check" .releaseName .kind }}
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ printf "%s-crd-%s" .releaseName .resourceName }}
+  name: {{ printf "%s-%s-crd-availability-check" .releaseName .kind }}
   namespace: {{ .releaseNamespace }}
   annotations:
     "helm.sh/hook": post-install
@@ -55,9 +55,9 @@ metadata:
 spec:
   template:
     metadata:
-      name: {{ printf "%s-crd-%s" .releaseName .resourceName }}
+      name: {{ printf "%s-%s-crd-availability-check" .releaseName .kind }}
     spec:
-      serviceAccountName: {{ printf "%s-crd-%s" .releaseName .resourceName }}
+      serviceAccountName: {{ printf "%s-%s-crd-availability-check" .releaseName .kind }}
       restartPolicy: Never
       containers:
       - name: deploy-manifest
@@ -67,11 +67,11 @@ spec:
           - "-c"
         args:
           - |
-            echo "Wait for availability of CRD {{ printf "%s.%s" .resourceName .apiGroup }}"
+            echo "Wait for availability of CRD {{ printf "%s.%s" .kind .apiGroup }}"
             count=60
             while [[ count -ne 0 ]]
             do
-              kubectl get crd {{ printf "%s.%s" .resourceName .apiGroup }} -oname
+              kubectl get crd {{ printf "%s.%s" .kind .apiGroup }} -oname
               if [[ $? -eq 0 ]]; then
                 echo "Job finished"
                 exit 0
@@ -79,6 +79,5 @@ spec:
               ((count--))
               sleep 5
             done
-            echo "Could not find CRD {{ printf "%s.%s" .resourceName .apiGroup }} deployed"
----
+            echo "Could not find CRD {{ printf "%s.%s" .kind .apiGroup }} deployed"
 {{- end -}}
