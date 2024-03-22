@@ -20,7 +20,7 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
     "helm.sh/hook-weight": "0"
 rules:
-  - apiGroups: 
+  - apiGroups:
     - apiextensions.k8s.io
     resources:
     - customresourcedefinitions
@@ -102,7 +102,7 @@ metadata:
   annotations:
     "helm.sh/hook": pre-delete
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
-    "helm.sh/hook-weight": "1"    
+    "helm.sh/hook-weight": "1"
 spec:
   template:
     metadata:
