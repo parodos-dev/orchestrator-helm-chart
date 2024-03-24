@@ -26,14 +26,8 @@ This chart will deploy the following on the target OpenShift cluster:
 
 Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL 8 images which are not supported on the ARM64 architecture. Consequently, deployment of this helm chart on an [OpenShift Local](https://www.redhat.com/sysadmin/install-openshift-local) cluster on Macbook laptops with M1/M2 chips is not supported.
 
-### Tekton resources
-The Tekton pipeline requires to configure credentials to access the Quay.io repository and to push on the GitHub repos.
-
-Follow this section to install the required [Prerequisites](https://github.com/parodos-dev/workflows-tekton-pipeline?tab=readme-ov-file#prerequisites).
-
-The next step is to create the [docker credentials](https://github.com/parodos-dev/workflows-tekton-pipeline?tab=readme-ov-file#installing-docker-credentials)
-to push the image artifacts on Quay and [Define the SSH credentials](https://github.com/parodos-dev/workflows-tekton-pipeline?tab=readme-ov-file#define-the-ssh-credentials)
-to push the deployment configuration to the source repository.
+### GitOps environment
+See the dedicated [document](./GitOps.md)
 
 ### Deploying PostgreSQL reference implementation
 Follow these steps to deploy a sample PostgreSQL instance in the `sonataflow-infra` namespace, with minimal requirements to deploy the Orchestrator.

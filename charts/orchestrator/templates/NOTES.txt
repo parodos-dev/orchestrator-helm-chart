@@ -59,8 +59,8 @@ SonataFlow Operator          {{ $sonataFlowOperatorInstalled }}        {{ .Value
 SonataFlowPlatform           {{ $sonataFlowPlatformInstalled }}        {{ .Values.orchestrator.namespace }}
 Data Index Service           {{ $sonataFlowPlatformInstalled }}        {{ .Values.orchestrator.namespace }}
 Job Service                  {{ $sonataFlowPlatformInstalled }}        {{ .Values.orchestrator.namespace }}
-Tekton pipeline              {{ $tektonPipelineInstalled }}        {{ .Values.orchestrator.namespace }}
-Tekton task                  {{ $tektonTaskInstalled }}        {{ .Values.orchestrator.namespace }}
+Tekton pipeline              {{ $tektonPipelineInstalled }}        {{ .Values.argocd.namespace }}
+Tekton task                  {{ $tektonTaskInstalled }}        {{ .Values.argocd.namespace }}
 ArgoCD project               {{ $argocdInstalled }}        {{ .Values.argocd.namespace }}
 {{/* Empty line */}}
 ====================================================================
