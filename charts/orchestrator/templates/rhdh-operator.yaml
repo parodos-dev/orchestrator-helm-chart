@@ -229,9 +229,9 @@ data:
                     module: OrchestratorPlugin
                     path: /orchestrator
       - disabled: false
-        package: "@janus-idp/plugin-notifications@1.1.12"
+        package: "@janus-idp/plugin-notifications@1.1.13"
         integrity: >-
-          sha512-GCdEuHRQek3ay428C8C4wWgxjNpNwCXgIdFbUUFGCLLkBFSaOEw+XaBvWaBGtQ5BLgE3jQEUxa+422uzSYC5oQ==
+          sha512-Vf5tbLqdK2vnJaJovaABcynDNbL4gpYwFkBfc7El2xgp6OesF0/JwdRoVwRjEGCqiXSgM4wyCjwo1v5Gl82URw==
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -250,9 +250,9 @@ data:
                     config:
                       pollingIntervalMs: 5000
       - disabled: false
-        package: "@janus-idp/plugin-notifications-backend-dynamic@1.3.6"
+        package: "@janus-idp/plugin-notifications-backend-dynamic@1.4.0"
         integrity: >-
-          sha512-Qd8pniy1yRx+x7LnwjzQ6k9zP+C1yex24MaCcx7dGDPT/XbTokwoSZr4baSSn8jUA6P45NUUevu1d629mG4JGQ==
+          sha512-V/FQwzAAUuhjUeZiYqCVJqPz5U3TRYEZN4LfxOwtG6lEps7fdwBNax7XeEUuCJG0D8Wv7RR+CtxljOKRxn21AA==
 ---
 apiVersion: v1
 kind: ConfigMap
