@@ -30,26 +30,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 See the dedicated [document](./GitOps.md)
 
 ### Deploying PostgreSQL reference implementation
-Follow these steps to deploy a sample PostgreSQL instance in the `sonataflow-infra` namespace, with minimal requirements to deploy the Orchestrator.
-This step is optional and can be replaced with running the orchestrator chart in devmode which uses ephemeral images for sonataflow services.
-
-Note: replace the password of the `sonataflow-psql-postgresql` secret below in the following command with the desired one.
-
-```console
-oc new-project sonataflow-infra
-oc create secret generic sonataflow-psql-postgresql --from-literal=postgres-username=postgres --from-literal=postgres-password=postgres
-
-git clone git@github.com:parodos-dev/orchestrator-helm-chart.git
-cd orchestrator-helm-chart/postgresql
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm install sonataflow-psql bitnami/postgresql --version 12.x.x -f ./values.yaml
-```
-
-Note: the default settings provided in [PostreSQL values](./postgresql/values.yaml) match the defaults provided in the 
-[Orchestrator values](./charts/orchestrator/values.yaml). 
-Any changes to the first configuration must also be reported in the latter.
-
-For OpenShift-related configuration in the chart visit [here](https://github.com/bitnami/charts/blob/main/bitnami/postgresql/README.md#differences-between-bitnami-postgresql-image-and-docker-official-image).
+See [here](./postgresql/README.md)
 
 ## Installation
 **Note: ArgoCD and workflow namespace**
