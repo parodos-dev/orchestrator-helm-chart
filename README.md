@@ -5,11 +5,6 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
 - OpenShift Serverless Operator
   - Knative Eventing
   - Knative Serving
-- RHDH (Red Hat Developer Hub) Backstage
-- OpenShift Serverless Logic Operator (with Data-Index and Job Service)
-- OpenShift Serverless Operator
-  - Knative Eventing
-  - Knative Serving
 
 ## Usage
 
