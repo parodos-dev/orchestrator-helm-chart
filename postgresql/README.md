@@ -1,4 +1,4 @@
-# Installing PostgerSQL Server
+# Installing PostgreSQL Server
 
 Below there are two options to install PostgreSQL Server v15 on OCP cluster.
 Both options shouldn't be used in production.
