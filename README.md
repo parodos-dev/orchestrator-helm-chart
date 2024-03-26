@@ -30,7 +30,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 See the dedicated [document](./GitOps.md)
 
 ### Deploying PostgreSQL reference implementation
-See [here](./postgresql/README.md)
+See [here](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
 
 ## Installation
 **Note: ArgoCD and workflow namespace**
