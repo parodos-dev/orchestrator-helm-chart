@@ -5,6 +5,11 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
 - OpenShift Serverless Operator
   - Knative Eventing
   - Knative Serving
+- RHDH (Red Hat Developer Hub) Backstage
+- OpenShift Serverless Logic Operator (with Data-Index and Job Service)
+- OpenShift Serverless Operator
+  - Knative Eventing
+  - Knative Serving
 
 ## Usage
 
@@ -20,6 +25,7 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
 
 ### GitOps environment
 See the [dedicated document](./GitOps.md)
+- A Github API Token - to import items into the catalog, there is a need for GITHUB_TOKEN with the permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include at least the following permissions: repo (all), admin:org (read:org) and user (read:user, user:email).
 
 ### Deploying PostgreSQL reference implementation
 Follow these steps to deploy a sample PostgreSQL instance in the `sonataflow-infra` namespace, with minimal requirements to deploy the Orchestrator.
@@ -28,9 +34,11 @@ For non-production mode, skip this step and follow the section under Installatio
 Note: replace the password of the `sonataflow-psql-postgresql` secret below in the following command with the desired one.
 
 ```console
+oc new-project sonataflow-infra
+oc create secret generic sonataflow-psql-postgresql --from-literal=postgres-username=postgres --from-literal=postgres-password=postgres
+
 git clone git@github.com:parodos-dev/orchestrator-helm-chart.git
 cd orchestrator-helm-chart/postgresql
-oc new-project sonataflow-infra
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install sonataflow-psql bitnami/postgresql --version 12.x.x -f ./values.yaml
 ```
@@ -108,11 +116,7 @@ Refer to [Workflows Installation](https://www.parodos.dev/serverless-workflows-c
 
 ### Uninstallation
 ```console
-$ helm upgrade orchestrator orchestrator/orchestrator --set includeCustomResources=false
-```
-Followed by:
-```console
-$ helm delete orchestrator
+helm delete orchestrator
 release "orchestrator" uninstalled
 ```
 
