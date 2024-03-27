@@ -1,11 +1,10 @@
 # Initialize the GitOps environment
 ## Install the operators
-The `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators can be installed from the solution 
-derived from the [Janus IDP Demo](https://github.com/redhat-gpte-devopsautomation/janus-idp-bootstrap)
+The `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators can be installed using the solution derived from 
+the [Janus IDP Demo](https://github.com/redhat-gpte-devopsautomation/janus-idp-bootstrap)
 >This repository contains automation to install the Janus IDP Demo, as well as supporting components
 
-A fork has been created to remove the configuration that excludes Tekton resources from being configured from the 
-ArgoCD applications (see [discussion](https://github.com/argoproj/argo-cd/discussions/8674#discussioncomment-2318554)).
+To address the need for including Tekton resources within the ArgoCD applications, a fork has been initiated to remove the exclusion configuration.
 
 First, install the `Red Hat OpenShift Pipelines` operator:
 ```console
@@ -25,7 +24,7 @@ helm upgrade --install orchestrator-gitops . -f values.yaml -n orchestrator-gito
 To allow the Tekton resources to push to the registry, we need an account capable to push the image to the registry:
 
 * Create or edit a [Robot account](https://access.redhat.com/documentation/en-us/red_hat_quay/3.3/html/use_red_hat_quay/use-quay-manage-repo) and grant it `Write` permissions to the newly created repository
-* Download `the Docker configuration` file for the robot account and move it under the root folder of this repository (we assume the file name is `orchestrator-auth.json`)
+* Download the `Docker configuration` file for the robot account and move it under the root folder of this repository (we assume the file name is `orchestrator-auth.json`)
 * Run the following to create the `docker-credentials` secret:
 ```console
 oc create secret -n orchestrator-gitops generic docker-credentials --from-file=config.json=orchestrator-auth.json
@@ -45,7 +44,7 @@ ssh-keygen -t rsa -b 4096 -f ssh/id_rsa -N "" -C git@github.com -q
 ```console
 gh ssh-key add ssh/id_rsa.pub --title "Tekton pipeline"
 ```
-* Create a `known_hosts` file by scanning the
+* Create a `known_hosts` file by scanning the GitHub's SSH public key:
 ```console
 ssh-keyscan github.com > ssh/known_hosts
 ```
@@ -55,7 +54,7 @@ echo "Host github.com
   HostName github.com
   IdentityFile ~/.ssh/id_rsa" > ssh/config
 ```
-* Create the secret used by the Pipeline to store the SSH credentials:
+* Create the secret that the Pipeline uses to store the SSH credentials:
 ```console
 oc create secret -n orchestrator-gitops generic git-ssh-credentials \
   --from-file=ssh/id_rsa \
