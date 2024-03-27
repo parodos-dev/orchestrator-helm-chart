@@ -18,6 +18,9 @@ Helm chart to deploy the Orchestrator solution suite. The following components w
   - A [reference implementation](#postgresql-deployment-reference-implementation) is provided for your convenience.
 - A Github API Token - to import items into the catalog, there is a need for GITHUB_TOKEN with the permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include at least the following permissions: repo (all), admin:org (read:org) and user (read:user, user:email).
 
+### GitOps environment
+See the [dedicated document](./gitops/README.md)
+
 ### Deploying PostgreSQL reference implementation
 See [here](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
 
