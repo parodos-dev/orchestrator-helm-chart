@@ -210,9 +210,9 @@ data:
             editor:
               path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator@1.8.2"
+        package: "@janus-idp/backstage-plugin-orchestrator@1.8.3"
         integrity: >-
-          sha512-KmpDjaOJUrfvulC2MYkvLze8tojE4wpROUK0Bb+ICdj43ZbJtrrnFMl0YrM2zr3Lha2fTfUiHRSslpBrtS3QWA==
+          sha512-tD4eU9njOFt3uHUY8OQ3gpdl+NFm0ZN4lf/76HpZLueICCI7Yt3eqneY/Y9Z9IP+j6QdnfJJjILYvpIUmRopDg==
         pluginConfig:
           dynamicPlugins:
             frontend:
