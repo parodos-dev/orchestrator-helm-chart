@@ -207,6 +207,7 @@ spec:
       image: registry.access.redhat.com/ubi9-minimal
       workingDir: $(workspaces.workflow-source.path)/flat/$(params.workflowId)
       script: |
+        echo "quarkus.flyway.migrate-at-start=true" >> application.properties
         KN_CLI_URL="https://mirror.openshift.com/pub/openshift-v4/clients/serverless/latest/kn-linux-amd64.tar.gz"
         curl -L "$KN_CLI_URL" | tar -xz && chmod +x kn-linux-amd64 && mv kn-linux-amd64 kn
         ./kn workflow gen-manifest --namespace ""
