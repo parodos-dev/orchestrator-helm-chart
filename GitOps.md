@@ -14,7 +14,7 @@ cd charts/pipelines-operator
 helm upgrade --install orchestrator-pipelines . -f values.yaml -n orchestrator-gitops --create-namespace
 ```
 
-Finally install and configure the `Red Hat OpenShift GitOps` operator:
+Finally, install and configure the `Red Hat OpenShift GitOps` operator:
 ```console
 git clone https://github.com/parodos-dev/janus-idp-bootstrap.git
 cd charts/gitops-operator
@@ -25,7 +25,8 @@ helm upgrade --install orchestrator-gitops . -f values.yaml -n orchestrator-gito
 To allow the Tekton resources to push to the registry, we need an account capable to push the image to the registry:
 
 * Create or edit a [Robot account](https://quay.io/organization/orchestrator?tab=robots) and grant it `Write` permissions to the newly created repository
-* Download `the Docker configuration` file for the robot account and move it under the root folder of this repository (we assume the file name is `orchestrator-orchestror-ci-auth.json`)
+* Download the `Docker configuration` file for the robot account and move it under the root folder of this repository (we assume the file name is `orchestrator-orchestror-ci-auth.json`)
+> **NOTE:** If you don't have access to the Docker configuration files, please reach out to your `quay.io` organization administrators.
 * Run the following to create the `docker-credentials` secret:
 ```console
 oc create secret -n orchestrator-gitops generic docker-credentials --from-file=config.json=orchestrator-orchestror-ci-auth.json
