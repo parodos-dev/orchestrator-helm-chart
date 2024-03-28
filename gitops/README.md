@@ -9,7 +9,7 @@ To address the need for including Tekton resources within the ArgoCD application
 First, install the `Red Hat OpenShift Pipelines` operator:
 ```console
 git clone https://github.com/parodos-dev/janus-idp-bootstrap.git
-cd charts/pipelines-operator
+cd janus-idp-bootstrap/charts/pipelines-operator
 helm upgrade --install orchestrator-pipelines . -f values.yaml -n orchestrator-gitops --create-namespace
 ```
 
