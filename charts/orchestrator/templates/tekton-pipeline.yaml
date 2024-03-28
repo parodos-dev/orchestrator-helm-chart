@@ -123,7 +123,9 @@ spec:
         - name: CONTEXT
           value: flat/$(params.workflowId)
         - name: BUILD_EXTRA_ARGS
-          value: --ulimit nofile=4096:4096             
+          value: --ulimit nofile=4096:4096       
+        - name: BUILD_ARGS
+          value: --build-arg QUARKUS_EXTENSIONS=org.kie.kogito:kogito-addons-persistence-jdbc:9.99.0.redhat-00007,io.quarkus:quarkus-jdbc-postgresql:3.2.9.Final,io.quarkus:quarkus-agroal:3.2.9.Final      
     - name: push-workflow-gitops
       runAfter: ["build-gitops", "build-and-push-image"]
       taskRef:
