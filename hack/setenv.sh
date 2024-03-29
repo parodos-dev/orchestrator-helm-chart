@@ -122,6 +122,10 @@ function checkPrerequisite {
     echo "yq is required for this script to run. Exiting."
     exit 1
   fi
+  if ! command -v oc &> /dev/null; then
+    echo "oc is required for this script to run. Exiting."
+    exit 1
+  fi
 }
 
 function cleanUpEnvFile {
