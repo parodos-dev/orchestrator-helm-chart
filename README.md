@@ -29,8 +29,25 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
 ## Installation
 
-### Quick installation
-1. Follow instruction [here](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/GitOps.md)
+
+### Quick installation without GitOps
+1. Install the orchestrator chart using one of the following options:
+   * **Option 1: Install the chart with SonataFlow services in ephemeral mode for evaluation purposes**
+      ```console
+      helm install orchestrator orchestrator --set orchestrator.devmode=true \
+          --set rhdhOperator.github.token=$GITHUB_TOKEN \
+      ```
+   * **Option 2: Deploy PostgreSQL reference implementation**
+      1. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
+      2. Install the orchestrator Helm chart:
+        ```console
+        helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN 
+        ```
+  5. Run the commands prompted at the end of the previous step to wait until the services are ready.
+
+
+### Quick installation with GitOps
+1. Install `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/GitOps.md)
 2. Run the following command to set up environment variables:
     ```console
     ./hack/setenv.sh
@@ -42,7 +59,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
     source .env
     ```
 4. Install the orchestrator chart using one of the following options:
-   1. **Option 1: Install the chart with SonataFlow services in ephemeral mode for evaluation purposes**
+   * **Option 1: Install the chart with SonataFlow services in ephemeral mode for evaluation purposes**
       ```console
       helm install orchestrator orchestrator --set orchestrator.devmode=true \
           --set rhdhOperator.github.token=$GITHUB_TOKEN \
@@ -50,7 +67,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
           --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
           --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
       ```
-   2. **Option 2: Deploy PostgreSQL reference implementation**
+   * **Option 2: Deploy PostgreSQL reference implementation**
       1. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
       2. Install the orchestrator Helm chart:
         ```console
@@ -214,3 +231,15 @@ To update plugin versions, use the npmjs package name, use the script: [./hack/u
 
 ## Documentation
 See [Helm Chart Documentation](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/charts/orchestrator/README.md) for information about the values used by the helm chart.
+
+## Troubleshooting
+
+### Timeout or errors during `oc wait` commands
+
+If you encounter errors or timeouts while executing `oc wait` commands, follow these steps to troubleshoot and resolve the issue:
+1. **Check Deployment Status**: Review the output of the `oc wait` commands to identify which deployments met the condition and which ones encountered errors or timeouts.
+
+For example, if you see `error: timed out waiting for the condition on deployments/sonataflow-platform-data-index-service`
+
+investigate using `oc describe deployment sonataflow-platform-data-index-service -n sonataflow-infra` and `oc logs sonataflow-platform-data-index-service -n sonataflow-infra `
+ of the resources.
