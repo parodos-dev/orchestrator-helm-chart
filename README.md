@@ -1,8 +1,6 @@
 # Orchestrator Helm Chart
-Deploy the Orchestrator solution suite using this Helm chart.
+Deploy the Orchestrator solution suite using this Helm chart.\
 The chart installs the following components onto the target OpenShift cluster:
-
-This chart will deploy the following on the target OpenShift cluster:
 - RHDH (Red Hat Developer Hub) Backstage
 - OpenShift Serverless Logic Operator (with Data-Index and Job Service)
 - OpenShift Serverless Operator
@@ -22,13 +20,12 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 - [Helm](https://helm.sh/docs/intro/install/) v3.9+ is installed.
 - [PostgreSQL](https://www.postgresql.org/) database is available with credentials to manage the tablespace (optional).
   - A [reference implementation](https://github.com/parodos-dev/orchestrator-helm-chart#deploying-postgresql-reference-implementation) is provided for your convenience.
-- A GitHub API Token - to import items into the catalog, ensure you have a GITHUB_TOKEN with the necessary permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions:
+- A GitHub API Token - to import items into the catalog, ensure you have a `GITHUB_TOKEN` with the necessary permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions:
   - repo (all)
   - admin:org (read:org)
   - user (read:user, user:email)
 
 ## Installation
-
 
 ### Quick installation without GitOps
 1. Install the orchestrator chart using one of the following options:
@@ -36,29 +33,46 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
       ```console
       helm install orchestrator orchestrator --set orchestrator.devmode=true \
           --set rhdhOperator.github.token=$GITHUB_TOKEN \
+          --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN \
+          --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL
       ```
-   * **Option 2: Deploy PostgreSQL reference implementation**
+   * **Option 2: Deploy with persistence**
       1. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
       2. Install the orchestrator Helm chart:
         ```console
         helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN 
         ```
-  5. Run the commands prompted at the end of the previous step to wait until the services are ready.
+2. Run the commands prompted at the end of the previous step to wait until the services are ready.
 
 
 ### Quick installation with GitOps
 1. Install `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/GitOps.md)
-2. Run the following command to set up environment variables:
+The Orchestrator installs RHDH and imports software templates designed for bootstrapping workflow development. These templates are crafted to ease the development lifecycle, including a Tekton pipeline to build workflow images and generate the workflow images. Furthermore, ArgoCD is utilized to monitor any changes made to the workflow repository and to automatically trigger the Tekton pipelines as needed. This installation process ensures that all necessary Tekton and ArgoCD resources are provisioned within the same cluster.
+
+1. Run the following command to set up environment variables:
     ```console
-    ./hack/setenv.sh
+    ./hack/setenv.sh --use-default
     ```
-  - Accept all default values
-  - Provide GH Token (created as describe in prerequisite section)
-3. Source the environment variables by running
+    This script generates a `.env` file that contains all the calculate environment variables.
+
+    >**NOTE:** If you don't want to use the default values, omit the `--use-default` and the script will prompt you for input.   
+    - Provide GH Token (created as describe in prerequisite section)
+    > **NOTE:** 
+    > Default values are calculated as follows:
+    >  * `WORKFLOW_NAMESPACE`: Default value is set to `sonataflow-infra`.
+    >  * `K8S_CLUSTER_URL`: The URL of the Kubernetes cluster is obtained dynamically using `oc whoami --show-server`.
+    >  * `K8S_CLUSTER_TOKEN`: The value is obtained dynamically based on the provided namespace and service account.
+    >  * `GITHUB_TOKEN`: This value is prompted from the user during script execution and is not predefined.
+    >  * `ARGOCD_NAMESPACE`: Default value is set to `orchestrator-gitops`.
+    >  * `ARGOCD_URL`: This value is dynamically obtained based on the first ArgoCD instance available.
+    >  * `ARGOCD_USERNAME`: Default value is set to `admin`.
+    >  * `ARGOCD_PASSWORD`: This value is dynamically obtained based on the first ArgoCD instance available.
+    
+2. Source the environment variables by running
     ```console
     source .env
     ```
-4. Install the orchestrator chart using one of the following options:
+3. Install the orchestrator chart using one of the following options:
    * **Option 1: Install the chart with SonataFlow services in ephemeral mode for evaluation purposes**
       ```console
       helm install orchestrator orchestrator --set orchestrator.devmode=true \
@@ -67,7 +81,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
           --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
           --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
       ```
-   * **Option 2: Deploy PostgreSQL reference implementation**
+   * **Option 2: Deploy with persistence**
       1. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
       2. Install the orchestrator Helm chart:
         ```console
@@ -76,17 +90,16 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
           --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
           --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
         ```
-  5. Run the commands prompted at the end of the previous step to wait until the services are ready.
+  1. Run the commands prompted at the end of the previous step to wait until the services are ready.
 
 ## Detailed Installation
 
 ### Additional Prerequisites
-In addition to the [prerequisites](https://github.com/parodos-dev/orchestrator-helm-chart#prerequisites) mentioned earlier, is it possible to manually install the following operator:
+In addition to the [prerequisites](https://github.com/parodos-dev/orchestrator-helm-chart#prerequisites) mentioned earlier, it is possible to manually install the following operator:
 - `ArgoCD/OpenShift GitOps` operator
   - Ensure at least one instance of `ArgoCD` exists in the designated namespace (referenced by `ARGOCD_NAMESPACE` environment variable).
   - Validated API is `argoproj.io/v1alpha1/AppProject`
 - `Tekton/OpenShift Pipelines` operator 
-  - Verify it is installed in the orchestrator namespace (e.g. `orchestrator.namespace` release value)
   - Validated APIs are `tekton.dev/v1beta1/Task` and `tekton.dev/v1/Pipeline`
 
 ### GitOps environment
@@ -109,7 +122,7 @@ cd orchestrator-helm-chart/charts
 oc new-project orchestrator
 ```
 
-### Install the chart with Orchestrator plugin and Notifications plugin
+### Install the chart with SonataFlow services in persistent mode with Orchestrator and Notifications plugins
 This installation expects DB configuration to be provided.
 Set value for `$GITHUB_TOKEN` and run:
 ```console
@@ -118,9 +131,10 @@ helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_T
 
 ### Install the chart with SonataFlow services in ephemeral mode for evaluation purposes
 ```console
-helm install orchestrator orchestrator --set orchestrator.devmode=true \
-  --set rhdhOperator.github.token=$GITHUB_TOKEN
+helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
+  --set orchestrator.devmode=true
 ```
+The flag `--set orchestrator.devmode=true` is used to set the ephemeral mode.
 
 ### Install the chart with enabling the K8s, Tekton (OpenShift Pipelines) and ArgoCD (OpenShift GitOps) plugins in Backstage:
 ```console
@@ -189,8 +203,9 @@ deployment.apps/sonataflow-platform-jobs-service condition met
 backstage.rhdh.redhat.com/backstage condition met
 deployment.apps/backstage-backstage condition met
 ```
-If a deployment failure occurs for a Custom Resource (CR), check the logs of the pods created by the corresponding job responsible for deploying the failed CR instance.
-Note that these jobs are automatically deleted after the deployment of the chart is completed.
+During the installation process, Kubernetes jobs are created by the chart to monitor the installation progress and wait for the CRDs to be fully deployed by the operators. In case of any failure at this stage, these jobs remain active, facilitating administrators in retrieving detailed diagnostic information to identify and address the cause of the failure.
+
+> **Note:** that these jobs are automatically deleted after the deployment of the chart is completed.
 
 ### Workflow installation
 
@@ -238,8 +253,4 @@ See [Helm Chart Documentation](https://github.com/parodos-dev/orchestrator-helm-
 
 If you encounter errors or timeouts while executing `oc wait` commands, follow these steps to troubleshoot and resolve the issue:
 1. **Check Deployment Status**: Review the output of the `oc wait` commands to identify which deployments met the condition and which ones encountered errors or timeouts.
-
-For example, if you see `error: timed out waiting for the condition on deployments/sonataflow-platform-data-index-service`
-
-investigate using `oc describe deployment sonataflow-platform-data-index-service -n sonataflow-infra` and `oc logs sonataflow-platform-data-index-service -n sonataflow-infra `
- of the resources.
+For example, if you see `error: timed out waiting for the condition on deployments/sonataflow-platform-data-index-service`, investigate further using `oc describe deployment sonataflow-platform-data-index-service -n sonataflow-infra` and `oc logs sonataflow-platform-data-index-service -n sonataflow-infra `
