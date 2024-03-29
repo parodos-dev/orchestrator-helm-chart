@@ -1,5 +1,4 @@
 #!/bin/bash
-
 function exportWorkflowNamespace {
   default="sonataflow-infra"
   if [ "$use_default" == true ]; then
@@ -24,29 +23,28 @@ function exportK8sToken {
   sa_namespace="orchestrator"
   sa_name="orchestrator"
   if [ "$use_default" == false ]; then
-      read -p "In which namespace check or create the SA holding the persistent token? (default: $sa_namespace): " selected_ns
-      if [ -n "$sa_namespace" ]; then
-        sa_namespace="$sa_namespace"
-      fi
+    read -p "Which namespace should be used or created to check the SA holding the persistent token? (default: $sa_namespace): "
+    if [ -n "$sa_namespace" ]; then
+      sa_namespace="$sa_namespace"
+    fi
 
-      read -p "What is the name of the SA? (default: $sa_name): " selected_name
-      if [ -n "$selected_name" ]; then
-        sa_name="$selected_name"
-      fi
+    read -p "What is the name of the SA? (default: $sa_name): " selected_name
+    if [ -n "$selected_name" ]; then
+      sa_name="$selected_name"
+    fi
+  fi
+  if oc get namespace "$sa_namespace" &> /dev/null; then
+    echo "Namespace '$sa_namespace' already exists."
+  else
+    echo "Namespace '$sa_namespace' does not exist. Creating..."
+    oc create namespace "$sa_namespace"
+  fi
 
-      if oc get namespace "$sa_namespace" &> /dev/null; then
-        echo "Namespace '$sa_namespace' already exists."
-      else
-        echo "Namespace '$sa_namespace' does not exist. Creating..."
-        oc create namespace "$sa_namespace"
-      fi
-
-      if oc get sa -n "$sa_namespace" $sa_name &> /dev/null; then
-        echo "ServiceAccount '$sa_name' already exists in '$sa_namespace'."
-      else
-        echo "ServiceAccount '$sa_name' does not exist in '$sa_namespace'. Creating..."
-        oc create sa "$sa_name" -n "$sa_namespace"
-      fi
+  if oc get sa -n "$sa_namespace" $sa_name &> /dev/null; then
+    echo "ServiceAccount '$sa_name' already exists in '$sa_namespace'."
+  else
+    echo "ServiceAccount '$sa_name' does not exist in '$sa_namespace'. Creating..."
+    oc create sa "$sa_name" -n "$sa_namespace"
   fi
 
   oc adm policy add-cluster-role-to-user cluster-admin -z $sa_name -n $sa_namespace
@@ -174,7 +172,6 @@ exportGitToken
 exportArgoCDNamespace
 exportArgoCDURL
 exportArgoCDCreds
-cat .env
-
+echo "Setup completed successfully! Please run 'source .env' to export the environment variables."
 
 
