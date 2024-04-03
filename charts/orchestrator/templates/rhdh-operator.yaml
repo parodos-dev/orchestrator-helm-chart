@@ -200,9 +200,9 @@ data:
               type: config
 {{- end }}
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.6.1"
+        package: "@redhat/backstage-plugin-orchestrator-backend-dynamic@1.0.0-rc.1-redhat-00008"
         integrity: >-
-          sha512-Rt4csLDhQXNYqp9uCYeZLTrH1RfpA5HTvWd4TyZZ2nwi084UZIMso8PaF8KcD9tPdiYhaQBGxmCR/QS1X8sOVA==
+          sha512-7qkn8T0myj8hPKfGN7dPTRRATmUL148EYDhRPWsS7B2fRrtHnA8QCuakjL+l3yyxgQGDh6TObfq79qjO81NOVA==
         pluginConfig:
           orchestrator:
             dataIndexService:
@@ -210,9 +210,9 @@ data:
             editor:
               path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator@1.8.4"
+        package: "@redhat/backstage-plugin-orchestrator@1.0.0-rc.1-redhat-00007"
         integrity: >-
-          sha512-03SH0wAezWUZ6AJ3rqHUXrlt1vfb9corhr6TO6JigiGTCQDq1f1ZL/fvUgl+o1DcqlC/2jkBWiYNpNQ6MqcYrQ==
+          sha512-euyaA4iz3XtzoqhaLqxAg/0VVjzZ/fehd7yMF/TxoSGAy4WSA8+/oN+40ufJ+u3f1anN1DV/gCJ4WI2t9UFe2g==
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -229,9 +229,9 @@ data:
                     module: OrchestratorPlugin
                     path: /orchestrator
       - disabled: false
-        package: "@janus-idp/plugin-notifications@1.1.14"
+        package: "@redhat/plugin-notifications@1.0.0-rc.1-redhat-00006"
         integrity: >-
-          sha512-2hSWOrYn8r8A/tOb5hxJxucTfkuMNFVT315ucAwqlignYvRTRLsEp8vfxTfTY5TVVl71UO3SPrLlT99FnpKLyQ==
+          sha512-/Oty9nNhlq0f5vztrDmp1bJKMykEk21wE2C9Sd2SR0ZZvoGArAuN+Q8vJbZNxHARU2C1hE3d2aDGkYyPdbNYJw==
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -250,9 +250,9 @@ data:
                     config:
                       pollingIntervalMs: 5000
       - disabled: false
-        package: "@janus-idp/plugin-notifications-backend-dynamic@1.4.1"
+        package: "@redhat/plugin-notifications-backend-dynamic@1.0.0-rc.1-redhat-00007"
         integrity: >-
-          sha512-QQ5rL9+88C64I7WF+b+YkfzobUrEO6j4+0AlZmUDC5AKK0uynnGJOI9bAGKZ19SluYUzCMTwAyWrxHEBIYrHbg==
+          sha512-5bOyUwLyOloyWt2azyN/jAEqAHUpiD8r2hpJFr/RXfRxu39cUmYVflvD63x8r39Zz8J3gof+NeYqjYG4NLZfSw==
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -332,3 +332,13 @@ spec:
 {{ include "wait-for-crd-available" (dict "releaseName" .Release.Name "releaseNamespace" .Release.Namespace "apiGroup" "rhdh.redhat.com" "kind" "backstages") }}
 {{ include "delete-cr-on-uninstall" (dict "releaseName" .Release.Name "releaseNamespace" .Release.Namespace "apiGroup" "rhdh.redhat.com" "kind" "backstages" "targetNamespace" .Values.rhdhOperator.subscription.namespace "resourceName" "backstage") }}
 {{- end }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dynamic-plugins-npmrc
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+type: Opaque
+stringData:
+  .npmrc: |
+    registry={{ .Values.rhdhOperator.npmRegistry }}
