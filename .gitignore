@@ -7,3 +7,6 @@
 # helm chart dependencies
 charts/*/charts/
 **/charts/*.tgz
+
+# setenv.sh
+.env
