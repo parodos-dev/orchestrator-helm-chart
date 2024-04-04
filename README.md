@@ -62,20 +62,12 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
     source .env
     ```
 ### ...without GitOps
-1. Install the orchestrator chart using one of the following options:
-   * **Option 1: Install the chart with SonataFlow services in ephemeral mode for evaluation purposes**
+1. Install the orchestrator chart using the following steps:
+    1. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
+    2.  Install the orchestrator Helm chart:
       ```console
-      helm install orchestrator orchestrator --set orchestrator.devmode=true \
-          --set rhdhOperator.github.token=$GITHUB_TOKEN \
-          --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN \
-          --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL
+      helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
       ```
-   * **Option 2: Deploy with persistence**
-      1. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
-      2.  Install the orchestrator Helm chart:
-        ```console
-        helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN 
-        ```
 2. Run the commands prompted at the end of the previous step to wait until the services are ready.
 
 
@@ -84,15 +76,6 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 The Orchestrator installs RHDH and imports software templates designed for bootstrapping workflow development. These templates are crafted to ease the development lifecycle, including a Tekton pipeline to build workflow images and generate the workflow images. Furthermore, ArgoCD is utilized to monitor any changes made to the workflow repository and to automatically trigger the Tekton pipelines as needed. This installation process ensures that all necessary Tekton and ArgoCD resources are provisioned within the same cluster.
 
 1. Install the orchestrator chart using one of the following options:
-   * **Option 1: Install the chart with SonataFlow services in ephemeral mode for evaluation purposes**
-      ```console
-      helm install orchestrator orchestrator --set orchestrator.devmode=true \
-          --set rhdhOperator.github.token=$GITHUB_TOKEN \
-          --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
-          --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
-          --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
-      ```
-   * **Option 2: Deploy with persistence**
       1. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
       2. Install the orchestrator Helm chart:
         ```console
