@@ -58,12 +58,6 @@ Set value for $GITHUB_TOKEN and run:
 helm install orchestrator orchestrator/orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
 ```
 
-#### For non-production purposes, run:
-```console
-helm install orchestrator orchestrator/orchestrator --set orchestrator.devmode=true \
-     --set rhdhOperator.github.token=$GITHUB_TOKEN
-```
-
 #### To enable the K8s, Tekton (OpenShift Pipelines), and ArgoCD (OpenShift GitOps) plugins in Backstage, run:
 ```console
 helm install orchestrator orchestrator/orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \

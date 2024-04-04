@@ -5,7 +5,6 @@ Both options shouldn't be used in production.
 
 # Using Bitnami helm chart
 Follow these steps to deploy a sample PostgreSQL instance in the `sonataflow-infra` namespace, with minimal requirements to deploy the Orchestrator.
-This step is optional and can be replaced with running the orchestrator chart in `devmode` which uses ephemeral images for Sonataflow services.
 
 Note: replace the password of the `sonataflow-psql-postgresql` secret below in the following command with the desired one.
 
