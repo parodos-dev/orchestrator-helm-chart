@@ -27,29 +27,18 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
 ## Installation
 
-### Quick installation without GitOps
-1. Install the orchestrator chart using one of the following options:
-   * **Option 1: Install the chart with SonataFlow services in ephemeral mode for evaluation purposes**
+1. Get the Helm chart from one of the following options
+    * **Pre-Packaged Helm Chart**\
+      If you choose to install the Helm chart from the Helm repository, you'll be leveraging the pre-packaged version provided by the chart maintainer. This method is convenient and ensures that you're using a stable, tested version of the chart.
+      Refer to the related [guide](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/README.md)
+   * **Manual Chart Deployment**\
+      By cloning the repository and navigating to the charts directory, you'll have access to the raw chart files and can customize them to fit your specific requirements.\
+      Refer to this [guide](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/README.md?raw=true).
+2. Create a namespace for the Orchestrator solution:
       ```console
-      helm install orchestrator orchestrator --set orchestrator.devmode=true \
-          --set rhdhOperator.github.token=$GITHUB_TOKEN \
-          --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN \
-          --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL
+      oc new-project orchestrator
       ```
-   * **Option 2: Deploy with persistence**
-      1. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
-      2. Install the orchestrator Helm chart:
-        ```console
-        helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN 
-        ```
-2. Run the commands prompted at the end of the previous step to wait until the services are ready.
-
-
-### Quick installation with GitOps
-1. Install `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/GitOps.md)
-The Orchestrator installs RHDH and imports software templates designed for bootstrapping workflow development. These templates are crafted to ease the development lifecycle, including a Tekton pipeline to build workflow images and generate the workflow images. Furthermore, ArgoCD is utilized to monitor any changes made to the workflow repository and to automatically trigger the Tekton pipelines as needed. This installation process ensures that all necessary Tekton and ArgoCD resources are provisioned within the same cluster.
-
-1. Run the following command to set up environment variables:
+3. Run the following command to set up environment variables:
     ```console
     ./hack/setenv.sh --use-default
     ```
@@ -68,11 +57,33 @@ The Orchestrator installs RHDH and imports software templates designed for boots
     >  * `ARGOCD_USERNAME`: Default value is set to `admin`.
     >  * `ARGOCD_PASSWORD`: This value is dynamically obtained based on the first ArgoCD instance available.
     
-2. Source the environment variables by running
+4. Source the environment variables by running
     ```console
     source .env
     ```
-3. Install the orchestrator chart using one of the following options:
+### ...without GitOps
+1. Install the orchestrator chart using one of the following options:
+   * **Option 1: Install the chart with SonataFlow services in ephemeral mode for evaluation purposes**
+      ```console
+      helm install orchestrator orchestrator --set orchestrator.devmode=true \
+          --set rhdhOperator.github.token=$GITHUB_TOKEN \
+          --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN \
+          --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL
+      ```
+   * **Option 2: Deploy with persistence**
+      1. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
+      2.  Install the orchestrator Helm chart:
+        ```console
+        helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN 
+        ```
+2. Run the commands prompted at the end of the previous step to wait until the services are ready.
+
+
+### ... with GitOps
+1. Install `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/GitOps.md)
+The Orchestrator installs RHDH and imports software templates designed for bootstrapping workflow development. These templates are crafted to ease the development lifecycle, including a Tekton pipeline to build workflow images and generate the workflow images. Furthermore, ArgoCD is utilized to monitor any changes made to the workflow repository and to automatically trigger the Tekton pipelines as needed. This installation process ensures that all necessary Tekton and ArgoCD resources are provisioned within the same cluster.
+
+1. Install the orchestrator chart using one of the following options:
    * **Option 1: Install the chart with SonataFlow services in ephemeral mode for evaluation purposes**
       ```console
       helm install orchestrator orchestrator --set orchestrator.devmode=true \
@@ -90,11 +101,60 @@ The Orchestrator installs RHDH and imports software templates designed for boots
           --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
           --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
         ```
-  1. Run the commands prompted at the end of the previous step to wait until the services are ready.
+1. Run the commands prompted at the end of the previous step to wait until the services are ready.
 
-## Detailed Installation
+    Sample output:
+    ```console
+    NAME: orchestrator
+    LAST DEPLOYED: Fri Mar 29 12:34:59 2024
+    NAMESPACE: sonataflow-infra
+    STATUS: deployed
+    REVISION: 1
+    TEST SUITE: None
+    NOTES:
+    Helm Release orchestrator installed in namespace sonataflow-infra.
 
-### Additional Prerequisites
+    Components                   Installed   Namespace
+    ====================================================================
+    Backstage                    YES        rhdh-operator
+    Postgres DB - Backstage      NO         rhdh-operator
+    Red Hat Serverless Operator  YES        openshift-serverless     
+    KnativeServing               YES        knative-serving
+    KnativeEventing              YES        knative-eventing
+    SonataFlow Operator          YES        openshift-serverless-logic
+    SonataFlowPlatform           YES        sonataflow-infra
+    Data Index Service           YES        sonataflow-infra
+    Job Service                  YES        sonataflow-infra
+    Tekton pipeline              YES        orchestrator-gitops
+    Tekton task                  YES        orchestrator-gitops
+    ArgoCD project               YES        orchestrator-gitops
+
+    ====================================================================
+    Prerequisites check:
+    The required CRD tekton.dev/v1beta1/Task is already installed.
+    The required CRD tekton.dev/v1/Pipeline is already installed.
+    The required CRD argoproj.io/v1alpha1/AppProject is already installed.
+    ====================================================================
+
+
+    Run the following commands to wait until the services are ready:
+      oc wait -n openshift-serverless deploy/knative-openshift --for=condition=Available --timeout=5m
+      oc wait -n knative-eventing knativeeventing/knative-eventing --for=condition=Ready --timeout=5m
+      oc wait -n knative-serving knativeserving/knative-serving --for=condition=Ready --timeout=5m
+      oc wait -n openshift-serverless-logic deploy/logic-operator-rhel8-controller-manager --for=condition=Available --timeout=5m
+      oc wait -n sonataflow-infra sonataflowplatform/sonataflow-platform --for=condition=Succeed --timeout=5m
+      oc wait -n sonataflow-infra deploy/sonataflow-platform-data-index-service --for=condition=Available --timeout=5m
+      oc wait -n sonataflow-infra deploy/sonataflow-platform-jobs-service --for=condition=Available --timeout=5m
+      oc wait -n rhdh-operator backstage backstage --for=condition=Deployed=True
+      oc wait -n rhdh-operator deploy/backstage-backstage --for=condition=Available --timeout=5m
+    ```
+During the installation process, Kubernetes jobs are created by the chart to monitor the installation progress and wait for the CRDs to be fully deployed by the operators. In case of any failure at this stage, these jobs remain active, facilitating administrators in retrieving detailed diagnostic information to identify and address the cause of the failure.
+
+> **Note:** that these jobs are automatically deleted after the deployment of the chart is completed.
+
+## Additional information
+
+### Prerequisites
 In addition to the [prerequisites](https://github.com/parodos-dev/orchestrator-helm-chart#prerequisites) mentioned earlier, it is possible to manually install the following operator:
 - `ArgoCD/OpenShift GitOps` operator
   - Ensure at least one instance of `ArgoCD` exists in the designated namespace (referenced by `ARGOCD_NAMESPACE` environment variable).
@@ -114,98 +174,6 @@ ArgoCD deploying instances there:
 ```console
 oc label ns $WORKFLOW_NAMESPACE argocd.argoproj.io/managed-by=$ARGOCD_NAMESPACE
 ```
-
-Build helm dependency and create a new project for the installation:
-```console
-git clone git@github.com:parodos-dev/orchestrator-helm-chart.git
-cd orchestrator-helm-chart/charts
-oc new-project orchestrator
-```
-
-### Install the chart with SonataFlow services in persistent mode with Orchestrator and Notifications plugins
-This installation expects DB configuration to be provided.
-Set value for `$GITHUB_TOKEN` and run:
-```console
-helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
-```
-
-### Install the chart with SonataFlow services in ephemeral mode for evaluation purposes
-```console
-helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
-  --set orchestrator.devmode=true
-```
-The flag `--set orchestrator.devmode=true` is used to set the ephemeral mode.
-
-### Install the chart with enabling the K8s, Tekton (OpenShift Pipelines) and ArgoCD (OpenShift GitOps) plugins in Backstage:
-```console
-helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
-  --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
-  --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
-  --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
-```
-The $K8S_CLUSTER_TOKEN should provide access to resources as detailed [here](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/tekton#prerequisites) and $K8S_CLUSTER_URL from the output of `oc whoami --show-server` (e.g. https://api.cluster-domain:6443).
-
-A sample output:
-```console
-NAME: orchestrator
-LAST DEPLOYED: Fri Mar 29 12:34:59 2024
-NAMESPACE: sonataflow-infra
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-NOTES:
-Helm Release orchestrator installed in namespace sonataflow-infra.
-
-Components                   Installed   Namespace
-====================================================================
-Backstage                    YES        rhdh-operator
-Postgres DB - Backstage      NO         rhdh-operator
-Red Hat Serverless Operator  YES        openshift-serverless     
-KnativeServing               YES        knative-serving
-KnativeEventing              YES        knative-eventing
-SonataFlow Operator          YES        openshift-serverless-logic
-SonataFlowPlatform           YES        sonataflow-infra
-Data Index Service           YES        sonataflow-infra
-Job Service                  YES        sonataflow-infra
-Tekton pipeline              YES        orchestrator-gitops
-Tekton task                  YES        orchestrator-gitops
-ArgoCD project               YES        orchestrator-gitops
-
-====================================================================
-Prerequisites check:
-The required CRD tekton.dev/v1beta1/Task is already installed.
-The required CRD tekton.dev/v1/Pipeline is already installed.
-The required CRD argoproj.io/v1alpha1/AppProject is already installed.
-====================================================================
-
-
-Run the following commands to wait until the services are ready:
-  oc wait -n openshift-serverless deploy/knative-openshift --for=condition=Available --timeout=5m
-  oc wait -n knative-eventing knativeeventing/knative-eventing --for=condition=Ready --timeout=5m
-  oc wait -n knative-serving knativeserving/knative-serving --for=condition=Ready --timeout=5m
-  oc wait -n openshift-serverless-logic deploy/logic-operator-rhel8-controller-manager --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra sonataflowplatform/sonataflow-platform --for=condition=Succeed --timeout=5m
-  oc wait -n sonataflow-infra deploy/sonataflow-platform-data-index-service --for=condition=Available --timeout=5m
-  oc wait -n sonataflow-infra deploy/sonataflow-platform-jobs-service --for=condition=Available --timeout=5m
-  oc wait -n rhdh-operator backstage backstage --for=condition=Deployed=True
-  oc wait -n rhdh-operator deploy/backstage-backstage --for=condition=Available --timeout=5m
-```
-
-Run the commands to wait until the services are ready should produce the following output:
-```console
-deployment.apps/knative-openshift condition met
-knativeeventing.operator.knative.dev/knative-eventing condition met
-knativeserving.operator.knative.dev/knative-serving condition met
-deployment.apps/logic-operator-rhel8-controller-manager condition met
-sonataflowplatform.sonataflow.org/sonataflow-platform condition met
-deployment.apps/sonataflow-platform-data-index-service condition met
-deployment.apps/sonataflow-platform-jobs-service condition met
-backstage.rhdh.redhat.com/backstage condition met
-deployment.apps/backstage-backstage condition met
-```
-During the installation process, Kubernetes jobs are created by the chart to monitor the installation progress and wait for the CRDs to be fully deployed by the operators. In case of any failure at this stage, these jobs remain active, facilitating administrators in retrieving detailed diagnostic information to identify and address the cause of the failure.
-
-> **Note:** that these jobs are automatically deleted after the deployment of the chart is completed.
 
 ### Workflow installation
 
