@@ -157,6 +157,21 @@ During the installation process, Kubernetes jobs are created by the chart to mon
 
 > **Note:** that these jobs are automatically deleted after the deployment of the chart is completed.
 
+### For installing from OpenShift Developer perspective
+Create the `HelmChartRepository` from CLI (or from OpenShift UI):
+```shell
+cat << EOF | oc apply -f -
+apiVersion: helm.openshift.io/v1beta1
+kind: HelmChartRepository
+metadata:
+  name: orchestrator
+spec:
+  connectionConfig:
+    url: 'https://parodos-dev.github.io/orchestrator-helm-chart'
+EOF
+```
+Follow Helm Chart installation instructions [here](https://docs.openshift.com/container-platform/4.15/applications/working_with_helm_charts/configuring-custom-helm-chart-repositories.html)
+
 ## Additional information
 
 ### Prerequisites
