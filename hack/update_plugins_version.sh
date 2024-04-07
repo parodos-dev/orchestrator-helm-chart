@@ -85,8 +85,8 @@ update_plugins_in_yaml() {
     PLUGIN_INFO=$(get_plugin_info "$PLUGIN_NAME")
     PLUGIN_VERSION=$(echo $PLUGIN_INFO | cut -d '#' -f 1)
     PLUGIN_INTEGRITY=$(echo $PLUGIN_INFO | cut -d '#' -f 2)
-    sed -i "/$PLUGIN_KEY:/!b;n;c\    package: \"$PLUGIN_NAME@$PLUGIN_VERSION\"" "$VALUES_FILE"
-    sed -i "/$PLUGIN_KEY:/!b;n;n;c\    integrity: $PLUGIN_INTEGRITY" "$VALUES_FILE"
+    sed -i "/^  $PLUGIN_KEY:/!b;n;c\    package: \"$PLUGIN_NAME@$PLUGIN_VERSION\"" "$VALUES_FILE"
+    sed -i "/^  $PLUGIN_KEY:/!b;n;n;c\    integrity: $PLUGIN_INTEGRITY" "$VALUES_FILE"
   done
 
   if [ "$ENVIRONMENT" != "upstream" ]; then
