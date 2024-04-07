@@ -8,6 +8,7 @@
         "sonataFlowOperator",
         "serverlessOperator",
         "rhdhOperator",
+        "rhdhPlugins",
         "postgres",
         "orchestrator",
         "tekton",
@@ -331,6 +332,181 @@
                     "channel": "fast",
                     "installPlanApproval": "Automatic",
                     "name": "rhdh"
+                }
+            }]
+        },
+        "rhdhPlugins": {
+            "type": "object",
+            "default": {},
+            "title": "The rhdhPlugins Schema",
+            "required": [
+                "npmRegistry",
+                "scope",
+                "orchestrator",
+                "orchestrator_backend",
+                "notifications",
+                "notifications_backend"
+            ],
+            "properties": {
+                "npmRegistry": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The npmRegistry Schema",
+                    "examples": [
+                        ""
+                    ]
+                },
+                "scope": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The scope Schema",
+                    "examples": [
+                        "@janus-idp"
+                    ]
+                },
+                "orchestrator": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The orchestrator Schema",
+                    "required": [
+                        "package",
+                        "integrity"
+                    ],
+                    "properties": {
+                        "package": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The package Schema",
+                            "examples": [
+                                "backstage-plugin-orchestrator@1.8.4"
+                            ]
+                        },
+                        "integrity": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The integrity Schema",
+                            "examples": [
+                                "sha512-03SH0wAezWUZ6AJ3rqHUXrlt1vfb9corhr6TO6JigiGTCQDq1f1ZL/fvUgl+o1DcqlC/2jkBWiYNpNQ6MqcYrQ=="
+                            ]
+                        }
+                    },
+                    "examples": [{
+                        "package": "backstage-plugin-orchestrator@1.8.4",
+                        "integrity": "sha512-03SH0wAezWUZ6AJ3rqHUXrlt1vfb9corhr6TO6JigiGTCQDq1f1ZL/fvUgl+o1DcqlC/2jkBWiYNpNQ6MqcYrQ=="
+                    }]
+                },
+                "orchestrator_backend": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The orchestrator_backend Schema",
+                    "required": [
+                        "package",
+                        "integrity"
+                    ],
+                    "properties": {
+                        "package": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The package Schema",
+                            "examples": [
+                                "backstage-plugin-orchestrator-backend-dynamic@1.6.1"
+                            ]
+                        },
+                        "integrity": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The integrity Schema",
+                            "examples": [
+                                "sha512-Rt4csLDhQXNYqp9uCYeZLTrH1RfpA5HTvWd4TyZZ2nwi084UZIMso8PaF8KcD9tPdiYhaQBGxmCR/QS1X8sOVA=="
+                            ]
+                        }
+                    },
+                    "examples": [{
+                        "package": "backstage-plugin-orchestrator-backend-dynamic@1.6.1",
+                        "integrity": "sha512-Rt4csLDhQXNYqp9uCYeZLTrH1RfpA5HTvWd4TyZZ2nwi084UZIMso8PaF8KcD9tPdiYhaQBGxmCR/QS1X8sOVA=="
+                    }]
+                },
+                "notifications": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The notifications Schema",
+                    "required": [
+                        "package",
+                        "integrity"
+                    ],
+                    "properties": {
+                        "package": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The package Schema",
+                            "examples": [
+                                "plugin-notifications@1.1.14"
+                            ]
+                        },
+                        "integrity": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The integrity Schema",
+                            "examples": [
+                                "sha512-2hSWOrYn8r8A/tOb5hxJxucTfkuMNFVT315ucAwqlignYvRTRLsEp8vfxTfTY5TVVl71UO3SPrLlT99FnpKLyQ=="
+                            ]
+                        }
+                    },
+                    "examples": [{
+                        "package": "plugin-notifications@1.1.14",
+                        "integrity": "sha512-2hSWOrYn8r8A/tOb5hxJxucTfkuMNFVT315ucAwqlignYvRTRLsEp8vfxTfTY5TVVl71UO3SPrLlT99FnpKLyQ=="
+                    }]
+                },
+                "notifications_backend": {
+                    "type": "object",
+                    "default": {},
+                    "title": "The notifications_backend Schema",
+                    "required": [
+                        "package",
+                        "integrity"
+                    ],
+                    "properties": {
+                        "package": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The package Schema",
+                            "examples": [
+                                "plugin-notifications-backend-dynamic@1.4.1"
+                            ]
+                        },
+                        "integrity": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The integrity Schema",
+                            "examples": [
+                                "sha512-QQ5rL9+88C64I7WF+b+YkfzobUrEO6j4+0AlZmUDC5AKK0uynnGJOI9bAGKZ19SluYUzCMTwAyWrxHEBIYrHbg=="
+                            ]
+                        }
+                    },
+                    "examples": [{
+                        "package": "plugin-notifications-backend-dynamic@1.4.1",
+                        "integrity": "sha512-QQ5rL9+88C64I7WF+b+YkfzobUrEO6j4+0AlZmUDC5AKK0uynnGJOI9bAGKZ19SluYUzCMTwAyWrxHEBIYrHbg=="
+                    }]
+                }
+            },
+            "examples": [{
+                "npmRegistry": "",
+                "scope": "@janus-idp",
+                "orchestrator": {
+                    "package": "backstage-plugin-orchestrator@1.8.4",
+                    "integrity": "sha512-03SH0wAezWUZ6AJ3rqHUXrlt1vfb9corhr6TO6JigiGTCQDq1f1ZL/fvUgl+o1DcqlC/2jkBWiYNpNQ6MqcYrQ=="
+                },
+                "orchestrator_backend": {
+                    "package": "backstage-plugin-orchestrator-backend-dynamic@1.6.1",
+                    "integrity": "sha512-Rt4csLDhQXNYqp9uCYeZLTrH1RfpA5HTvWd4TyZZ2nwi084UZIMso8PaF8KcD9tPdiYhaQBGxmCR/QS1X8sOVA=="
+                },
+                "notifications": {
+                    "package": "plugin-notifications@1.1.14",
+                    "integrity": "sha512-2hSWOrYn8r8A/tOb5hxJxucTfkuMNFVT315ucAwqlignYvRTRLsEp8vfxTfTY5TVVl71UO3SPrLlT99FnpKLyQ=="
+                },
+                "notifications_backend": {
+                    "package": "plugin-notifications-backend-dynamic@1.4.1",
+                    "integrity": "sha512-QQ5rL9+88C64I7WF+b+YkfzobUrEO6j4+0AlZmUDC5AKK0uynnGJOI9bAGKZ19SluYUzCMTwAyWrxHEBIYrHbg=="
                 }
             }]
         },
@@ -679,6 +855,26 @@
                 "channel": "fast",
                 "installPlanApproval": "Automatic",
                 "name": "rhdh"
+            }
+        },
+        "rhdhPlugins": {
+            "npmRegistry": "",
+            "scope": "@janus-idp",
+            "orchestrator": {
+                "package": "backstage-plugin-orchestrator@1.8.4",
+                "integrity": "sha512-03SH0wAezWUZ6AJ3rqHUXrlt1vfb9corhr6TO6JigiGTCQDq1f1ZL/fvUgl+o1DcqlC/2jkBWiYNpNQ6MqcYrQ=="
+            },
+            "orchestrator_backend": {
+                "package": "backstage-plugin-orchestrator-backend-dynamic@1.6.1",
+                "integrity": "sha512-Rt4csLDhQXNYqp9uCYeZLTrH1RfpA5HTvWd4TyZZ2nwi084UZIMso8PaF8KcD9tPdiYhaQBGxmCR/QS1X8sOVA=="
+            },
+            "notifications": {
+                "package": "plugin-notifications@1.1.14",
+                "integrity": "sha512-2hSWOrYn8r8A/tOb5hxJxucTfkuMNFVT315ucAwqlignYvRTRLsEp8vfxTfTY5TVVl71UO3SPrLlT99FnpKLyQ=="
+            },
+            "notifications_backend": {
+                "package": "plugin-notifications-backend-dynamic@1.4.1",
+                "integrity": "sha512-QQ5rL9+88C64I7WF+b+YkfzobUrEO6j4+0AlZmUDC5AKK0uynnGJOI9bAGKZ19SluYUzCMTwAyWrxHEBIYrHbg=="
             }
         },
         "postgres": {

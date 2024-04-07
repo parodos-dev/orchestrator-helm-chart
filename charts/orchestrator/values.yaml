@@ -29,6 +29,22 @@ rhdhOperator:
     installPlanApproval: Automatic # whether the update should be installed automatically
     name: rhdh # name of the operator package
 
+rhdhPlugins: # RHDH plugins required for the Orchestrator
+  npmRegistry: ""
+  scope: "@janus-idp"
+  orchestrator:
+    package: "backstage-plugin-orchestrator@1.8.4"
+    integrity: sha512-03SH0wAezWUZ6AJ3rqHUXrlt1vfb9corhr6TO6JigiGTCQDq1f1ZL/fvUgl+o1DcqlC/2jkBWiYNpNQ6MqcYrQ==
+  orchestrator_backend:
+    package: "backstage-plugin-orchestrator-backend-dynamic@1.6.1"
+    integrity: sha512-Rt4csLDhQXNYqp9uCYeZLTrH1RfpA5HTvWd4TyZZ2nwi084UZIMso8PaF8KcD9tPdiYhaQBGxmCR/QS1X8sOVA==
+  notifications:
+    package: "plugin-notifications@1.1.14"
+    integrity: sha512-2hSWOrYn8r8A/tOb5hxJxucTfkuMNFVT315ucAwqlignYvRTRLsEp8vfxTfTY5TVVl71UO3SPrLlT99FnpKLyQ==
+  notifications_backend:
+    package: "plugin-notifications-backend-dynamic@1.4.1"
+    integrity: sha512-QQ5rL9+88C64I7WF+b+YkfzobUrEO6j4+0AlZmUDC5AKK0uynnGJOI9bAGKZ19SluYUzCMTwAyWrxHEBIYrHbg==
+
 postgres:
   serviceName: "sonataflow-psql-postgresql" # The name of the Postgres DB service to be used by platform services. Cannot be empty.
   serviceNamespace: "sonataflow-infra" # The namespace of the Postgres DB service to be used by platform services.
