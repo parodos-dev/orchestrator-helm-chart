@@ -32,6 +32,16 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `rhdhOperator.subscription.channel` | channel of an operator package to subscribe to | `"fast"` |
 | `rhdhOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
 | `rhdhOperator.subscription.name` | name of the operator package | `"rhdh"` |
+| `rhdhPlugins.npmRegistry` |  | `""` |
+| `rhdhPlugins.scope` |  | `"@janus-idp"` |
+| `rhdhPlugins.orchestrator.package` |  | `"backstage-plugin-orchestrator@1.8.7"` |
+| `rhdhPlugins.orchestrator.integrity` |  | `"sha512-cCfXX9y0Fy+l6PfXoZ5ll2vl5buR2GD74TI4XA0uOpH+p2COj7KQg8e8gWqPBMoyvgD6JZiGEUnd/rq6Pn0XMQ=="` |
+| `rhdhPlugins.orchestrator_backend.package` |  | `"backstage-plugin-orchestrator-backend-dynamic@1.6.4"` |
+| `rhdhPlugins.orchestrator_backend.integrity` |  | `"sha512-AbTX5YGJGcpWhlPsLmsysn0TAZLEbSW2lmKu1OuhvP4iI2KQBkF6naN/0iJopEH2s0Itd+k48VN+Q7NeAPu2JA=="` |
+| `rhdhPlugins.notifications.package` |  | `"plugin-notifications@1.1.16"` |
+| `rhdhPlugins.notifications.integrity` |  | `"sha512-pmAInZ3231PGkHxpPzOIFCdftTVlk4+w5/vi5hfixPQRKNf68hm9WudsgK6Q/Rv436DHt8ZWJyAP3QWhxZR2Zw=="` |
+| `rhdhPlugins.notifications_backend.package` |  | `"plugin-notifications-backend-dynamic@1.4.3"` |
+| `rhdhPlugins.notifications_backend.integrity` |  | `"sha512-FVMmIHjAoRg+kzpEhkEjtCKgRanWHwaI9I2Jqj9/gObnF2WBIllzAPiGNxj6tkMFloLflSJc6kc9ZphttAGGcQ=="` |
 | `postgres.serviceName` | The name of the Postgres DB service to be used by platform services. Cannot be empty. | `"sonataflow-psql-postgresql"` |
 | `postgres.serviceNamespace` | The namespace of the Postgres DB service to be used by platform services. | `"sonataflow-infra"` |
 | `postgres.authSecret.name` | name of existing secret to use for PostgreSQL credentials. | `"sonataflow-psql-postgresql"` |
@@ -44,9 +54,9 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `orchestrator.sonataPlatform.resources.limits.memory` |  | `"1Gi"` |
 | `orchestrator.sonataPlatform.resources.limits.cpu` |  | `"500m"` |
 | `tekton.enabled` | whether to create the Tekton pipeline resources | `false` |
-| `argocd.enabled` | whether to install the ArgoCD plugin and create the AppProject | `false` |
+| `argocd.enabled` | whether to install the ArgoCD plugin and create the orchestrator AppProject | `false` |
 | `argocd.url` |  | `""` |
-| `argocd.namespace` |  | `"argocd"` |
+| `argocd.namespace` |  | `"orchestrator-gitops"` |
 | `argocd.username` |  | `"admin"` |
 | `argocd.password` |  | `""` |
 
