@@ -240,7 +240,7 @@ data:
                     path: /orchestrator
       - disabled: false
         package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications.package }}"
-        integrity: {{ .Values.rhdhPlugins.integrity }}
+        integrity: {{ .Values.rhdhPlugins.notifications.integrity }}
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -260,7 +260,7 @@ data:
                       pollingIntervalMs: 5000
       - disabled: false
         package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications_backend.package }}"
-        integrity: {{ .Values.rhdhPlugins.integrity }}
+        integrity: {{ .Values.rhdhPlugins.notifications_backend.integrity }}
 ---
 apiVersion: v1
 kind: ConfigMap
