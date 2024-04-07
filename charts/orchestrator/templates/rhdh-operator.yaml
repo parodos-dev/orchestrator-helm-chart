@@ -212,7 +212,7 @@ data:
               type: config
 {{- end }}
       - disabled: false
-        package: {{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator_backend.package }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator_backend.package }}"
         integrity: {{ .Values.rhdhPlugins.orchestrator_backend.integrity }}
         pluginConfig:
           orchestrator:
@@ -221,7 +221,7 @@ data:
             editor:
               path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
       - disabled: false
-        package: {{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator.package }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator.package }}"
         integrity: {{ .Values.rhdhPlugins.orchestrator.integrity }}
         pluginConfig:
           dynamicPlugins:
@@ -239,7 +239,7 @@ data:
                     module: OrchestratorPlugin
                     path: /orchestrator
       - disabled: false
-        package: {{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications.package }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications.package }}"
         integrity: {{ .Values.rhdhPlugins.integrity }}
         pluginConfig:
           dynamicPlugins:
@@ -259,7 +259,7 @@ data:
                     config:
                       pollingIntervalMs: 5000
       - disabled: false
-        package: {{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications_backend.package }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications_backend.package }}"
         integrity: {{ .Values.rhdhPlugins.integrity }}
 ---
 apiVersion: v1
