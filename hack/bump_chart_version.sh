@@ -4,7 +4,7 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # File path to the YAML template relative to the script's directory
-CHART_FILE="${SCRIPT_DIR}/../charts/orchestrator/Chart.yaml"
+CHART_FILE="${CHART_FILE:-${SCRIPT_DIR}/../charts/orchestrator/Chart.yaml}"
 
 # Function to bump the version
 bump_version() {
