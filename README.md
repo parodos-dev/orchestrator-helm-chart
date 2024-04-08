@@ -94,7 +94,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
 
 ### ... with GitOps
-1. Install `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/GitOps.md).
+1. Install `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/GitOps.md).
 The Orchestrator installs RHDH and imports software templates designed for bootstrapping workflow development. These templates are crafted to ease the development lifecycle, including a Tekton pipeline to build workflow images and generate workflow K8s custom resources. Furthermore, ArgoCD is utilized to monitor any changes made to the workflow repository and to automatically trigger the Tekton pipelines as needed. This installation process ensures that all necessary Tekton and ArgoCD resources are provisioned within the same cluster.
 
 1. Install the orchestrator chart using one of the following options:
@@ -183,7 +183,7 @@ In addition to the [prerequisites](https://github.com/parodos-dev/orchestrator-h
   - Validated APIs are `tekton.dev/v1beta1/Task` and `tekton.dev/v1/Pipeline`
 
 ### GitOps environment
-See the dedicated [document](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/GitOps.md)
+See the dedicated [document](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/GitOps.md)
 
 ### Deploying PostgreSQL reference implementation
 See [here](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
