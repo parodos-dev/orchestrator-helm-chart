@@ -10,19 +10,17 @@ ArgoCD applications (see [discussion](https://github.com/argoproj/argo-cd/discus
 First, install the `Red Hat OpenShift Pipelines` operator:
 ```console
 git clone https://github.com/parodos-dev/janus-idp-bootstrap.git
-cd charts/pipelines-operator
-helm upgrade --install orchestrator-pipelines . -f values.yaml -n orchestrator-gitops --create-namespace
+cd janus-idp-bootstrap/charts
+helm upgrade --install orchestrator-pipelines pipelines-operator/ -f pipelines-operator/values.yaml -n orchestrator-gitops --create-namespace
 ```
 
 Finally, install and configure the `Red Hat OpenShift GitOps` operator:
 ```console
-git clone https://github.com/parodos-dev/janus-idp-bootstrap.git
-cd charts/gitops-operator
-helm upgrade --install orchestrator-gitops . -f values.yaml -n orchestrator-gitops --create-namespace --set namespaces={orchestrator-gitops}
+helm upgrade --install orchestrator-gitops gitops-operator/ -f gitops-operator/values.yaml -n orchestrator-gitops --create-namespace --set namespaces={orchestrator-gitops}
 ```
 
 ## Installing docker credentials
-To allow the Tekton resources to push to the registry, we need an account capable to push the image to the registry:
+To allow the Tekton resources to push to the registry, we need an account capable of pushing the image to the registry:
 
 * Create or edit a [Robot account](https://quay.io/organization/orchestrator?tab=robots) and grant it `Write` permissions to the newly created repository
 * Download the `Docker configuration` file for the robot account and move it under the root folder of this repository (we assume the file name is `orchestrator-orchestror-ci-auth.json`)
