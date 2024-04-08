@@ -99,7 +99,11 @@ The Orchestrator installs RHDH and imports software templates designed for boots
 
 1. Install the orchestrator chart using one of the following options:
     1. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
-    2. Install the orchestrator Helm chart:
+    2. Run the script to include GitOps variables:
+       ```console
+       ./hack/setenv.sh --use-default
+       ```
+    4. Install the orchestrator Helm chart:
       ```console
       helm install orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
         --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
