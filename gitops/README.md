@@ -7,21 +7,19 @@ the [Janus IDP Demo](https://github.com/redhat-gpte-devopsautomation/janus-idp-b
 To address the need for including Tekton resources within the ArgoCD applications, a fork has been initiated to remove the exclusion configuration.
 
 First, install the `Red Hat OpenShift Pipelines` operator:
-```console
+```bash
 git clone https://github.com/parodos-dev/janus-idp-bootstrap.git
-cd janus-idp-bootstrap/charts/pipelines-operator
-helm upgrade --install orchestrator-pipelines . -f values.yaml -n orchestrator-gitops --create-namespace
+cd janus-idp-bootstrap/charts
+helm upgrade --install orchestrator-pipelines pipelines-operator/ -f pipelines-operator/values.yaml -n orchestrator-gitops --create-namespace
 ```
 
-Finally install and configure the `Red Hat OpenShift GitOps` operator:
-```console
-git clone https://github.com/parodos-dev/janus-idp-bootstrap.git
-cd charts/gitops-operator
-helm upgrade --install orchestrator-gitops . -f values.yaml -n orchestrator-gitops --create-namespace --set namespaces={orchestrator-gitops}
+Finally, install and configure the `Red Hat OpenShift GitOps` operator:
+```bash
+helm upgrade --install orchestrator-gitops gitops-operator/ -f gitops-operator/values.yaml -n orchestrator-gitops --create-namespace --set namespaces={orchestrator-gitops}
 ```
 
 ## Installing docker credentials
-To allow the Tekton resources to push to the registry, we need an account capable to push the image to the registry:
+To allow the Tekton resources to push to the registry, we need an account capable of pushing the image to the registry:
 
 * Create or edit a [Robot account](https://access.redhat.com/documentation/en-us/red_hat_quay/3.3/html/use_red_hat_quay/use-quay-manage-repo) and grant it `Write` permissions to the newly created repository
 * Download the `Docker configuration` file for the robot account and move it under the root folder of this repository (we assume the file name is `orchestrator-auth.json`)
