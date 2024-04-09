@@ -21,6 +21,7 @@ jobs:
           helm repo add postgresql-persistent https://sclorg.github.io/helm-charts
           helm repo add backstage https://janus-idp.github.io/helm-backstage
           helm repo add workflows https://parodos.dev/serverless-workflows-helm
+
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
