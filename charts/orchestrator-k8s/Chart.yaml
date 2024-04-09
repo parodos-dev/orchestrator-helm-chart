@@ -15,7 +15,7 @@ dependencies:
     version: "0.0.3"
     condition: postgresql-persistent.enabled
   - name: workflows
-    repository: https://parodos.dev/serverless-workflows-helm
+    repository: https://parodos.dev/serverless-workflows-config
     version: "0.2.0"
     condition: workflows.enabled
 
