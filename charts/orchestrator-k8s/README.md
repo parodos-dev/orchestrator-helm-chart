@@ -1,7 +1,7 @@
 # Orchestrator-k8s helm chart 
 
 This chart will install the Orchestrator and all its dependencies on kubernetes. 
-It is well suited for dev/QE/test or resource constrained environments.
+It is well suited for dev/QE/test or resource-constrained environments.
 
 The chart deploys:
 - Janus-IDP
@@ -30,7 +30,7 @@ helm install orchestrator . -f values.yaml
 ```
 
 
-Output should look like that
+The output should look like that
 ```console
 $ helm install orchestrator .
 Release "orchestrator" has been upgraded. Happy Helming!
