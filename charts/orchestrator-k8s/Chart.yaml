@@ -3,7 +3,7 @@ name: orchestrator-k8s
 description: |
   Helm chart to deploy the Orchestrator solution suite on Kubernetes, including Janus IDP backstage, SonataFlow Operator, Knative Eventing and Knative Serving.
 type: application
-version: 0.3.0
+version: 0.3.1
 appVersion: "0.0.1"
 
 dependencies:
