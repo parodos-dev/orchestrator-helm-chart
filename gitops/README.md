@@ -23,6 +23,7 @@ To allow the Tekton resources to push to the registry, we need an account capabl
 
 * Create or edit a [Robot account](https://access.redhat.com/documentation/en-us/red_hat_quay/3.3/html/use_red_hat_quay/use-quay-manage-repo) and grant it `Write` permissions to the newly created repository
 * Download the `Docker configuration` file for the robot account and move it under the root folder of this repository (we assume the file name is `orchestrator-auth.json`)
+* When using a [builder image](https://github.com/parodos-dev/serverless-workflows/blob/main/pipeline/workflow-builder.Dockerfile) for serverless workflows from [registry.redhat.io](registry.redhat.io), it is also required to add also the credential to pull from it as described [here](https://access.redhat.com/terms-based-registry/token/orchestrator/docker-config). Merge the credential into a single file `orchestrator-auth.json` with the credentials from the previous step.
 * Run the following to create the `docker-credentials` secret:
 ```console
 oc create secret -n orchestrator-gitops generic docker-credentials --from-file=config.json=orchestrator-auth.json
