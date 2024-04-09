@@ -34,7 +34,7 @@ while getopts ":e:h" opt; do
 done
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-TEMPLATE_FILE="${SCRIPT_DIR}/../charts/orchestrator/templates/rhdh-operator.yaml"
+TEMPLATE_FILE="${TEMPLATE_FILE:-${SCRIPT_DIR}/../charts/orchestrator/templates/rhdh-operator.yaml}"
 
 case $ENVIRONMENT in
     "upstream")

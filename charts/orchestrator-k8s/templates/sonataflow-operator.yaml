@@ -1,0 +1,709 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    control-plane: sonataflow-operator
+  name: sonataflow-operator-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sonataflow-operator-controller-manager
+  namespace: sonataflow-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sonataflow-operator-leader-election-role
+  namespace: sonataflow-operator-system
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sonataflow-operator-builder-manager-role
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - pods
+      - pods/exec
+      - services
+      - services/finalizers
+      - namespaces
+      - serviceaccounts
+      - persistentvolumeclaims
+      - secrets
+      - events
+      - deployments
+      - nodes
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - apps
+    resources:
+      - configmaps
+      - pods
+      - pods/exec
+      - services
+      - services/finalizers
+      - namespaces
+      - serviceaccounts
+      - persistentvolumeclaims
+      - secrets
+      - events
+      - deployments
+      - nodes
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - rbac.authorization.k8s.io
+    resources:
+      - roles
+      - rolebindings
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - eventing.knative.dev
+    resources:
+      - triggers
+      - triggers/status
+      - triggers/finalizers
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - sources.knative.dev
+    resources:
+      - sinkbindings
+      - sinkbindings/status
+      - sinkbindings/finalizers
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sonataflow-operator-leases
+rules:
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: sonataflow-operator-manager-role
+rules:
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflowbuilds
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflowbuilds/finalizers
+    verbs:
+      - update
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflowbuilds/status
+    verbs:
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflowclusterplatforms
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflowclusterplatforms/finalizers
+    verbs:
+      - update
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflowclusterplatforms/status
+    verbs:
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflowplatforms
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflowplatforms/finalizers
+    verbs:
+      - update
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflowplatforms/status
+    verbs:
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflows
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflows/finalizers
+    verbs:
+      - update
+  - apiGroups:
+      - sonataflow.org
+    resources:
+      - sonataflows/status
+    verbs:
+      - get
+      - patch
+      - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sonataflow-operator-metrics-reader
+rules:
+  - nonResourceURLs:
+      - /metrics
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sonataflow-operator-openshift-manager-role
+rules:
+  - apiGroups:
+      - route.openshift.io
+    resources:
+      - route
+      - routes
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - route.openshift.io
+    resources:
+      - route/finalizers
+      - routes/finalizers
+    verbs:
+      - get
+      - list
+      - create
+      - update
+      - delete
+      - deletecollection
+      - patch
+      - watch
+  - apiGroups:
+      - image.openshift.io
+    resources:
+      - imagestreams
+      - imagestreamtags
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - image.openshift.io
+    resources:
+      - imagestreams/finalizers
+      - imagestreamtags/finalizers
+    verbs:
+      - get
+      - list
+      - create
+      - update
+      - delete
+      - deletecollection
+      - patch
+      - watch
+  - apiGroups:
+      - build.openshift.io
+    resources:
+      - buildconfigs
+      - builds
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - build.openshift.io
+    resources:
+      - buildconfigs/finalizers
+      - builds/finalizers
+    verbs:
+      - get
+      - list
+      - create
+      - update
+      - delete
+      - deletecollection
+      - patch
+      - watch
+  - apiGroups:
+      - build.openshift.io
+    resources:
+      - buildconfigs/instantiatebinary
+    verbs:
+      - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sonataflow-operator-proxy-role
+rules:
+  - apiGroups:
+      - authentication.k8s.io
+    resources:
+      - tokenreviews
+    verbs:
+      - create
+  - apiGroups:
+      - authorization.k8s.io
+    resources:
+      - subjectaccessreviews
+    verbs:
+      - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sonataflow-operator-service-discovery-role
+rules:
+  - apiGroups:
+      - apps
+    resources:
+      - statefulset
+      - statefulsets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingress
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - serving.knative.dev
+    resources:
+      - service
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - eventing.knative.dev
+    resources:
+      - broker
+      - brokers
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - apps.openshift.io
+    resources:
+      - deploymentconfigs
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - route.openshift.io
+    resources:
+      - routes
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sonataflow-operator-leader-election-rolebinding
+  namespace: sonataflow-operator-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sonataflow-operator-leader-election-role
+subjects:
+  - kind: ServiceAccount
+    name: sonataflow-operator-controller-manager
+    namespace: sonataflow-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sonataflow-operator-builder-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sonataflow-operator-builder-manager-role
+subjects:
+  - kind: ServiceAccount
+    name: sonataflow-operator-controller-manager
+    namespace: sonataflow-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sonataflow-operator-leases-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sonataflow-operator-leases
+subjects:
+  - kind: ServiceAccount
+    name: sonataflow-operator-controller-manager
+    namespace: sonataflow-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sonataflow-operator-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sonataflow-operator-manager-role
+subjects:
+  - kind: ServiceAccount
+    name: sonataflow-operator-controller-manager
+    namespace: sonataflow-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sonataflow-operator-openshift-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sonataflow-operator-openshift-manager-role
+subjects:
+  - kind: ServiceAccount
+    name: sonataflow-operator-controller-manager
+    namespace: sonataflow-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sonataflow-operator-proxy-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sonataflow-operator-proxy-role
+subjects:
+  - kind: ServiceAccount
+    name: sonataflow-operator-controller-manager
+    namespace: sonataflow-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sonataflow-operator-service-discovery-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sonataflow-operator-service-discovery-role
+subjects:
+  - kind: ServiceAccount
+    name: sonataflow-operator-controller-manager
+    namespace: sonataflow-operator-system
+---
+apiVersion: v1
+data:
+  DEFAULT_WORKFLOW_EXTENSION: .sw.json
+  Dockerfile: "FROM quay.io/kiegroup/kogito-swf-builder-nightly:latest AS builder\n\n# variables that can be overridden by the builder\n# To add a Quarkus extension to your application\nARG QUARKUS_EXTENSIONS\n# Args to pass to the Quarkus CLI add extension command\nARG QUARKUS_ADD_EXTENSION_ARGS\n# Additional java/mvn arguments to pass to the builder\nARG MAVEN_ARGS_APPEND\n\n# Copy from build context to skeleton resources project\nCOPY --chown=1001 . ./resources\n\nRUN /home/kogito/launch/build-app.sh ./resources\n  \n#=============================\n# Runtime Run\n#=============================\nFROM registry.access.redhat.com/ubi9/openjdk-17:latest\n\nENV LANG='en_US.UTF-8' LANGUAGE='en_US:en'\n  \n# We make four distinct layers so if there are application changes the library layers can be re-used\nCOPY --from=builder --chown=185 /home/kogito/serverless-workflow-project/target/quarkus-app/lib/ /deployments/lib/\nCOPY --from=builder --chown=185 /home/kogito/serverless-workflow-project/target/quarkus-app/*.jar /deployments/\nCOPY --from=builder --chown=185 /home/kogito/serverless-workflow-project/target/quarkus-app/app/ /deployments/app/\nCOPY --from=builder --chown=185 /home/kogito/serverless-workflow-project/target/quarkus-app/quarkus/ /deployments/quarkus/\n\nEXPOSE 8080\nUSER 185\nENV AB_JOLOKIA_OFF=\"\"\nENV JAVA_OPTS=\"-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager\"\nENV JAVA_APP_JAR=\"/deployments/quarkus-run.jar\"\n"
+kind: ConfigMap
+metadata:
+  name: sonataflow-operator-builder-config
+  namespace: sonataflow-operator-system
+---
+apiVersion: v1
+data:
+  controllers_cfg.yaml: |
+    # The default size of Kaniko PVC when using the internal operator builder manager
+    defaultPvcKanikoSize: 1Gi
+    # How much time (in seconds) to wait for a devmode workflow to start.
+    # This information is used for the controller manager to create new devmode containers and setup the healthcheck probes.
+    healthFailureThresholdDevMode: 50
+    # Default image used internally by the Operator Managed Kaniko builder to create the warmup pods
+    kanikoDefaultWarmerImageTag: gcr.io/kaniko-project/warmer:v1.9.0
+    # Default image used internally by the Operator Managed Kaniko builder to create the executor pods
+    kanikoExecutorImageTag: gcr.io/kaniko-project/executor:v1.9.0
+    # The Jobs Service image to use, if empty the operator will use the default Apache Community one based on the current operator's version
+    jobsServicePostgreSQLImageTag: ""
+    jobsServiceEphemeralImageTag: ""
+    # The Data Index image to use, if empty the operator will use the default Apache Community one based on the current operator's version
+    dataIndexPostgreSQLImageTag: ""
+    dataIndexEphemeralTag: ""
+    # SonataFlow base builder image used in the internal Dockerfile to build workflow applications in preview profile
+    # Order of precedence is:
+    # 1. SonataFlowPlatform in the given namespace
+    # 2. This configuration
+    # 3. The FROM in the Dockerfile in the operator's namespace "sonataflow-operator-builder-config" configMap.
+    # If 1 or 2, the FROM tag will be replaced by the tag se there.
+    # If empty the operator will use the default Apache Community one based on the current operator's version.
+    sonataFlowBaseBuilderImageTag: ""
+    # The image to use to deploy SonataFlow workflow images in devmode profile.
+    # If empty the operator will use the default Apache Community one based on the current operator's version.
+    sonataFlowDevModeImageTag: ""
+    # The default name of the builder configMap in the operator's namespace
+    builderConfigMapName: "sonataflow-operator-builder-config"
+kind: ConfigMap
+metadata:
+  name: sonataflow-operator-controllers-config
+  namespace: sonataflow-operator-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    control-plane: sonataflow-operator
+  name: sonataflow-operator-controller-manager-metrics-service
+  namespace: sonataflow-operator-system
+spec:
+  ports:
+    - name: https
+      port: 8443
+      protocol: TCP
+      targetPort: https
+  selector:
+    control-plane: sonataflow-operator
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    control-plane: sonataflow-operator
+  name: sonataflow-operator-controller-manager
+  namespace: sonataflow-operator-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      control-plane: sonataflow-operator
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: manager
+      labels:
+        control-plane: sonataflow-operator
+    spec:
+      containers:
+        - args:
+            - --health-probe-bind-address=:8081
+            - --metrics-bind-address=127.0.0.1:8080
+            - --leader-elect
+            - --v=0
+          command:
+            - /usr/local/bin/manager
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          image: quay.io/kiegroup/kogito-serverless-operator-nightly:latest
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          name: manager
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 10m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - mountPath: /config/controllers_cfg.yaml
+              name: controllers-config
+              subPath: controllers_cfg.yaml
+        - args:
+            - --secure-listen-address=0.0.0.0:8443
+            - --upstream=http://127.0.0.1:8080/
+            - --logtostderr=true
+            - --v=0
+          image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+          name: kube-rbac-proxy
+          ports:
+            - containerPort: 8443
+              name: https
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 5m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+      securityContext:
+        runAsNonRoot: true
+      serviceAccountName: sonataflow-operator-controller-manager
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - configMap:
+            name: sonataflow-operator-controllers-config
+          name: controllers-config

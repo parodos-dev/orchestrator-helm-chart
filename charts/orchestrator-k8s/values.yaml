@@ -1,0 +1,162 @@
+global:
+  host: localhost # Specify your own Ingress host
+
+appName: orchestrator
+serviceAccountName: orchestrator-sa
+labels:
+  - app: orchestartor 
+
+workflows:
+  enabled: true
+
+sonataflowOperator:
+  image: quay.io/kiegroup/kogito-serverless-operator-nightly:latest
+
+postgresql-persistent:
+  # depends on sonataflow-operator which still uses the ephemeral image. 
+  enabled: false
+  database_service_name: workflows-db
+  memory_limit: 512Mi
+  volume_capacity: 1Gi
+  config:
+    postgresql_database: testdb
+    postgresql_password: testp
+    postgresql_user: testu
+    port: 5432
+  image:
+    tag: "latest"
+
+# override Janus image with one with the orchestrator plugin
+# May change with dynamic plugin support
+backstage: 
+  route:
+    # set to false for kubernetes
+    enabled: false
+  global:
+    dynamic:
+      includes:
+      - dynamic-plugins.default.yaml
+      plugins:
+      - disabled: false
+        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.6.4"
+        integrity: >-
+          sha512-AbTX5YGJGcpWhlPsLmsysn0TAZLEbSW2lmKu1OuhvP4iI2KQBkF6naN/0iJopEH2s0Itd+k48VN+Q7NeAPu2JA==
+        pluginConfig:
+          orchestrator:
+            dataIndexService:
+              url: http://sonataflow-platform-data-index-service
+            editor:
+              path: https://sandbox.kie.org/swf-chrome-extension/0.32.0
+      - disabled: false
+        package: "@janus-idp/backstage-plugin-orchestrator@1.8.7"
+        integrity: >-
+          sha512-cCfXX9y0Fy+l6PfXoZ5ll2vl5buR2GD74TI4XA0uOpH+p2COj7KQg8e8gWqPBMoyvgD6JZiGEUnd/rq6Pn0XMQ==
+        pluginConfig:
+          dynamicPlugins:
+            frontend:
+              janus-idp.backstage-plugin-orchestrator:
+                appIcons:
+                - importName: OrchestratorIcon
+                  module: OrchestratorPlugin
+                  name: orchestratorIcon
+                dynamicRoutes:
+                - importName: OrchestratorPage
+                  menuItem:
+                    icon: orchestratorIcon
+                    text: Orchestrator
+                  module: OrchestratorPlugin
+                  path: /orchestrator
+
+      - disabled: false
+        package: "@janus-idp/plugin-notifications@1.1.16"
+        integrity: >-
+          sha512-pmAInZ3231PGkHxpPzOIFCdftTVlk4+w5/vi5hfixPQRKNf68hm9WudsgK6Q/Rv436DHt8ZWJyAP3QWhxZR2Zw==
+        pluginConfig:
+          dynamicPlugins:
+            frontend:
+              janus-idp.backstage-plugin-notifications:
+                appIcons:
+                  - name: notificationsIcon
+                    module: NotificationsPlugin
+                    importName: NotificationsActiveIcon
+                dynamicRoutes:
+                  - path: /notifications
+                    importName: NotificationsPage
+                    module: NotificationsPlugin
+                    menuItem:
+                      icon: notificationsIcon
+                      text: Notifications
+                    config:
+                      pollingIntervalMs: 5000
+      - disabled: false
+        package: "@janus-idp/plugin-notifications-backend-dynamic@1.4.3"
+        integrity: >-
+          sha512-FVMmIHjAoRg+kzpEhkEjtCKgRanWHwaI9I2Jqj9/gObnF2WBIllzAPiGNxj6tkMFloLflSJc6kc9ZphttAGGcQ==
+  upstream:
+    ingress:
+      enabled: true  # Use Kubernetes Ingress instead of OpenShift Route
+    backstage:
+      resources:
+        limits:
+          memory: 2Gi
+          cpu: 1000m
+        requests:
+          memory: 800Mi
+          cpu: 200m
+      
+      podSecurityContext:  # Vanilla Kubernetes doesn't feature OpenShift default SCCs with dynamic UIDs, adjust accordingly to the deployed image
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+
+      image:
+        tag: next
+      appConfig:
+        app:
+          baseUrl: http://localhost:9090
+        backend:
+          baseUrl: http://localhost:9090
+          cors:
+            origin: http://localhost:9090
+        integrations:
+          github:
+            - host: github.com
+              token: "INSERT VALID TOKEN HERE"
+        auth:
+          environment: development
+          providers:
+            github:
+              development:
+                clientId: "INSERT VALID CLIENT ID HERE"
+                clientSecret: "INSERT VALID CLIENT SECRET HERE"
+        catalog:
+          rules:
+            - allow:
+                [
+                  Component,
+                  System,
+                  Group,
+                  Resource,
+                  Location,
+                  Template,
+                  API,
+                  User,
+                  Domain,
+                ]
+          locations:
+            - type: url
+              target: https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml
+            - type: url
+              target: https://github.com/parodos-dev/workflow-software-templates/blob/main/template/template.yaml
+            - type: url
+              target: https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml
+          csp:
+            frame-src:
+              - "https://sandbox.kie.org"
+        orchestrator:
+          catalog:
+            environment: development
+
+          
+
+
