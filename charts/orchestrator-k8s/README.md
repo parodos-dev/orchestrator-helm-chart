@@ -22,7 +22,6 @@ helm install orchestrator orchestrator-k8s
 ## Development
 ```console
 git clone https://github.com/parodos-dev.github.io/orchestrator-helm-chart
-
 cd orchestrator-helm-chart/charts/orchestrator-k8s
 
 helm dependencies build
