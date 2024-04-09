@@ -6,7 +6,7 @@ dependencies:
   repository: https://sclorg.github.io/helm-charts
   version: 0.0.3
 - name: workflows
-  repository: https://parodos.dev/serverless-workflows-helm
+  repository: https://parodos.dev/serverless-workflows-config
   version: 0.2.0
-digest: sha256:4859540e046c3b205efe9df617b9d73f964bdc0352b4b360ba1dbb3c3a54a6bc
-generated: "2024-04-04T20:06:24.888575923+03:00"
+digest: sha256:0760818aaa3f6d835c4ecbda7c0b9c8bfea2ee152bac46c7bb982728e6b84821
+generated: "2024-04-09T12:27:49.361328275+03:00"
