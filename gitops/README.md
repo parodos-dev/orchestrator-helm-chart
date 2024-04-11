@@ -1,10 +1,11 @@
 # Initialize the GitOps environment
 ## Install the operators
-The `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators can be installed using the solution derived from 
-the [Janus IDP Demo](https://github.com/redhat-gpte-devopsautomation/janus-idp-bootstrap)
+The `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators can be installed from the solution 
+derived from the [Janus IDP Demo](https://github.com/redhat-gpte-devopsautomation/janus-idp-bootstrap)
 >This repository contains automation to install the Janus IDP Demo, as well as supporting components
 
-To address the need for including Tekton resources within the ArgoCD applications, a fork has been initiated to remove the exclusion configuration.
+A fork has been created to remove the configuration that excludes Tekton resources from being configured from the 
+ArgoCD applications (see [discussion](https://github.com/argoproj/argo-cd/discussions/8674#discussioncomment-2318554)).
 
 First, install the `Red Hat OpenShift Pipelines` operator:
 ```bash
