@@ -61,3 +61,11 @@ oc create secret -n orchestrator-gitops generic git-ssh-credentials \
   --from-file=ssh/known_hosts
 ```
 Note: if you change the SSH key type from the default value `rsa`, you need to update the `config` file accordingly
+
+## Setting up GitHub Integration
+To begin serverless workflow development using the "Basic workflow bootstrap project" software template with GitHub as the target source control, you'll need to configure organization settings to allow read and write permissions for GitHub workflows. Follow these steps to enable the necessary permissions:
+
+1. Navigate to your organization settings on GitHub.
+2. Locate the section for managing organization settings related to GitHub Actions.
+3. Enable read and write permissions for workflows by adjusting the settings accordingly.
+4. For detailed instructions and exact steps, refer to the GitHub guide available [here](https://docs.github.com/en/enterprise-server@3.9/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization#configuring-the-default-github_token-permissions).
