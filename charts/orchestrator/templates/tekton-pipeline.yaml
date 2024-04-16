@@ -22,6 +22,12 @@ spec:
       description: Whether conversion to flat layout is needed or it's already flattened
       type: string
       default: "true"
+    - name: quayOrgName
+      description: The Quay Organization Name of the published workflow
+      type: string
+    - name: quayRepoName
+      description: The Quay Repository Name of the published workflow
+      type: string
   workspaces:
     - name: workflow-source
     - name: workflow-gitops
@@ -117,7 +123,7 @@ spec:
           workspace: docker-credentials
       params:
         - name: IMAGE
-          value: quay.io/orchestrator/serverless-workflow-$(params.workflowId):$(tasks.fetch-workflow.results.commit)
+          value: quay.io/$(params.quayOrgName)/$(params.quayRepoName):$(tasks.fetch-workflow.results.commit)
         - name: DOCKERFILE
           value: flat/workflow-builder.Dockerfile
         - name: CONTEXT
