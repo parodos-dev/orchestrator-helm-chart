@@ -1,6 +1,7 @@
 name: Release Orchestrator Charts
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
