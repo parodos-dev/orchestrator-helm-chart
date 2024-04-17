@@ -26,16 +26,16 @@ helm upgrade --install orchestrator-gitops gitops-operator/ -f gitops-operator/v
 
 ## Installing docker credentials
 
-To allow the Tekton resources to push to the registry, we need an account capable of pushing the image to the registry:
+The Tekton pipeline deployed by the Orchestrator is responsible for building a workflow image and pushing it to Quay.io.
+There is a need to create a single K8s secret combined with the following secrets:
+1. A secret for Quay.io organization to push the images built by the pipeline:
+   - Create or edit a [Robot account](https://access.redhat.com/documentation/en-us/red_hat_quay/3.3/html/use_red_hat_quay/use-quay-manage-repo) and grant it `Write` permissions to the newly created repository
+   - Download the credentials as Kubernetes secret.
+2. A secret for [registry.redhat.io](registry.redhat.io). To build workflow images, the pipeline uses the [builder image](https://github.com/parodos-dev/serverless-workflows/blob/main/pipeline/workflow-builder.Dockerfile) from [registry.redhat.io](registry.redhat.io).
+   - Generate a token [here](https://access.redhat.com/terms-based-registry/create), and download it as OCP secret.
 
-- Create or edit a [Robot account](https://access.redhat.com/documentation/en-us/red_hat_quay/3.3/html/use_red_hat_quay/use-quay-manage-repo) and grant it `Write` permissions to the newly created repository
-- Download the `Docker configuration` (we assume the file name is `orchestrator-auth.json`), place it in a directory of the choice and navigate to that directory.
-- When using a [builder image](https://github.com/parodos-dev/serverless-workflows/blob/main/pipeline/workflow-builder.Dockerfile) for serverless workflows from [registry.redhat.io](registry.redhat.io), it is also required to add also the credential to pull from it as described [here](https://access.redhat.com/terms-based-registry/token/orchestrator/docker-config). Merge the credential into a single file `orchestrator-auth.json` with the credentials from the previous step.
-- Run the following to create the `docker-credentials` secret:
-
-```console
-oc create secret -n orchestrator-gitops generic docker-credentials --from-file=config.json=orchestrator-auth.json
-```
+Those two K8s secrets should be merged into a single secret named `docker-credentials` in `orchestrator-gitops` namespace in the cluster that runs the pipelines.
+You may use this [helper script](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/hack/merge_secrets.sh) to merge the secrets or choose another method of downloading the credentials and merging them.
 
 ## Define the SSH credentials
 
