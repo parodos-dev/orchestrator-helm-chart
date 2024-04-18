@@ -54,7 +54,7 @@ metadata:
   name: knative-eventing
   namespace: knative-eventing
   annotations:
-    "helm.sh/hook": post-install
+    "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-fail
     "helm.sh/hook-weight": "2" # Is created after the job to wait for the crd to be available
 spec:
@@ -68,7 +68,7 @@ metadata:
   name: knative-serving
   namespace: knative-serving
   annotations:
-    "helm.sh/hook": post-install
+    "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-fail
     "helm.sh/hook-weight": "2" # Is created after the job to wait for the crd to be available
 spec:
