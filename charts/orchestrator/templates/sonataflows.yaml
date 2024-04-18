@@ -48,7 +48,7 @@ spec:
             namespace: {{ .Values.postgres.serviceNamespace }}
       podTemplate:
         container:
-          image: "quay.io/kiegroup/kogito-data-index-postgresql-nightly:main-2024-03-23"
+          image: "quay.io/kiegroup/kogito-data-index-postgresql:9.99.1.CR1"
     jobService:
       enabled: true
       persistence:
@@ -60,9 +60,6 @@ spec:
           serviceRef:
             name: {{ .Values.postgres.serviceName }}
             namespace: {{ .Values.postgres.serviceNamespace }}
-      podTemplate:
-        container:
-          image: "quay.io/kiegroup/kogito-jobs-service-postgresql-nightly:main-2024-03-25"
 {{ include "wait-for-crd-available" (dict "releaseName" .Release.Name "releaseNamespace" .Release.Namespace "apiGroup" "sonataflow.org" "kind" "sonataflowplatforms") }}
 {{ include "delete-cr-on-uninstall" (dict "releaseName" .Release.Name "releaseNamespace" .Release.Namespace "apiGroup" "sonataflow.org" "kind" "sonataflowplatforms" "targetNamespace" .Values.orchestrator.namespace "resourceName" "sonataflow-platform") }}
 {{- end }}
