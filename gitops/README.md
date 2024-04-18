@@ -31,7 +31,7 @@ There is a need to create a single K8s secret combined with the following secret
 1. A secret for Quay.io organization to push the images built by the pipeline:
    - Create or edit a [Robot account](https://access.redhat.com/documentation/en-us/red_hat_quay/3.3/html/use_red_hat_quay/use-quay-manage-repo) and grant it `Write` permissions to the newly created repository
    - Download the credentials as Kubernetes secret.
-2. A secret for [registry.redhat.io](registry.redhat.io). To build workflow images, the pipeline uses the [builder image](https://github.com/parodos-dev/serverless-workflows/blob/main/pipeline/workflow-builder.Dockerfile) from [registry.redhat.io](registry.redhat.io).
+2. A secret for _registry.redhat.io_. To build workflow images, the pipeline uses the [builder image](https://github.com/parodos-dev/serverless-workflows/blob/main/pipeline/workflow-builder.Dockerfile) from [registry.redhat.io](https://registry.redhat.io).
    - Generate a token [here](https://access.redhat.com/terms-based-registry/create), and download it as OCP secret.
 
 Those two K8s secrets should be merged into a single secret named `docker-credentials` in `orchestrator-gitops` namespace in the cluster that runs the pipelines.
