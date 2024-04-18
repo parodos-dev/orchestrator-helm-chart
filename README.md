@@ -23,7 +23,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 - Your cluster has a [default storage class](https://docs.openshift.com/container-platform/4.13/storage/container_storage_interface/persistent-storage-csi-sc-manage.html) provisioned.
 - [Helm](https://helm.sh/docs/intro/install/) v3.9+ is installed.
 - [PostgreSQL](https://www.postgresql.org/) database is available with credentials to manage the tablespace (optional).
-  - A [reference implementation](https://github.com/parodos-dev/orchestrator-helm-chart#deploying-postgresql-reference-implementation) is provided for your convenience.
+  - A [reference implementation](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md) is provided for your convenience.
 - A GitHub API Token - to import items into the catalog, ensure you have a `GITHUB_TOKEN` with the necessary permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions:
   - repo (all)
   - admin:org (read:org)
