@@ -78,10 +78,11 @@ data:
       auth:
         keys:
           - secret: "${BACKEND_SECRET}"
-      baseUrl: https://backstage-backstage-{{ .Values.rhdhOperator.subscription.namespace }}.{{ include "cluster.domain" . }}
-      csp:
-        frame-src:
-          - "https://sandbox.kie.org"
+      baseUrl: https://backstage-backstage-{{ .Values.rhdhOperator.subscription.namespace }}.{{ include "cluster.domain" . }}      
+      csp:        
+        script-src: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
+        script-src-elem: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
+        connect-src: ["'self'", 'http:', 'https:', 'data:']
       cors:
         origin: https://backstage-backstage-{{ .Values.rhdhOperator.subscription.namespace }}.{{ include "cluster.domain" . }}
       database:
@@ -217,9 +218,7 @@ data:
         pluginConfig:
           orchestrator:
             dataIndexService:
-              url: http://sonataflow-platform-data-index-service.{{ .Values.orchestrator.namespace }}
-            editor:
-              path: "https://sandbox.kie.org/swf-chrome-extension/0.32.0"
+              url: http://sonataflow-platform-data-index-service.{{ .Values.orchestrator.namespace }}                          
       - disabled: false
         package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator.package }}"
         integrity: {{ .Values.rhdhPlugins.orchestrator.integrity }}
