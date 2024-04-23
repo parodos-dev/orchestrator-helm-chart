@@ -102,7 +102,12 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
     ./hack/setenv.sh --use-default
     ```
 
-    This script generates a `.env` file that contains all the calculated environment variables.
+    This script generates a `.env` file that contains all the calculated environment variables. You need to source the file to
+    run orchestrator installation command below by running:
+
+    ```console
+    source .env
+    ```
 
     > **NOTE:** If you don't want to use the default values, omit the `--use-default` and the script will prompt you for input.
     >
@@ -212,7 +217,7 @@ In addition to the [prerequisites](https://github.com/parodos-dev/orchestrator-h
 
 ### GitOps environment
 
-See the dedicated [document](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/GitOps.md)
+See the dedicated [document](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/gitops/README.md)
 
 ### Deploying PostgreSQL reference implementation
 
