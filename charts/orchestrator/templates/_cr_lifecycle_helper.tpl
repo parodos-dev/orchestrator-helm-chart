@@ -61,7 +61,8 @@ roleRef:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ trunc -63 (printf "%s-%s" $releaseNameKind (.release.IsInstall | ternary "install" "upgrade" ) ) }} # cannot be more than 63 characters https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+  name: {{ trunc -57 (printf "%s-%s" $releaseNameKind (.release.IsInstall | ternary "install" "upgrade" ) ) }} # Fixes https://github.com/parodos-dev/orchestrator-helm-chart/issues/160
+  # job name is used in the spec.template.metadata.labels, and labels cannot be more than 63 characters https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   namespace: {{ .release.Namespace }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade,post-rollback
@@ -106,7 +107,8 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ trunc -63 (printf "%s-delete" $releaseNameKind) }} # cannot be more than 63 characters https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+  name: {{ trunc -57 (printf "%s-delete" $releaseNameKind) }} # Fixes https://github.com/parodos-dev/orchestrator-helm-chart/issues/160
+  # job name is used in the spec.template.metadata.labels, and labels cannot be more than 63 characters https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   namespace: {{ .release.Namespace }}
   annotations:
     "helm.sh/hook": {{ if .isEnabled }}pre-delete{{ end }}{{ if and (not .isEnabled) (not (empty (lookup (printf "%s/%s" .apiGroup .groupVersion) .kind (dig "targetNamespace" "" . ) .resourceName ))) }}pre-upgrade,pre-rollback{{ end }}
