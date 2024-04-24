@@ -9,7 +9,7 @@ metadata:
   name: {{ $releaseNameKind }}
   namespace: {{ .release.Namespace }}
   annotations:
-    "helm.sh/hook": pre-delete,{{ if .isEnabled }}post-install,post-upgrade,post-rollback{{ else }}pre-upgrade,pre-rollback{{ end }}
+    "helm.sh/hook": {{ if .isEnabled }}pre-delete,post-install,post-upgrade,post-rollback{{ else }}pre-upgrade,pre-rollback{{ end }}
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
     "helm.sh/hook-weight": "-1"
 ---
@@ -18,7 +18,7 @@ kind: ClusterRole
 metadata:
   name: {{ $releaseNameKind }}
   annotations:
-    "helm.sh/hook": pre-delete,{{ if .isEnabled }}post-install,post-upgrade,post-rollback{{ else }}pre-upgrade,pre-rollback{{ end }}
+    "helm.sh/hook": {{ if .isEnabled }}pre-delete,post-install,post-upgrade,post-rollback{{ else }}pre-upgrade,pre-rollback{{ end }}
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
     "helm.sh/hook-weight": "0"
 rules:
@@ -45,7 +45,7 @@ kind: ClusterRoleBinding
 metadata:
   name: {{ $releaseNameKind }}
   annotations:
-    "helm.sh/hook": pre-delete,{{ if .isEnabled }}post-install,post-upgrade,post-rollback{{ else }}pre-upgrade,pre-rollback{{ end }}
+    "helm.sh/hook": {{ if .isEnabled }}pre-delete,post-install,post-upgrade,post-rollback{{ else }}pre-upgrade,pre-rollback{{ end }}
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
     "helm.sh/hook-weight": "0"
 subjects:
@@ -93,8 +93,11 @@ spec:
                 kubectl get crd {{ printf "%s.%s" .kinds .apiGroup }} -oname
                 if [[ $? -eq 0 ]]; then
                   echo $MANIFEST | base64 -d | kubectl apply -f -
-                  echo "Update Job finished"
-                  exit 0
+                  if [[ $? -eq 0 ]]; then
+                    echo "Update Job finished"
+                    exit 0
+                  fi
+                  exit 1
                 fi
                 ((count--))
                 sleep 5
