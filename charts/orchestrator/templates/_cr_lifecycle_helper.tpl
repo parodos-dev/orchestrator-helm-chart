@@ -100,6 +100,7 @@ spec:
                 sleep 5
               done
               echo "Could not find CRD {{ printf "%s.%s" .kinds .apiGroup }} deployed"
+              exit 1
 
       restartPolicy: Never
     {{- end }}
