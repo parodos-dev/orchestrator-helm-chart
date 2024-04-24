@@ -1,6 +1,27 @@
+{{- define "backstage-manifest" }}
+---
+apiVersion: rhdh.redhat.com/v1alpha1
+kind: Backstage
+metadata:
+  name: backstage
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+spec:
+  application:
+    appConfig:
+      configMaps:
+        - name: app-config-rhdh
+        - name: app-config-rhdh-auth
+        - name: app-config-rhdh-catalog
+    dynamicPluginsConfigMapName: dynamic-plugins-rhdh
+    extraEnvs:
+      secrets:
+        - name: backstage-backend-auth-secret
+    replicas: 1
+{{- end }}
 {{- if .Values.rhdhOperator.enabled }}
-{{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" .Values.rhdhOperator.subscription.namespace .Release.Name .Capabilities.APIVersions ) }}
-{{- if and (eq $unmanagedNamespaceExists "false") .Values.rhdhOperator.enabled }}
+  {{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "v1" "Namespace" "" .Values.rhdhOperator.subscription.namespace .Release.Name .Capabilities.APIVersions ) }}
+  {{- if and (eq $unmanagedNamespaceExists "false") .Values.rhdhOperator.enabled }}
+---
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -13,7 +34,7 @@ metadata:
   namespace: {{ .Values.rhdhOperator.subscription.namespace }}
 spec: {}
 ---
-{{- end }}
+  {{- end }}
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
@@ -32,18 +53,18 @@ metadata:
   name: backstage-backend-auth-secret
   namespace: {{ .Values.rhdhOperator.subscription.namespace }}
 stringData:
-{{- $old_secret := lookup "v1" "Secret" .Values.rhdhOperator.subscription.namespace "backstage-backend-auth-secret" }}
-{{- $generated_secret := randAlphaNum 24 | nospace | b64enc }}
+  {{- $old_secret := lookup "v1" "Secret" .Values.rhdhOperator.subscription.namespace "backstage-backend-auth-secret" }}
+  {{- $generated_secret := randAlphaNum 24 | nospace | b64enc }}
   BACKEND_SECRET: {{ $old_secret | dig "data" "BACKEND_SECRET" $generated_secret | b64dec }}
   {{- if ne .Values.rhdhOperator.k8s.clusterToken "" }}
   K8S_CLUSTER_URL: {{ .Values.rhdhOperator.k8s.clusterUrl }}
   K8S_CLUSTER_TOKEN: {{ .Values.rhdhOperator.k8s.clusterToken }}
   {{- end }}
-{{- if .Values.argocd.enabled }}
+  {{- if .Values.argocd.enabled }}
   ARGOCD_URL: {{ .Values.argocd.url }}
   ARGOCD_USERNAME: {{ .Values.argocd.username }}
   ARGOCD_PASSWORD: {{ .Values.argocd.password }}
-{{- end }}
+  {{- end }}
   {{- if ne .Values.rhdhOperator.github.token "" }}
   GITHUB_TOKEN: {{ .Values.rhdhOperator.github.token }}
   {{- end }}
@@ -52,7 +73,7 @@ stringData:
   GITHUB_CLIENT_SECRET: {{ .Values.rhdhOperator.github.clientSecret }}
   {{- end }}
 ---
-{{- if ne .Values.rhdhPlugins.npmRegistry "" }}
+  {{- if ne .Values.rhdhPlugins.npmRegistry "" }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -63,7 +84,7 @@ stringData:
   .npmrc: |
     registry={{ .Values.rhdhPlugins.npmRegistry }}
 ---
-{{- end }}
+  {{- end }}
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -103,7 +124,7 @@ data:
     includes:
       - dynamic-plugins.default.yaml
     plugins:
-{{- if ne .Values.rhdhOperator.k8s.clusterToken "" }}
+  {{- if ne .Values.rhdhOperator.k8s.clusterToken "" }}
       - package: ./dynamic-plugins/dist/backstage-plugin-kubernetes-backend-dynamic
         disabled: false
         pluginConfig:
@@ -162,8 +183,8 @@ data:
                       if:
                         allOf:
                           - isTektonCIAvailable
-{{- end }}
-{{- if .Values.argocd.enabled }}
+  {{- end }}
+  {{- if .Values.argocd.enabled }}
       - disabled: false
         package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd-backend-dynamic
         pluginConfig:
@@ -211,7 +232,7 @@ data:
                 username: ${ARGOCD_USERNAME}
                 password: ${ARGOCD_PASSWORD}
               type: config
-{{- end }}
+  {{- end }}
       - disabled: false
         package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator_backend.package }}"
         integrity: {{ .Values.rhdhPlugins.orchestrator_backend.integrity }}
@@ -268,21 +289,21 @@ metadata:
   namespace: {{ .Values.rhdhOperator.subscription.namespace }}
 data:
   app-config-auth.gh.yaml: |
-{{- if ne .Values.rhdhOperator.github.token "" }}
+  {{- if ne .Values.rhdhOperator.github.token "" }}
     integrations:
       github:
         - host: github.com
           token: ${GITHUB_TOKEN}
     auth:
       environment: development
-{{- end }}      
-{{- if ne .Values.rhdhOperator.github.clientId "" }}
+  {{- end }}
+  {{- if ne .Values.rhdhOperator.github.clientId "" }}
       providers:
         github:
           development:
             clientId: ${GITHUB_CLIENT_ID}
             clientSecret: ${GITHUB_CLIENT_SECRET}
-{{- end }}
+  {{- end }}
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -314,28 +335,5 @@ data:
           target: https://github.com/parodos-dev/workflow-software-templates/blob/main/scaffolder-templates/basic-workflow/template.yaml
         - type: url
           target: https://github.com/parodos-dev/workflow-software-templates/blob/main/scaffolder-templates/complex-assessment-workflow/template.yaml
----
-apiVersion: rhdh.redhat.com/v1alpha1
-kind: Backstage
-metadata:
-  name: backstage
-  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
-  annotations:
-    "helm.sh/hook": post-install
-    "helm.sh/hook-delete-policy": hook-fail
-    "helm.sh/hook-weight": "2" # Is created after the job to wait for the crd to be available    
-spec:
-  application:
-    appConfig:
-      configMaps:
-        - name: app-config-rhdh
-        - name: app-config-rhdh-auth
-        - name: app-config-rhdh-catalog
-    dynamicPluginsConfigMapName: dynamic-plugins-rhdh
-    extraEnvs:
-      secrets:
-        - name: backstage-backend-auth-secret
-    replicas: 1
-{{ include "wait-for-crd-available" (dict "releaseName" .Release.Name "releaseNamespace" .Release.Namespace "apiGroup" "rhdh.redhat.com" "kind" "backstages") }}
-{{ include "delete-cr-on-uninstall" (dict "releaseName" .Release.Name "releaseNamespace" .Release.Namespace "apiGroup" "rhdh.redhat.com" "kind" "backstages" "targetNamespace" .Values.rhdhOperator.subscription.namespace "resourceName" "backstage") }}
+  {{- include "manage-cr-lifecycle-on-action" (dict "release" .Release "apiGroup" "rhdh.redhat.com" "groupVersion" "v1alpha1" "kind" "Backstage" "kinds" "backstages" "targetNamespace" .Values.rhdhOperator.subscription.namespace "resourceName" "backstage" "isEnabled" .Values.rhdhOperator.enabled "hasCRDInstalled" (.Capabilities.APIVersions.Has "rhdh.redhat.com/v1alpha1/Backstage") "manifest" (include "backstage-manifest" . | b64enc )) }}
 {{- end }}
