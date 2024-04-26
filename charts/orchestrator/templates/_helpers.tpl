@@ -38,7 +38,7 @@
 
 
 {{- define "cluster.domain" -}}
-    {{- if .Capabilities.APIVersions.Has "config.openshift.io/v1/Ingress" -}}  
+    {{- if .Capabilities.APIVersions.Has "config.openshift.io/v1/Ingress" -}}
         {{- $cluster := (lookup "config.openshift.io/v1" "Ingress" "" "cluster") -}}
         {{- if and (hasKey $cluster "spec") (hasKey $cluster.spec "domain") -}}
             {{- printf "%s" $cluster.spec.domain -}}

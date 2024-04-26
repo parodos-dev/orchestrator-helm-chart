@@ -179,8 +179,7 @@
             "title": "The rhdhOperator Schema",
             "required": [
                 "enabled",
-                "github",
-                "k8s",
+                "secretRef",
                 "subscription"
             ],
             "properties": {
@@ -192,78 +191,140 @@
                         true
                     ]
                 },
-                "github": {
+                "secretRef": {
                     "type": "object",
                     "default": {},
-                    "title": "The github Schema",
+                    "title": "The secretRef Schema",
                     "required": [
-                        "token",
-                        "clientId",
-                        "clientSecret"
+                        "name",
+                        "github",
+                        "k8s",
+                        "argocd"
                     ],
                     "properties": {
-                        "token": {
+                        "name": {
                             "type": "string",
-                            "default": "",
-                            "title": "The token Schema",
+                            "default": "backstage-backend-auth-secret",
+                            "title": "Name of the secret that contains the credentials for the plugin to establish a communication channel with the Kubernetes API, ArgoCD and GitHub servers.",
                             "examples": [
-                                ""
+                                "backstage-backend-auth-secret"
                             ]
                         },
-                        "clientId": {
-                            "type": "string",
-                            "default": "",
-                            "title": "The clientId Schema",
-                            "examples": [
-                                ""
-                            ]
+                        "github": {
+                            "type": "object",
+                            "default": {},
+                            "title": "The github Schema",
+                            "required": [
+                                "token",
+                                "clientId",
+                                "clientSecret"
+                            ],
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "default": "GITHUB_TOKEN",
+                                    "title": "The token Schema",
+                                    "examples": [
+                                        "GITHUB_TOKEN"
+                                    ]
+                                },
+                                "clientId": {
+                                    "type": "string",
+                                    "default": "GITHUB_CLIENT_ID",
+                                    "title": "The clientId Schema",
+                                    "examples": [
+                                        "GITHUB_CLIENT_ID"
+                                    ]
+                                },
+                                "clientSecret": {
+                                    "type": "string",
+                                    "default": "GITHUB_CLIENT_SECRET",
+                                    "title": "The clientSecret Schema",
+                                    "examples": [
+                                        "GITHUB_CLIENT_SECRET"
+                                    ]
+                                }
+                            },
+                            "examples": [{
+                                "token": "GITHUB_TOKEN",
+                                "clientId": "GITHUB_CLIENT_ID",
+                                "clientSecret": "GITHUB_CLIENT_SECRET"
+                            }]
                         },
-                        "clientSecret": {
-                            "type": "string",
-                            "default": "",
-                            "title": "The clientSecret Schema",
-                            "examples": [
-                                ""
-                            ]
+                        "k8s": {
+                            "type": "object",
+                            "default": {},
+                            "title": "The k8s Schema",
+                            "required": [
+                                "clusterToken",
+                                "clusterUrl"
+                            ],
+                            "properties": {
+                                "clusterToken": {
+                                    "type": "string",
+                                    "default": "K8S_CLUSTER_TOKEN",
+                                    "title": "The clusterToken Schema",
+                                    "examples": [
+                                        "K8S_CLUSTER_TOKEN"
+                                    ]
+                                },
+                                "clusterUrl": {
+                                    "type": "string",
+                                    "default": "K8S_CLUSTER_URL",
+                                    "title": "The clusterUrl Schema",
+                                    "examples": [
+                                        "K8S_CLUSTER_URL"
+                                    ]
+                                }
+                            },
+                            "examples": [{
+                                "clusterToken": "K8S_CLUSTER_TOKEN",
+                                "clusterUrl": "K8S_CLUSTER_URL"
+                            }]
+                            }
+                        },
+                        "argocd": {
+                            "type": "object",
+                            "default": {},
+                            "title": "The argocd Schema",
+                            "required": [
+                                "url",
+                                "username",
+                                "password"
+                            ],
+                            "properties": {
+                                "url": {
+                                    "type": "string",
+                                    "default": "ARGOCD_URL",
+                                    "title": "The url Schema",
+                                    "examples": [
+                                        "ARGOCD_URL"
+                                    ]
+                                },
+                                "username": {
+                                    "type": "string",
+                                    "default": "ARGOCD_USERNAME",
+                                    "title": "The username Schema",
+                                    "examples": [
+                                        "ARGOCD_USERNAME"
+                                    ]
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "default": "ARGOCD_PASSWORD",
+                                    "title": "The password Schema",
+                                    "examples": [
+                                        "ARGOCD_PASSWORD"
+                                    ]
+                                }
+                            },
+                            "examples": [{
+                                "username":"ARGOCD_USERNAME",
+                                "password":"ARGOCD_PASSWORD",
+                                "url":"ARGOCD_URL"
+                            }]
                         }
                     },
-                    "examples": [{
-                        "token": "",
-                        "clientId": "",
-                        "clientSecret": ""
-                    }]
-                },
-                "k8s": {
-                    "type": "object",
-                    "default": {},
-                    "title": "The k8s Schema",
-                    "required": [
-                        "clusterToken",
-                        "clusterUrl"
-                    ],
-                    "properties": {
-                        "clusterToken": {
-                            "type": "string",
-                            "default": "",
-                            "title": "The clusterToken Schema",
-                            "examples": [
-                                ""
-                            ]
-                        },
-                        "clusterUrl": {
-                            "type": "string",
-                            "default": "",
-                            "title": "The clusterUrl Schema",
-                            "examples": [
-                                ""
-                            ]
-                        }
-                    },
-                    "examples": [{
-                        "clusterToken": "",
-                        "clusterUrl": ""
-                    }]
-                },
                 "subscription": {
                     "type": "object",
                     "default": {},
@@ -318,14 +379,22 @@
             },
             "examples": [{
                 "enabled": true,
-                "github": {
-                    "token": "",
-                    "clientId": "",
-                    "clientSecret": ""
-                },
-                "k8s": {
-                    "clusterToken": "",
-                    "clusterUrl": ""
+                "secretRef": {
+                    "name":"backstage-backend-auth-secret",
+                    "github": {
+                        "token": "GITHUB_TOKEN",
+                        "clientId": "GITHUB_CLIENT_ID",
+                        "clientSecret": "GITHUB_CLIENT_SECRET"
+                    },
+                    "k8s": {
+                        "clusterToken": "K8S_CLUSTER_TOKEN",
+                        "clusterUrl": "K8S_CLUSTER_URL"
+                    },
+                    "argocd": {
+                        "username":"ARGOCD_USERNAME",
+                        "password":"ARGOCD_PASSWORD",
+                        "url":"ARGOCD_URL"
+                    }
                 },
                 "subscription": {
                     "namespace": "rhdh-operator",
@@ -764,10 +833,7 @@
             "title": "The argocd Schema",
             "required": [
                 "enabled",
-                "url",
-                "namespace",
-                "username",
-                "password"
+                "namespace"
             ],
             "properties": {
                 "enabled": {
@@ -813,10 +879,7 @@
             },
             "examples": [{
                 "enabled": false,
-                "url": "",
-                "namespace": "orchestrator-gitops",
-                "username": "admin",
-                "password": ""
+                "namespace": "orchestrator-gitops"
             }]
         }
     },
@@ -841,14 +904,25 @@
         },
         "rhdhOperator": {
             "enabled": true,
-            "github": {
-                "token": "",
-                "clientId": "",
-                "clientSecret": ""
-            },
-            "k8s": {
-                "clusterToken": "",
-                "clusterUrl": ""
+            "secretRef": {
+                "name": "backstage-backend-auth-secret",
+                "backstage": {
+                    "backendSecret": "BACKEND_SECRET"
+                },
+                "github": {
+                    "token": "GITHUB_TOKEN",
+                    "clientId": "GITHUB_CLIENT_ID",
+                    "clientSecret": "GITHUB_CLIENT_SECRET"
+                },
+                "k8s": {
+                    "clusterToken": "K8S_CLUSTER_TOKEN",
+                    "clusterUrl": "K8S_CLUSTER_URL"
+                },
+                "argocd": {
+                    "url": "ARGOCD_URL",
+                    "username":"ARGOCD_USERNAME",
+                    "password":"ARGOCD_PASSWORD"
+                }
             },
             "subscription": {
                 "namespace": "rhdh-operator",
