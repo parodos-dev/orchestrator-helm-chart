@@ -67,36 +67,54 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
      cd orchestrator-helm-chart/charts
      ```
 
-2. Create a namespace for the Orchestrator solution:
+2. Deploy the PostgreSQL reference implementation for persistence support in SonataFlow following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
+
+3. Create a namespace for the Orchestrator solution:
 
    ```console
    oc new-project orchestrator
    ```
 
-3. Set GITHUB_TOKEN environment variable
+4. Set `GITHUB_TOKEN` environment variable
 
    ```console
    export GITHUB_TOKEN=<github token>
    ```
 
-4. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
+5. Create a namespace for the Red Hat Developer Hub Operator (RHDH Operator):
 
-### ...without GitOps
+   ```console
+   oc new-project rhdh-operator
+   ```
 
-1.  Install the orchestrator Helm chart:
+6. Generate a random alphanumeric string of 24 characters to be used in the `BACKEND_SECRET`:
 
-    ```console
-    helm upgrade -i orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
-    ```
+   ```console
+   ewxport BACKEND_SECRET=$(mktemp -u XXXXXXXXXXXXXXXXXXXXXXX)
+   ```
 
-2.  Run the commands prompted at the end of the previous step to wait until the services are ready.
+###  Deployment without GitOps
 
-### ... with GitOps
+7. Create the secret in the 'rhdh-operator' namespace with the GitHub token:
 
-1.  Install `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/gitops/README.md).
+   ```console
+   oc create secret generic backstage-backend-auth-secret --from-literal=BACKEND_SECRET=$BACKEND_SECRET --from-literal=GITHUB_TOKEN=$GITHUB_TOKEN
+   ```
+
+   Install the orchestrator Helm chart:
+
+   ```console
+   helm upgrade -i orchestrator orchestrator
+   ```
+
+   Run the commands prompted at the end of the previous step to wait until the services are ready.
+
+### Deployment with GitOps
+
+7.  Install `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/gitops/README.md).
     The Orchestrator installs RHDH and imports software templates designed for bootstrapping workflow development. These templates are crafted to ease the development lifecycle, including a Tekton pipeline to build workflow images and generate workflow K8s custom resources. Furthermore, ArgoCD is utilized to monitor any changes made to the workflow repository and to automatically trigger the Tekton pipelines as needed. This installation process ensures that all necessary Tekton and ArgoCD resources are provisioned within the same cluster.
 
-2.  Run the following command to set up environment variables:
+8.  Run the following command to set up environment variables:
 
     ```console
     ./hack/setenv.sh --use-default
@@ -122,16 +140,26 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
     > - `ARGOCD_USERNAME`: Default value is set to `admin`.
     > - `ARGOCD_PASSWORD`: This value is dynamically obtained based on the first ArgoCD instance available.
 
-3.  Install the orchestrator Helm chart:
+9.  Create the secret in the 'rhdh-operator' namespace with the keys listed earlier and the GITHUB_TOKEN:
+
+   ```console
+   oc create secret generic backstage-backend-auth-secret \
+   --from-literal=BACKEND_SECRET=$BACKEND_SECRET \
+   --from-literal=K8S_CLUSTER_URL=$K8S_CLUSTER_URL \
+   --from-literal=K8S_CLUSTER_TOKEN=$K8S_CLUSTER_TOKEN \
+   --from-literal=ARGOCD_USERNAME=$ARGOCD_USERNAME \
+   --from-literal=ARGOCD_URL=$ARGOCD_URL \
+   --from-literal=ARGOCD_PASSWORD=$ARGOCD_PASSWORD \
+   --from-literal=GITHUB_TOKEN=$GITHUB_TOKEN
+   ```
+
+   Install the orchestrator Helm chart:
 
     ```console
-    helm upgrade -i orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
-    --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
-    --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
-    --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
+    helm upgrade -i orchestrator orchestrator --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.enabled=true --set tekton.enabled=true
     ```
 
-4.  Run the commands prompted at the end of the previous step to wait until the services are ready.
+10.  Run the commands prompted at the end of the previous step to wait until the services are ready.
 
     Sample output:
 
@@ -248,8 +276,8 @@ Note that the CRDs created during the installation process will remain in the cl
 To clean the rest of the resources, run:
 
 ```console
-oc get crd -o name | grep -e sonataflow -e rhdh | xargs oc delete
-oc delete namespace orchestrator
+oc get crd -o name | grep -e sonataflow -e rhdh -e knative | xargs oc delete
+oc delete namespace orchestrator sonataflow-infra
 ```
 
 ## Troubleshooting
