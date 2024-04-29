@@ -69,42 +69,48 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
 2. Deploy the PostgreSQL reference implementation for persistence support in SonataFlow following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
 
-3. Create a namespace for the Orchestrator solution:
-
-   ```console
-   oc new-project orchestrator
-   ```
-
-4. Set `GITHUB_TOKEN` environment variable
+3. Set `GITHUB_TOKEN` environment variable
 
    ```console
    export GITHUB_TOKEN=<github token>
    ```
 
-5. Create a namespace for the Red Hat Developer Hub Operator (RHDH Operator):
+4. Generate a random alphanumeric string of 24 characters to be used in the `BACKEND_SECRET`:
+
+   ```console
+   export BACKEND_SECRET=$(mktemp -u XXXXXXXXXXXXXXXXXXXXXXX)
+   ```
+
+5. Create a namespace for the Orchestrator solution:
+
+   ```console
+   oc new-project orchestrator
+   ```
+
+6. Create a namespace for the Red Hat Developer Hub Operator (RHDH Operator):
 
    ```console
    oc new-project rhdh-operator
    ```
 
-6. Generate a random alphanumeric string of 24 characters to be used in the `BACKEND_SECRET`:
-
-   ```console
-   ewxport BACKEND_SECRET=$(mktemp -u XXXXXXXXXXXXXXXXXXXXXXX)
-   ```
-
 ###  Deployment without GitOps
 
-7. Create the secret in the 'rhdh-operator' namespace with the GitHub token:
+6. Create the secret in the 'rhdh-operator' namespace with the GitHub token:
 
    ```console
-   oc create secret generic backstage-backend-auth-secret --from-literal=BACKEND_SECRET=$BACKEND_SECRET --from-literal=GITHUB_TOKEN=$GITHUB_TOKEN
+   oc create secret generic backstage-backend-auth-secret --from-literal=BACKEND_SECRET=$BACKEND_SECRET --from-literal=GITHUB_TOKEN=$GITHUB_TOKEN -n rhdh-operator
    ```
 
-   Install the orchestrator Helm chart:
+7. Switch the context to the orchestrator namespace
 
    ```console
-   helm upgrade -i orchestrator orchestrator
+   oc project orchestrator
+   ```
+
+8. Install the orchestrator Helm chart:
+
+   ```console
+   helm upgrade -i orchestrator orchestrator -n orchestrator
    ```
 
    Run the commands prompted at the end of the previous step to wait until the services are ready.
@@ -117,15 +123,10 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 8.  Run the following command to set up environment variables:
 
     ```console
-    ./hack/setenv.sh --use-default
+    ./hack/setup.sh --use-default
     ```
 
-    This script generates a `.env` file that contains all the calculated environment variables. You need to source the file to
-    run orchestrator installation command below by running:
-
-    ```console
-    source .env
-    ```
+    This script creates a secret in the `rhdh-operator` namespace required for Backstage to authenticate against Kubernetes, GitHub and ArgoCD, and also labels the namespaces where workflows run and the ArgoCD instance for the Orchestrator exists, so that the helm chart can identify them when installing/upgrading and deploy the related manifests in the correct namespaces.
 
     > **NOTE:** If you don't want to use the default values, omit the `--use-default` and the script will prompt you for input.
     >
@@ -135,28 +136,21 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
     > - `K8S_CLUSTER_URL`: The URL of the Kubernetes cluster is obtained dynamically using `oc whoami --show-server`.
     > - `K8S_CLUSTER_TOKEN`: The value is obtained dynamically based on the provided namespace and service account.
     > - `GITHUB_TOKEN`: This value is prompted from the user during script execution and is not predefined.
-    > - `ARGOCD_NAMESPACE`: Default value is set to `orchestrator-gitops`.
+    > - `ARGOCD_NAMESPACE`: Default value is set to `orchestrator-gitops`. The script validates that there is an ArgoCD instance running in the given namespace, else it will exit with failure.
     > - `ARGOCD_URL`: This value is dynamically obtained based on the first ArgoCD instance available.
     > - `ARGOCD_USERNAME`: Default value is set to `admin`.
     > - `ARGOCD_PASSWORD`: This value is dynamically obtained based on the first ArgoCD instance available.
 
-9.  Create the secret in the 'rhdh-operator' namespace with the keys listed earlier and the GITHUB_TOKEN:
+9. Switch the context to the orchestrator namespace
 
    ```console
-   oc create secret generic backstage-backend-auth-secret \
-   --from-literal=BACKEND_SECRET=$BACKEND_SECRET \
-   --from-literal=K8S_CLUSTER_URL=$K8S_CLUSTER_URL \
-   --from-literal=K8S_CLUSTER_TOKEN=$K8S_CLUSTER_TOKEN \
-   --from-literal=ARGOCD_USERNAME=$ARGOCD_USERNAME \
-   --from-literal=ARGOCD_URL=$ARGOCD_URL \
-   --from-literal=ARGOCD_PASSWORD=$ARGOCD_PASSWORD \
-   --from-literal=GITHUB_TOKEN=$GITHUB_TOKEN
+   oc project orchestrator
    ```
 
    Install the orchestrator Helm chart:
 
     ```console
-    helm upgrade -i orchestrator orchestrator --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.enabled=true --set tekton.enabled=true
+    helm upgrade -i orchestrator orchestrator --set argocd.enabled=true --set tekton.enabled=true
     ```
 
 10.  Run the commands prompted at the end of the previous step to wait until the services are ready.
