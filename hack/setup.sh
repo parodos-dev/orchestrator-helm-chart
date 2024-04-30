@@ -1,4 +1,7 @@
 #!/bin/bash
+
+
+
 function exportWorkflowNamespace {
   default="sonataflow-infra"
   if [ "$use_default" == true ]; then
@@ -11,12 +14,12 @@ function exportWorkflowNamespace {
         workflow_namespace="$value"
     fi
   fi
-  echo "export WORKFLOW_NAMESPACE=$workflow_namespace" >> .env
+  WORKFLOW_NAMESPACE=$workflow_namespace
 }
 
 function exportK8sURL {
   url="$(oc whoami --show-server)"
-  echo "export K8S_CLUSTER_URL=$url" >> .env
+  K8S_CLUSTER_URL=$url
 }
 
 function exportK8sToken {
@@ -51,14 +54,14 @@ function exportK8sToken {
   echo "Added cluster-admin role to '$sa_name' in '$sa_namespace'."
   token_secret=$(oc get secret -o name -n $sa_namespace | grep ${sa_name}-token)
   token=$(oc get -n $sa_namespace ${token_secret} -o jsonpath="{.data.token}" | sed 's/"//g' | base64 -d)
-  echo "export K8S_CLUSTER_TOKEN=$token" >> .env
+  K8S_CLUSTER_TOKEN=$token
 }
 
 function exportGitToken {
    if [ -z "$GITHUB_TOKEN" ]; then
     read -s -p "Enter GitHub access token: " value
     echo ""
-    echo "export GITHUB_TOKEN=$value" >> .env
+    GITHUB_TOKEN=$value
   else
     echo "GitHub access token already set."
   fi
@@ -77,7 +80,7 @@ function exportArgoCDNamespace {
         argocd_namespace="$value"
     fi
   fi
-  echo "export ARGOCD_NAMESPACE=$argocd_namespace" >> .env
+  ARGOCD_NAMESPACE=$argocd_namespace
 }
 
 function exportArgoCDURL {
@@ -105,14 +108,13 @@ function exportArgoCDURL {
 
   argocd_route=$(oc get route -n $argocd_namespace -l app.kubernetes.io/managed-by=$selected_instance -ojsonpath='{.items[0].status.ingress[0].host}')
   echo "Found Route at $argocd_route"
-  echo "export ARGOCD_URL=https://$argocd_route" >> .env
-  echo 
+  ARGOCD_URL=https://$argocd_route
 }
 
 function exportArgoCDCreds {
   admin_password=$(oc get secret -n $argocd_namespace ${selected_instance}-cluster -ojsonpath='{.data.admin\.password}' | base64 -d)
-  echo "export ARGOCD_USERNAME=admin" >> .env
-  echo "export ARGOCD_PASSWORD=$admin_password" >> .env
+  ARGOCD_USERNAME=admin
+  ARGOCD_PASSWORD=$admin_password
 }
 
 function checkPrerequisite {
@@ -122,8 +124,30 @@ function checkPrerequisite {
   fi
 }
 
-function cleanUpEnvFile {
-  echo "" > .env
+
+function createBackstageSecret {
+  if [[ $(oc get secret backstage-backend-auth-secret -n rhdh-operator) ]]; then
+    oc delete secret backstage-backend-auth-secret -n rhdh-operator
+  fi
+  oc create secret generic backstage-backend-auth-secret -n rhdh-operator \
+  --from-literal=BACKEND_SECRET=$BACKEND_SECRET \
+  --from-literal=K8S_CLUSTER_URL=$K8S_CLUSTER_URL \
+  --from-literal=K8S_CLUSTER_TOKEN=$K8S_CLUSTER_TOKEN \
+  --from-literal=ARGOCD_USERNAME=$ARGOCD_USERNAME \
+  --from-literal=ARGOCD_URL=$ARGOCD_URL \
+  --from-literal=ARGOCD_PASSWORD=$ARGOCD_PASSWORD \
+  --from-literal=GITHUB_TOKEN=$GITHUB_TOKEN
+}
+
+function labelNamespaces {
+  for a in $(oc get namespace -l rhdh.redhat.com/workflow-namespace -oname); do
+    oc label $a rhdh.redhat.com/workflow-namespace- ;
+  done
+  for a in $(oc get namespace -l rhdh.redhat.com/argocd-namespace -oname); do
+    oc label $a rhdh.redhat.com/argocd-namespace- ;
+  done
+  oc label namespace $WORKFLOW_NAMESPACE rhdh.redhat.com/workflow-namespace=
+  oc label namespace $ARGOCD_NAMESPACE rhdh.redhat.com/argocd-namespace=
 }
 
 # Function to display usage instructions
@@ -153,22 +177,41 @@ while [[ $# -gt 0 ]]; do
 done
 
 
-# Check if using default values or not
-if [ "$use_default" == "true" ]; then
-    echo "Using default values."
-else
-    echo "Not using default values."
-fi
 
-checkPrerequisite
-cleanUpEnvFile
-exportWorkflowNamespace
-exportK8sURL
-exportK8sToken
-exportGitToken
-exportArgoCDNamespace
-exportArgoCDURL
-exportArgoCDCreds
-echo "Setup completed successfully! Please run 'source .env' to export the environment variables."
+function main {
+
+  # Check if using default values or not
+  if [ "$use_default" == "true" ]; then
+      echo "Using default values."
+  else
+      echo "Not using default values."
+  fi
+  # Variables for the backstage secret
+  local K8S_CLUSTER_URL
+  local K8S_CLUSTER_TOKEN
+  local GITHUB_TOKEN
+  local ARGOCD_URL
+  local ARGOCD_USERNAME
+  local ARGOCD_PASSWORD
+
+
+  # Variables for the orchestrator configmap
+  local WORKFLOW_NAMESPACE
+  local ARGOCD_NAMESPACE
+
+  checkPrerequisite
+  exportWorkflowNamespace
+  exportK8sURL
+  exportK8sToken
+  exportGitToken
+  exportArgoCDNamespace
+  exportArgoCDURL
+  exportArgoCDCreds
+  createBackstageSecret
+  labelNamespaces
+  echo "Setup completed successfully!"
+}
+
+main
 
 

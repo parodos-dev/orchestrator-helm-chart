@@ -56,6 +56,10 @@ Helm Release {{ .Release.Name }} installed in namespace {{ .Release.Namespace }}
 {{- $argocdInstalled = $yes }}
 {{- end }}
 
+{{- $workflowNamespace := include "get-workflow-namespace" . }}
+{{- $gitopsNamespace := include "get-argocd-namespace" . }}
+
+
 Components                   Installed   Namespace
 ====================================================================
 Backstage                    {{ $backstageInstalled }}        {{ .Values.rhdhOperator.subscription.namespace }}
@@ -64,12 +68,12 @@ Red Hat Serverless Operator  {{ $serverlessOperatorInstalled }}        {{ .Value
 KnativeServing               {{ $knativeServingInstalled }}        knative-serving
 KnativeEventing              {{ $knativeEventingInstalled }}        knative-eventing
 SonataFlow Operator          {{ $sonataFlowOperatorInstalled }}        {{ .Values.sonataFlowOperator.subscription.namespace }}
-SonataFlowPlatform           {{ $sonataFlowPlatformInstalled }}        {{ .Values.orchestrator.namespace }}
-Data Index Service           {{ $sonataFlowPlatformInstalled }}        {{ .Values.orchestrator.namespace }}
-Job Service                  {{ $sonataFlowPlatformInstalled }}        {{ .Values.orchestrator.namespace }}
-Tekton pipeline              {{ $tektonPipelineInstalled }}        {{ .Values.argocd.namespace }}
-Tekton task                  {{ $tektonTaskInstalled }}        {{ .Values.argocd.namespace }}
-ArgoCD project               {{ $argocdInstalled }}        {{ .Values.argocd.namespace }}
+SonataFlowPlatform           {{ $sonataFlowPlatformInstalled }}        {{ $workflowNamespace }}
+Data Index Service           {{ $sonataFlowPlatformInstalled }}        {{ $workflowNamespace }}
+Job Service                  {{ $sonataFlowPlatformInstalled }}        {{ $workflowNamespace }}
+Tekton pipeline              {{ $tektonPipelineInstalled }}        {{ $gitopsNamespace }}
+Tekton task                  {{ $tektonTaskInstalled }}        {{ $gitopsNamespace }}
+ArgoCD project               {{ $argocdInstalled }}        {{ $gitopsNamespace }}
 {{/* Empty line */}}
 ====================================================================
 Prerequisites check:
@@ -105,13 +109,13 @@ Run the following commands to wait until the services are ready:
   oc wait -n {{ .Values.sonataFlowOperator.subscription.namespace }} deploy/logic-operator-rhel8-controller-manager --for=condition=Available {{ $timeout }}
 {{- end }}
 {{- if eq $sonataFlowPlatformInstalled $yes }}
-  oc wait -n {{ .Values.orchestrator.namespace }} sonataflowplatform/sonataflow-platform --for=condition=Succeed {{ $timeout }}
+  oc wait -n {{ $workflowNamespace }} sonataflowplatform/sonataflow-platform --for=condition=Succeed {{ $timeout }}
 {{- end }}
 {{- if eq $sonataFlowPlatformInstalled $yes }}
-  oc wait -n {{ .Values.orchestrator.namespace }} deploy/sonataflow-platform-data-index-service --for=condition=Available {{ $timeout }}
+  oc wait -n {{ $workflowNamespace }} deploy/sonataflow-platform-data-index-service --for=condition=Available {{ $timeout }}
 {{- end }}
 {{- if eq $sonataFlowPlatformInstalled $yes }}
-  oc wait -n {{ .Values.orchestrator.namespace }} deploy/sonataflow-platform-jobs-service --for=condition=Available {{ $timeout }}
+  oc wait -n {{ $workflowNamespace }} deploy/sonataflow-platform-jobs-service --for=condition=Available {{ $timeout }}
 {{- end }}
 {{- if eq $postgresBackstageInstalled $yes }}
   oc wait -n {{ .Values.rhdhOperator.subscription.namespace }} pod/backstage-psql-backstage-0 --for=condition=Ready {{ $timeout }}

@@ -172,8 +172,11 @@ data:
     {{- end }}
   {{- end }}
   {{- if and .Values.argocd.enabled
-          ( (and .Values.rhdhOperator.secretRef.argocd.url (dig "data" .Values.rhdhOperator.secretRef.argocd.url "" $secret ) )
-            (and .Values.rhdhOperator.secretRef.argocd.username (dig "data" .Values.rhdhOperator.secretRef.argocd.password "" $secret) ) ) }}
+        ( and
+            (and (.Values.rhdhOperator.secretRef.argocd.url) (dig "data" .Values.rhdhOperator.secretRef.argocd.url "" $secret ) )
+            (and (.Values.rhdhOperator.secretRef.argocd.username) (dig "data" .Values.rhdhOperator.secretRef.argocd.password "" $secret) )
+        )
+  }}
       - disabled: false
         package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd-backend-dynamic
         pluginConfig:
@@ -228,7 +231,7 @@ data:
         pluginConfig:
           orchestrator:
             dataIndexService:
-              url: http://sonataflow-platform-data-index-service.{{ .Values.orchestrator.namespace }}
+              url: http://sonataflow-platform-data-index-service.{{- include "get-workflow-namespace" . }}
       - disabled: false
         package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator.package }}"
         integrity: {{ .Values.rhdhPlugins.orchestrator.integrity }}

@@ -1,4 +1,5 @@
 {{- define "sonataFlowClusterPlatform-manifest" }}
+{{- $workflowNamespace := include "get-workflow-namespace" . }}
 ---
 apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlowClusterPlatform
@@ -9,15 +10,16 @@ metadata:
 spec:
   platformRef:
     name: sonataflow-platform
-    namespace: {{ .Values.orchestrator.namespace }}
+    namespace: {{ $workflowNamespace }}
 {{- end }}
 {{- define "sonataFlowPlatform-manifest" }}
+{{- $workflowNamespace := include "get-workflow-namespace" . }}
 ---
 apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlowPlatform
 metadata:
   name: sonataflow-platform
-  namespace: {{ .Values.orchestrator.namespace }}
+  namespace: {{ $workflowNamespace }}
   annotations:
     "meta.helm.sh/release-name": {{ .Release.Name}}
 spec:
@@ -57,6 +59,7 @@ spec:
             name: {{ .Values.postgres.serviceName }}
             namespace: {{ .Values.postgres.serviceNamespace }}
 {{- end }}
+{{- $workflowNamespace := include "get-workflow-namespace" . }}
 ## Manifests
 {{ include "manage-cr-lifecycle-on-action" (dict "release" .Release "apiGroup" "sonataflow.org" "groupVersion" "v1alpha08" "kind" "SonataFlowClusterPlatform" "kinds" "sonataflowclusterplatforms" "resourceName" "cluster-platform" "isEnabled" .Values.sonataFlowOperator.enabled "hasCRDInstalled" (.Capabilities.APIVersions.Has "sonataflow.org/v1alpha08/SonataFlowClusterPlatform") "manifest" (include "sonataFlowClusterPlatform-manifest" . | b64enc )) }}
-{{ include "manage-cr-lifecycle-on-action" (dict "release" .Release "apiGroup" "sonataflow.org" "groupVersion" "v1alpha08" "kind" "SonataFlowPlatform" "kinds" "sonataflowplatforms" "targetNamespace" .Values.orchestrator.namespace "resourceName" "sonataflow-platform" "isEnabled" .Values.sonataFlowOperator.enabled "hasCRDInstalled" (.Capabilities.APIVersions.Has "sonataflow.org/v1alpha08/SonataFlowClusterPlatform") "manifest" (include "sonataFlowPlatform-manifest" . | b64enc )) }}
+{{ include "manage-cr-lifecycle-on-action" (dict "release" .Release "apiGroup" "sonataflow.org" "groupVersion" "v1alpha08" "kind" "SonataFlowPlatform" "kinds" "sonataflowplatforms" "targetNamespace" $workflowNamespace "resourceName" "sonataflow-platform" "isEnabled" .Values.sonataFlowOperator.enabled "hasCRDInstalled" (.Capabilities.APIVersions.Has "sonataflow.org/v1alpha08/SonataFlowClusterPlatform") "manifest" (include "sonataFlowPlatform-manifest" . | b64enc )) }}
