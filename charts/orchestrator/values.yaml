@@ -63,7 +63,7 @@ postgres:
   database: sonataflow # existing database instance used by data index and job service
 
 orchestrator:
-  namespace: "" # Namespace where sonataflow's workflows run. The value is captured when running the configure_environment.sh script and stored as an annotation in the `orchestrator` namespace. User can override the value by populating this field. Defaults to `sonataflow-infra` if none is provided either via annotation or this field being empty.
+  namespace: "sonataflow-infra" # Namespace where sonataflow's workflows run. The value is captured when running the setup.sh script and stored as a label in the selected namespace. User can override the value by populating this field. Defaults to `sonataflow-infra`.
   sonataPlatform:
     resources:
       requests:
@@ -78,4 +78,4 @@ tekton:
 
 argocd:
   enabled: false # whether to install the ArgoCD plugin and create the orchestrator AppProject
-  namespace: "" # Defines the namespace where the orchestrator's instance of ArgoCD is deployed. The value is captured when running setup.sh script and stored as an annotation in the `orchestrator` namespace. User can override the value by populating this field. Defaults to `orchestrator-gitops` if none is provided either via annotation or this field being empty.
+  namespace: "" # Defines the namespace where the orchestrator's instance of ArgoCD is deployed. The value is captured when running setup.sh script and stored as a label in the selected namespace. User can override the value by populating this field. Defaults to `orchestrator-gitops` in the setup.sh script.

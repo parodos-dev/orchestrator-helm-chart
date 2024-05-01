@@ -678,7 +678,7 @@
             "properties": {
                 "namespace": {
                     "type": "string",
-                    "default": "",
+                    "default": "sonataflow-infra",
                     "title": "The namespace Schema",
                     "examples": [
                         "sonataflow-infra"
