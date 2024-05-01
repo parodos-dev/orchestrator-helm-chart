@@ -84,20 +84,24 @@
     {{- else -}}
         {{- $ns:= "" }}
         {{- $list:= lookup "v1" "Namespace" "" "" -}}
-        {{- range (dig "items" (dict "" "") $list) }}
-            {{- $labels:= dig "metadata" "labels" (dict "" "" ) .  -}}
-            {{- if (hasKey $labels $matchingLabel ) }}
-                {{- if not $ns }}
-                    {{- $ns = dig "metadata" "name" "" . -}}
-                {{- else -}}
-                    {{- fail (printf "More than one namespace found with label %s: %s and %s" $matchingLabel $ns (dig "metadata" "name" "" .) )}}
-                {{- end }}
+        {{- if gt 0 (len (dig "items" (dict "" "") $list ) )}}
+            {{- range (dig "items" (dict "" "") $list) }}
+                {{- $labels:= dig "metadata" "labels" (dict "" "" ) .  -}}
+                {{- if (hasKey $labels $matchingLabel ) }}
+                    {{- if not $ns }}
+                        {{- $ns = dig "metadata" "name" "" . -}}
+                    {{- else -}}
+                        {{- fail (printf "More than one namespace found with label %s: %s and %s" $matchingLabel $ns (dig "metadata" "name" "" .) )}}
+                    {{- end }}
+                {{- end -}}
             {{- end -}}
+            {{- if not $ns -}}
+                {{- fail (printf "No namespace found with label '%s'. Please follow the installation instructions to properly configure the environment" $matchingLabel) -}}
+            {{- end }}
+            {{- $ns }}
+        {{- else -}}
+            {{- fail "No namespaces found" }}
         {{- end -}}
-        {{- if not $ns -}}
-            {{- fail (printf "No namespace found with label '%s'. Please follow the installation instructions to properly configure the environment" $matchingLabel) -}}
-        {{- end }}
-        {{- $ns }}
     {{- end -}}
 {{- end -}}
 
