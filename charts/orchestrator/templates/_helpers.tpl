@@ -38,7 +38,7 @@
 
 
 {{- define "cluster.domain" -}}
-    {{- if .Capabilities.APIVersions.Has "config.openshift.io/v1/Ingress" -}}  
+    {{- if .Capabilities.APIVersions.Has "config.openshift.io/v1/Ingress" -}}
         {{- $cluster := (lookup "config.openshift.io/v1" "Ingress" "" "cluster") -}}
         {{- if and (hasKey $cluster "spec") (hasKey $cluster.spec "domain") -}}
             {{- printf "%s" $cluster.spec.domain -}}
@@ -52,7 +52,7 @@
 
 
 {{- define "install-tekton-task" -}}
-  {{- if and (.Values.tekton.enabled) (ne .Values.rhdhOperator.k8s.clusterToken "") (.Capabilities.APIVersions.Has "tekton.dev/v1/Task") }}
+  {{- if and (.Values.tekton.enabled) (ne .Values.rhdhOperator.secretRef.k8s.clusterToken "") (.Capabilities.APIVersions.Has "tekton.dev/v1/Task") }}
         {{- "true" -}}
     {{- else }}
         {{- "false" -}}
@@ -60,7 +60,7 @@
 {{- end -}}
 
 {{- define "install-tekton-pipeline" -}}
-  {{- if and (.Values.tekton.enabled) (ne .Values.rhdhOperator.k8s.clusterToken "") (.Capabilities.APIVersions.Has "tekton.dev/v1/Pipeline") }}
+  {{- if and (.Values.tekton.enabled) (ne .Values.rhdhOperator.secretRef.k8s.clusterToken "") (.Capabilities.APIVersions.Has "tekton.dev/v1/Pipeline") }}
         {{- "true" -}}
     {{- else }}
         {{- "false" -}}
@@ -74,3 +74,49 @@
         {{- "false" -}}
     {{- end -}}
 {{- end -}}
+
+
+{{- define "get-namespace-with-label" -}}
+    {{- $paramValue:= index . 0 -}}
+    {{- $matchingLabel:= index . 1 -}}
+    {{- if $paramValue -}}
+        {{- $paramValue -}}
+    {{- else -}}
+        {{- $ns:= "" }}
+        {{- $list:= lookup "v1" "Namespace" "" "" -}}
+        {{- if gt 0 (len (dig "items" (dict "" "") $list ) )}}
+            {{- range (dig "items" (dict "" "") $list) }}
+                {{- $labels:= dig "metadata" "labels" (dict "" "" ) .  -}}
+                {{- if (hasKey $labels $matchingLabel ) }}
+                    {{- if not $ns }}
+                        {{- $ns = dig "metadata" "name" "" . -}}
+                    {{- else -}}
+                        {{- fail (printf "More than one namespace found with label %s: %s and %s" $matchingLabel $ns (dig "metadata" "name" "" .) )}}
+                    {{- end }}
+                {{- end -}}
+            {{- end -}}
+            {{- if not $ns -}}
+                {{- fail (printf "No namespace found with label '%s'. Please follow the installation instructions to properly configure the environment" $matchingLabel) -}}
+            {{- end }}
+            {{- $ns }}
+        {{- else -}}
+            {{- fail "No namespaces found" }}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+
+{{- define "get-workflow-namespace" -}}
+    {{- if (not (hasKey . "workflowNamespace" ) ) -}}
+        {{- $workflowNamespace := include "get-namespace-with-label" (list .Values.orchestrator.namespace "rhdh.redhat.com/workflow-namespace")  }}
+        {{- $_ := set . "workflowNamespace" $workflowNamespace }}
+    {{- end -}}
+    {{- .workflowNamespace -}}
+{{- end -}}
+
+{{- define "get-argocd-namespace" -}}
+    {{- if (not (hasKey . "argoCDNamespace" ) ) -}}
+        {{- $argoCDNamespace := include "get-namespace-with-label" (list .Values.argocd.namespace "rhdh.redhat.com/argocd-namespace")  }}
+        {{- $_ := set . "argoCDNamespace" $argoCDNamespace }}
+    {{- end -}}
+    {{- .argoCDNamespace -}}
+{{- end -}}s

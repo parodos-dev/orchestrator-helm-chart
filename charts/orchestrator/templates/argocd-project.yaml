@@ -1,9 +1,10 @@
 {{- if eq "true" (include "install-argocd-project" .) }}
+{{- $gitopsNamespace := include "get-argocd-namespace" . }}
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: orchestrator-gitops
-  namespace: {{ .Values.argocd.namespace }}
+  namespace: {{ $gitopsNamespace }}
 spec:
   destinations:
   - name: '*'
