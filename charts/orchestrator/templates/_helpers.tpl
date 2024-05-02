@@ -52,7 +52,7 @@
 
 
 {{- define "install-tekton-task" -}}
-  {{- if and (.Values.tekton.enabled) (ne .Values.rhdhOperator.secretRef.k8s.clusterToken "") (.Capabilities.APIVersions.Has "tekton.dev/v1/Task") }}
+  {{- if and (and (and .Values.tekton.enabled .Values.argocd.enabled) (ne .Values.rhdhOperator.secretRef.k8s.clusterToken "")) (.Capabilities.APIVersions.Has "tekton.dev/v1/Task") }}
         {{- "true" -}}
     {{- else }}
         {{- "false" -}}
@@ -60,7 +60,7 @@
 {{- end -}}
 
 {{- define "install-tekton-pipeline" -}}
-  {{- if and (.Values.tekton.enabled) (ne .Values.rhdhOperator.secretRef.k8s.clusterToken "") (.Capabilities.APIVersions.Has "tekton.dev/v1/Pipeline") }}
+  {{- if and (and (and .Values.tekton.enabled .Values.argocd.enabled) (ne .Values.rhdhOperator.secretRef.k8s.clusterToken "")) (.Capabilities.APIVersions.Has "tekton.dev/v1/Pipeline") }}
         {{- "true" -}}
     {{- else }}
         {{- "false" -}}
@@ -121,5 +121,4 @@
         {{- end -}}
         {{- .argoCDNamespace -}}
     {{- end -}}
-    {{ .argoCDNamespace }}
 {{- end -}}
