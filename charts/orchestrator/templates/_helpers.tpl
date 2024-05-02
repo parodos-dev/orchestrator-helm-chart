@@ -114,9 +114,11 @@
 {{- end -}}
 
 {{- define "get-argocd-namespace" -}}
-    {{- if (not (hasKey . "argoCDNamespace" ) ) -}}
-        {{- $argoCDNamespace := include "get-namespace-with-label" (list .Values.argocd.namespace "rhdh.redhat.com/argocd-namespace")  }}
-        {{- $_ := set . "argoCDNamespace" $argoCDNamespace }}
+    {{- if .Values.argocd.enabled }}
+        {{- if (not (hasKey . "argoCDNamespace" ) ) -}}
+            {{- $argoCDNamespace := include "get-namespace-with-label" (list .Values.argocd.namespace "rhdh.redhat.com/argocd-namespace")  }}
+            {{- $_ := set . "argoCDNamespace" $argoCDNamespace }}
+        {{- end -}}
+        {{- .argoCDNamespace -}}
     {{- end -}}
-    {{- .argoCDNamespace -}}
 {{- end -}}s
