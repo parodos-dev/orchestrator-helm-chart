@@ -121,4 +121,5 @@
         {{- end -}}
         {{- .argoCDNamespace -}}
     {{- end -}}
-{{- end -}}s
+    {{ .argoCDNamespace }}
+{{- end -}}
