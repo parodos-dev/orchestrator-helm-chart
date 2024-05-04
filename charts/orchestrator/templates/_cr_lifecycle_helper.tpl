@@ -55,9 +55,11 @@ roleRef:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ trunc -57 (printf "%s-reconcile" $releaseNameKind ) }} # Fixes https://github.com/parodos-dev/orchestrator-helm-chart/issues/160
+  name: {{ trunc -52 (printf "%s-reconcile" $releaseNameKind ) }} # Fixes https://github.com/parodos-dev/orchestrator-helm-chart/issues/160
   # job name is used in the spec.template.metadata.labels, and labels cannot be more than 63 characters https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   namespace: {{ .release.Namespace }}
+  labels:
+    "orchestrator.rhdh.redhat.com/reconciles": {{ $resourceAPIGroup }}
 spec:
   schedule: '* * * * *' #run every minute
   concurrencyPolicy: Replace
@@ -129,7 +131,7 @@ spec:
               echo "Cleanup Job for CR {{ .kind }} of {{ $resourceAPIGroup }} started"
               kubectl get crd {{ $resourceAPIGroup }}
               if [ $? -eq 0 ]; then
-                kubectl delete cronjob {{ printf "%s-reconcile" $releaseNameKind }} -n {{ .release.Namespace }} # Ensure no race condition happens where a cronjob's spawned job creates the CR after the delete job is completed and while helm is processing the other delete jobs
+                kubectl delete cronjob -l orchestrator.rhdh.redhat.com/reconciles={{ $resourceAPIGroup }} -n {{ .release.Namespace }} # Ensure no race condition happens where a cronjob's spawned job creates the CR after the delete job is completed and while helm is processing the other delete jobs
                 kubectl get {{ if (hasKey . "targetNamespace") }} -n {{ .targetNamespace }} {{ end }} {{ $resourceAPIGroup }} {{ .resourceName }}
                 if [ $? -eq 0 ]; then
                   kubectl delete {{ if (hasKey . "targetNamespace") }} -n {{ .targetNamespace }} {{ end }} {{ $resourceAPIGroup }} {{ .resourceName }}
