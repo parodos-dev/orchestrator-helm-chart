@@ -38,6 +38,7 @@ rules:
     - cronjobs
     verbs:
     - delete
+    - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -55,7 +56,7 @@ roleRef:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ trunc -52 (printf "%s-reconcile" $releaseNameKind ) }} # Fixes https://github.com/parodos-dev/orchestrator-helm-chart/issues/160
+  name: {{ trunc -52 (printf "%s-reconcile" $releaseNameKind | trimPrefix "-" | trimPrefix "_" ) }} # Fixes https://github.com/parodos-dev/orchestrator-helm-chart/issues/160
   # job name is used in the spec.template.metadata.labels, and labels cannot be more than 63 characters https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   namespace: {{ .release.Namespace }}
   labels:
@@ -106,12 +107,12 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ trunc -57 (printf "%s-delete" $releaseNameKind) }} # Fixes https://github.com/parodos-dev/orchestrator-helm-chart/issues/160
+  name: {{ trunc -57 (printf "%s-delete" $releaseNameKind) | trimPrefix "-" | trimPrefix "_" }} # Fixes https://github.com/parodos-dev/orchestrator-helm-chart/issues/160
   # job name is used in the spec.template.metadata.labels, and labels cannot be more than 63 characters https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   namespace: {{ .release.Namespace }}
   annotations:
     "helm.sh/hook": {{ if .isEnabled }}pre-delete{{ end }}{{ if and (not .isEnabled) (not (empty (lookup (printf "%s/%s" .apiGroup .groupVersion) .kind (dig "targetNamespace" "" . ) .resourceName ))) }}pre-upgrade,pre-rollback{{ end }}
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    "helm.sh/hook-delete-policy": before-hook-creation
     "helm.sh/hook-weight": "1"
 spec:
   template:
@@ -134,8 +135,7 @@ spec:
                 kubectl delete cronjob -l orchestrator.rhdh.redhat.com/reconciles={{ $resourceAPIGroup }} -n {{ .release.Namespace }} # Ensure no race condition happens where a cronjob's spawned job creates the CR after the delete job is completed and while helm is processing the other delete jobs
                 kubectl get {{ if (hasKey . "targetNamespace") }} -n {{ .targetNamespace }} {{ end }} {{ $resourceAPIGroup }} {{ .resourceName }}
                 if [ $? -eq 0 ]; then
-                  kubectl delete {{ if (hasKey . "targetNamespace") }} -n {{ .targetNamespace }} {{ end }} {{ $resourceAPIGroup }} {{ .resourceName }}
-                  exit 0
+                  kubectl delete {{ if (hasKey . "targetNamespace") }} -n {{ .targetNamespace }} {{ end }} {{ $resourceAPIGroup }} {{ .resourceName }} --timeout=60s || exit 1
                 fi
               fi
               echo "Cleanup Job finished"
