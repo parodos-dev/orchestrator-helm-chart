@@ -1,9 +1,10 @@
 {{- if eq "true" (include "install-tekton-pipeline" .) }}
+  {{- $gitopsNamespace := include "get-argocd-namespace" . }}
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: workflow-deployment
-  namespace: {{ .Values.argocd.namespace }}
+  namespace: {{ $gitopsNamespace }}
 spec:
   description: |
     This pipeline clones a git repo, builds a Docker image with Kaniko and
@@ -115,7 +116,7 @@ spec:
       runAfter: ["flatten-workflow"]
       taskRef:
         name: buildah
-        kind: ClusterTask        
+        kind: ClusterTask
       workspaces:
         - name: source
           workspace: workflow-source
