@@ -328,8 +328,8 @@ data:
           target: https://github.com/parodos-dev/workflow-software-templates/blob/main/scaffolder-templates/basic-workflow/template.yaml
         - type: url
           target: https://github.com/parodos-dev/workflow-software-templates/blob/main/scaffolder-templates/complex-assessment-workflow/template.yaml
-  {{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "rhdh.redhat.com/v1alpha1" "Backstage" .Values.rhdhOperator.subscription.namespace "backstage" .Release.Name .Capabilities.APIVersions ) }}
-  {{- if eq $unmanagedNamespaceExists "false" }}
-    {{- include "manage-cr-lifecycle-on-action" (dict "release" .Release "apiGroup" "rhdh.redhat.com" "groupVersion" "v1alpha1" "kind" "Backstage" "kinds" "backstages" "targetNamespace" .Values.rhdhOperator.subscription.namespace "resourceName" "backstage" "isEnabled" .Values.rhdhOperator.enabled "hasCRDInstalled" (.Capabilities.APIVersions.Has "rhdh.redhat.com/v1alpha1/Backstage") "manifest" (include "backstage-manifest" . | b64enc )) }}
-  {{- end }}
+{{- end }}
+{{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "rhdh.redhat.com/v1alpha1" "Backstage" .Values.rhdhOperator.subscription.namespace "backstage" .Release.Name .Capabilities.APIVersions ) }}
+{{- if eq $unmanagedNamespaceExists "false" }}
+  {{- include "manage-cr-lifecycle-on-action" (dict "release" .Release "apiGroup" "rhdh.redhat.com" "groupVersion" "v1alpha1" "kind" "Backstage" "kinds" "backstages" "targetNamespace" .Values.rhdhOperator.subscription.namespace "resourceName" "backstage" "isEnabled" .Values.rhdhOperator.enabled "hasCRDInstalled" (.Capabilities.APIVersions.Has "rhdh.redhat.com/v1alpha1/Backstage") "manifest" (include "backstage-manifest" . | b64enc )) }}
 {{- end }}
