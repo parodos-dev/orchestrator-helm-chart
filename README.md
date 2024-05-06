@@ -109,9 +109,17 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
 8. Install the orchestrator Helm chart:
 
-   ```console
-   helm upgrade -i orchestrator orchestrator -n orchestrator
-   ```
+    Use the following command if you use the prepackaged helm chart provided by the helm repository you previously installed:
+
+    ```console
+    helm upgrade -i orchestrator orchestrator/orchestrator -n orchestrator
+    ```
+
+    Alternatively use the following command if you cloned the git repository:
+
+    ```console
+    helm upgrade -i orchestrator orchestrator -n orchestrator
+    ```
 
    Run the commands prompted at the end of the previous step to wait until the services are ready.
 
