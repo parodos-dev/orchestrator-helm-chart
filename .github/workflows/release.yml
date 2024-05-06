@@ -1,4 +1,4 @@
-name: Release Orchestrator Charts
+name: Release Orchestrator Charts - Stable
 
 on:
   workflow_dispatch:
