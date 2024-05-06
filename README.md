@@ -8,8 +8,8 @@ The chart installs the following components onto the target OpenShift cluster:
 - OpenShift Serverless Operator
   - Knative Eventing
   - Knative Serving
-- ArgoCD `orchestrator` project (optional: disabled by default)
-- Tekton tasks and build pipeline (optional: disabled by default)
+- An ArgoCD project named `orchestrator` (optional: disabled by default). Requires an pre-installed ArgoCD/OpenShift GitOps instance in the cluster.
+- Tekton tasks and build pipeline (optional: disabled by default). Requires an pre-installed Tekton/OpenShift Pipelines instance in the cluster.
 
 ## Important Note for ARM64 Architecture Users
 
@@ -27,7 +27,17 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 - A GitHub API Token - to import items into the catalog, ensure you have a `GITHUB_TOKEN` with the necessary permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions:
   - repo (all)
   - admin:org (read:org)
-  - user (read:user, user:email)
+
+### Deployment with GitOps
+
+  Additionally, these 2 operators are required to be pre-installed and [configured](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/gitops/README.md) when deploying with GitOps:
+
+- `ArgoCD/OpenShift GitOps` operator
+  - Ensure at least one instance of `ArgoCD` exists in the designated namespace (referenced by `ARGOCD_NAMESPACE` environment variable). Example [here](https://github.com/parodos-dev/orchestrator-helm-chart/blob/4b2e2dee41e490a64379adc0ad01b0ae80f7485b/charts/orchestrator/templates/argocd-project.yaml)
+  - Validated API is `argoproj.io/v1alpha1/AppProject`
+- `Tekton/OpenShift Pipelines` operator
+  - Validated APIs are `tekton.dev/v1beta1/Task` and `tekton.dev/v1/Pipeline`
+  - Requires ArgoCD installed since the manifests are deployed in the same namespace as the ArgoCD instance.
 
 ### Optional (GitOps operators)
   If you plan to deploy in a GitOps environment, make sure you have installed the `ArgoCD/Red Hat OpenShift GitOps` and the `Tekton/Red Hat Openshift Pipelines Install` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/gitops/README.md).
@@ -84,7 +94,9 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
     /tmp/setup.sh --use-default
     ```
 
-    This script creates a secret in the `rhdh-operator` namespace required for Backstage to authenticate against Kubernetes, GitHub and ArgoCD, and also labels the namespaces where workflows run and the ArgoCD instance for the Orchestrator exists, so that the helm chart can identify them when installing/upgrading and deploy the related manifests in the correct namespaces.
+      ```console
+      ./hack/setup.sh --use-default
+      ```
 
     > **NOTE:** If you don't want to use the default values, omit the `--use-default` and the script will prompt you for input.
     >
@@ -112,12 +124,12 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
     ````console
     NAME: orchestrator
     LAST DEPLOYED: Fri Mar 29 12:34:59 2024
-    NAMESPACE: sonataflow-infra
+    NAMESPACE: orchestrator
     STATUS: deployed
     REVISION: 1
     TEST SUITE: None
     NOTES:
-    Helm Release orchestrator installed in namespace sonataflow-infra.
+    Helm Release orchestrator installed in namespace orchestrator.
 
     Components                   Installed   Namespace
     ====================================================================
@@ -155,9 +167,11 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
       oc wait -n rhdh-operator deploy/backstage-backstage --for=condition=Available --timeout=5m
     ````
 
-During the installation process, Kubernetes jobs are created by the chart to monitor the installation progress and wait for the CRDs to be fully deployed by the operators. In case of any failure at this stage, these jobs remain active, facilitating administrators in retrieving detailed diagnostic information to identify and address the cause of the failure.
+During the installation process, Kubernetes cronjobs are created by the chart to monitor the lifecycle of the CRs managed by the chart: rhdh operator, serverless operator and sonataflow operator. When deleting one of the previously mentioned CRs, a job is triggered that ensures the CR is removed before the operator is.
+In case of any failure at this stage, these jobs remain active, facilitating administrators in retrieving detailed diagnostic information to identify and address the cause of the failure.
 
-> **Note:** that these jobs are automatically deleted after the deployment of the chart is completed.
+> **Note:** that every minute on the clock a job is triggered to reconcile the CRs with the chart values. These cronjobs are deleted when their respective features (e.g. `rhdhOperator.enabled=false`) are removed or when the chart is removed. This is required because the CRs are not
+managed by helm due to the CRD dependency pre availability to the deployment of the CR.
 
 ### Installing from the git repository for chart development
 
@@ -182,16 +196,6 @@ EOF
 Follow Helm Chart installation instructions [here](https://docs.openshift.com/container-platform/4.15/applications/working_with_helm_charts/configuring-custom-helm-chart-repositories.html)
 
 ## Additional information
-
-### Prerequisites
-
-In addition to the [prerequisites](https://github.com/parodos-dev/orchestrator-helm-chart#prerequisites) mentioned earlier, it is possible to manually install the following operator:
-
-- `ArgoCD/OpenShift GitOps` operator
-  - Ensure at least one instance of `ArgoCD` exists in the designated namespace (referenced by `ARGOCD_NAMESPACE` environment variable).
-  - Validated API is `argoproj.io/v1alpha1/AppProject`
-- `Tekton/OpenShift Pipelines` operator
-  - Validated APIs are `tekton.dev/v1beta1/Task` and `tekton.dev/v1/Pipeline`
 
 ### GitOps environment
 
