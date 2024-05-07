@@ -82,7 +82,6 @@ data:
       auth:
         keys:
           - secret: {{ printf "${%s}" .Values.rhdhOperator.secretRef.backstage.backendSecret }}
-
       baseUrl: https://backstage-backstage-{{ .Values.rhdhOperator.subscription.namespace }}.{{ include "cluster.domain" . }}
       csp:
         script-src: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
