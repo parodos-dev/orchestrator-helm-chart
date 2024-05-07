@@ -121,7 +121,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
     Sample output:
 
-    ````console
+    ```console
     NAME: orchestrator
     LAST DEPLOYED: Fri Mar 29 12:34:59 2024
     NAMESPACE: orchestrator
@@ -165,7 +165,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
       oc wait -n sonataflow-infra deploy/sonataflow-platform-jobs-service --for=condition=Available --timeout=5m
       oc wait -n rhdh-operator backstage backstage --for=condition=Deployed=True
       oc wait -n rhdh-operator deploy/backstage-backstage --for=condition=Available --timeout=5m
-    ````
+    ```
 
 During the installation process, Kubernetes cronjobs are created by the chart to monitor the lifecycle of the CRs managed by the chart: rhdh operator, serverless operator and sonataflow operator. When deleting one of the previously mentioned CRs, a job is triggered that ensures the CR is removed before the operator is.
 In case of any failure at this stage, these jobs remain active, facilitating administrators in retrieving detailed diagnostic information to identify and address the cause of the failure.
