@@ -35,10 +35,8 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
 ## Installation
 
-1. Get the Helm chart from one of the following options
+1. Install the helm chart using the pre-packaged version
 
-   - **Pre-Packaged Helm Chart**\
-     If you choose to install the Helm chart from the Helm repository, you'll be leveraging the pre-packaged version provided by the chart maintainer. This method is convenient and ensures that you're using a stable, tested version of the chart.
      Add the repository:
 
      ```bash
@@ -64,22 +62,22 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
      orchestrator	https://parodos-dev.github.io/orchestrator-helm-chart
      ```
 
-2. Deploy the PostgreSQL reference implementation for persistence support in SonataFlow following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
+1. Deploy the PostgreSQL reference implementation for persistence support in SonataFlow following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
 
-3. Create a namespace for the Orchestrator solution:
+1. Create a namespace for the Orchestrator solution:
 
    ```console
    oc new-project orchestrator
    ```
 
-4. Create a namespace for the Red Hat Developer Hub Operator (RHDH Operator):
+1. Create a namespace for the Red Hat Developer Hub Operator (RHDH Operator):
 
    ```console
    oc new-project rhdh-operator
    ```
 
 
-6.  Run the following command to set up environment variables:
+1.  Run the following command to set up environment variables:
 
     ```console
     ./hack/setup.sh --use-default
@@ -100,13 +98,13 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
     > - `ARGOCD_USERNAME`: Default value is set to `admin`.
     > - `ARGOCD_PASSWORD`: This value is dynamically obtained based on the first ArgoCD instance available. Empty if none is available.
 
-9.  Install the orchestrator Helm chart:
+1.  Install the orchestrator Helm chart:
 
     ```console
-    helm upgrade -i orchestrator orchestrator --set argocd.enabled=true --set tekton.enabled=true -n orchestrator
+    helm upgrade -i orchestrator orchestrator/orchestrator --set argocd.enabled=true --set tekton.enabled=true -n orchestrator
     ```
 
-10.  Run the commands prompted at the end of the previous step to wait until the services are ready.
+1.  Run the commands prompted at the end of the previous step to wait until the services are ready.
 
     Sample output:
 
@@ -228,7 +226,7 @@ To clean the rest of the resources, run:
 
 ```console
 oc get crd -o name | grep -e sonataflow -e rhdh -e knative | xargs oc delete
-oc delete namespace orchestrator sonataflow-infra
+oc delete namespace orchestrator sonataflow-infra rhdh-operator
 ```
 
 ## Troubleshooting
