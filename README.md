@@ -29,12 +29,14 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
   - admin:org (read:org)
   - user (read:user, user:email)
 
+### Optional (GitOps operators)
+  If you plan to deploy in a GitOps environment, make sure you have installed the `ArgoCD/Red Hat OpenShift GitOps` and the `Tekton/Red Hat Openshift Pipelines Install` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/gitops/README.md).
+  The Orchestrator installs RHDH and imports software templates designed for bootstrapping workflow development. These templates are crafted to ease the development lifecycle, including a Tekton pipeline to build workflow images and generate workflow K8s custom resources. Furthermore, ArgoCD is utilized to monitor any changes made to the workflow repository and to automatically trigger the Tekton pipelines as needed. This installation process ensures that all necessary Tekton and ArgoCD resources are provisioned within the same cluster.
+
 ## Installation
 
-1. Get the Helm chart from one of the following options
+1. Install the helm chart using the pre-packaged version
 
-   - **Pre-Packaged Helm Chart**\
-     If you choose to install the Helm chart from the Helm repository, you'll be leveraging the pre-packaged version provided by the chart maintainer. This method is convenient and ensures that you're using a stable, tested version of the chart.
      Add the repository:
 
      ```bash
@@ -60,70 +62,26 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
      orchestrator	https://parodos-dev.github.io/orchestrator-helm-chart
      ```
 
-   - **Manual Chart Deployment**\
-      By cloning the repository and navigating to the charts directory, you'll have access to the raw chart files and can customize them to fit your specific requirements.
-     ```console
-     git clone git@github.com:parodos-dev/orchestrator-helm-chart.git
-     cd orchestrator-helm-chart/charts
-     ```
+1. Deploy the PostgreSQL reference implementation for persistence support in SonataFlow following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
 
-2. Deploy the PostgreSQL reference implementation for persistence support in SonataFlow following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
-
-3. Set `GITHUB_TOKEN` environment variable
-
-   ```console
-   export GITHUB_TOKEN=<github token>
-   ```
-
-4. Generate a random alphanumeric string of 24 characters to be used in the `BACKEND_SECRET`:
-
-   ```console
-   export BACKEND_SECRET=$(mktemp -u XXXXXXXXXXXXXXXXXXXXXXX)
-   ```
-
-5. Create a namespace for the Orchestrator solution:
+1. Create a namespace for the Orchestrator solution:
 
    ```console
    oc new-project orchestrator
    ```
 
-6. Create a namespace for the Red Hat Developer Hub Operator (RHDH Operator):
+1. Create a namespace for the Red Hat Developer Hub Operator (RHDH Operator):
 
    ```console
    oc new-project rhdh-operator
    ```
 
-###  Deployment without GitOps
 
-6. Create the secret in the 'rhdh-operator' namespace with the GitHub token:
-
-   ```console
-   oc create secret generic backstage-backend-auth-secret --from-literal=BACKEND_SECRET=$BACKEND_SECRET --from-literal=GITHUB_TOKEN=$GITHUB_TOKEN -n rhdh-operator
-   ```
-
-7. Switch the context to the orchestrator namespace
-
-   ```console
-   oc project orchestrator
-   ```
-
-8. Install the orchestrator Helm chart:
-
-   ```console
-   helm upgrade -i orchestrator orchestrator -n orchestrator
-   ```
-
-   Run the commands prompted at the end of the previous step to wait until the services are ready.
-
-### Deployment with GitOps
-
-7.  Install `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/gitops/README.md).
-    The Orchestrator installs RHDH and imports software templates designed for bootstrapping workflow development. These templates are crafted to ease the development lifecycle, including a Tekton pipeline to build workflow images and generate workflow K8s custom resources. Furthermore, ArgoCD is utilized to monitor any changes made to the workflow repository and to automatically trigger the Tekton pipelines as needed. This installation process ensures that all necessary Tekton and ArgoCD resources are provisioned within the same cluster.
-
-8.  Run the following command to set up environment variables:
+1.  Download the setup script from the github repository and run it to create the RHDH secret and label the GitOps namespaces:
 
     ```console
-    ./hack/setup.sh --use-default
+    wget https://raw.githubusercontent.com/parodos-dev/orchestrator-helm-chart/main/hack/setup.sh -O /tmp/setup.sh && chmod u+x /tmp/setup.sh
+    /tmp/setup.sh --use-default
     ```
 
     This script creates a secret in the `rhdh-operator` namespace required for Backstage to authenticate against Kubernetes, GitHub and ArgoCD, and also labels the namespaces where workflows run and the ArgoCD instance for the Orchestrator exists, so that the helm chart can identify them when installing/upgrading and deploy the related manifests in the correct namespaces.
@@ -135,25 +93,19 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
     > - `WORKFLOW_NAMESPACE`: Default value is set to `sonataflow-infra`.
     > - `K8S_CLUSTER_URL`: The URL of the Kubernetes cluster is obtained dynamically using `oc whoami --show-server`.
     > - `K8S_CLUSTER_TOKEN`: The value is obtained dynamically based on the provided namespace and service account.
-    > - `GITHUB_TOKEN`: This value is prompted from the user during script execution and is not predefined.
-    > - `ARGOCD_NAMESPACE`: Default value is set to `orchestrator-gitops`. The script validates that there is an ArgoCD instance running in the given namespace, else it will exit with failure.
-    > - `ARGOCD_URL`: This value is dynamically obtained based on the first ArgoCD instance available.
+    > - `GITHUB_TOKEN`: This value is prompted from the user during script execution and is not predefined. Empty if none is available.
+    > - `ARGOCD_NAMESPACE`: Default value is set to `orchestrator-gitops`. The script validates that there is an ArgoCD instance running in the given namespace, empty if none is available.
+    > - `ARGOCD_URL`: This value is dynamically obtained based on the first ArgoCD instance available. Empty if none is available.
     > - `ARGOCD_USERNAME`: Default value is set to `admin`.
-    > - `ARGOCD_PASSWORD`: This value is dynamically obtained based on the first ArgoCD instance available.
+    > - `ARGOCD_PASSWORD`: This value is dynamically obtained based on the first ArgoCD instance available. Empty if none is available.
 
-9. Switch the context to the orchestrator namespace
-
-   ```console
-   oc project orchestrator
-   ```
-
-   Install the orchestrator Helm chart:
+1.  Install the orchestrator Helm chart:
 
     ```console
-    helm upgrade -i orchestrator orchestrator --set argocd.enabled=true --set tekton.enabled=true
+    helm upgrade -i orchestrator orchestrator/orchestrator --set argocd.enabled=true --set tekton.enabled=true -n orchestrator
     ```
 
-10.  Run the commands prompted at the end of the previous step to wait until the services are ready.
+1.  Run the commands prompted at the end of the previous step to wait until the services are ready.
 
     Sample output:
 
@@ -206,6 +158,10 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 During the installation process, Kubernetes jobs are created by the chart to monitor the installation progress and wait for the CRDs to be fully deployed by the operators. In case of any failure at this stage, these jobs remain active, facilitating administrators in retrieving detailed diagnostic information to identify and address the cause of the failure.
 
 > **Note:** that these jobs are automatically deleted after the deployment of the chart is completed.
+
+### Installing from the git repository for chart development
+
+Use this [guide](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/manual.md) if you plan to develop the helm chart. Note that the requirements for the chart deployment still remain unchanged.
 
 ### For installing from OpenShift Developer perspective
 
@@ -271,7 +227,7 @@ To clean the rest of the resources, run:
 
 ```console
 oc get crd -o name | grep -e sonataflow -e rhdh -e knative | xargs oc delete
-oc delete namespace orchestrator sonataflow-infra
+oc delete namespace orchestrator sonataflow-infra rhdh-operator
 ```
 
 ## Troubleshooting
