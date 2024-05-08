@@ -77,10 +77,11 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
    ```
 
 
-1.  Run the following command to set up environment variables:
+1.  Download the setup script from the github repository and run it to create the RHDH secret and label the GitOps namespaces:
 
     ```console
-    ./hack/setup.sh --use-default
+    wget https://raw.githubusercontent.com/parodos-dev/orchestrator-helm-chart/main/hack/setup.sh -O /tmp/setup.sh && chmod u+x /tmp/setup.sh
+    /tmp/setup.sh --use-default
     ```
 
     This script creates a secret in the `rhdh-operator` namespace required for Backstage to authenticate against Kubernetes, GitHub and ArgoCD, and also labels the namespaces where workflows run and the ArgoCD instance for the Orchestrator exists, so that the helm chart can identify them when installing/upgrading and deploy the related manifests in the correct namespaces.
