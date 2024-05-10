@@ -32,7 +32,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
   The Orchestrator installs RHDH and imports software templates designed for bootstrapping workflow development. These templates are crafted to ease the development lifecycle, including a Tekton pipeline to build workflow images and generate workflow K8s custom resources. Furthermore, ArgoCD is utilized to monitor any changes made to the workflow repository and to automatically trigger the Tekton pipelines as needed.
 
 - `ArgoCD/OpenShift GitOps` operator
-  - Ensure at least one instance of `ArgoCD` exists in the designated namespace (referenced by `ARGOCD_NAMESPACE` environment variable). Example [here](https://github.com/parodos-dev/orchestrator-helm-chart/blob/4b2e2dee41e490a64379adc0ad01b0ae80f7485b/charts/orchestrator/templates/argocd-project.yaml)
+  - Ensure at least one instance of `ArgoCD` exists in the designated namespace (referenced by `ARGOCD_NAMESPACE` environment variable). Example [here](https://raw.githubusercontent.com/parodos-dev/orchestrator-helm-chart/gh-pages/gitops/resources/argocd-example.yaml)
   - Validated API is `argoproj.io/v1alpha1/AppProject`
 - `Tekton/OpenShift Pipelines` operator
   - Validated APIs are `tekton.dev/v1beta1/Task` and `tekton.dev/v1/Pipeline`
