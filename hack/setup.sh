@@ -128,7 +128,7 @@ function checkPrerequisite {
 }
 
 function createBackstageSecret {
-  if [[ $(oc get secret backstage-backend-auth-secret -n rhdh-operator) ]]; then
+  if 2>/dev/null 1>&2 oc get secret backstage-backend-auth-secret -n rhdh-operator; then
     oc delete secret backstage-backend-auth-secret -n rhdh-operator
   fi
   declare -A secretKeys
