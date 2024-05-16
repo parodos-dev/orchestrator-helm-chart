@@ -23,7 +23,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 - Your cluster has a [default storage class](https://docs.openshift.com/container-platform/4.13/storage/container_storage_interface/persistent-storage-csi-sc-manage.html) provisioned.
 - [Helm](https://helm.sh/docs/intro/install/) v3.9+ is installed.
 - [PostgreSQL](https://www.postgresql.org/) database is available with credentials to manage the tablespace (optional).
-  - A [reference implementation](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md) is provided for your convenience.
+  - A [reference implementation](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages-stable-1.x/postgresql/README.md) is provided for your convenience.
 - A GitHub API Token - to import items into the catalog, ensure you have a `GITHUB_TOKEN` with the necessary permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions:
   - repo (all)
   - admin:org (read:org)
@@ -79,30 +79,30 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
    export GITHUB_TOKEN=<github token>
    ```
 
-4. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
+4. Deploy PostgreSQL reference implementation following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages-stable-1.x/postgresql/README.md)
 
 ### ...without GitOps
 
 1.  Install the orchestrator Helm chart:
 
     ```console
-    helm upgrade -i orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
+    helm upgrade -i orchestrator orchestrator/orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN
     ```
 
 2.  Run the commands prompted at the end of the previous step to wait until the services are ready.
 
 ### ... with GitOps
 
-1.  Install `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/gitops/README.md).
+1.  Install `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages-stable-1.x/gitops/README.md).
     The Orchestrator installs RHDH and imports software templates designed for bootstrapping workflow development. These templates are crafted to ease the development lifecycle, including a Tekton pipeline to build workflow images and generate workflow K8s custom resources. Furthermore, ArgoCD is utilized to monitor any changes made to the workflow repository and to automatically trigger the Tekton pipelines as needed. This installation process ensures that all necessary Tekton and ArgoCD resources are provisioned within the same cluster.
 
-2.  Run the following command to set up environment variables:
+2.  Download the setup script from the github repository and run it to to set up environment variables:
 
     ```console
-    ./hack/setenv.sh --use-default
+    wget https://raw.githubusercontent.com/parodos-dev/orchestrator-helm-chart/stable-1.x/hack/setenv.sh -O /tmp/setenv.sh && chmod u+x /tmp/setenv.sh
     ```
 
-    This script generates a `.env` file that contains all the calculated environment variables.
+    This script generates a `.env` file that contains all the calculated environment variables. Run `source .env` to utilize these variables.
 
     > **NOTE:** If you don't want to use the default values, omit the `--use-default` and the script will prompt you for input.
     >
@@ -120,7 +120,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 3.  Install the orchestrator Helm chart:
 
     ```console
-    helm upgrade -i orchestrator orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
+    helm upgrade -i orchestrator orchestrator/orchestrator --set rhdhOperator.github.token=$GITHUB_TOKEN \
     --set rhdhOperator.k8s.clusterToken=$K8S_CLUSTER_TOKEN --set rhdhOperator.k8s.clusterUrl=$K8S_CLUSTER_URL \
     --set argocd.namespace=$ARGOCD_NAMESPACE --set argocd.url=$ARGOCD_URL --set argocd.username=$ARGOCD_USERNAME \
     --set argocd.password=$ARGOCD_PASSWORD --set argocd.enabled=true --set tekton.enabled=true
@@ -200,9 +200,13 @@ Follow Helm Chart installation instructions [here](https://docs.openshift.com/co
 
 ## Additional information
 
+### GitOps environment
+
+See the dedicated [document](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages-stable-1.x/gitops/README.md)
+
 ### Prerequisites
 
-In addition to the [prerequisites](https://github.com/parodos-dev/orchestrator-helm-chart#prerequisites) mentioned earlier, it is possible to manually install the following operator:
+In addition to the [prerequisites](https://parodos.dev/orchestrator-helm-chart#prerequisites) mentioned earlier, it is possible to manually install the following operator:
 
 - `ArgoCD/OpenShift GitOps` operator
   - Ensure at least one instance of `ArgoCD` exists in the designated namespace (referenced by `ARGOCD_NAMESPACE` environment variable).
@@ -210,13 +214,9 @@ In addition to the [prerequisites](https://github.com/parodos-dev/orchestrator-h
 - `Tekton/OpenShift Pipelines` operator
   - Validated APIs are `tekton.dev/v1beta1/Task` and `tekton.dev/v1/Pipeline`
 
-### GitOps environment
-
-See the dedicated [document](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/GitOps.md)
-
 ### Deploying PostgreSQL reference implementation
 
-See [here](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
+See [here](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages-stable-1.x/postgresql/README.md)
 
 ### ArgoCD and workflow namespace
 
