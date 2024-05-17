@@ -249,17 +249,14 @@ release "orchestrator" uninstalled
 
 Note that the CRDs created during the installation process will remain in the cluster.
 
-Before cleaning the rest of the resources, if you have workflows installed, you will need to remove them from the cluster first:
-```console
-helm delete <workflow>
-```
+**Note that if you installed additional Knative resources (service, ingress, ...) you shall delete them before trying to remove the Knative related CRDs. Otherwise the deletion will get stuck**
 
-Then, to clean the rest of the resources, run:
-
+To clean the rest of the resources, run:
 ```console
 oc get crd -o name | grep -e sonataflow -e rhdh -e knative | xargs oc delete
 oc delete namespace orchestrator sonataflow-infra rhdh-operator
 ```
+
 
 ## Troubleshooting
 
