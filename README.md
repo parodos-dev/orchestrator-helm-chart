@@ -24,10 +24,16 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 - [Helm](https://helm.sh/docs/intro/install/) v3.9+ is installed.
 - [PostgreSQL](https://www.postgresql.org/) database is available with credentials to manage the tablespace (optional).
   - A [reference implementation](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages-stable-1.x/postgresql/README.md) is provided for your convenience.
-- A GitHub API Token - to import items into the catalog, ensure you have a `GITHUB_TOKEN` with the necessary permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/). For classic token, include the following permissions:
-  - repo (all)
-  - admin:org (read:org)
-  - user (read:user, user:email)
+- A GitHub API Token - to import items into the catalog, ensure you have a `GITHUB_TOKEN` with the necessary permissions as detailed [here](https://backstage.io/docs/integrations/github/locations/).
+  -  For classic token, include the following permissions:
+      - repo (all)
+      - admin:org (read:org)
+      - user (read:user, user:email)
+      - workflow (all) - required for using the software templates for creating workflows in GitHub
+  - For Fine grained token:
+      - Repository permissions: **Read** access to metadata, **Read** and **Write** access to actions, actions variables, administration, code, codespaces, commit statuses, environments, issues, pull requests, repository hooks, secrets, security events, and workflows.
+      - Organization permissions: **Read** access to members, **Read** and **Write** access to organization administration, organization hooks, organization projects, and organization secrets.
+
 
 ## Installation
 
