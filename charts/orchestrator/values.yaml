@@ -30,20 +30,20 @@ rhdhOperator:
     name: rhdh # name of the operator package
 
 rhdhPlugins: # RHDH plugins required for the Orchestrator
-  npmRegistry: https://npm.stage.registry.redhat.com
+  npmRegistry: https://npm.registry.redhat.com
   scope: "@redhat"
   orchestrator:
-    package: "backstage-plugin-orchestrator@1.0.0-rc.2-redhat-48496"
-    integrity: sha512-3SAAV0BvBFBqV+6BhGcdNTOv3VWEABf54GXDpI9FMM1lJKsVMtO6s+HC/EgN5ZShtqjacoUhG9sGA/hG1nqQiQ==
+    package: "backstage-plugin-orchestrator@1.0.0"
+    integrity: sha512-CuYYR7v2O8EVoI1FA7usidzUPp1N5OOKDkIvhDRPf4I7BxgDCWLqW7rBQ4Z7qBXfpeYJrQOxInc0E2xWEat8JA==
   orchestrator_backend:
-    package: "backstage-plugin-orchestrator-backend-dynamic@1.0.0-rc.2-redhat-48496"
-    integrity: sha512-ENW/xcQ08EcOipVTDqFIEOZhFLPuvDA3W6v1lfU9WrULYKRJwDOT/G8FlJHgN/MS8y+epZZKsUdEZ3UeB5Ncxw==
+    package: "backstage-plugin-orchestrator-backend-dynamic@1.0.0"
+    integrity: sha512-l0g3T/a1NxX9JogTesZAdUzpNhHQaPxRwki15HWny9GlXCELAx+ta0UC3afsHy6Jp2wOn1prlW0ZuXuc7Ncb0g==
   notifications:
-    package: "plugin-notifications@1.0.0-rc.2-redhat-51359"
-    integrity: sha512-/HjplEnkqxyWAjymZ2XjX1A9wE7GE29NVbilVnWG2xQubpAjIscAIKcrXm9PJ3/mDqtBvjLhpH4qEODAnOuB+w==
+    package: "plugin-notifications@1.0.0"
+    integrity: sha512-t+cnwKOfqJJqbgZIMjJ1Hzr1mqHft619QoK5bF7c8TuQGUjQR0NtaIFWUNhR1JFlE4oQz0NDaAgBnDwtjMk9qA==
   notifications_backend:
-    package: "plugin-notifications-backend-dynamic@1.0.0-rc.2-redhat-51359"
-    integrity: sha512-2Eqi1SWIy1vIWcR0hjSCfRP2w9z+qFdpKsB3dmbssv4Pg98AFj41LYlrTLscHri7am6cd4xe1fEb7gJGqbNQiQ==
+    package: "plugin-notifications-backend-dynamic@1.0.0"
+    integrity: sha512-o4GFXmQu6uUXbCDukXHahZ37sfQQYM92pL3LhkXO5aYKudITKzlv6lEZnb9zO9Rnr3U0LD7ytFzks51EfXssXw==
 
 postgres:
   serviceName: "sonataflow-psql-postgresql" # The name of the Postgres DB service to be used by platform services. Cannot be empty.
