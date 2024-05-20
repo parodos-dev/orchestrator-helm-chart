@@ -36,6 +36,7 @@ done
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 TEMPLATE_FILE="${TEMPLATE_FILE:-${SCRIPT_DIR}/../charts/orchestrator/templates/rhdh-operator.yaml}"
 
+
 case $ENVIRONMENT in
     "upstream")
       REGISTRY="https://registry.npmjs.org"
@@ -45,12 +46,20 @@ case $ENVIRONMENT in
     "production")
       REGISTRY="https://npm.registry.redhat.com"
       SCOPE="redhat"
-      VALUES_FILE="${SCRIPT_DIR}/../charts/orchestrator/values-plugins-stable.yaml"
+      if [[ -f "${SCRIPT_DIR}/../charts/orchestrator/values-plugins-stable.yaml" ]]; then
+        VALUES_FILE="${SCRIPT_DIR}/../charts/orchestrator/values-plugins-stable.yaml"
+      else
+        VALUES_FILE="${SCRIPT_DIR}/../charts/orchestrator/values.yaml"
+      fi
       ;;
     "staging")
       REGISTRY="https://npm.stage.registry.redhat.com"
       SCOPE="redhat"
-      VALUES_FILE="${SCRIPT_DIR}/../charts/orchestrator/values-plugins-stable.yaml"
+      if [[ -f "${SCRIPT_DIR}/../charts/orchestrator/values-plugins-stable.yaml" ]]; then
+        VALUES_FILE="${SCRIPT_DIR}/../charts/orchestrator/values-plugins-stable.yaml"
+      else
+        VALUES_FILE="${SCRIPT_DIR}/../charts/orchestrator/values.yaml"
+      fi
       ;;
     *)
       echo "Invalid environment specified. Please specify 'staging', 'production' or 'upstream'."

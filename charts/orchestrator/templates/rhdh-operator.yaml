@@ -309,9 +309,9 @@ data:
         - type: url
           target: https://github.com/parodos-dev/orchestrator-helm-chart/blob/stable-1.x/resources/users.yaml
         - type: url
-          target: https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml
+          target: https://github.com/parodos-dev/workflow-software-templates/blob/v0.1.0/entities/workflow-resources.yaml
         - type: url
-          target: https://github.com/parodos-dev/workflow-software-templates/blob/main/scaffolder-templates/basic-workflow/template.yaml
+          target: https://github.com/parodos-dev/workflow-software-templates/blob/v0.1.0/scaffolder-templates/basic-workflow/template.yaml
 ---
 apiVersion: rhdh.redhat.com/v1alpha1
 kind: Backstage
