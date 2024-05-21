@@ -69,6 +69,26 @@ function captureGitToken {
   fi
 }
 
+function captureGitClientId {
+   if [ -z "$GITHUB_CLIENT_ID" ]; then
+    read -s -p "Enter GitHub client ID (empty for disabling it): " value
+    echo ""
+    GITHUB_CLIENT_ID=$value
+  else
+    echo "GitHub client ID already set."
+  fi
+}
+
+function captureGitClientSecret {
+   if [ -z "$GITHUB_CLIENT_SECRET" ]; then
+    read -s -p "Enter GitHub client secret (empty for disabling it): " value
+    echo ""
+    GITHUB_CLIENT_SECRET=$value
+  else
+    echo "GitHub client secret already set."
+  fi
+}
+
 function captureArgoCDNamespace {
   default="orchestrator-gitops"
   if [ "$use_default" == true ]; then
@@ -150,6 +170,12 @@ function createBackstageSecret {
   if [ -n "$GITHUB_TOKEN" ]; then
     secretKeys[GITHUB_TOKEN]=$GITHUB_TOKEN
   fi
+  if [ -n "$GITHUB_CLIENT_ID" ]; then
+    secretKeys[GITHUB_CLIENT_ID]=$GITHUB_CLIENT_ID
+  fi
+  if [ -n "$GITHUB_CLIENT_SECRET" ]; then
+    secretKeys[GITHUB_CLIENT_SECRET]=$GITHUB_CLIENT_SECRET
+  fi
   cmd="oc create secret generic backstage-backend-auth-secret -n rhdh-operator --from-literal=BACKEND_SECRET=$BACKEND_SECRET"
   for key in "${!secretKeys[@]}"; do
     cmd="${cmd} --from-literal=${key}=${secretKeys[$key]}"
@@ -213,6 +239,8 @@ function main {
   captureK8sURL
   generateK8sToken
   captureGitToken
+  captureGitClientId
+  captureGitClientSecret
   captureArgoCDNamespace
   captureArgoCDURL
   captureArgoCDCreds
