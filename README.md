@@ -247,6 +247,8 @@ Follow [Workflows Installation](https://www.parodos.dev/serverless-workflows-con
 
 ## Cleanup
 
+**\/!\\ Before removing the orchestrator, make sure you first removed installed workflows. Otherwise the deletion may hung in termination state**
+
 To remove the installation from the cluster, run:
 
 ```console
@@ -255,12 +257,18 @@ release "orchestrator" uninstalled
 ```
 
 Note that the CRDs created during the installation process will remain in the cluster.
-To clean the rest of the resources, run:
 
+To clean the rest of the resources, run:
 ```console
-oc get crd -o name | grep -e sonataflow -e rhdh -e knative | xargs oc delete
+oc get crd -o name | grep -e sonataflow -e rhdh | xargs oc delete
 oc delete namespace orchestrator sonataflow-infra rhdh-operator
 ```
+
+If you want to remove *knative* related resources, you may also run:
+```console
+oc get crd -o name | grep -e knative | xargs oc delete
+```
+
 
 ## Troubleshooting
 
