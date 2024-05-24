@@ -1,0 +1,16 @@
+{{- if .Values.monitoring.enabled }}
+
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: grafana
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+spec:
+  channel: v5
+  installPlanApproval: Automatic
+  name: grafana-operator
+  source: community-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: grafana-operator.v5.8.0
+
+{{- end }}
