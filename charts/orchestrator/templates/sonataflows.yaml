@@ -32,6 +32,9 @@ spec:
         limits:
           memory: {{ .Values.orchestrator.sonataPlatform.resources.limits.memory }}
           cpu: {{ .Values.orchestrator.sonataPlatform.resources.limits.cpu }}
+  {{- if .Values.monitoring.enabled }}
+  monitoring: true
+  {{- end }}
   services:
     dataIndex:
       enabled: true
