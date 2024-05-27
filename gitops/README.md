@@ -1,28 +1,89 @@
-# Initialize the GitOps environment
+# Initialize the GitOps Environment
 
-## Install the operators
+To set up the CI/CD capabilities, you can choose between two methods to install the OpenShift GitOps and OpenShift Pipelines operators.
 
-The `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators can be installed from the solution
-derived from the [Janus IDP Demo](https://github.com/redhat-gpte-devopsautomation/janus-idp-bootstrap)
+## Method 1: Install the Operators from Demo Charts
 
-> This repository contains automation to install the Janus IDP Demo, as well as supporting components
+You can use the Janus IDP Demo repository to install the `Red Hat OpenShift Pipelines` and `Red Hat OpenShift GitOps` operators. This repository contains automation scripts to install the Janus IDP Demo and its supporting components. Note that a fork of this repository has been created to remove the configuration excluding Tekton resources from being managed by ArgoCD applications. More details can be found in this [discussion](https://github.com/argoproj/argo-cd/discussions/8674#discussioncomment-2318554).
 
-A fork has been created to remove the configuration that excludes Tekton resources from being configured from the
-ArgoCD applications (see [discussion](https://github.com/argoproj/argo-cd/discussions/8674#discussioncomment-2318554)).
+### Install OpenShift Pipelines Operator
 
-First, install the `Red Hat OpenShift Pipelines` operator:
+1. Clone the repository:
 
-```bash
-git clone https://github.com/parodos-dev/janus-idp-bootstrap.git
-cd janus-idp-bootstrap/charts
-helm upgrade --install orchestrator-pipelines pipelines-operator/ -f pipelines-operator/values.yaml -n orchestrator-gitops --create-namespace
-```
+    ```bash
+    git clone https://github.com/parodos-dev/janus-idp-bootstrap.git
+    ```
 
-Finally, install and configure the `Red Hat OpenShift GitOps` operator:
+2. Navigate to the charts directory:
 
-```bash
-helm upgrade --install orchestrator-gitops gitops-operator/ -f gitops-operator/values.yaml -n orchestrator-gitops --create-namespace --set namespaces={orchestrator-gitops}
-```
+    ```bash
+    cd janus-idp-bootstrap/charts
+    ```
+3. Install the OpenShift Pipelines operator:
+
+    ```bash
+    helm upgrade --install orchestrator-pipelines pipelines-operator/ -f pipelines-operator/values.yaml -n orchestrator-gitops --create-namespace
+    ```
+
+### Install OpenShift GitOps Operator
+
+1. Install and configure the OpenShift GitOps operator:
+
+    ```bash
+    helm upgrade --install orchestrator-gitops gitops-operator/ -f gitops-operator/values.yaml -n orchestrator-gitops --create-namespace --set namespaces={orchestrator-gitops}
+    ```
+
+
+## Method 2: Install the Operators from OpenShift OperatorHub
+
+### Install OpenShift Pipelines Operator
+
+The OpenShift Pipelines Operator can be installed directly from the OperatorHub. Select the operator from the list and install it without any special configuration.
+
+### Install OpenShift GitOps Operator
+
+To install the OpenShift GitOps Operator with custom configuration:
+
+1. Add the following configuration to the Subscription used to install the operator:
+
+    ```yaml
+    config:
+      env:
+      - name: DISABLE_DEFAULT_ARGOCD_INSTANCE
+        value: "true"
+      - name: ARGOCD_CLUSTER_CONFIG_NAMESPACES
+        value: "orchestrator-gitops"
+    ```
+
+    Detailed information about these environment variables can be found in the [OpenShift GitOps Usage Guide](https://github.com/redhat-developer/gitops-operator/blob/master/docs/OpenShift%20GitOps%20Usage%20Guide.md#installation-of-openshift-gitops-without-ready-to-use-argo-cd-instance-for-rosaosd) and the [ArgoCD Operator Documentation](https://argocd-operator.readthedocs.io/en/latest/usage/basics/#cluster-scoped-instance).
+
+2. Create an ArgoCD instance in the `orchestrator-gitops` namespace:
+
+    ```bash
+    oc new-project orchestrator-gitops
+    oc apply -f https://raw.githubusercontent.com/parodos-dev/orchestrator-helm-chart/gh-pages/gitops/resources/argocd-example.yaml
+    ```
+
+    Alternatively, if creating a default ArgoCD instance, ensure to exclude Tekton resources from its specification:
+
+    ```yaml
+    resourceExclusions: |
+      - apiGroups:
+        - tekton.dev
+        clusters:
+        - '*'
+        kinds:
+        - TaskRun
+        - PipelineRun
+    ```
+
+3. Add a label to the workflow namespace (`sonataflow-infra`) to enable ArgoCD to manage resources in that namespace:
+
+    ```bash
+    oc label ns sonataflow-infra argocd.argoproj.io/managed-by=orchestrator-gitops
+    ```
+
+These steps will set up the required CI/CD environment using either method. Ensure to follow the steps carefully to achieve a successful installation.
 
 ## Installing docker credentials
 

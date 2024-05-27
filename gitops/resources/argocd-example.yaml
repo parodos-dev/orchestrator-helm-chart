@@ -22,10 +22,10 @@ spec:
         memory: 128Mi
     enabled: false
   rbac:
-    defaultPolicy: ''
+    defaultPolicy: ""
     policy: |
       g, system:cluster-admins, role:admin
-    scopes: '[groups]'
+    scopes: "[groups]"
   redis:
     resources:
       limits:
@@ -63,11 +63,3 @@ spec:
           memory: 128Mi
       openShiftOAuth: true
     provider: dex
-  resourceExclusions: |
-    - apiGroups:
-      - tekton.dev
-      clusters:
-      - '*'
-      kinds:
-      - TaskRun
-      - PipelineRun
