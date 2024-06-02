@@ -1,0 +1,115 @@
+{{/*
+This file used for including source resources for RHDH and Sonataflow components from RC builds.
+It requires including a secret to enable access to the image registries that contains the builds.
+See https://github.com/janus-idp/operator/blob/main/.rhdh/docs/installing-ci-builds.adoc
+*/}}
+{{- if .Values.isReleaseCandidate }}
+apiVersion: operator.openshift.io/v1alpha1
+kind: ImageContentSourcePolicy
+metadata:
+  labels:
+    operators.openshift.org/catalog: "true"
+  name: brew-registry
+spec:
+  repositoryDigestMirrors:
+    - mirrors:
+        - brew.registry.redhat.io/openshift-serverless-1/logic-rhel8-operator
+      source: registry.redhat.io/openshift-serverless-1/logic-rhel8-operator
+    - mirrors:
+        - brew.registry.redhat.io/rh-osbs/openshift-serverless-1-logic-operator-bundle
+      source: registry-proxy.engineering.redhat.com/rh-osbs/openshift-serverless-1-logic-operator-bundle
+---
+apiVersion: operator.openshift.io/v1alpha1
+kind: ImageContentSourcePolicy
+metadata:
+  name: quay-io
+spec:
+  repositoryDigestMirrors:
+  - mirrors:
+    - quay.io/rhdh/rhdh-operator-bundle
+    source: registry.redhat.io/rhdh/rhdh-operator-bundle
+  - mirrors:
+    - quay.io/rhdh/rhdh-operator-bundle
+    source: registry.stage.redhat.io/rhdh/rhdh-operator-bundle
+  - mirrors:
+    - quay.io/rhdh/rhdh-operator-bundle
+    source: registry-proxy.engineering.redhat.com/rh-osbs/rhdh-rhdh-operator-bundle
+  - mirrors:
+    - quay.io/rhdh/rhdh-rhel9-operator
+    source: registry.redhat.io/rhdh/rhdh-rhel9-operator
+  - mirrors:
+    - quay.io/rhdh/rhdh-rhel9-operator
+    source: registry.stage.redhat.io/rhdh/rhdh-rhel9-operator
+  - mirrors:
+    - quay.io/rhdh/rhdh-rhel9-operator
+    source: registry-proxy.engineering.redhat.com/rh-osbs/rhdh-rhdh-rhel9-operator
+  - mirrors:
+    - quay.io/rhdh/rhdh-hub-rhel9
+    source: registry.redhat.io/rhdh/rhdh-hub-rhel9
+  - mirrors:
+    - quay.io/rhdh/rhdh-hub-rhel9
+    source: registry.stage.redhat.io/rhdh/rhdh-hub-rhel9
+  - mirrors:
+    - quay.io/rhdh/rhdh-hub-rhel9
+    source: registry-proxy.engineering.redhat.com/rh-osbs/rhdh-rhdh-hub-rhel9
+  - mirrors:
+    - quay.io
+    source: registry.redhat.io
+  - mirrors:
+    - quay.io
+    source: registry.stage.redhat.io
+  - mirrors:
+    - quay.io
+    source: registry-proxy.engineering.redhat.com
+  - mirrors:
+    - registry.redhat.io
+    source: registry.stage.redhat.io
+  - mirrors:
+    - registry.stage.redhat.io
+    source: registry-proxy.engineering.redhat.com
+  - mirrors:
+    - registry.redhat.io
+    source: registry-proxy.engineering.redhat.com
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: {{ .Values.sonataFlowOperator.subscription.sourceName }}
+  namespace: openshift-marketplace
+spec:
+  displayName: Sonataflow Operator (Brew)
+  {{- if eq .Values.ocpVersion "v4.13" }}
+  image: brew.registry.redhat.io/rh-osbs/iib:735728
+  {{- else if eq .Values.ocpVersion "v4.14" }}
+  image: brew.registry.redhat.io/rh-osbs/iib:735738
+  {{- else if eq .Values.ocpVersion "v4.15" }}
+  image: brew.registry.redhat.io/rh-osbs/iib:735753
+  {{- else if eq .Values.ocpVersion "v4.16" }}
+  image: brew.registry.redhat.io/rh-osbs/iib:735763
+  {{- else }}
+    {{- fail "Unsupported OCP version. Please provide one of v4.13, v4.14, v4.15 or v4.16"}}
+  {{- end}}
+  sourceType: grpc
+  publisher: Sonataflow Operator (Brew)
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: {{ .Values.rhdhOperator.subscription.sourceName }}
+  namespace: openshift-marketplace
+spec:
+  displayName: IIB testing catalog
+  {{- if eq .Values.ocpVersion "v4.13" }}
+  image: quay.io/rhdh/iib:1.2-v4.13-x86_64
+  {{- else if eq .Values.ocpVersion "v4.14" }}
+  image: quay.io/rhdh/iib:1.2-v4.14-x86_64
+  {{- else if eq .Values.ocpVersion "v4.15" }}
+  image: quay.io/rhdh/iib:1.2-v4.15-x86_64
+  {{- else if eq .Values.ocpVersion "v4.16" }}
+  image: quay.io/rhdh/iib:1.2-v4.16-x86_64
+  {{- else }}
+    {{- fail "Unsupported OCP version. Please provide one of v4.13, v4.14, v4.15 or v4.16"}}
+  {{- end}}
+  sourceType: grpc
+  publisher: IIB testing catalog
+{{- end }}

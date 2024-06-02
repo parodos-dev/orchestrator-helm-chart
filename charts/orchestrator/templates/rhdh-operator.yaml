@@ -46,15 +46,17 @@ spec: {}
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: rhdh-operator
+  name: {{ .Values.rhdhOperator.subscription.name }}
   namespace: {{ .Values.rhdhOperator.subscription.namespace }}
 spec:
   channel: {{ .Values.rhdhOperator.subscription.channel }}
-  installPlanApproval: Automatic
+  installPlanApproval: {{ .Values.rhdhOperator.subscription.installPlanApproval }}
   name: {{ .Values.rhdhOperator.subscription.name }}
   source: {{ .Values.rhdhOperator.subscription.source }}
   sourceNamespace: openshift-marketplace
-
+  {{- if ne .Values.rhdhOperator.subscription.startingCSV "" }}
+  startingCSV: {{ .Values.rhdhOperator.subscription.startingCSV }}
+  {{- end }}
   {{- if .Values.rhdhPlugins.npmRegistry }}
 ---
 apiVersion: v1
@@ -250,28 +252,40 @@ data:
                     module: OrchestratorPlugin
                     path: /orchestrator
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications.package }}"
-        integrity: {{ .Values.rhdhPlugins.notifications.integrity }}
+        integrity: >-
+          sha512-fwuDRCRxvBbrvElNWkEx4kR5ZYwUFnYaXMmbd4zM+R2rSlkcL8gktJHSvIGdGO/s3IZeqOr9BqQsHdHoG3+NFQ==
+        package: >-
+          https://github.com/davidfestal/backstage-plugins-dynamic-build/releases/download/v1.26.5/backstage-plugin-notifications-dynamic-0.2.0.tgz
         pluginConfig:
           dynamicPlugins:
             frontend:
-              janus-idp.backstage-plugin-notifications:
-                appIcons:
-                  - name: notificationsIcon
-                    module: NotificationsPlugin
-                    importName: NotificationsActiveIcon
+              backstage.plugin-notifications:
                 dynamicRoutes:
-                  - path: /notifications
-                    importName: NotificationsPage
-                    module: NotificationsPlugin
+                  - importName: NotificationsPage
                     menuItem:
-                      icon: notificationsIcon
-                      text: Notifications
-                    config:
-                      pollingIntervalMs: 5000
+                      config:
+                        props:
+                          titleCounterEnabled: true
+                          webNotificationsEnabled: false
+                      importName: NotificationsSidebarItem
+                    path: /notifications
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications_backend.package }}"
-        integrity: {{ .Values.rhdhPlugins.notifications_backend.integrity }}
+        integrity: >-
+          sha512-g/xQBpu4tv3lEc1gdticZcxoMARRhT9oACLDUBZ+pDOuf2W2opt/058fFFf0QWuu6MuNjt75UuPR3pIznXtqRw==
+        package: >-
+          https://github.com/davidfestal/backstage-plugins-dynamic-build/releases/download/v1.26.5/backstage-plugin-signals-dynamic-0.0.5.tgz
+        pluginConfig:
+          dynamicPlugins:
+            frontend:
+              backstage.plugin-signals: {}
+      - disabled: false
+        package: https://github.com/davidfestal/backstage-plugins-dynamic-build/releases/download/v1.26.5/backstage-plugin-notifications-backend-dynamic-0.2.0.tgz
+        integrity: sha512-QxIkZ7uX8CuCu9EUm8t0T0HOv9KT2AboMBwyr0Xu6Xa1I2U3E59YL5f5NQO9yVpidf+6rlV7qTCvJSn5MAQGnw==
+      - disabled: false
+        integrity: >-
+          sha512-Q30nsDg9VoDf6aN8WBEzN7U9Hv6TOnh1zNGeutGUOSh57YC1u7vLcxr6mhKj3MsyCr885d+LlS0i86PyNMyYUA==
+        package: >-
+          https://github.com/davidfestal/backstage-plugins-dynamic-build/releases/download/v1.26.5/backstage-plugin-signals-backend-dynamic-0.1.3.tgz
 ---
 apiVersion: v1
 kind: ConfigMap

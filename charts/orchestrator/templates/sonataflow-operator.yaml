@@ -18,12 +18,15 @@ spec: {}
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: logic-operator-rhel8
+  name: {{ .Values.sonataFlowOperator.subscription.name }}
   namespace: {{ .Values.sonataFlowOperator.subscription.namespace }}
 spec:
   channel: {{ .Values.sonataFlowOperator.subscription.channel }}
-  installPlanApproval: Automatic
+  installPlanApproval: {{ .Values.sonataFlowOperator.subscription.installPlanApproval }}
   name: {{ .Values.sonataFlowOperator.subscription.name }}
-  source: redhat-operators
+  source: {{ .Values.sonataFlowOperator.subscription.sourceName }}
   sourceNamespace: openshift-marketplace
+  {{- if ne .Values.sonataFlowOperator.subscription.startingCSV "" }}
+  startingCSV: {{ .Values.sonataFlowOperator.subscription.startingCSV }}
+  {{- end }}
 {{- end }}
