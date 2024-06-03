@@ -17,11 +17,14 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `sonataFlowOperator.subscription.channel` | channel of an operator package to subscribe to | `"alpha"` |
 | `sonataFlowOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
 | `sonataFlowOperator.subscription.name` | name of the operator package | `"logic-operator-rhel8"` |
+| `sonataFlowOperator.subscription.sourceName` | name of the catalog source | `"redhat-operators"` |
+| `sonataFlowOperator.subscription.startingCSV` | The initial version of the operator | `""` |
 | `serverlessOperator.enabled` | whether the operator should be deployed by the chart | `true` |
 | `serverlessOperator.subscription.namespace` | namespace where the operator should be deployed | `"openshift-serverless"` |
 | `serverlessOperator.subscription.channel` | channel of an operator package to subscribe to | `"stable"` |
 | `serverlessOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
 | `serverlessOperator.subscription.name` | name of the operator package | `"serverless-operator"` |
+| `serverlessOperator.subscription.sourceName` | name of the catalog source | `"redhat-operators"` |
 | `rhdhOperator.enabled` | whether the operator should be deployed by the chart | `true` |
 | `rhdhOperator.secretRef.name` | name of the secret that contains the credentials for the plugin to establish a communication channel with the Kubernetes API, ArgoCD and GitHub servers. | `"backstage-backend-auth-secret"` |
 | `rhdhOperator.secretRef.backstage.backendSecret` | Key in the secret with name defined in the 'name' field that contains the value of the Backstage backend secret. Defaults to 'BACKEND_SECRET'. It's required. | `"BACKEND_SECRET"` |
@@ -62,6 +65,7 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `tekton.enabled` | whether to create the Tekton pipeline resources | `false` |
 | `argocd.enabled` | whether to install the ArgoCD plugin and create the orchestrator AppProject | `false` |
 | `argocd.namespace` | Defines the namespace where the orchestrator's instance of ArgoCD is deployed. The value is captured when running setup.sh script and stored as a label in the selected namespace. User can override the value by populating this field. Defaults to `orchestrator-gitops` in the setup.sh script. | `""` |
+| `isReleaseCandidate` | Indicates RC builds should be used by the chart to install RHDH and Sonataflow | `false` |
 
 
 
