@@ -106,6 +106,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
     > - `K8S_CLUSTER_URL`: The URL of the Kubernetes cluster is obtained dynamically using `oc whoami --show-server`.
     > - `K8S_CLUSTER_TOKEN`: The value is obtained dynamically based on the provided namespace and service account.
     > - `GITHUB_TOKEN`: This value is prompted from the user during script execution and is not predefined.
+    > - `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`: The value for both these fields are used to authenticate against GitHub. For more information open this [link](https://backstage.io/docs/auth/github/provider/).
     > - `ARGOCD_URL`: This value is dynamically obtained based on the first ArgoCD instance available.
     > - `ARGOCD_USERNAME`: Default value is set to `admin`.
     > - `ARGOCD_PASSWORD`: This value is dynamically obtained based on the first ArgoCD instance available.
