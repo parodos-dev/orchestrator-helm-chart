@@ -7,6 +7,7 @@ kind: Namespace
 metadata:
   name: {{ .Values.sonataFlowOperator.subscription.namespace }}
 ---
+{{- end }}
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
@@ -14,7 +15,6 @@ metadata:
   namespace: {{ .Values.sonataFlowOperator.subscription.namespace }}
 spec: {}
 ---
-{{- end }}
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
@@ -22,7 +22,7 @@ metadata:
   namespace: {{ .Values.sonataFlowOperator.subscription.namespace }}
 spec:
   channel: {{ .Values.sonataFlowOperator.subscription.channel }}
-  installPlanApproval: {{ .Values.sonataFlowOperator.subscription.installPlanApproval }}
+  installPlanApproval: Automatic
   name: {{ .Values.sonataFlowOperator.subscription.name }}
   source: {{ .Values.sonataFlowOperator.subscription.sourceName }}
   sourceNamespace: openshift-marketplace
