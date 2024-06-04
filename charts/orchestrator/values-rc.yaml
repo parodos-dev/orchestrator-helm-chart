@@ -1,5 +1,3 @@
-ocpVersion: v4.15 # The version of the target OCP cluster. Supported versions are: v4.13, v4.14, v4.15, v4.16
-
 sonataFlowOperator:
   isReleaseCandidate: true # Indicates RC builds should be used by the chart to install Sonataflow
   enabled: true # whether the operator should be deployed by the chart
