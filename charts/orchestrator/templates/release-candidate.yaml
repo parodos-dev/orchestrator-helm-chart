@@ -32,8 +32,6 @@ metadata:
   namespace: openshift-marketplace
 spec:
   displayName: Sonataflow Operator (Brew)
-  {{- printf "Debug: Major version: %d" 2}}
-
   image: {{ dig "ocpVersion" $version .Values.sonataflow.images }}
   sourceType: grpc
   publisher: Sonataflow Operator (Brew)
