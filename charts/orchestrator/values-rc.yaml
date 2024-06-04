@@ -20,16 +20,14 @@ rhdhOperator:
 
 sonataflow:
   images:
-    ocpVersion:
-      4.13: brew.registry.redhat.io/rh-osbs/iib:735728
-      4.14: brew.registry.redhat.io/rh-osbs/iib:735738
-      4.15: brew.registry.redhat.io/rh-osbs/iib:735753
-      4.16: brew.registry.redhat.io/rh-osbs/iib:735763
+    4.13: brew.registry.redhat.io/rh-osbs/iib:735728
+    4.14: brew.registry.redhat.io/rh-osbs/iib:735738
+    4.15: brew.registry.redhat.io/rh-osbs/iib:735753
+    4.16: brew.registry.redhat.io/rh-osbs/iib:735763
 
 rhdh:
   images:
-    ocpVersion:
-      4.13: quay.io/rhdh/iib:1.2-v4.13-x86_64
-      4.14: quay.io/rhdh/iib:1.2-v4.14-x86_64
-      4.15: quay.io/rhdh/iib:1.2-v4.15-x86_64
-      4.16: quay.io/rhdh/iib:1.2-v4.16-x86_64
+    4.13: quay.io/rhdh/iib:1.2-v4.13-x86_64
+    4.14: quay.io/rhdh/iib:1.2-v4.14-x86_64
+    4.15: quay.io/rhdh/iib:1.2-v4.15-x86_64
+    4.16: quay.io/rhdh/iib:1.2-v4.16-x86_64

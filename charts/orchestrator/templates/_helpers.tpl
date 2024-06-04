@@ -124,7 +124,6 @@
 
 {{- define "get-cluster-version" -}}
   {{- $v := "" }}
-  # Retrieve OCP version from `clusterversion` object
   {{- $version :=(lookup "config.openshift.io/v1" "ClusterVersion" "" "version") }}
   {{- range $version.status.history }}
     {{- if eq .state "Completed" }}
