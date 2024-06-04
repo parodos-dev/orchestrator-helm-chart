@@ -32,7 +32,9 @@ metadata:
   namespace: openshift-marketplace
 spec:
   displayName: Sonataflow Operator (Brew)
-  image: {{ dig "ocpVersion" (printf "%s.%s" $version.major $version.minor) .Values.sonataflow.images }}
+  {{- printf "Debug: Major version: %d" 2}}
+
+  image: {{ dig "ocpVersion" $version .Values.sonataflow.images }}
   sourceType: grpc
   publisher: Sonataflow Operator (Brew)
 ---
@@ -98,7 +100,7 @@ metadata:
   namespace: openshift-marketplace
 spec:
   displayName: IIB testing catalog
-  image: image: {{ dig "ocpVersion" (printf "%s.%s" $version.major $version.minor) .Values.rhdhOperator.images }}
+  image: {{ dig "ocpVersion" $version .Values.rhdh.images }}
   sourceType: grpc
   publisher: IIB testing catalog
 {{- end }}
