@@ -121,3 +121,25 @@
         {{- .argoCDNamespace -}}
     {{- end -}}
 {{- end -}}
+
+{{- define "get-cluster-version" -}}
+  {{- $v := "" }}
+  # Retrieve OCP version from `clusterversion` object
+  {{- $version :=(lookup "config.openshift.io/v1" "ClusterVersion" "" "version") }}
+  {{- range $version.status.history }}
+    {{- if eq .state "Completed" }}
+      {{- $v = (semver .version) }}
+      {{- printf "OCP version is %d.%d" $v.Major $v.Minor }}
+    {{- end }}
+  {{- end }}
+
+  {{- $validMinors := list "13" "14" "15" "16" -}}
+  {{- if ne $v.Major "4" -}}
+      {{- fail (printf "Unsupported Major version: %s. Required: 4." $v.Major) -}}
+  {{- else if not (has $v.Minor $validMinors) -}}
+      {{- fail (printf "Unsupported Minor version: %s. Supported versions: 13, 14, 15, 16." $v.Minor) -}}
+  {{- end -}}
+
+  {{- $versions := dict "major" $v.Major "minor" $v.Minor -}}
+  {{- $versions -}}
+{{- end -}}

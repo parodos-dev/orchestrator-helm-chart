@@ -1,22 +1,37 @@
-isReleaseCandidate: true # Indicates RC builds should be used by the chart to install RHDH and Sonataflow
 ocpVersion: v4.15 # The version of the target OCP cluster. Supported versions are: v4.13, v4.14, v4.15, v4.16
 
 sonataFlowOperator:
+  isReleaseCandidate: true # Indicates RC builds should be used by the chart to install Sonataflow
   enabled: true # whether the operator should be deployed by the chart
   subscription:
     namespace: openshift-serverless-logic # namespace where the operator should be deployed
     channel: alpha # channel of an operator package to subscribe to
-    installPlanApproval: Automatic # whether the update should be installed automatically
     name: logic-operator-rhel8 # name of the operator package
     sourceName: sonataflow-brew # name of the catalog source
     startingCSV: logic-operator-rhel8.v1.33.0 # The initial version of the operator
 
 rhdhOperator:
+  isReleaseCandidate: true # Indicates RC builds should be used by the chart to install RHDH
   enabled: true # whether the operator should be deployed by the chart
   subscription:
     namespace: rhdh-operator # namespace where the operator should be deployed
     channel: fast # channel of an operator package to subscribe to
-    installPlanApproval: Automatic # whether the update should be installed automatically
     name: rhdh # name of the operator package
     sourceName: rhdh-brew # name of the catalog source
     startingCSV: rhdh-operator.v1.2.0 # The initial version of the operator
+
+sonataflow:
+  images:
+    ocpVersion:
+      4.13: brew.registry.redhat.io/rh-osbs/iib:735728
+      4.14: brew.registry.redhat.io/rh-osbs/iib:735738
+      4.15: brew.registry.redhat.io/rh-osbs/iib:735753
+      4.16: brew.registry.redhat.io/rh-osbs/iib:735763
+
+rhdh:
+  images:
+    ocpVersion:
+      4.13: quay.io/rhdh/iib:1.2-v4.13-x86_64
+      4.14: quay.io/rhdh/iib:1.2-v4.14-x86_64
+      4.15: quay.io/rhdh/iib:1.2-v4.15-x86_64
+      4.16: quay.io/rhdh/iib:1.2-v4.16-x86_64

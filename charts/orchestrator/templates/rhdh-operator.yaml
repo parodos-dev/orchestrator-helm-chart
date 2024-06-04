@@ -22,7 +22,7 @@ spec:
 {{- end }}
 
 {{- if .Values.rhdhOperator.enabled }}
-  {{- if not .Values.rhdhOperator.secretRef.name }} {
+  {{- if not .Values.rhdhOperator.secretRef.name }}
     {{- fail "Backstage's secret name defined in 'rhdhOperator.secretRef.name' is required" }}
   {{- end }}
   {{- $secret := lookup "v1" "Secret" .Values.rhdhOperator.subscription.namespace .Values.rhdhOperator.secretRef.name }}
@@ -50,11 +50,11 @@ metadata:
   namespace: {{ .Values.rhdhOperator.subscription.namespace }}
 spec:
   channel: {{ .Values.rhdhOperator.subscription.channel }}
-  installPlanApproval: {{ .Values.rhdhOperator.subscription.installPlanApproval }}
+  installPlanApproval: Automatic
   name: {{ .Values.rhdhOperator.subscription.name }}
   source: {{ .Values.rhdhOperator.subscription.source }}
   sourceNamespace: openshift-marketplace
-  {{- if ne .Values.rhdhOperator.subscription.startingCSV "" }}
+  {{- if not .Values.rhdhOperator.subscription.startingCSV }}
   startingCSV: {{ .Values.rhdhOperator.subscription.startingCSV }}
   {{- end }}
   {{- if .Values.rhdhPlugins.npmRegistry }}

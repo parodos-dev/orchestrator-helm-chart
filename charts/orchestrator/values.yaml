@@ -1,4 +1,5 @@
 sonataFlowOperator:
+  isReleaseCandidate: false # Indicates RC builds should be used by the chart to install Sonataflow
   enabled: true # whether the operator should be deployed by the chart
   subscription:
     namespace: openshift-serverless-logic # namespace where the operator should be deployed
@@ -18,6 +19,7 @@ serverlessOperator:
     sourceName: redhat-operators # name of the catalog source
 
 rhdhOperator:
+  isReleaseCandidate: false # Indicates RC builds should be used by the chart to install RHDH
   enabled: true # whether the operator should be deployed by the chart
   secretRef:
     name: backstage-backend-auth-secret # name of the secret that contains the credentials for the plugin to establish a communication channel with the Kubernetes API, ArgoCD and GitHub servers.
@@ -85,4 +87,3 @@ argocd:
   enabled: false # whether to install the ArgoCD plugin and create the orchestrator AppProject
   namespace: "" # Defines the namespace where the orchestrator's instance of ArgoCD is deployed. The value is captured when running setup.sh script and stored as a label in the selected namespace. User can override the value by populating this field. Defaults to `orchestrator-gitops` in the setup.sh script.
 
-isReleaseCandidate: false # Indicates RC builds should be used by the chart to install RHDH and Sonataflow
