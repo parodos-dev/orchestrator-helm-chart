@@ -129,17 +129,13 @@
   {{- range $version.status.history }}
     {{- if eq .state "Completed" }}
       {{- $v = (semver .version) }}
-      {{- printf "OCP version is %d.%d" $v.Major $v.Minor }}
     {{- end }}
   {{- end }}
 
   {{- $validMinors := list "13" "14" "15" "16" -}}
-  {{- if ne $v.Major "4" -}}
-      {{- fail (printf "Unsupported Major version: %s. Required: 4." $v.Major) -}}
-  {{- else if not (has $v.Minor $validMinors) -}}
-      {{- fail (printf "Unsupported Minor version: %s. Supported versions: 13, 14, 15, 16." $v.Minor) -}}
+  {{- $versionString := printf "%d.%d" $v.Major $v.Minor -}}
+  {{- if not (semverCompare ">=4.13 <=4.16" $versionString) -}}
+    {{- fail (printf "Unsupported OCP version: %s. Supported versions: %s." $versionString $validMinors) -}}
   {{- end -}}
-
-  {{- $versions := dict "major" $v.Major "minor" $v.Minor -}}
-  {{- $versions -}}
+  {{- $versionString -}}
 {{- end -}}
