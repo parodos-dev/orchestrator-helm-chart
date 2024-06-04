@@ -82,8 +82,11 @@ data:
       baseUrl: https://backstage-backstage-{{ .Values.rhdhOperator.subscription.namespace }}.{{ include "cluster.domain" . }}
     backend:
       auth:
-        keys:
-          - secret: {{ printf "${%s}" .Values.rhdhOperator.secretRef.backstage.backendSecret }}
+        externalAccess:
+          - type: static
+            options:
+              token: {{ printf "${%s}" .Values.rhdhOperator.secretRef.backstage.backendSecret }}
+              subject: orchestrator
       baseUrl: https://backstage-backstage-{{ .Values.rhdhOperator.subscription.namespace }}.{{ include "cluster.domain" . }}
       csp:
         script-src: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
