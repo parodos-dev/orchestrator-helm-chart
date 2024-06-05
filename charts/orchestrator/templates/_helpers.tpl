@@ -131,7 +131,7 @@
     {{- end }}
   {{- end }}
 
-  {{- $validMinors := list "13" "14" "15" "16" -}}
+  {{- $validMinors := list "4.13" "4.14" "4.15" "4.16" -}}
   {{- $versionString := printf "%d.%d" $v.Major $v.Minor -}}
   {{- if not (semverCompare ">=4.13 <=4.16" $versionString) -}}
     {{- fail (printf "Unsupported OCP version: %s. Supported versions: %s." $versionString $validMinors) -}}
