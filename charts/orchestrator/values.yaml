@@ -48,17 +48,17 @@ rhdhPlugins: # RHDH plugins required for the Orchestrator
   npmRegistry: ""
   scope: "@janus-idp"
   orchestrator:
-    package: "backstage-plugin-orchestrator@1.10.6"
-    integrity: sha512-qSXQ2O7/eLBEF186PzaRfzLfutFYUq9MdiiIZbHejz+KML9rVInPJkc1tine3R3JQVuw1QBIQ2vhPNbGbHXWZg==
+    package: "backstage-plugin-orchestrator@1.13.6"
+    integrity: sha512-tFJVIX7az6elntZi1UPr8a8v7ViDqV+0lv2Ltto55GCOQ2+7jb4ja2f4zVdabkSINeHSEN93u2wRqUNo3GkRVg==
   orchestrator_backend:
-    package: "backstage-plugin-orchestrator-backend-dynamic@1.8.0"
-    integrity: sha512-wVZE7Dak10edxh1ZEckzYKrE13GrqhzSVelURhxjZcgXEHdGPWYUFHNMEpte7hzIBE85350Ka7fpy7C4BNPvEw==
+    package: "backstage-plugin-orchestrator-backend-dynamic@1.9.6"
+    integrity: sha512-KJOcaH3i8kHcHmxhKGAYOQCejTjLliNOyhDDj0nMloPAZ81YWRPwfx+oE9wcibSxwX1x+pwFcdRww9VNA+ZeoQ==
   notifications:
-    package: "plugin-notifications@1.2.5"
-    integrity: sha512-BQ7ujmrbv2MLelNGyleC4Z8fVVywYBMYZTwmRC534WCT38QHQ0cWJbebOgeIYszFA98STW4F5tdKbVot/2gWMg==
+    package: "plugin-notifications@1.3.7"
+    integrity: sha512-86KSvSYhnXk8jB7dIrkbaNm1A8kCu68vTwEaY5i8o71QUaBvH30RGbOk1SfKmkNt4VI7IvF8dg3BhtVLxQQj3Q==
   notifications_backend:
-    package: "plugin-notifications-backend-dynamic@1.4.11"
-    integrity: sha512-5zluThJwFVKX0Wlh4E15vDKUFGu/qJ0UsxHYWoISJ+ing1R38gskvN3kukylNTgOp8B78OmUglPfNlydcYEHvA==
+    package: "plugin-notifications-backend-dynamic@1.4.18"
+    integrity: sha512-a/70Rb5OaOXdXM8uM8FDcwNUP8AB1K/kbp26/gfSAAN8X4+tD+mshYxcySx0Ms8u1qEgwlY0A8DkEwSoKAq7nA==
 
 postgres:
   serviceName: "sonataflow-psql-postgresql" # The name of the Postgres DB service to be used by platform services. Cannot be empty.
