@@ -305,13 +305,15 @@ data:
     auth:
       environment: development
   {{- end }}
+      providers:
   {{- if and (and .Values.rhdhOperator.secretRef.github.clientId (dig "data" .Values.rhdhOperator.secretRef.github.clientId "" $secret) )
              (and .Values.rhdhOperator.secretRef.github.clientSecret  (dig "data" .Values.rhdhOperator.secretRef.github.clientSecret "" $secret  ) ) }}
-      providers:
         github:
           development:
             clientId: {{ printf "${%s}" .Values.rhdhOperator.secretRef.github.clientId }}
             clientSecret: {{ printf "${%s}" .Values.rhdhOperator.secretRef.github.clientSecret }}
+  {{- else }}
+        guest: {}
   {{- end }}
 ---
 kind: ConfigMap
