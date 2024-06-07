@@ -12,7 +12,7 @@ serverlessOperator:
     namespace: openshift-serverless # namespace where the operator should be deployed
     channel: stable # channel of an operator package to subscribe to
     installPlanApproval: Automatic # whether the update should be installed automatically
-    name: serverless-operator # name of the operator package
+    name: logic-operator-rhel8 # name of the operator package
 
 rhdhOperator:
   enabled: true # whether the operator should be deployed by the chart
