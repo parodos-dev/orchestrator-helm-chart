@@ -1,0 +1,35 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: rhdh-to-sonataflow-workflows
+  namespace: {{ .Values.sonataFlowOperator.subscription.namespace }}
+spec:
+  podSelector:
+    matchExpressions:
+      - { key: sonataflow.org/workflow-app, operator: Exists }
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: rhdh-operator 
+        podSelector:
+          matchExpressions:
+            - { key: rhdh.redhat.com/app, operator: Exists }
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: rhdh-to-sonataflow-services
+  namespace: {{ .Values.sonataFlowOperator.subscription.namespace }}
+spec:
+  podSelector:
+    matchExpressions:
+      - { key: app, operator, In, values: [ sonataflow-platform ] }
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: rhdh-operator 
+        podSelector:
+          matchExpressions:
+            - { key: rhdh.redhat.com/app, operator: Exists }
