@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 
+
+function captureSetupNewRHDHDeployment {
+  if $use_default; then
+    NEW_ENVIRONMENT=true
+  else
+    echo "Setup for a new RHDH deployment?:"
+    select yn in "Yes" "No"; do
+        case $yn in
+            Yes ) NEW_ENVIRONMENT=true; break;;
+            No ) NEW_ENVIRONMENT=false; break;;
+        esac
+    done
+  fi
+}
+
 function captureWorkflowNamespace {
   default="sonataflow-infra"
   if [ "$use_default" == true ]; then
@@ -207,6 +222,9 @@ display_usage() {
     exit 1
 }
 
+# Initialize variable
+use_default=false
+
 # Parse command-line arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -227,24 +245,27 @@ done
 function main {
 
   # Check if using default values or not
-  if [ "$use_default" == "true" ]; then
+  if $use_default; then
       echo "Using default values."
   else
       echo "Not using default values."
   fi
 
   checkPrerequisite
-  generateBackendSecret
+  captureSetupNewRHDHDeployment
+  if $NEW_ENVIRONMENT; then
+    generateBackendSecret
+    captureK8sURL
+    generateK8sToken
+    captureGitToken
+    captureGitClientId
+    captureGitClientSecret
+    captureArgoCDURL
+    captureArgoCDCreds
+    createBackstageSecret
+  fi
   captureWorkflowNamespace
-  captureK8sURL
-  generateK8sToken
-  captureGitToken
-  captureGitClientId
-  captureGitClientSecret
   captureArgoCDNamespace
-  captureArgoCDURL
-  captureArgoCDCreds
-  createBackstageSecret
   labelNamespaces
   echo "Setup completed successfully!"
 }
