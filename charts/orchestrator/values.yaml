@@ -21,6 +21,8 @@ serverlessOperator:
 rhdhOperator:
   isReleaseCandidate: false # Indicates RC builds should be used by the chart to install RHDH
   enabled: true # whether the operator should be deployed by the chart
+  enableGuestProvider: true # whether to enable guest provider
+
   secretRef:
     name: backstage-backend-auth-secret # name of the secret that contains the credentials for the plugin to establish a communication channel with the Kubernetes API, ArgoCD and GitHub servers.
     backstage:

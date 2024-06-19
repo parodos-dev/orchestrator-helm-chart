@@ -306,8 +306,10 @@ data:
           development:
             clientId: {{ printf "${%s}" .Values.rhdhOperator.secretRef.github.clientId }}
             clientSecret: {{ printf "${%s}" .Values.rhdhOperator.secretRef.github.clientSecret }}
-  {{- else }}
-        guest: {}
+  {{- end }}
+  {{- if .Values.rhdhOperator.enableGuestProvider }}
+        guest:
+          dangerouslyAllowOutsideDevelopment: true
   {{- end }}
 ---
 kind: ConfigMap
