@@ -255,14 +255,12 @@ data:
                     module: OrchestratorPlugin
                     path: /orchestrator
       - disabled: false
-        integrity: >-
-          sha512-fwuDRCRxvBbrvElNWkEx4kR5ZYwUFnYaXMmbd4zM+R2rSlkcL8gktJHSvIGdGO/s3IZeqOr9BqQsHdHoG3+NFQ==
-        package: >-
-          https://github.com/davidfestal/backstage-plugins-dynamic-build/releases/download/v1.26.5/backstage-plugin-notifications-dynamic-0.2.0.tgz
+        package: {{ .Values.rhdhPlugins.notifications.package }}
+        integrity: {{ .Values.rhdhPlugins.notifications.integrity }}
         pluginConfig:
           dynamicPlugins:
             frontend:
-              backstage.plugin-notifications:
+              redhat.plugin-notifications:
                 dynamicRoutes:
                   - importName: NotificationsPage
                     menuItem:
@@ -273,22 +271,18 @@ data:
                       importName: NotificationsSidebarItem
                     path: /notifications
       - disabled: false
-        integrity: >-
-          sha512-g/xQBpu4tv3lEc1gdticZcxoMARRhT9oACLDUBZ+pDOuf2W2opt/058fFFf0QWuu6MuNjt75UuPR3pIznXtqRw==
-        package: >-
-          https://github.com/davidfestal/backstage-plugins-dynamic-build/releases/download/v1.26.5/backstage-plugin-signals-dynamic-0.0.5.tgz
+        package: {{ .Values.rhdhPlugins.signals.package }}
+        integrity: {{ .Values.rhdhPlugins.signals.integrity }}
         pluginConfig:
           dynamicPlugins:
             frontend:
-              backstage.plugin-signals: {}
+              redhat.plugin-signals: {}
       - disabled: false
-        package: https://github.com/davidfestal/backstage-plugins-dynamic-build/releases/download/v1.26.5/backstage-plugin-notifications-backend-dynamic-0.2.0.tgz
-        integrity: sha512-QxIkZ7uX8CuCu9EUm8t0T0HOv9KT2AboMBwyr0Xu6Xa1I2U3E59YL5f5NQO9yVpidf+6rlV7qTCvJSn5MAQGnw==
+        package: {{ .Values.rhdhPlugins.notifications_backend.package }}
+        integrity: {{ .Values.rhdhPlugins.notifications_backend.integrity }}
       - disabled: false
-        integrity: >-
-          sha512-Q30nsDg9VoDf6aN8WBEzN7U9Hv6TOnh1zNGeutGUOSh57YC1u7vLcxr6mhKj3MsyCr885d+LlS0i86PyNMyYUA==
-        package: >-
-          https://github.com/davidfestal/backstage-plugins-dynamic-build/releases/download/v1.26.5/backstage-plugin-signals-backend-dynamic-0.1.3.tgz
+        package: {{ .Values.rhdhPlugins.signals_backend.package }}
+        integrity: {{ .Values.rhdhPlugins.signals_backend.integrity }}
 ---
 apiVersion: v1
 kind: ConfigMap
