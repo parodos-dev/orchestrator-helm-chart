@@ -20,10 +20,10 @@ rhdhOperator:
 
 sonataflow:
   images:
-    4.13: brew.registry.redhat.io/rh-osbs/iib:735728
-    4.14: brew.registry.redhat.io/rh-osbs/iib:735738
-    4.15: brew.registry.redhat.io/rh-osbs/iib:735753
-    4.16: brew.registry.redhat.io/rh-osbs/iib:735763
+    4.13: brew.registry.redhat.io/rh-osbs/iib:747442
+    4.14: brew.registry.redhat.io/rh-osbs/iib:747447
+    4.15: brew.registry.redhat.io/rh-osbs/iib:747453
+    4.16: brew.registry.redhat.io/rh-osbs/iib:747466
 
 rhdh:
   images:
