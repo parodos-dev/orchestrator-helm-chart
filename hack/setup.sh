@@ -121,10 +121,10 @@ function captureArgoCDNamespace {
 }
 
 function captureArgoCDURL {
-  argocd_instances=$(oc get argocd -n "$argocd_namespace" -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+  argocd_instances=$(oc get argocd -n "$ARGOCD_NAMESPACE" -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
 
   if [ -z "$argocd_instances" ]; then
-      echo "No ArgoCD instances found in namespace $argocd_namespace. Continuing without ArgoCD support"
+      echo "No ArgoCD instances found in namespace $ARGOCD_NAMESPACE. Continuing without ArgoCD support"
   else
     if [ "$use_default" == true ]; then
           selected_instance=$(echo "$argocd_instances" | awk 'NR==1')
@@ -140,7 +140,7 @@ function captureArgoCDURL {
           fi
       done
     fi
-    argocd_route=$(oc get route -n $argocd_namespace -l app.kubernetes.io/managed-by=$selected_instance -ojsonpath='{.items[0].status.ingress[0].host}')
+    argocd_route=$(oc get route -n $ARGOCD_NAMESPACE -l app.kubernetes.io/managed-by=$selected_instance -ojsonpath='{.items[0].status.ingress[0].host}')
     echo "Found Route at $argocd_route"
     ARGOCD_URL=https://$argocd_route
   fi
@@ -149,7 +149,7 @@ function captureArgoCDURL {
 
 function captureArgoCDCreds {
   if [ -n "$selected_instance" ]; then
-    admin_password=$(oc get secret -n $argocd_namespace ${selected_instance}-cluster -ojsonpath='{.data.admin\.password}' | base64 -d)
+    admin_password=$(oc get secret -n $ARGOCD_NAMESPACE ${selected_instance}-cluster -ojsonpath='{.data.admin\.password}' | base64 -d)
     ARGOCD_USERNAME=admin
     ARGOCD_PASSWORD=$admin_password
   fi
@@ -253,6 +253,9 @@ function main {
 
   checkPrerequisite
   captureSetupNewRHDHDeployment
+  captureWorkflowNamespace
+  captureArgoCDNamespace
+  labelNamespaces
   if $NEW_ENVIRONMENT; then
     generateBackendSecret
     captureK8sURL
@@ -264,9 +267,6 @@ function main {
     captureArgoCDCreds
     createBackstageSecret
   fi
-  captureWorkflowNamespace
-  captureArgoCDNamespace
-  labelNamespaces
   echo "Setup completed successfully!"
 }
 
