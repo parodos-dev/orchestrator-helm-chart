@@ -255,6 +255,8 @@ function main {
   captureSetupNewRHDHDeployment
   captureWorkflowNamespace
   captureArgoCDNamespace
+  captureArgoCDURL
+  captureArgoCDCreds
   labelNamespaces
   if $NEW_ENVIRONMENT; then
     generateBackendSecret
@@ -263,8 +265,6 @@ function main {
     captureGitToken
     captureGitClientId
     captureGitClientSecret
-    captureArgoCDURL
-    captureArgoCDCreds
     createBackstageSecret
   fi
   echo "Setup completed successfully!"
