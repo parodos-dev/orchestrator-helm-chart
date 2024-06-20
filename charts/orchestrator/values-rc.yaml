@@ -27,7 +27,7 @@ sonataflow:
 
 rhdh:
   images:
-    4.13: quay.io/rhdh/iib:1.2-v4.13-x86_64
-    4.14: quay.io/rhdh/iib:1.2-v4.14-x86_64
-    4.15: quay.io/rhdh/iib:1.2-v4.15-x86_64
-    4.16: quay.io/rhdh/iib:1.2-v4.16-x86_64
+    4.13: quay.io/rhdh/iib:1.2.0.RC-06-18-v4.13-x86_64
+    4.14: quay.io/rhdh/iib:1.2.0.RC-06-18-v4.14-x86_64
+    4.15: quay.io/rhdh/iib:1.2.0.RC-06-18-v4.15-x86_64
+    4.16: quay.io/rhdh/iib:1.2.0.RC-06-18-v4.16-x86_64
