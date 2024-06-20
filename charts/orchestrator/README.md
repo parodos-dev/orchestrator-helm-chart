@@ -12,6 +12,7 @@ The following table lists the configurable parameters of the Orchestrator chart 
 
 | Parameter                | Description             | Default        |
 | ------------------------ | ----------------------- | -------------- |
+| `sonataFlowOperator.isReleaseCandidate` | Indicates RC builds should be used by the chart to install Sonataflow | `false` |
 | `sonataFlowOperator.enabled` | whether the operator should be deployed by the chart | `true` |
 | `sonataFlowOperator.subscription.namespace` | namespace where the operator should be deployed | `"openshift-serverless-logic"` |
 | `sonataFlowOperator.subscription.channel` | channel of an operator package to subscribe to | `"alpha"` |
@@ -25,7 +26,9 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `serverlessOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
 | `serverlessOperator.subscription.name` | name of the operator package | `"serverless-operator"` |
 | `serverlessOperator.subscription.sourceName` | name of the catalog source | `"redhat-operators"` |
+| `rhdhOperator.isReleaseCandidate` | Indicates RC builds should be used by the chart to install RHDH | `false` |
 | `rhdhOperator.enabled` | whether the operator should be deployed by the chart | `true` |
+| `rhdhOperator.enableGuestProvider` | whether to enable guest provider | `true` |
 | `rhdhOperator.secretRef.name` | name of the secret that contains the credentials for the plugin to establish a communication channel with the Kubernetes API, ArgoCD and GitHub servers. | `"backstage-backend-auth-secret"` |
 | `rhdhOperator.secretRef.backstage.backendSecret` | Key in the secret with name defined in the 'name' field that contains the value of the Backstage backend secret. Defaults to 'BACKEND_SECRET'. It's required. | `"BACKEND_SECRET"` |
 | `rhdhOperator.secretRef.github.token` | Key in the secret with name defined in the 'name' field that contains the value of the authentication token as expected by GitHub. Required for importing resource to the catalog, launching software templates and more. Defaults to 'GITHUB_TOKEN', empty for not available. | `"GITHUB_TOKEN"` |
@@ -43,14 +46,18 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `rhdhOperator.subscription.source` | name of the catalog that advertises the operator | `"redhat-operators"` |
 | `rhdhPlugins.npmRegistry` | NPM registry is defined already in the container, but sometimes the registry need to be modified to use different versions of the plugin, for example: staging(https://npm.stage.registry.redhat.com) or develop repositories | `""` |
 | `rhdhPlugins.scope` |  | `"@janus-idp"` |
-| `rhdhPlugins.orchestrator.package` |  | `"backstage-plugin-orchestrator@1.10.6"` |
-| `rhdhPlugins.orchestrator.integrity` |  | `"sha512-qSXQ2O7/eLBEF186PzaRfzLfutFYUq9MdiiIZbHejz+KML9rVInPJkc1tine3R3JQVuw1QBIQ2vhPNbGbHXWZg=="` |
-| `rhdhPlugins.orchestrator_backend.package` |  | `"backstage-plugin-orchestrator-backend-dynamic@1.8.0"` |
-| `rhdhPlugins.orchestrator_backend.integrity` |  | `"sha512-wVZE7Dak10edxh1ZEckzYKrE13GrqhzSVelURhxjZcgXEHdGPWYUFHNMEpte7hzIBE85350Ka7fpy7C4BNPvEw=="` |
-| `rhdhPlugins.notifications.package` |  | `"plugin-notifications@1.2.5"` |
-| `rhdhPlugins.notifications.integrity` |  | `"sha512-BQ7ujmrbv2MLelNGyleC4Z8fVVywYBMYZTwmRC534WCT38QHQ0cWJbebOgeIYszFA98STW4F5tdKbVot/2gWMg=="` |
-| `rhdhPlugins.notifications_backend.package` |  | `"plugin-notifications-backend-dynamic@1.4.11"` |
-| `rhdhPlugins.notifications_backend.integrity` |  | `"sha512-5zluThJwFVKX0Wlh4E15vDKUFGu/qJ0UsxHYWoISJ+ing1R38gskvN3kukylNTgOp8B78OmUglPfNlydcYEHvA=="` |
+| `rhdhPlugins.orchestrator.package` |  | `"backstage-plugin-orchestrator@1.13.6"` |
+| `rhdhPlugins.orchestrator.integrity` |  | `"sha512-tFJVIX7az6elntZi1UPr8a8v7ViDqV+0lv2Ltto55GCOQ2+7jb4ja2f4zVdabkSINeHSEN93u2wRqUNo3GkRVg=="` |
+| `rhdhPlugins.orchestrator_backend.package` |  | `"backstage-plugin-orchestrator-backend-dynamic@1.9.6"` |
+| `rhdhPlugins.orchestrator_backend.integrity` |  | `"sha512-KJOcaH3i8kHcHmxhKGAYOQCejTjLliNOyhDDj0nMloPAZ81YWRPwfx+oE9wcibSxwX1x+pwFcdRww9VNA+ZeoQ=="` |
+| `rhdhPlugins.notifications.package` |  | `"https://github.com/mareklibra/gh-pages/raw/main/download/002/plugin-notifications-dynamic-0.2.0-redhat.10001.tgz"` |
+| `rhdhPlugins.notifications.integrity` |  | `"sha512-Rq/Nn3N/y94t4oeQagW+o8YwTUVXt8utSkKGJVAa3AGrnXs6FkMCb5Moy0CoYUom5ld4O2Mw0EHoaAgmm/IvWg=="` |
+| `rhdhPlugins.notifications_backend.package` |  | `"https://github.com/mareklibra/gh-pages/raw/main/download/002/plugin-notifications-backend-dynamic-0.2.0-redhat.10001.tgz"` |
+| `rhdhPlugins.notifications_backend.integrity` |  | `"sha512-MiST7VKvqombWKPdmPpdO1nLc9BCsEJTIwg6wUTbT/uu3YOiQg/0U8JBjY3wihJp/iEb+pwAyDysbq8Uqz11Hg=="` |
+| `rhdhPlugins.signals.package` |  | `"https://github.com/mareklibra/gh-pages/raw/main/download/002/plugin-signals-dynamic-0.0.5-redhat.10001.tgz"` |
+| `rhdhPlugins.signals.integrity` |  | `"sha512-aAYWPyTA113RbgZsGdWScVaQ2M6JZRmA7yMDpFR1QVJFn9FdqD41u37GUNKcSbpOCSZogH0d91d5QNECSX667g=="` |
+| `rhdhPlugins.signals_backend.package` |  | `"https://github.com/mareklibra/gh-pages/raw/main/download/002/plugin-signals-backend-dynamic-0.1.3-redhat.10001.tgz"` |
+| `rhdhPlugins.signals_backend.integrity` |  | `"sha512-fd9OLCFZZV5fVDDihPETxTnhc/AKUAKETnAR15vL0qOcHEpersytVogOTdS07YSiNLcFjMXl+YJi9xVLfxBHWw=="` |
 | `postgres.serviceName` | The name of the Postgres DB service to be used by platform services. Cannot be empty. | `"sonataflow-psql-postgresql"` |
 | `postgres.serviceNamespace` | The namespace of the Postgres DB service to be used by platform services. | `"sonataflow-infra"` |
 | `postgres.authSecret.name` | name of existing secret to use for PostgreSQL credentials. | `"sonataflow-psql-postgresql"` |
@@ -65,7 +72,6 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `tekton.enabled` | whether to create the Tekton pipeline resources | `false` |
 | `argocd.enabled` | whether to install the ArgoCD plugin and create the orchestrator AppProject | `false` |
 | `argocd.namespace` | Defines the namespace where the orchestrator's instance of ArgoCD is deployed. The value is captured when running setup.sh script and stored as a label in the selected namespace. User can override the value by populating this field. Defaults to `orchestrator-gitops` in the setup.sh script. | `""` |
-| `isReleaseCandidate` | Indicates RC builds should be used by the chart to install RHDH and Sonataflow | `false` |
 
 
 
