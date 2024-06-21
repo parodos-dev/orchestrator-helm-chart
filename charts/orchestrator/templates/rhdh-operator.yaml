@@ -283,6 +283,28 @@ data:
       - disabled: false
         package: {{ .Values.rhdhPlugins.signals_backend.package }}
         integrity: {{ .Values.rhdhPlugins.signals_backend.integrity }}
+      - disabled: false
+        package: {{ .Values.rhdhPlugins.notifications_email.package }}
+        integrity: {{ .Values.rhdhPlugins.notifications_email.integrity }}
+        pluginConfig:
+          notifications:
+             processors:
+               email:
+                 transportConfig:
+                   transport: smtp
+                   hostname: my-smtp-server
+                   port: 587
+                   secure: false
+                   username: my-username
+                   password: my-password
+                 sender: sender@mycompany.com
+                 replyTo: no-reply@mycompany.com
+                 broadcastConfig:
+                   receiver: users
+                 concurrencyLimit: 10
+                 cache:
+                   ttl:
+                     days: 1        
 ---
 apiVersion: v1
 kind: ConfigMap
