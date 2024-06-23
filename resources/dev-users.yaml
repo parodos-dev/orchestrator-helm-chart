@@ -1,3 +1,4 @@
+
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
@@ -11,6 +12,15 @@ apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
   name: guest
+spec:
+  profile:
+    displayName: Guest User
+  memberOf: [development]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: dev1
 spec:
   profile:
     displayName: Guest User
