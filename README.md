@@ -203,89 +203,11 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
     > **Note:** that every minute on the clock a job is triggered to reconcile the CRs with the chart values. These cronjobs are deleted when their respective features (e.g. `rhdhOperator.enabled=false`) are removed or when the chart is removed. This is required because the CRs are not managed by helm due to the CRD dependency pre availability to the deployment of the CR.
 
 ### Using Knative kafka broker
-If you want to use a Knative broker for communication between the different componenets (Data Index, Job Service and Workflows), you should use a reliable broker, ie: not in-memory.
+If you want to use a Knative broker for communication between the different componenets (Data Index, Job Service and Workflows), you should use a reliable broker, i.e: not in-memory.
 
 Kafka perfectly fullfil this reliability need.
 
-For that, you will need:
-
-1. A Kafka cluster running, see https://strimzi.io/quickstarts/ for a quickstart setup
-1. To configured and enable kafka broker feature in Knative:
-```console
-oc apply --filename https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.14.5/eventing-kafka-controller.yaml
-oc apply --filename https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.14.5/eventing-kafka-broker.yaml
-oc wait --for condition=ready=true pod -l app=kafka-broker-receiver -n knative-eventing --timeout=60s
-oc get deployments.apps -n knative-eventing kafka-broker-receiver -oyaml | oc adm policy scc-subject-review --filename -
-oc -n knative-eventing adm policy add-scc-to-user nonroot-v2 -z knative-kafka-broker-data-plane
-```
-Make sure the `replication.factor` of your Kafka cluster match the one of the `kafka-broker-config` ConfigMap. With the Strimzi quickstart, this value is `1`:
-```console
-oc patch cm kafka-broker-config -n knative-eventing \
-   --type merge \
-   -p '
-   {
-     "data": {
-       "default.topic.replication.factor": "1"
-     }
-   }'
-```
-3. To create kafka broker:
-```Console
-echo "apiVersion: eventing.knative.dev/v1
-kind: Broker
-metadata:
-  annotations:
-    # case-sensitive
-    eventing.knative.dev/broker.class: Kafka
-  name: kafka-broker
-spec:
-  # Configuration specific to this broker.
-  config:
-    apiVersion: v1
-    kind: ConfigMap
-    name: kafka-broker-config
-    namespace: knative-eventing" | oc apply -f -
-```
-4. To configure the `sonataflowplatforms.sonataflow.org`:
-```console
-oc patch sonataflowplatforms.sonataflow.org sonataflow-platform --type merge \
-   -p '
-{
-  "spec": {
-    "eventing": {
-      "broker": {
-        "ref": {
-          "apiVersion": "eventing.knative.dev/v1",
-          "kind": "Broker",
-          "name": "<BROKER NAME>",
-          "namespace": "<BROKER NAMESPACE>"
-        }
-      }
-    }
-  }
-}
-```
-
-You should have `sinkbinding` and `trigger` created:
-```
-$ oc get sinkbindings.sources.knative.dev 
-NAME                                  SINK                                                                                        READY   REASON
-sonataflow-platform-jobs-service-sb   http://kafka-broker-ingress.knative-eventing.svc.cluster.local/orchestrator/kafka-broker    True    
-
-$ oc get trigger
-NAME                                                              BROKER         SUBSCRIBER_URI                                                                             READY   REASON
-data-index-jobs-2ac1baab-d856-40bc-bcec-c6dd50951419              kafka-broker   http://sonataflow-platform-data-index-service.orchestrator.svc.cluster.local/jobs          True    
-data-index-process-definition-634c6f230b6364cdda8272f98c5d58722   kafka-broker   http://sonataflow-platform-data-index-service.orchestrator.svc.cluster.local/definitions   True    
-data-index-process-error-2ac1baab-d856-40bc-bcec-c6dd50951419     kafka-broker   http://sonataflow-platform-data-index-service.orchestrator.svc.cluster.local/processes     True    
-data-index-process-node-2ac1baab-d856-40bc-bcec-c6dd50951419      kafka-broker   http://sonataflow-platform-data-index-service.orchestrator.svc.cluster.local/processes     True    
-data-index-process-sla-2ac1baab-d856-40bc-bcec-c6dd50951419       kafka-broker   http://sonataflow-platform-data-index-service.orchestrator.svc.cluster.local/processes     True    
-data-index-process-state-2ac1baab-d856-40bc-bcec-c6dd50951419     kafka-broker   http://sonataflow-platform-data-index-service.orchestrator.svc.cluster.local/processes     True    
-data-index-process-variable-6f721bf111e75efc394000bca9884ae22ac   kafka-broker   http://sonataflow-platform-data-index-service.orchestrator.svc.cluster.local/processes     True    
-jobs-service-create-job-2ac1baab-d856-40bc-bcec-c6dd50951419      kafka-broker   http://sonataflow-platform-jobs-service.orchestrator.svc.cluster.local/v2/jobs/events      True    
-jobs-service-delete-job-2ac1baab-d856-40bc-bcec-c6dd50951419      kafka-broker   http://sonataflow-platform-jobs-service.orchestrator.svc.cluster.local/v2/jobs/events      True    
-```
-
-And for each workflows that you will dpeloy, a `sinkbinding` will be created and `triggers` too is events are consulmed by that workflow.
+Follow these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/kafka-knative-broker/README.md) to setup the a kafka broker.
 
 ### Installing from the git repository for chart development
 
