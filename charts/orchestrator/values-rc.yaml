@@ -9,7 +9,7 @@ sonataFlowOperator:
     startingCSV: logic-operator-rhel8.v1.33.0 # The initial version of the operator
 
 rhdhOperator:
-  isReleaseCandidate: true # Indicates RC builds should be used by the chart to install RHDH
+  isReleaseCandidate: false # Indicates RC builds should be used by the chart to install RHDH
   enabled: true # whether the operator should be deployed by the chart
   subscription:
     namespace: rhdh-operator # namespace where the operator should be deployed
