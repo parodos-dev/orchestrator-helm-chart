@@ -230,15 +230,15 @@ data:
               type: config
   {{- end }}
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator_backend.package }}"
-        integrity: {{ .Values.rhdhPlugins.orchestrator_backend.integrity }}
+        package: {{ .Values.rhdhPlugins.orchestrator_backend.package }}
+        integrity: {{ .Values.rhdhPlugins.orchestrator_backend.integrity }}        
         pluginConfig:
           orchestrator:
             dataIndexService:
               url: http://sonataflow-platform-data-index-service.{{- include "get-workflow-namespace" . }}
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator.package }}"
-        integrity: {{ .Values.rhdhPlugins.orchestrator.integrity }}
+        package: {{ .Values.rhdhPlugins.orchestrator.package }}
+        integrity: {{ .Values.rhdhPlugins.orchestrator.integrity }}        
         pluginConfig:
           dynamicPlugins:
             frontend:

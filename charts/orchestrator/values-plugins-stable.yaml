@@ -1,6 +1,5 @@
 rhdhPlugins: # RHDH plugins required for the Orchestrator
   npmRegistry: https://npm.stage.registry.redhat.com
-  scope: "@redhat"
   orchestrator:
     package: "backstage-plugin-orchestrator@1.0.0-rc.2-redhat-48496"
     integrity: sha512-3SAAV0BvBFBqV+6BhGcdNTOv3VWEABf54GXDpI9FMM1lJKsVMtO6s+HC/EgN5ZShtqjacoUhG9sGA/hG1nqQiQ==
