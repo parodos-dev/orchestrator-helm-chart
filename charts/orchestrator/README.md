@@ -46,19 +46,20 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `rhdhOperator.subscription.sourceName` | name of the catalog source | `"redhat-operators"` |
 | `rhdhOperator.subscription.startingCSV` | The initial version of the operator | `""` |
 | `rhdhPlugins.npmRegistry` |  | `""` |
-| `rhdhPlugins.scope` |  | `"@janus-idp"` |
-| `rhdhPlugins.orchestrator.package` |  | `"backstage-plugin-orchestrator@1.13.6"` |
-| `rhdhPlugins.orchestrator.integrity` |  | `"sha512-tFJVIX7az6elntZi1UPr8a8v7ViDqV+0lv2Ltto55GCOQ2+7jb4ja2f4zVdabkSINeHSEN93u2wRqUNo3GkRVg=="` |
-| `rhdhPlugins.orchestrator_backend.package` |  | `"backstage-plugin-orchestrator-backend-dynamic@1.9.6"` |
-| `rhdhPlugins.orchestrator_backend.integrity` |  | `"sha512-KJOcaH3i8kHcHmxhKGAYOQCejTjLliNOyhDDj0nMloPAZ81YWRPwfx+oE9wcibSxwX1x+pwFcdRww9VNA+ZeoQ=="` |
-| `rhdhPlugins.notifications.package` |  | `"https://github.com/mareklibra/gh-pages/raw/main/download/002/plugin-notifications-dynamic-0.2.0-redhat.10001.tgz"` |
-| `rhdhPlugins.notifications.integrity` |  | `"sha512-Rq/Nn3N/y94t4oeQagW+o8YwTUVXt8utSkKGJVAa3AGrnXs6FkMCb5Moy0CoYUom5ld4O2Mw0EHoaAgmm/IvWg=="` |
-| `rhdhPlugins.notifications_backend.package` |  | `"https://github.com/mareklibra/gh-pages/raw/main/download/002/plugin-notifications-backend-dynamic-0.2.0-redhat.10001.tgz"` |
-| `rhdhPlugins.notifications_backend.integrity` |  | `"sha512-MiST7VKvqombWKPdmPpdO1nLc9BCsEJTIwg6wUTbT/uu3YOiQg/0U8JBjY3wihJp/iEb+pwAyDysbq8Uqz11Hg=="` |
-| `rhdhPlugins.signals.package` |  | `"https://github.com/mareklibra/gh-pages/raw/main/download/002/plugin-signals-dynamic-0.0.5-redhat.10001.tgz"` |
-| `rhdhPlugins.signals.integrity` |  | `"sha512-aAYWPyTA113RbgZsGdWScVaQ2M6JZRmA7yMDpFR1QVJFn9FdqD41u37GUNKcSbpOCSZogH0d91d5QNECSX667g=="` |
-| `rhdhPlugins.signals_backend.package` |  | `"https://github.com/mareklibra/gh-pages/raw/main/download/002/plugin-signals-backend-dynamic-0.1.3-redhat.10001.tgz"` |
-| `rhdhPlugins.signals_backend.integrity` |  | `"sha512-fd9OLCFZZV5fVDDihPETxTnhc/AKUAKETnAR15vL0qOcHEpersytVogOTdS07YSiNLcFjMXl+YJi9xVLfxBHWw=="` |
+| `rhdhPlugins.orchestrator.package` |  | `"https://npm.stage.registry.redhat.com/@redhat/backstage-plugin-orchestrator/-/backstage-plugin-orchestrator-1.1.0-rc.0-0.tgz"` |
+| `rhdhPlugins.orchestrator.integrity` |  | `"sha512-uxkNFS/4nkVM6FRq0Uvnznvxcm/3MNdh11R6sRsbmKCP4KF4N9T2GF4lgfD7J+p7EuGMD4UFnjKjaR77v0NGaQ=="` |
+| `rhdhPlugins.orchestrator_backend.package` |  | `"https://npm.stage.registry.redhat.com/@redhat/backstage-plugin-orchestrator-backend-dynamic/-/backstage-plugin-orchestrator-backend-dynamic-1.1.0-rc.0-0.tgz"` |
+| `rhdhPlugins.orchestrator_backend.integrity` |  | `"sha512-NIIGpwH/uJaMknTdORdnqsHfPeI/OrAl2biqELal1e9tK2r6PrVWfIWr9XoH5AfOjtQjbeAe7joiLwhM+uyVAw=="` |
+| `rhdhPlugins.notifications.package` |  | `"https://npm.stage.registry.redhat.com/@redhat/plugin-notifications-dynamic/-/plugin-notifications-dynamic-0.2.0-rc.0-0.tgz"` |
+| `rhdhPlugins.notifications.integrity` |  | `"sha512-wmISWN02G4OiBF7y8Jpl5KCbDfhzl70s+r0h2tdVh1IIwYmojH5pqXFQAhDd3FTlqYc8yqDG8gEAQ8v66qbU1g=="` |
+| `rhdhPlugins.notifications_backend.package` |  | `"https://npm.stage.registry.redhat.com/@redhat/plugin-notifications-backend-dynamic/-/plugin-notifications-backend-dynamic-0.2.0-rc.0-0.tgz"` |
+| `rhdhPlugins.notifications_backend.integrity` |  | `"sha512-CHTNYVGWPxT94viabzCqxKIkDxflium9vkgh9Emu+3SuJSEsrZ6G+U1UZgpQ4gO03oOeiTm3xsoTg/AfKGf7CQ=="` |
+| `rhdhPlugins.signals.package` |  | `"https://npm.stage.registry.redhat.com/@redhat/plugin-signals-dynamic/-/plugin-signals-dynamic-0.0.5-rc.0-0.tgz"` |
+| `rhdhPlugins.signals.integrity` |  | `"sha512-5Iwp9gF6VPiMLJ5NUw5s5Z17AuJ5XYS97wghNTfcmah/OFxTmgZHWxvhcRoXDRQvyj4nc/gOZes74kp6kZ9XDg=="` |
+| `rhdhPlugins.signals_backend.package` |  | `"https://npm.stage.registry.redhat.com/@redhat/plugin-signals-backend-dynamic/-/plugin-signals-backend-dynamic-0.1.3-rc.0-0.tgz"` |
+| `rhdhPlugins.signals_backend.integrity` |  | `"sha512-LlkM2Mf2QTndsS6eBzyXDhJmRTHLpAku3hhlvWhtQChSLTFCtNGRTIQA5WHG7NqLH0QqBz+UcEjX7Vca82QKKg=="` |
+| `rhdhPlugins.notifications_email.package` |  | `"https://npm.stage.registry.redhat.com/@redhat/plugin-notifications-backend-module-email-dynamic/-/plugin-notifications-backend-module-email-dynamic-0.0.0-rc.0-0.tgz"` |
+| `rhdhPlugins.notifications_email.integrity` |  | `"sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA=="` |
 | `postgres.serviceName` | The name of the Postgres DB service to be used by platform services. Cannot be empty. | `"sonataflow-psql-postgresql"` |
 | `postgres.serviceNamespace` | The namespace of the Postgres DB service to be used by platform services. | `"sonataflow-infra"` |
 | `postgres.authSecret.name` | name of existing secret to use for PostgreSQL credentials. | `"sonataflow-psql-postgresql"` |
