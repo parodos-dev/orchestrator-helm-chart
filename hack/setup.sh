@@ -69,9 +69,7 @@ function generateK8sToken {
 
   oc adm policy add-cluster-role-to-user cluster-admin -z $sa_name -n $sa_namespace
   echo "Added cluster-admin role to '$sa_name' in '$sa_namespace'."
-  token_secret=$(oc get secret -o name -n $sa_namespace | grep ${sa_name}-token)
-  token=$(oc get -n $sa_namespace ${token_secret} -o jsonpath="{.data.token}" | sed 's/"//g' | base64 -d)
-  K8S_CLUSTER_TOKEN=$token
+  K8S_CLUSTER_TOKEN=$(oc create token ${sa_name} -n $sa_namespace)
 }
 
 function captureGitToken {
