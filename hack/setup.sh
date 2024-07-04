@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 
+
+function captureSetupNewRHDHDeployment {
+  if $use_default; then
+    NEW_ENVIRONMENT=true
+  else
+    echo "Setup for a new RHDH deployment?:"
+    select yn in "Yes" "No"; do
+        case $yn in
+            Yes ) NEW_ENVIRONMENT=true; break;;
+            No ) NEW_ENVIRONMENT=false; break;;
+        esac
+    done
+  fi
+}
+
 function captureWorkflowNamespace {
   default="sonataflow-infra"
   if [ "$use_default" == true ]; then
@@ -54,9 +69,7 @@ function generateK8sToken {
 
   oc adm policy add-cluster-role-to-user cluster-admin -z $sa_name -n $sa_namespace
   echo "Added cluster-admin role to '$sa_name' in '$sa_namespace'."
-  token_secret=$(oc get secret -o name -n $sa_namespace | grep ${sa_name}-token)
-  token=$(oc get -n $sa_namespace ${token_secret} -o jsonpath="{.data.token}" | sed 's/"//g' | base64 -d)
-  K8S_CLUSTER_TOKEN=$token
+  K8S_CLUSTER_TOKEN=$(oc create token ${sa_name} -n $sa_namespace)
 }
 
 function captureGitToken {
@@ -106,10 +119,10 @@ function captureArgoCDNamespace {
 }
 
 function captureArgoCDURL {
-  argocd_instances=$(oc get argocd -n "$argocd_namespace" -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+  argocd_instances=$(oc get argocd -n "$ARGOCD_NAMESPACE" -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
 
   if [ -z "$argocd_instances" ]; then
-      echo "No ArgoCD instances found in namespace $argocd_namespace. Continuing without ArgoCD support"
+      echo "No ArgoCD instances found in namespace $ARGOCD_NAMESPACE. Continuing without ArgoCD support"
   else
     if [ "$use_default" == true ]; then
           selected_instance=$(echo "$argocd_instances" | awk 'NR==1')
@@ -125,7 +138,7 @@ function captureArgoCDURL {
           fi
       done
     fi
-    argocd_route=$(oc get route -n $argocd_namespace -l app.kubernetes.io/managed-by=$selected_instance -ojsonpath='{.items[0].status.ingress[0].host}')
+    argocd_route=$(oc get route -n $ARGOCD_NAMESPACE -l app.kubernetes.io/managed-by=$selected_instance -ojsonpath='{.items[0].status.ingress[0].host}')
     echo "Found Route at $argocd_route"
     ARGOCD_URL=https://$argocd_route
   fi
@@ -134,7 +147,7 @@ function captureArgoCDURL {
 
 function captureArgoCDCreds {
   if [ -n "$selected_instance" ]; then
-    admin_password=$(oc get secret -n $argocd_namespace ${selected_instance}-cluster -ojsonpath='{.data.admin\.password}' | base64 -d)
+    admin_password=$(oc get secret -n $ARGOCD_NAMESPACE ${selected_instance}-cluster -ojsonpath='{.data.admin\.password}' | base64 -d)
     ARGOCD_USERNAME=admin
     ARGOCD_PASSWORD=$admin_password
   fi
@@ -207,6 +220,9 @@ display_usage() {
     exit 1
 }
 
+# Initialize variable
+use_default=false
+
 # Parse command-line arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -227,25 +243,28 @@ done
 function main {
 
   # Check if using default values or not
-  if [ "$use_default" == "true" ]; then
+  if $use_default; then
       echo "Using default values."
   else
       echo "Not using default values."
   fi
 
   checkPrerequisite
-  generateBackendSecret
+  captureSetupNewRHDHDeployment
   captureWorkflowNamespace
-  captureK8sURL
-  generateK8sToken
-  captureGitToken
-  captureGitClientId
-  captureGitClientSecret
   captureArgoCDNamespace
   captureArgoCDURL
   captureArgoCDCreds
-  createBackstageSecret
   labelNamespaces
+  if $NEW_ENVIRONMENT; then
+    generateBackendSecret
+    captureK8sURL
+    generateK8sToken
+    captureGitToken
+    captureGitClientId
+    captureGitClientSecret
+    createBackstageSecret
+  fi
   echo "Setup completed successfully!"
 }
 
