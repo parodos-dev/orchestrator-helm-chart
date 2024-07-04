@@ -292,13 +292,13 @@ data:
                email:
                  transportConfig:
                    transport: smtp
-                   hostname: my-smtp-server
-                   port: 587
+                   hostname: {{ .Values.rhdhPlugins.notifications_email.hostname }}
+                   port: {{ .Values.rhdhPlugins.notifications_email.port }}
                    secure: false
-                   username: my-username
-                   password: my-password
-                 sender: sender@mycompany.com
-                 replyTo: no-reply@mycompany.com
+                   username: {{ .Values.rhdhPlugins.notifications_email.username }}
+                   password: {{ .Values.rhdhPlugins.notifications_email.password }}
+                 sender: {{ .Values.rhdhPlugins.notifications_email.sender }}
+                 replyTo: {{ .Values.rhdhPlugins.notifications_email.reply_to }}
                  broadcastConfig:
                    receiver: users
                  concurrencyLimit: 10

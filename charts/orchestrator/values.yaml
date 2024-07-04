@@ -69,6 +69,12 @@ rhdhPlugins: # RHDH plugins required for the Orchestrator
   notifications_email:
     package: "plugin-notifications-backend-module-email-dynamic@0.0.0-rc.0-0"
     integrity: sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA==
+    hostname: my-smtp-server # SMTP server hostname
+    port: 587 # SMTP server port
+    username: my-username # SMTP username
+    password: my-password # SMTP password
+    sender: sender@mycompany.com # the email sender address
+    reply_to: no-reply@mycompany.com # reply-to address
 
 postgres:
   serviceName: "sonataflow-psql-postgresql" # The name of the Postgres DB service to be used by platform services. Cannot be empty.

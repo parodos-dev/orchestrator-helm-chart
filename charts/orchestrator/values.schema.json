@@ -681,13 +681,13 @@
                             "default": "",
                             "title": "The integrity Schema",
                             "examples": [
-                                "sha512-2Eqi1SWIy1vIWcR0hjSCfRP2w9z+qFdpKsB3dmbssv4Pg98AFj41LYlrTLscHri7am6cd4xe1fEb7gJGqbNQiQ=="
+                                "sha512-CHTNYVGWPxT94viabzCqxKIkDxflium9vkgh9Emu+3SuJSEsrZ6G+U1UZgpQ4gO03oOeiTm3xsoTg/AfKGf7CQ=="
                             ]
                         }
                     },
                     "examples": [{
                         "package": "plugin-notifications-backend-dynamic@0.2.0-rc.0-0",
-                        "integrity": "sha512-2Eqi1SWIy1vIWcR0hjSCfRP2w9z+qFdpKsB3dmbssv4Pg98AFj41LYlrTLscHri7am6cd4xe1fEb7gJGqbNQiQ=="
+                        "integrity": "sha512-CHTNYVGWPxT94viabzCqxKIkDxflium9vkgh9Emu+3SuJSEsrZ6G+U1UZgpQ4gO03oOeiTm3xsoTg/AfKGf7CQ=="
                     }]
                 },
                 "signals": {
@@ -758,7 +758,13 @@
                     "title": "The notifications_email Schema",
                     "required": [
                         "package",
-                        "integrity"
+                        "integrity",
+                        "hostname",
+                        "port",
+                        "username",
+                        "password",
+                        "sender",
+                        "reply_to"
                     ],
                     "properties": {
                         "package": {
@@ -776,11 +782,65 @@
                             "examples": [
                                 "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA=="
                             ]
+                        },
+                        "hostname": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The hostname Schema",
+                            "examples": [
+                                "my-smtp-server"
+                            ]
+                        },
+                        "port": {
+                            "type": "integer",
+                            "default": 0,
+                            "title": "The port Schema",
+                            "examples": [
+                                587
+                            ]
+                        },
+                        "username": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The username Schema",
+                            "examples": [
+                                "my-username"
+                            ]
+                        },
+                        "password": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The password Schema",
+                            "examples": [
+                                "my-password"
+                            ]
+                        },
+                        "sender": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The sender Schema",
+                            "examples": [
+                                "sender@mycompany.com"
+                            ]
+                        },
+                        "reply_to": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The reply_to Schema",
+                            "examples": [
+                                "no-reply@mycompany.com"
+                            ]
                         }
                     },
                     "examples": [{
                         "package": "plugin-notifications-backend-module-email-dynamic@0.0.0-rc.0-0",
-                        "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA=="
+                        "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA==",
+                        "hostname": "my-smtp-server",
+                        "port": 587,
+                        "username": "my-username",
+                        "password": "my-password",
+                        "sender": "sender@mycompany.com",
+                        "reply_to": "no-reply@mycompany.com"
                     }]
                 }
             },
@@ -801,7 +861,7 @@
                 },
                 "notifications_backend": {
                     "package": "plugin-notifications-backend-dynamic@0.2.0-rc.0-0",
-                    "integrity": "sha512-2Eqi1SWIy1vIWcR0hjSCfRP2w9z+qFdpKsB3dmbssv4Pg98AFj41LYlrTLscHri7am6cd4xe1fEb7gJGqbNQiQ=="
+                    "integrity": "sha512-CHTNYVGWPxT94viabzCqxKIkDxflium9vkgh9Emu+3SuJSEsrZ6G+U1UZgpQ4gO03oOeiTm3xsoTg/AfKGf7CQ=="
                 },
                 "signals": {
                     "package": "plugin-signals-dynamic@0.0.5-rc.0-0",
@@ -813,7 +873,13 @@
                 },
                 "notifications_email": {
                     "package": "plugin-notifications-backend-module-email-dynamic@0.0.0-rc.0-0",
-                    "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA=="
+                    "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA==",
+                    "hostname": "my-smtp-server",
+                    "port": 587,
+                    "username": "my-username",
+                    "password": "my-password",
+                    "sender": "sender@mycompany.com",
+                    "reply_to": "no-reply@mycompany.com"
                 }
             }]
         },
@@ -1170,7 +1236,7 @@
             },
             "notifications_backend": {
                 "package": "plugin-notifications-backend-dynamic@0.2.0-rc.0-0",
-                "integrity": "sha512-2Eqi1SWIy1vIWcR0hjSCfRP2w9z+qFdpKsB3dmbssv4Pg98AFj41LYlrTLscHri7am6cd4xe1fEb7gJGqbNQiQ=="
+                "integrity": "sha512-CHTNYVGWPxT94viabzCqxKIkDxflium9vkgh9Emu+3SuJSEsrZ6G+U1UZgpQ4gO03oOeiTm3xsoTg/AfKGf7CQ=="
             },
             "signals": {
                 "package": "plugin-signals-dynamic@0.0.5-rc.0-0",
@@ -1182,7 +1248,13 @@
             },
             "notifications_email": {
                 "package": "plugin-notifications-backend-module-email-dynamic@0.0.0-rc.0-0",
-                "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA=="
+                "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA==",
+                "hostname": "my-smtp-server",
+                "port": 587,
+                "username": "my-username",
+                "password": "my-password",
+                "sender": "sender@mycompany.com",
+                "reply_to": "no-reply@mycompany.com"
             }
         },
         "postgres": {

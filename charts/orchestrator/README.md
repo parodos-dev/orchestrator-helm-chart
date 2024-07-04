@@ -61,6 +61,12 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `rhdhPlugins.signals_backend.integrity` |  | `"sha512-LlkM2Mf2QTndsS6eBzyXDhJmRTHLpAku3hhlvWhtQChSLTFCtNGRTIQA5WHG7NqLH0QqBz+UcEjX7Vca82QKKg=="` |
 | `rhdhPlugins.notifications_email.package` |  | `"plugin-notifications-backend-module-email-dynamic@0.0.0-rc.0-0"` |
 | `rhdhPlugins.notifications_email.integrity` |  | `"sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA=="` |
+| `rhdhPlugins.notifications_email.hostname` | SMTP server hostname | `"my-smtp-server"` |
+| `rhdhPlugins.notifications_email.port` | SMTP server port | `587` |
+| `rhdhPlugins.notifications_email.username` | SMTP username | `"my-username"` |
+| `rhdhPlugins.notifications_email.password` | SMTP password | `"my-password"` |
+| `rhdhPlugins.notifications_email.sender` | the email sender address | `"sender@mycompany.com"` |
+| `rhdhPlugins.notifications_email.reply_to` | reply-to address | `"no-reply@mycompany.com"` |
 | `postgres.serviceName` | The name of the Postgres DB service to be used by platform services. Cannot be empty. | `"sonataflow-psql-postgresql"` |
 | `postgres.serviceNamespace` | The namespace of the Postgres DB service to be used by platform services. | `"sonataflow-infra"` |
 | `postgres.authSecret.name` | name of existing secret to use for PostgreSQL credentials. | `"sonataflow-psql-postgresql"` |
