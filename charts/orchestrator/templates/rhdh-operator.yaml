@@ -231,14 +231,14 @@ data:
   {{- end }}
       - disabled: false
         package: {{ .Values.rhdhPlugins.orchestrator_backend.package }}
-        integrity: {{ .Values.rhdhPlugins.orchestrator_backend.integrity }}        
+        integrity: {{ .Values.rhdhPlugins.orchestrator_backend.integrity }}
         pluginConfig:
           orchestrator:
             dataIndexService:
               url: http://sonataflow-platform-data-index-service.{{- include "get-workflow-namespace" . }}
       - disabled: false
         package: {{ .Values.rhdhPlugins.orchestrator.package }}
-        integrity: {{ .Values.rhdhPlugins.orchestrator.integrity }}        
+        integrity: {{ .Values.rhdhPlugins.orchestrator.integrity }}
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -357,7 +357,7 @@ data:
             ]
       locations:
         - type: url
-          target: https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/resources/users.yaml
+          target: https://github.com/parodos-dev/orchestrator-helm-chart/blob/staging-rc/resources/users.yaml
         - type: url
           target: https://github.com/parodos-dev/workflow-software-templates/blob/main/entities/workflow-resources.yaml
         - type: url
