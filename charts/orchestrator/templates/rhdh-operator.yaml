@@ -230,14 +230,14 @@ data:
               type: config
   {{- end }}
       - disabled: false
-        package: {{ .Values.rhdhPlugins.orchestrator_backend.package }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator_backend.package }}"
         integrity: {{ .Values.rhdhPlugins.orchestrator_backend.integrity }}
         pluginConfig:
           orchestrator:
             dataIndexService:
               url: http://sonataflow-platform-data-index-service.{{- include "get-workflow-namespace" . }}
       - disabled: false
-        package: {{ .Values.rhdhPlugins.orchestrator.package }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator.package }}"
         integrity: {{ .Values.rhdhPlugins.orchestrator.integrity }}
         pluginConfig:
           dynamicPlugins:
@@ -255,7 +255,7 @@ data:
                     module: OrchestratorPlugin
                     path: /orchestrator
       - disabled: false
-        package: {{ .Values.rhdhPlugins.notifications.package }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications.package }}"
         integrity: {{ .Values.rhdhPlugins.notifications.integrity }}
         pluginConfig:
           dynamicPlugins:
@@ -271,20 +271,20 @@ data:
                       importName: NotificationsSidebarItem
                     path: /notifications
       - disabled: false
-        package: {{ .Values.rhdhPlugins.signals.package }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.signals.package }}"
         integrity: {{ .Values.rhdhPlugins.signals.integrity }}
         pluginConfig:
           dynamicPlugins:
             frontend:
               redhat.plugin-signals: {}
       - disabled: false
-        package: {{ .Values.rhdhPlugins.notifications_backend.package }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications_backend.package }}"
         integrity: {{ .Values.rhdhPlugins.notifications_backend.integrity }}
       - disabled: false
-        package: {{ .Values.rhdhPlugins.signals_backend.package }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.signals_backend.package }}"
         integrity: {{ .Values.rhdhPlugins.signals_backend.integrity }}
       - disabled: false
-        package: {{ .Values.rhdhPlugins.notifications_email.package }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications_email.package }}"
         integrity: {{ .Values.rhdhPlugins.notifications_email.integrity }}
         pluginConfig:
           notifications:
