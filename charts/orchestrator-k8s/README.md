@@ -15,7 +15,7 @@ The chart deploys:
 ```console
 helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
 
-helm install orchestrator orchestrator-k8s
+helm install orchestrator orchestrator/orchestrator-k8s
 ```
 
 
