@@ -1012,6 +1012,16 @@
                                     "cpu": "500m"
                                 }
                             }]
+                        },
+                        "dataIndexImage": {
+                            "type": "string",
+                            "default":"brew.registry.redhat.io/rh-osbs/openshift-serverless-1-logic-data-index-postgresql-rhel8@sha256:e5c4bad2b467958839475cc9086cb48b0f11286d843d85d230b9efb1a56673d5" ,
+                            "title": "The Data Index container image"
+                        },
+                        "jobServiceImage": {
+                            "type": "string",
+                            "default":"brew.registry.redhat.io/rh-osbs/openshift-serverless-1-logic-jobs-service-postgresql-rhel8@sha256:f69d466f0984ed620d68adb9c4b09a1e8a3a0f40412ca624ec6b41fd333b0f8a",
+                            "title": "The Job Service container image"
                         }
                     },
                     "examples": [{
