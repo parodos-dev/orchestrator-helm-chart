@@ -24,8 +24,12 @@ helm install orchestrator orchestrator/orchestrator-k8s
 git clone https://github.com/parodos-dev.github.io/orchestrator-helm-chart
 cd orchestrator-helm-chart/charts/orchestrator-k8s
 
+helm repo add postgresql-persistent https://sclorg.github.io/helm-charts
+helm repo add backstage https://janus-idp.github.io/helm-backstage
+helm repo add workflows https://parodos.dev/serverless-workflows-config
+
 helm dependencies build
-helm install orchestrator . -f values.yaml 
+helm install orchestrator . -f values.yaml
 ```
 
 
