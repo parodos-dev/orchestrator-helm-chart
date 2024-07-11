@@ -1,7 +1,8 @@
 # Orchestrator-k8s helm chart 
 
 This chart will install the Orchestrator and all its dependencies on kubernetes. 
-It is well suited for dev/QE/test or resource-constrained environments.
+
+**THIS CHART IS NOT SUITED FOR PRODUCTION PURPOSES**, you should only use it for development or tests purposes
 
 The chart deploys:
 - Janus-IDP
