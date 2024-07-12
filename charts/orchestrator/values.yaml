@@ -39,7 +39,7 @@ rhdhOperator:
     source: redhat-operators # name of the catalog that advertises the operator
 
 rhdhPlugins: # RHDH plugins required for the Orchestrator
-  npmRegistry: ""
+  npmRegistry: "" # NPM registry is defined already in the container, but sometimes the registry need to be modified to use different versions of the plugin, for example: staging(https://npm.stage.registry.redhat.com) or development repositories
   scope: "@janus-idp"
   orchestrator:
     package: "backstage-plugin-orchestrator@1.10.6"
