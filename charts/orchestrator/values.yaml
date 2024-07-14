@@ -25,9 +25,10 @@ rhdhOperator:
     clusterUrl: "" # API url of the kubernetes cluster
   subscription:
     namespace: rhdh-operator # namespace where the operator should be deployed
-    channel: fast # channel of an operator package to subscribe to
+    channel: fast-1.1 # channel of an operator package to subscribe to
     installPlanApproval: Automatic # whether the update should be installed automatically
     name: rhdh # name of the operator package
+    startingCSV: rhdh-operator.v1.1.2 # the starting version for the RHDH operator
 
 rhdhPlugins: # RHDH plugins required for the Orchestrator
   npmRegistry: https://npm.registry.redhat.com
