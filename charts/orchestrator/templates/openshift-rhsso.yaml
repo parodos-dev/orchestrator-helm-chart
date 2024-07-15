@@ -1,0 +1,158 @@
+{{- if .Values.rhsso.enabled }}
+{{- $appLabel := printf "orchestrator-sso-%s" .Values.rhsso.realm.name }}
+{{- $namespace := .Values.rhsso.realm.namespace }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.rhsso.namespace }}
+  meta.helm.sh/release-namespace: default
+spec:
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: sso-operator-group
+  namespace: {{ .Values.rhsso.namespace }}
+spec:
+  targetNamespaces:
+  - {{ .Values.rhsso.namespace }}
+  upgradeStrategy: Default
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: rhsso-operator
+  namespace: {{ .Values.rhsso.namespace }}
+spec:
+  channel: stable
+  installPlanApproval: Automatic
+  name: rhsso-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: {{ .Values.rhsso.startingCSV }}
+---
+apiVersion: keycloak.org/v1alpha1
+kind: Keycloak
+metadata:
+  name: {{ .Values.rhsso.realm.name }}
+  namespace: {{ .Values.rhsso.namespace }}
+  labels:
+   app: {{ $appLabel }}
+spec:
+  keycloakDeploymentSpec:
+    experimental:
+      env:
+      - name: KEYCLOAK_LOGLEVEL
+        value: {{ .Values.rhsso.log_level }}
+      - name: KC_LOG_LEVEL
+        value: {{ .Values.rhsso.log_level }}
+  instances: {{ .Values.rhsso.instances }}
+  externalAccess:
+    enabled: True
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakRealm
+metadata:
+  name: {{ .Values.rhsso.realm.name }}
+  namespace: {{ .Values.rhsso.namespace }}
+  labels:
+    app: {{ $appLabel }}
+spec:
+  realm:
+    id: {{ .Values.rhsso.realm.name }}
+    realm: {{ .Values.rhsso.realm.name }}
+    enabled: True
+    displayName: "Backstage realm"
+    roles:
+      realm:
+      - clientRole: false
+        composite: true
+        composites:
+          client:
+            realm-management:
+            - query-users
+            - query-clients
+            - view-users
+            - query-groups
+        containerId: backstage
+        description: Access from backstage
+        name: priv-client
+  instanceSelector:
+    matchLabels:
+      app: {{ $appLabel }}
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  labels:
+    app: {{ $appLabel }}
+  name: {{ .Values.rhsso.realm.name }}
+  namespace: {{ .Values.rhsso.namespace }}
+spec:
+  client:
+    enabled: true
+    clientAuthenticatorType: client-secret
+    clientId: {{ .Values.rhsso.client.username }}
+    name: {{ .Values.rhsso.client.username }}
+    serviceAccountsEnabled: true
+    redirectUris:
+      - "*"
+    clientId: {{ .Values.rhsso.client.username }}
+    secret: {{ .Values.rhsso.client.password }}
+    defaultClientScopes:
+    - web-origins
+    - profile
+    - email
+    - roles
+    - address
+    - phone
+    - offline_access
+    implicitFlowEnabled: true
+    publicClient: false
+    standardFlowEnabled: true
+    fullScopeAllowed: true
+    directAccessGrantsEnabled: true
+    consentRequired: false
+    protocolMappers:
+    - config:
+        access.token.claim: "true"
+        claim.name: sub
+        id.token.claim: "true"
+        jsonType.label: String
+        user.attribute: username
+        userinfo.token.claim: "true"
+      name: backstage-uid
+      protocol: openid-connect
+      protocolMapper: oidc-usermodel-property-mapper
+  serviceAccountRealmRoles:
+  - priv-client
+  realmSelector:
+    matchLabels:
+      app: {{ $appLabel }}
+
+{{- range .Values.rhsso.users }}
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakUser
+metadata:
+  name: {{ .name }}
+  namespace: {{ $.Values.rhsso.namespace }}
+spec:
+  realmSelector:
+    matchLabels:
+      app: {{ $appLabel }}
+  user:
+    email: {{ .email }}
+    emailVerified: true
+    enabled: true
+    firstName: {{ .name }}
+    username: {{ .name }}
+    realmRoles:
+      - offline_access
+    credentials:
+      - value: {{ .password }}
+        temporary: false
+        type: password
+{{- end }}
+{{- end }}

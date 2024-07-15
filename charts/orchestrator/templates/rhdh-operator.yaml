@@ -1,4 +1,5 @@
 {{- define "backstage-manifest" }}
+
 ---
 apiVersion: rhdh.redhat.com/v1alpha1
 kind: Backstage
@@ -35,6 +36,15 @@ spec:
   {{- if not (dig "data" .Values.rhdhOperator.secretRef.backstage.backendSecret "" $secret) }}
     {{ fail (printf "Backend secret key %s not found in secret '%s' for Backstage. Please ensure that the value key 'rhdhOperator.secretRef.backstage.backendSecret' matches the key in the secret: %s" .Values.rhdhOperator.secretRef.backstage.backendSecret .Values.rhdhOperator.secretRef.name ($secret|toPrettyJson) )}}
   {{- end }}
+
+{{- $GH_INTEGRATION_ENABLED := and .Values.rhdhOperator.secretRef.github.token (dig "data" .Values.rhdhOperator.secretRef.github.token "" $secret) }}
+{{- $GH_AUTH_ENABLED := and 
+      (and .Values.rhdhOperator.secretRef.github.clientId (dig "data" .Values.rhdhOperator.secretRef.github.clientId "" $secret))
+      (and .Values.rhdhOperator.secretRef.github.clientSecret (dig "data" .Values.rhdhOperator.secretRef.github.clientSecret "" $secret))
+}}
+
+{{- $OIDC_BASE_URL := default (printf "https://keycloak-%s.%s/auth" $.Values.rhsso.namespace (include "cluster.domain" .)) $.Values.rhsso.baseURL }}
+{{- $OIDC_METADATA_URL := default (printf "%s/realms/%s/.well-known/openid-configuration " $OIDC_BASE_URL .Values.rhsso.realm.name) $.Values.rhsso.baseURL }}
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
@@ -304,7 +314,12 @@ data:
                  concurrencyLimit: 10
                  cache:
                    ttl:
-                     days: 1        
+                     days: 1
+      {{- if .Values.rhsso.enabled }}
+      - package: ./dynamic-plugins/dist/janus-idp-backstage-plugin-keycloak-backend-dynamic
+        disabled: false
+        pluginConfig: {}
+      {{ end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -313,7 +328,7 @@ metadata:
   namespace: {{ .Values.rhdhOperator.subscription.namespace }}
 data:
   app-config-auth.gh.yaml: |
-  {{- if and .Values.rhdhOperator.secretRef.github.token (dig "data" .Values.rhdhOperator.secretRef.github.token "" $secret) }}
+  {{- if $GH_INTEGRATION_ENABLED }}
     integrations:
       github:
         - host: github.com
@@ -322,8 +337,7 @@ data:
       environment: development
   {{- end }}
       providers:
-  {{- if and (and .Values.rhdhOperator.secretRef.github.clientId (dig "data" .Values.rhdhOperator.secretRef.github.clientId "" $secret) )
-             (and .Values.rhdhOperator.secretRef.github.clientSecret  (dig "data" .Values.rhdhOperator.secretRef.github.clientSecret "" $secret  ) ) }}
+  {{- if $GH_AUTH_ENABLED }}
         github:
           development:
             clientId: {{ printf "${%s}" .Values.rhdhOperator.secretRef.github.clientId }}
@@ -333,6 +347,37 @@ data:
         guest:
           dangerouslyAllowOutsideDevelopment: true
   {{- end }}
+  {{- if .Values.rhsso.enabled }}
+  app-config-auth.oidc.yaml: |
+    signInPage: oidc
+    auth:
+      session:
+        secret: {{ randAlphaNum 32 }}
+      providers:
+        oidc:
+          development:
+            metadataUrl: {{ $OIDC_METADATA_URL }}
+            clientId: {{ $.Values.rhsso.client.username }}
+            clientSecret: {{ $.Values.rhsso.client.password }}
+            prompt: auto
+            signIn:
+              resolvers:
+                - resolver: preferredUsernameMatchingUserEntityName
+    catalog:
+      providers:
+        keycloakOrg:
+          default:
+            baseUrl: {{ $OIDC_BASE_URL }}
+            loginRealm: {{ $.Values.rhsso.realm.name }}
+            realm: {{ $.Values.rhsso.realm.name }}
+            clientId: {{ $.Values.rhsso.client.username }}
+            clientSecret: {{ $.Values.rhsso.client.password }}
+            schedule:
+              frequency: { minutes: 1 }
+              timeout: { minutes: 1 }
+              initialDelay: { seconds: 15 }
+  {{- end }}
+
 ---
 kind: ConfigMap
 apiVersion: v1
