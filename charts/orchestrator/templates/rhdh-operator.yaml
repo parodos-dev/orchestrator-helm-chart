@@ -25,6 +25,7 @@ spec:
   name: {{ .Values.rhdhOperator.subscription.name }}
   source: redhat-operators
   sourceNamespace: openshift-marketplace
+  startingCSV: {{ .Values.rhdhOperator.subscription.startingCSV }}
 ---
 apiVersion: v1
 kind: Secret

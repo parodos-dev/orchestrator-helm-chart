@@ -29,19 +29,20 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `rhdhOperator.k8s.clusterToken` | Kubernetes API bearer token used for authentication. | `""` |
 | `rhdhOperator.k8s.clusterUrl` | API url of the kubernetes cluster | `""` |
 | `rhdhOperator.subscription.namespace` | namespace where the operator should be deployed | `"rhdh-operator"` |
-| `rhdhOperator.subscription.channel` | channel of an operator package to subscribe to | `"fast"` |
+| `rhdhOperator.subscription.channel` | channel of an operator package to subscribe to | `"fast-1.1"` |
 | `rhdhOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
 | `rhdhOperator.subscription.name` | name of the operator package | `"rhdh"` |
-| `rhdhPlugins.npmRegistry` |  | `""` |
-| `rhdhPlugins.scope` |  | `"@janus-idp"` |
-| `rhdhPlugins.orchestrator.package` |  | `"backstage-plugin-orchestrator@1.8.7"` |
-| `rhdhPlugins.orchestrator.integrity` |  | `"sha512-cCfXX9y0Fy+l6PfXoZ5ll2vl5buR2GD74TI4XA0uOpH+p2COj7KQg8e8gWqPBMoyvgD6JZiGEUnd/rq6Pn0XMQ=="` |
-| `rhdhPlugins.orchestrator_backend.package` |  | `"backstage-plugin-orchestrator-backend-dynamic@1.6.4"` |
-| `rhdhPlugins.orchestrator_backend.integrity` |  | `"sha512-AbTX5YGJGcpWhlPsLmsysn0TAZLEbSW2lmKu1OuhvP4iI2KQBkF6naN/0iJopEH2s0Itd+k48VN+Q7NeAPu2JA=="` |
-| `rhdhPlugins.notifications.package` |  | `"plugin-notifications@1.1.16"` |
-| `rhdhPlugins.notifications.integrity` |  | `"sha512-pmAInZ3231PGkHxpPzOIFCdftTVlk4+w5/vi5hfixPQRKNf68hm9WudsgK6Q/Rv436DHt8ZWJyAP3QWhxZR2Zw=="` |
-| `rhdhPlugins.notifications_backend.package` |  | `"plugin-notifications-backend-dynamic@1.4.3"` |
-| `rhdhPlugins.notifications_backend.integrity` |  | `"sha512-FVMmIHjAoRg+kzpEhkEjtCKgRanWHwaI9I2Jqj9/gObnF2WBIllzAPiGNxj6tkMFloLflSJc6kc9ZphttAGGcQ=="` |
+| `rhdhOperator.subscription.startingCSV` | the starting version for the RHDH operator | `"rhdh-operator.v1.1.2"` |
+| `rhdhPlugins.npmRegistry` |  | `"https://npm.registry.redhat.com"` |
+| `rhdhPlugins.scope` |  | `"@redhat"` |
+| `rhdhPlugins.orchestrator.package` |  | `"backstage-plugin-orchestrator@1.0.0"` |
+| `rhdhPlugins.orchestrator.integrity` |  | `"sha512-CuYYR7v2O8EVoI1FA7usidzUPp1N5OOKDkIvhDRPf4I7BxgDCWLqW7rBQ4Z7qBXfpeYJrQOxInc0E2xWEat8JA=="` |
+| `rhdhPlugins.orchestrator_backend.package` |  | `"backstage-plugin-orchestrator-backend-dynamic@1.0.0"` |
+| `rhdhPlugins.orchestrator_backend.integrity` |  | `"sha512-l0g3T/a1NxX9JogTesZAdUzpNhHQaPxRwki15HWny9GlXCELAx+ta0UC3afsHy6Jp2wOn1prlW0ZuXuc7Ncb0g=="` |
+| `rhdhPlugins.notifications.package` |  | `"plugin-notifications@1.0.0"` |
+| `rhdhPlugins.notifications.integrity` |  | `"sha512-t+cnwKOfqJJqbgZIMjJ1Hzr1mqHft619QoK5bF7c8TuQGUjQR0NtaIFWUNhR1JFlE4oQz0NDaAgBnDwtjMk9qA=="` |
+| `rhdhPlugins.notifications_backend.package` |  | `"plugin-notifications-backend-dynamic@1.0.0"` |
+| `rhdhPlugins.notifications_backend.integrity` |  | `"sha512-o4GFXmQu6uUXbCDukXHahZ37sfQQYM92pL3LhkXO5aYKudITKzlv6lEZnb9zO9Rnr3U0LD7ytFzks51EfXssXw=="` |
 | `postgres.serviceName` | The name of the Postgres DB service to be used by platform services. Cannot be empty. | `"sonataflow-psql-postgresql"` |
 | `postgres.serviceNamespace` | The namespace of the Postgres DB service to be used by platform services. | `"sonataflow-infra"` |
 | `postgres.authSecret.name` | name of existing secret to use for PostgreSQL credentials. | `"sonataflow-psql-postgresql"` |

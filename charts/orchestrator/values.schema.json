@@ -272,7 +272,8 @@
                         "namespace",
                         "channel",
                         "installPlanApproval",
-                        "name"
+                        "name",
+                        "startingCSV"
                     ],
                     "properties": {
                         "namespace": {
@@ -288,7 +289,7 @@
                             "default": "",
                             "title": "The channel Schema",
                             "examples": [
-                                "fast"
+                                "fast-1.1"
                             ]
                         },
                         "installPlanApproval": {
@@ -306,13 +307,22 @@
                             "examples": [
                                 "rhdh"
                             ]
+                        },
+                        "startingCSV": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The startingCSV Schema",
+                            "examples": [
+                                "rhdh-operator.v1.1.2"
+                            ]
                         }
                     },
                     "examples": [{
                         "namespace": "rhdh-operator",
-                        "channel": "fast",
+                        "channel": "fast-1.1",
                         "installPlanApproval": "Automatic",
-                        "name": "rhdh"
+                        "name": "rhdh",
+                        "startingCSV": "rhdh-operator.v1.1.2"
                     }]
                 }
             },
@@ -329,9 +339,10 @@
                 },
                 "subscription": {
                     "namespace": "rhdh-operator",
-                    "channel": "fast",
+                    "channel": "fast-1.1",
                     "installPlanApproval": "Automatic",
-                    "name": "rhdh"
+                    "name": "rhdh",
+                    "startingCSV": "rhdh-operator.v1.1.2"
                 }
             }]
         },
@@ -353,7 +364,7 @@
                     "default": "",
                     "title": "The npmRegistry Schema",
                     "examples": [
-                        ""
+                        "https://npm.registry.redhat.com"
                     ]
                 },
                 "scope": {
@@ -361,7 +372,7 @@
                     "default": "",
                     "title": "The scope Schema",
                     "examples": [
-                        "@janus-idp"
+                        "@redhat"
                     ]
                 },
                 "orchestrator": {
@@ -378,7 +389,7 @@
                             "default": "",
                             "title": "The package Schema",
                             "examples": [
-                                "backstage-plugin-orchestrator@1.8.4"
+                                "backstage-plugin-orchestrator@1.0.0"
                             ]
                         },
                         "integrity": {
@@ -386,13 +397,13 @@
                             "default": "",
                             "title": "The integrity Schema",
                             "examples": [
-                                "sha512-03SH0wAezWUZ6AJ3rqHUXrlt1vfb9corhr6TO6JigiGTCQDq1f1ZL/fvUgl+o1DcqlC/2jkBWiYNpNQ6MqcYrQ=="
+                                "sha512-CuYYR7v2O8EVoI1FA7usidzUPp1N5OOKDkIvhDRPf4I7BxgDCWLqW7rBQ4Z7qBXfpeYJrQOxInc0E2xWEat8JA=="
                             ]
                         }
                     },
                     "examples": [{
-                        "package": "backstage-plugin-orchestrator@1.8.4",
-                        "integrity": "sha512-03SH0wAezWUZ6AJ3rqHUXrlt1vfb9corhr6TO6JigiGTCQDq1f1ZL/fvUgl+o1DcqlC/2jkBWiYNpNQ6MqcYrQ=="
+                        "package": "backstage-plugin-orchestrator@1.0.0",
+                        "integrity": "sha512-CuYYR7v2O8EVoI1FA7usidzUPp1N5OOKDkIvhDRPf4I7BxgDCWLqW7rBQ4Z7qBXfpeYJrQOxInc0E2xWEat8JA=="
                     }]
                 },
                 "orchestrator_backend": {
@@ -409,7 +420,7 @@
                             "default": "",
                             "title": "The package Schema",
                             "examples": [
-                                "backstage-plugin-orchestrator-backend-dynamic@1.6.1"
+                                "backstage-plugin-orchestrator-backend-dynamic@1.0.0"
                             ]
                         },
                         "integrity": {
@@ -417,13 +428,13 @@
                             "default": "",
                             "title": "The integrity Schema",
                             "examples": [
-                                "sha512-Rt4csLDhQXNYqp9uCYeZLTrH1RfpA5HTvWd4TyZZ2nwi084UZIMso8PaF8KcD9tPdiYhaQBGxmCR/QS1X8sOVA=="
+                                "sha512-l0g3T/a1NxX9JogTesZAdUzpNhHQaPxRwki15HWny9GlXCELAx+ta0UC3afsHy6Jp2wOn1prlW0ZuXuc7Ncb0g=="
                             ]
                         }
                     },
                     "examples": [{
-                        "package": "backstage-plugin-orchestrator-backend-dynamic@1.6.1",
-                        "integrity": "sha512-Rt4csLDhQXNYqp9uCYeZLTrH1RfpA5HTvWd4TyZZ2nwi084UZIMso8PaF8KcD9tPdiYhaQBGxmCR/QS1X8sOVA=="
+                        "package": "backstage-plugin-orchestrator-backend-dynamic@1.0.0",
+                        "integrity": "sha512-l0g3T/a1NxX9JogTesZAdUzpNhHQaPxRwki15HWny9GlXCELAx+ta0UC3afsHy6Jp2wOn1prlW0ZuXuc7Ncb0g=="
                     }]
                 },
                 "notifications": {
@@ -440,7 +451,7 @@
                             "default": "",
                             "title": "The package Schema",
                             "examples": [
-                                "plugin-notifications@1.1.14"
+                                "plugin-notifications@1.0.0"
                             ]
                         },
                         "integrity": {
@@ -448,13 +459,13 @@
                             "default": "",
                             "title": "The integrity Schema",
                             "examples": [
-                                "sha512-2hSWOrYn8r8A/tOb5hxJxucTfkuMNFVT315ucAwqlignYvRTRLsEp8vfxTfTY5TVVl71UO3SPrLlT99FnpKLyQ=="
+                                "sha512-t+cnwKOfqJJqbgZIMjJ1Hzr1mqHft619QoK5bF7c8TuQGUjQR0NtaIFWUNhR1JFlE4oQz0NDaAgBnDwtjMk9qA=="
                             ]
                         }
                     },
                     "examples": [{
-                        "package": "plugin-notifications@1.1.14",
-                        "integrity": "sha512-2hSWOrYn8r8A/tOb5hxJxucTfkuMNFVT315ucAwqlignYvRTRLsEp8vfxTfTY5TVVl71UO3SPrLlT99FnpKLyQ=="
+                        "package": "plugin-notifications@1.0.0",
+                        "integrity": "sha512-t+cnwKOfqJJqbgZIMjJ1Hzr1mqHft619QoK5bF7c8TuQGUjQR0NtaIFWUNhR1JFlE4oQz0NDaAgBnDwtjMk9qA=="
                     }]
                 },
                 "notifications_backend": {
@@ -471,7 +482,7 @@
                             "default": "",
                             "title": "The package Schema",
                             "examples": [
-                                "plugin-notifications-backend-dynamic@1.4.1"
+                                "plugin-notifications-backend-dynamic@1.0.0"
                             ]
                         },
                         "integrity": {
@@ -479,34 +490,34 @@
                             "default": "",
                             "title": "The integrity Schema",
                             "examples": [
-                                "sha512-QQ5rL9+88C64I7WF+b+YkfzobUrEO6j4+0AlZmUDC5AKK0uynnGJOI9bAGKZ19SluYUzCMTwAyWrxHEBIYrHbg=="
+                                "sha512-o4GFXmQu6uUXbCDukXHahZ37sfQQYM92pL3LhkXO5aYKudITKzlv6lEZnb9zO9Rnr3U0LD7ytFzks51EfXssXw=="
                             ]
                         }
                     },
                     "examples": [{
-                        "package": "plugin-notifications-backend-dynamic@1.4.1",
-                        "integrity": "sha512-QQ5rL9+88C64I7WF+b+YkfzobUrEO6j4+0AlZmUDC5AKK0uynnGJOI9bAGKZ19SluYUzCMTwAyWrxHEBIYrHbg=="
+                        "package": "plugin-notifications-backend-dynamic@1.0.0",
+                        "integrity": "sha512-o4GFXmQu6uUXbCDukXHahZ37sfQQYM92pL3LhkXO5aYKudITKzlv6lEZnb9zO9Rnr3U0LD7ytFzks51EfXssXw=="
                     }]
                 }
             },
             "examples": [{
-                "npmRegistry": "",
-                "scope": "@janus-idp",
+                "npmRegistry": "https://npm.registry.redhat.com",
+                "scope": "@redhat",
                 "orchestrator": {
-                    "package": "backstage-plugin-orchestrator@1.8.4",
-                    "integrity": "sha512-03SH0wAezWUZ6AJ3rqHUXrlt1vfb9corhr6TO6JigiGTCQDq1f1ZL/fvUgl+o1DcqlC/2jkBWiYNpNQ6MqcYrQ=="
+                    "package": "backstage-plugin-orchestrator@1.0.0",
+                    "integrity": "sha512-CuYYR7v2O8EVoI1FA7usidzUPp1N5OOKDkIvhDRPf4I7BxgDCWLqW7rBQ4Z7qBXfpeYJrQOxInc0E2xWEat8JA=="
                 },
                 "orchestrator_backend": {
-                    "package": "backstage-plugin-orchestrator-backend-dynamic@1.6.1",
-                    "integrity": "sha512-Rt4csLDhQXNYqp9uCYeZLTrH1RfpA5HTvWd4TyZZ2nwi084UZIMso8PaF8KcD9tPdiYhaQBGxmCR/QS1X8sOVA=="
+                    "package": "backstage-plugin-orchestrator-backend-dynamic@1.0.0",
+                    "integrity": "sha512-l0g3T/a1NxX9JogTesZAdUzpNhHQaPxRwki15HWny9GlXCELAx+ta0UC3afsHy6Jp2wOn1prlW0ZuXuc7Ncb0g=="
                 },
                 "notifications": {
-                    "package": "plugin-notifications@1.1.14",
-                    "integrity": "sha512-2hSWOrYn8r8A/tOb5hxJxucTfkuMNFVT315ucAwqlignYvRTRLsEp8vfxTfTY5TVVl71UO3SPrLlT99FnpKLyQ=="
+                    "package": "plugin-notifications@1.0.0",
+                    "integrity": "sha512-t+cnwKOfqJJqbgZIMjJ1Hzr1mqHft619QoK5bF7c8TuQGUjQR0NtaIFWUNhR1JFlE4oQz0NDaAgBnDwtjMk9qA=="
                 },
                 "notifications_backend": {
-                    "package": "plugin-notifications-backend-dynamic@1.4.1",
-                    "integrity": "sha512-QQ5rL9+88C64I7WF+b+YkfzobUrEO6j4+0AlZmUDC5AKK0uynnGJOI9bAGKZ19SluYUzCMTwAyWrxHEBIYrHbg=="
+                    "package": "plugin-notifications-backend-dynamic@1.0.0",
+                    "integrity": "sha512-o4GFXmQu6uUXbCDukXHahZ37sfQQYM92pL3LhkXO5aYKudITKzlv6lEZnb9zO9Rnr3U0LD7ytFzks51EfXssXw=="
                 }
             }]
         },
@@ -852,29 +863,30 @@
             },
             "subscription": {
                 "namespace": "rhdh-operator",
-                "channel": "fast",
+                "channel": "fast-1.1",
                 "installPlanApproval": "Automatic",
-                "name": "rhdh"
+                "name": "rhdh",
+                "startingCSV": "rhdh-operator.v1.1.2"
             }
         },
         "rhdhPlugins": {
-            "npmRegistry": "",
-            "scope": "@janus-idp",
+            "npmRegistry": "https://npm.registry.redhat.com",
+            "scope": "@redhat",
             "orchestrator": {
-                "package": "backstage-plugin-orchestrator@1.8.4",
-                "integrity": "sha512-03SH0wAezWUZ6AJ3rqHUXrlt1vfb9corhr6TO6JigiGTCQDq1f1ZL/fvUgl+o1DcqlC/2jkBWiYNpNQ6MqcYrQ=="
+                "package": "backstage-plugin-orchestrator@1.0.0",
+                "integrity": "sha512-CuYYR7v2O8EVoI1FA7usidzUPp1N5OOKDkIvhDRPf4I7BxgDCWLqW7rBQ4Z7qBXfpeYJrQOxInc0E2xWEat8JA=="
             },
             "orchestrator_backend": {
-                "package": "backstage-plugin-orchestrator-backend-dynamic@1.6.1",
-                "integrity": "sha512-Rt4csLDhQXNYqp9uCYeZLTrH1RfpA5HTvWd4TyZZ2nwi084UZIMso8PaF8KcD9tPdiYhaQBGxmCR/QS1X8sOVA=="
+                "package": "backstage-plugin-orchestrator-backend-dynamic@1.0.0",
+                "integrity": "sha512-l0g3T/a1NxX9JogTesZAdUzpNhHQaPxRwki15HWny9GlXCELAx+ta0UC3afsHy6Jp2wOn1prlW0ZuXuc7Ncb0g=="
             },
             "notifications": {
-                "package": "plugin-notifications@1.1.14",
-                "integrity": "sha512-2hSWOrYn8r8A/tOb5hxJxucTfkuMNFVT315ucAwqlignYvRTRLsEp8vfxTfTY5TVVl71UO3SPrLlT99FnpKLyQ=="
+                "package": "plugin-notifications@1.0.0",
+                "integrity": "sha512-t+cnwKOfqJJqbgZIMjJ1Hzr1mqHft619QoK5bF7c8TuQGUjQR0NtaIFWUNhR1JFlE4oQz0NDaAgBnDwtjMk9qA=="
             },
             "notifications_backend": {
-                "package": "plugin-notifications-backend-dynamic@1.4.1",
-                "integrity": "sha512-QQ5rL9+88C64I7WF+b+YkfzobUrEO6j4+0AlZmUDC5AKK0uynnGJOI9bAGKZ19SluYUzCMTwAyWrxHEBIYrHbg=="
+                "package": "plugin-notifications-backend-dynamic@1.0.0",
+                "integrity": "sha512-o4GFXmQu6uUXbCDukXHahZ37sfQQYM92pL3LhkXO5aYKudITKzlv6lEZnb9zO9Rnr3U0LD7ytFzks51EfXssXw=="
             }
         },
         "postgres": {
