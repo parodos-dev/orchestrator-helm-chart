@@ -37,7 +37,8 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `rhdhOperator.subscription.channel` | channel of an operator package to subscribe to | `"fast"` |
 | `rhdhOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
 | `rhdhOperator.subscription.name` | name of the operator package | `"rhdh"` |
-| `rhdhPlugins.npmRegistry` |  | `""` |
+| `rhdhOperator.subscription.source` | name of the catalog that advertises the operator | `"redhat-operators"` |
+| `rhdhPlugins.npmRegistry` | NPM registry is defined already in the container, but sometimes the registry need to be modified to use different versions of the plugin, for example: staging(https://npm.stage.registry.redhat.com) or develop repositories | `""` |
 | `rhdhPlugins.scope` |  | `"@janus-idp"` |
 | `rhdhPlugins.orchestrator.package` |  | `"backstage-plugin-orchestrator@1.10.6"` |
 | `rhdhPlugins.orchestrator.integrity` |  | `"sha512-qSXQ2O7/eLBEF186PzaRfzLfutFYUq9MdiiIZbHejz+KML9rVInPJkc1tine3R3JQVuw1QBIQ2vhPNbGbHXWZg=="` |

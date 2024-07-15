@@ -421,8 +421,9 @@
                     "type": "string",
                     "default": "",
                     "title": "The npmRegistry Schema",
+                    "description": "NPM registry is defined already in the container, but sometimes the registry need to be modified to use different versions of the plugin, for example: staging or development repositories",
                     "examples": [
-                        ""
+                        "https://npm.stage.registry.redhat.com"
                     ]
                 },
                 "scope": {
