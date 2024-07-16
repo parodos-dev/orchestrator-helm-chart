@@ -147,6 +147,8 @@ backstage:
 
       image:
         tag: next
+      extraEnvVarsSecrets:
+        - backstage-backend-auth-secret
       appConfig:
         app:
           baseUrl: http://localhost:9090
@@ -159,6 +161,15 @@ backstage:
             - host: github.com
               token: "INSERT VALID TOKEN HERE"
         auth:
+          externalAccess:
+            - type: static
+              options:
+                token: ${ADMIN_CURL_TOKEN}
+                subject: admin-curl-access
+            - type: static
+              options:
+                token: ${ADMIN_CURL_TOKEN}
+                subject: notifications-access
           environment: development
           providers:
             github:
