@@ -99,7 +99,7 @@
                             "default": "",
                             "title": "The startingCSV Schema",
                             "examples": [
-                                ""
+                                "logic-operator-rhel8.v1.33.0"
                             ]
                         }
                     },
@@ -109,7 +109,7 @@
                         "installPlanApproval": "Automatic",
                         "name": "logic-operator-rhel8",
                         "sourceName": "redhat-operators",
-                        "startingCSV": ""
+                        "startingCSV": "logic-operator-rhel8.v1.33.0"
                     }]
                 }
             },
@@ -122,7 +122,7 @@
                     "installPlanApproval": "Automatic",
                     "name": "logic-operator-rhel8",
                     "sourceName": "redhat-operators",
-                    "startingCSV": ""
+                    "startingCSV": "logic-operator-rhel8.v1.33.0"
                 }
             }]
         },
@@ -486,7 +486,7 @@
                             "default": "",
                             "title": "The startingCSV Schema",
                             "examples": [
-                                ""
+                                "rhdh-operator.v1.2.0"
                             ]
                         }
                     },
@@ -496,14 +496,14 @@
                         "installPlanApproval": "Automatic",
                         "name": "rhdh",
                         "source": "redhat-operators",
-                        "startingCSV": ""
+                        "startingCSV": "rhdh-operator.v1.2.0"
                     }]
                 }
             },
             "examples": [{
                 "isReleaseCandidate": false,
                 "enabled": true,
-                "enableGuestProvider": true,
+                "enableGuestProvider": false,
                 "secretRef": {
                     "name": "backstage-backend-auth-secret",
                     "backstage": {
@@ -530,7 +530,7 @@
                     "installPlanApproval": "Automatic",
                     "name": "rhdh",
                     "source": "redhat-operators",
-                    "startingCSV": ""
+                    "startingCSV": "rhdh-operator.v1.2.0"
                 }
             }]
         },
@@ -1107,7 +1107,7 @@
                 "installPlanApproval": "Automatic",
                 "name": "logic-operator-rhel8",
                 "sourceName": "redhat-operators",
-                "startingCSV": ""
+                "startingCSV": "logic-operator-rhel8.v1.33.0"
             }
         },
         "serverlessOperator": {
@@ -1123,7 +1123,7 @@
         "rhdhOperator": {
             "isReleaseCandidate": false,
             "enabled": true,
-            "enableGuestProvider": true,
+            "enableGuestProvider": false,
             "secretRef": {
                 "name": "backstage-backend-auth-secret",
                 "backstage": {
@@ -1150,7 +1150,7 @@
                 "installPlanApproval": "Automatic",
                 "name": "rhdh",
                 "source": "redhat-operators",
-                "startingCSV": ""
+                "startingCSV": "rhdh-operator.v1.2.0"
             }
         },
         "rhdhPlugins": {

@@ -191,7 +191,6 @@ spec:
         if [ "$(params.convertToFlat)" == "false" ]; then
           rm -rf workflow/src/main/resources
           mv workflow/src flat/$(params.workflowId)/
-          cp workflow/LICENSE flat/$(params.workflowId)/LICENSE
         fi
 
         ls flat/$(params.workflowId)
