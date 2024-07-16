@@ -1,12 +1,12 @@
 dependencies:
 - name: backstage
-  repository: https://janus-idp.github.io/helm-backstage
-  version: 2.11.4
+  repository: https://redhat-developer.github.io/rhdh-chart
+  version: 2.16.7
 - name: postgresql-persistent
   repository: https://sclorg.github.io/helm-charts
   version: 0.0.3
 - name: workflows
   repository: https://parodos.dev/serverless-workflows-config
   version: 0.2.0
-digest: sha256:0760818aaa3f6d835c4ecbda7c0b9c8bfea2ee152bac46c7bb982728e6b84821
-generated: "2024-04-09T12:27:49.361328275+03:00"
+digest: sha256:a7f65a96700c01e20dbab7cb1e6777822365b669c01cf471e234a269a7631140
+generated: "2024-07-16T21:13:31.117191345+03:00"
