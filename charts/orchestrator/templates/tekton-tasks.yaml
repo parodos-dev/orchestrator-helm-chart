@@ -182,10 +182,11 @@ spec:
 
         if [ -d "workflow/$(params.workflowId)" ]; then
           cp -r workflow/$(params.workflowId)/src/main/resources flat/$(params.workflowId)
+          cp workflow/$(params.workflowId)/LICENSE flat/$(params.workflowId)
         else
           cp -r workflow/src/main/resources flat/$(params.workflowId)
+          cp workflow/LICENSE flat/$(params.workflowId)
         fi
-        cp -r workflow/LICENSE flat/$(params.workflowId)/LICENSE
 
         if [ "$(params.convertToFlat)" == "false" ]; then
           rm -rf workflow/src/main/resources
