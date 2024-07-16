@@ -1,5 +1,23 @@
+{{- $cert := false }}
+{{- $ingress_secret := (lookup "v1" "Secret" "openshift-ingress" "router-certs-default") }}
+{{- if $ingress_secret }}
+{{- $cert = get $ingress_secret.data "tls.crt" }}
+---
+# This secret is the Openshift router public certificate. Backstage cannot
+#access the ingress secret from another namespaces, so we copy it to trust it.
+#It's mostly for developement pourposes and to avoid the
+#NODE_TLS_REJECT_UNAUTHORIZED=0 env variable.
+#Related issue: https://issues.redhat.com/browse/RHIDP-1847
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rhdh-ingress-cert
+  namespace: {{ .Values.rhdhOperator.subscription.namespace }}
+data:
+    cert: {{ $cert }}
+{{- end }}
+{{- $context := merge $ (dict "cert" $cert) }}
 {{- define "backstage-manifest" }}
-
 ---
 apiVersion: rhdh.redhat.com/v1alpha1
 kind: Backstage
@@ -19,6 +37,15 @@ spec:
     extraEnvs:
       secrets:
         - name: {{ .Values.rhdhOperator.secretRef.name }}
+    {{- if .cert }}
+      envs:
+        - name: NODE_EXTRA_CA_CERTS
+          value: /opt/app-root/src/cert
+    extraFiles:
+      secrets:
+        - name: rhdh-ingress-cert
+          key: cert
+    {{ end }}
     replicas: 1
 {{- end }}
 
@@ -414,5 +441,5 @@ data:
 {{- end }}
 {{- $unmanagedNamespaceExists := include "unmanaged-resource-exists" (list "rhdh.redhat.com/v1alpha1" "Backstage" .Values.rhdhOperator.subscription.namespace "backstage" .Release.Name .Capabilities.APIVersions ) }}
 {{- if eq $unmanagedNamespaceExists "false" }}
-  {{- include "manage-cr-lifecycle-on-action" (dict "release" .Release "apiGroup" "rhdh.redhat.com" "groupVersion" "v1alpha1" "kind" "Backstage" "kinds" "backstages" "targetNamespace" .Values.rhdhOperator.subscription.namespace "resourceName" "backstage" "isEnabled" .Values.rhdhOperator.enabled "hasCRDInstalled" (.Capabilities.APIVersions.Has "rhdh.redhat.com/v1alpha1/Backstage") "manifest" (include "backstage-manifest" . | b64enc )) }}
+  {{- include "manage-cr-lifecycle-on-action" (dict "release" .Release "apiGroup" "rhdh.redhat.com" "groupVersion" "v1alpha1" "kind" "Backstage" "kinds" "backstages" "targetNamespace" .Values.rhdhOperator.subscription.namespace "resourceName" "backstage" "isEnabled" .Values.rhdhOperator.enabled "hasCRDInstalled" (.Capabilities.APIVersions.Has "rhdh.redhat.com/v1alpha1/Backstage") "manifest" (include "backstage-manifest" $context | b64enc)) }}
 {{- end }}
