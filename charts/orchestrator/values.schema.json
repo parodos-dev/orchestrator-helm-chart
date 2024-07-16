@@ -554,7 +554,6 @@
                     "type": "string",
                     "default": "",
                     "title": "The npmRegistry Schema",
-                    "description": "NPM registry is defined already in the container, but sometimes the registry need to be modified to use different versions of the plugin, for example: staging or development repositories",
                     "examples": [
                         "https://npm.stage.registry.redhat.com"
                     ]
@@ -682,13 +681,13 @@
                             "default": "",
                             "title": "The integrity Schema",
                             "examples": [
-                                "sha512-2Eqi1SWIy1vIWcR0hjSCfRP2w9z+qFdpKsB3dmbssv4Pg98AFj41LYlrTLscHri7am6cd4xe1fEb7gJGqbNQiQ=="
+                                "sha512-CHTNYVGWPxT94viabzCqxKIkDxflium9vkgh9Emu+3SuJSEsrZ6G+U1UZgpQ4gO03oOeiTm3xsoTg/AfKGf7CQ=="
                             ]
                         }
                     },
                     "examples": [{
                         "package": "plugin-notifications-backend-dynamic@0.2.0-rc.0-0",
-                        "integrity": "sha512-2Eqi1SWIy1vIWcR0hjSCfRP2w9z+qFdpKsB3dmbssv4Pg98AFj41LYlrTLscHri7am6cd4xe1fEb7gJGqbNQiQ=="
+                        "integrity": "sha512-CHTNYVGWPxT94viabzCqxKIkDxflium9vkgh9Emu+3SuJSEsrZ6G+U1UZgpQ4gO03oOeiTm3xsoTg/AfKGf7CQ=="
                     }]
                 },
                 "signals": {
@@ -802,7 +801,7 @@
                 },
                 "notifications_backend": {
                     "package": "plugin-notifications-backend-dynamic@0.2.0-rc.0-0",
-                    "integrity": "sha512-2Eqi1SWIy1vIWcR0hjSCfRP2w9z+qFdpKsB3dmbssv4Pg98AFj41LYlrTLscHri7am6cd4xe1fEb7gJGqbNQiQ=="
+                    "integrity": "sha512-CHTNYVGWPxT94viabzCqxKIkDxflium9vkgh9Emu+3SuJSEsrZ6G+U1UZgpQ4gO03oOeiTm3xsoTg/AfKGf7CQ=="
                 },
                 "signals": {
                     "package": "plugin-signals-dynamic@0.0.5-rc.0-0",
@@ -1171,7 +1170,7 @@
             },
             "notifications_backend": {
                 "package": "plugin-notifications-backend-dynamic@0.2.0-rc.0-0",
-                "integrity": "sha512-2Eqi1SWIy1vIWcR0hjSCfRP2w9z+qFdpKsB3dmbssv4Pg98AFj41LYlrTLscHri7am6cd4xe1fEb7gJGqbNQiQ=="
+                "integrity": "sha512-CHTNYVGWPxT94viabzCqxKIkDxflium9vkgh9Emu+3SuJSEsrZ6G+U1UZgpQ4gO03oOeiTm3xsoTg/AfKGf7CQ=="
             },
             "signals": {
                 "package": "plugin-signals-dynamic@0.0.5-rc.0-0",

@@ -43,7 +43,6 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `rhdhOperator.subscription.channel` | channel of an operator package to subscribe to | `"fast"` |
 | `rhdhOperator.subscription.installPlanApproval` | whether the update should be installed automatically | `"Automatic"` |
 | `rhdhOperator.subscription.name` | name of the operator package | `"rhdh"` |
-<<<<<<< HEAD
 | `rhdhOperator.subscription.source` | name of the catalog that advertises the operator | `"redhat-operators"` |
 | `rhdhPlugins.npmRegistry` | NPM registry is defined already in the container, but sometimes the registry need to be modified to use different versions of the plugin, for example: staging(https://npm.stage.registry.redhat.com) or develop repositories | `""` |
 | `rhdhPlugins.scope` |  | `"@janus-idp"` |
@@ -59,26 +58,6 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `rhdhPlugins.signals.integrity` |  | `"sha512-aAYWPyTA113RbgZsGdWScVaQ2M6JZRmA7yMDpFR1QVJFn9FdqD41u37GUNKcSbpOCSZogH0d91d5QNECSX667g=="` |
 | `rhdhPlugins.signals_backend.package` |  | `"https://github.com/mareklibra/gh-pages/raw/main/download/002/plugin-signals-backend-dynamic-0.1.3-redhat.10001.tgz"` |
 | `rhdhPlugins.signals_backend.integrity` |  | `"sha512-fd9OLCFZZV5fVDDihPETxTnhc/AKUAKETnAR15vL0qOcHEpersytVogOTdS07YSiNLcFjMXl+YJi9xVLfxBHWw=="` |
-=======
-| `rhdhOperator.subscription.source` | name of the catalog source | `"redhat-operators"` |
-| `rhdhOperator.subscription.startingCSV` | The initial version of the operator | `""` |
-| `rhdhPlugins.npmRegistry` |  | `"https://npm.stage.registry.redhat.com"` |
-| `rhdhPlugins.scope` |  | `"@redhat"` |
-| `rhdhPlugins.orchestrator.package` |  | `"backstage-plugin-orchestrator@1.1.0-rc.0-0"` |
-| `rhdhPlugins.orchestrator.integrity` |  | `"sha512-uxkNFS/4nkVM6FRq0Uvnznvxcm/3MNdh11R6sRsbmKCP4KF4N9T2GF4lgfD7J+p7EuGMD4UFnjKjaR77v0NGaQ=="` |
-| `rhdhPlugins.orchestrator_backend.package` |  | `"backstage-plugin-orchestrator-backend-dynamic@1.1.0-rc.0-0"` |
-| `rhdhPlugins.orchestrator_backend.integrity` |  | `"sha512-NIIGpwH/uJaMknTdORdnqsHfPeI/OrAl2biqELal1e9tK2r6PrVWfIWr9XoH5AfOjtQjbeAe7joiLwhM+uyVAw=="` |
-| `rhdhPlugins.notifications.package` |  | `"plugin-notifications-dynamic@0.2.0-rc.0-0"` |
-| `rhdhPlugins.notifications.integrity` |  | `"sha512-wmISWN02G4OiBF7y8Jpl5KCbDfhzl70s+r0h2tdVh1IIwYmojH5pqXFQAhDd3FTlqYc8yqDG8gEAQ8v66qbU1g=="` |
-| `rhdhPlugins.notifications_backend.package` |  | `"plugin-notifications-backend-dynamic@0.2.0-rc.0-0"` |
-| `rhdhPlugins.notifications_backend.integrity` |  | `"sha512-CHTNYVGWPxT94viabzCqxKIkDxflium9vkgh9Emu+3SuJSEsrZ6G+U1UZgpQ4gO03oOeiTm3xsoTg/AfKGf7CQ=="` |
-| `rhdhPlugins.signals.package` |  | `"plugin-signals-dynamic@0.0.5-rc.0-0"` |
-| `rhdhPlugins.signals.integrity` |  | `"sha512-5Iwp9gF6VPiMLJ5NUw5s5Z17AuJ5XYS97wghNTfcmah/OFxTmgZHWxvhcRoXDRQvyj4nc/gOZes74kp6kZ9XDg=="` |
-| `rhdhPlugins.signals_backend.package` |  | `"plugin-signals-backend-dynamic@0.1.3-rc.0-0"` |
-| `rhdhPlugins.signals_backend.integrity` |  | `"sha512-LlkM2Mf2QTndsS6eBzyXDhJmRTHLpAku3hhlvWhtQChSLTFCtNGRTIQA5WHG7NqLH0QqBz+UcEjX7Vca82QKKg=="` |
-| `rhdhPlugins.notifications_email.package` |  | `"plugin-notifications-backend-module-email-dynamic@0.0.0-rc.0-0"` |
-| `rhdhPlugins.notifications_email.integrity` |  | `"sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA=="` |
->>>>>>> 2620aa7 (Update README.md)
 | `postgres.serviceName` | The name of the Postgres DB service to be used by platform services. Cannot be empty. | `"sonataflow-psql-postgresql"` |
 | `postgres.serviceNamespace` | The namespace of the Postgres DB service to be used by platform services. | `"sonataflow-infra"` |
 | `postgres.authSecret.name` | name of existing secret to use for PostgreSQL credentials. | `"sonataflow-psql-postgresql"` |
