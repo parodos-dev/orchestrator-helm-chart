@@ -261,7 +261,8 @@
                         "backstage",
                         "github",
                         "k8s",
-                        "argocd"
+                        "argocd",
+                        "notifications_email"
                     ],
                     "properties": {
                         "name": {
@@ -405,6 +406,47 @@
                                 "username": "ARGOCD_USERNAME",
                                 "password": "ARGOCD_PASSWORD"
                             }]
+                        },
+                        "notifications_email": {
+                            "type": "object",
+                            "default": {},
+                            "title": "The notifications_email Schema",
+                            "required": [
+                                "hostname",
+                                "username",
+                                "password"
+                            ],
+                            "properties": {
+                                "hostname": {
+                                    "type": "string",
+                                    "default": "",
+                                    "title": "The hostname Schema",
+                                    "examples": [
+                                        "NOTIFICATIONS_EMAIL_HOSTNAME"
+                                    ]
+                                },
+                                "username": {
+                                    "type": "string",
+                                    "default": "",
+                                    "title": "The username Schema",
+                                    "examples": [
+                                        "NOTIFICATIONS_EMAIL_USERNAME"
+                                    ]
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "default": "",
+                                    "title": "The password Schema",
+                                    "examples": [
+                                        "NOTIFICATIONS_EMAIL_PASSWORD"
+                                    ]
+                                }
+                            },
+                            "examples": [{
+                                "hostname": "NOTIFICATIONS_EMAIL_HOSTNAME",
+                                "username": "NOTIFICATIONS_EMAIL_USERNAME",
+                                "password": "NOTIFICATIONS_EMAIL_PASSWORD"
+                            }]
                         }
                     },
                     "examples": [{
@@ -425,6 +467,11 @@
                             "url": "ARGOCD_URL",
                             "username": "ARGOCD_USERNAME",
                             "password": "ARGOCD_PASSWORD"
+                        },
+                        "notifications_email": {
+                            "hostname": "NOTIFICATIONS_EMAIL_HOSTNAME",
+                            "username": "NOTIFICATIONS_EMAIL_USERNAME",
+                            "password": "NOTIFICATIONS_EMAIL_PASSWORD"
                         }
                     }]
                 },
@@ -522,6 +569,11 @@
                         "url": "ARGOCD_URL",
                         "username": "ARGOCD_USERNAME",
                         "password": "ARGOCD_PASSWORD"
+                    },
+                    "notifications_email": {
+                        "hostname": "NOTIFICATIONS_EMAIL_HOSTNAME",
+                        "username": "NOTIFICATIONS_EMAIL_USERNAME",
+                        "password": "NOTIFICATIONS_EMAIL_PASSWORD"
                     }
                 },
                 "subscription": {
@@ -757,10 +809,22 @@
                     "default": {},
                     "title": "The notifications_email Schema",
                     "required": [
+                        "enabled",
                         "package",
-                        "integrity"
+                        "integrity",
+                        "port",
+                        "sender",
+                        "reply_to"
                     ],
                     "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": false,
+                            "title": "The enabled Schema",
+                            "examples": [
+                                false
+                            ]
+                        },
                         "package": {
                             "type": "string",
                             "default": "",
@@ -776,11 +840,39 @@
                             "examples": [
                                 "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA=="
                             ]
+                        },
+                        "port": {
+                            "type": "integer",
+                            "default": 0,
+                            "title": "The port Schema",
+                            "examples": [
+                                587
+                            ]
+                        },
+                        "sender": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The sender Schema",
+                            "examples": [
+                                ""
+                            ]
+                        },
+                        "reply_to": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The reply_to Schema",
+                            "examples": [
+                                ""
+                            ]
                         }
                     },
                     "examples": [{
+                        "enabled": false,
                         "package": "plugin-notifications-backend-module-email-dynamic@0.0.0-rc.0-0",
-                        "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA=="
+                        "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA==",
+                        "port": 587,
+                        "sender": "",
+                        "reply_to": ""
                     }]
                 }
             },
@@ -812,8 +904,12 @@
                     "integrity": "sha512-LlkM2Mf2QTndsS6eBzyXDhJmRTHLpAku3hhlvWhtQChSLTFCtNGRTIQA5WHG7NqLH0QqBz+UcEjX7Vca82QKKg=="
                 },
                 "notifications_email": {
+                    "enabled": false,
                     "package": "plugin-notifications-backend-module-email-dynamic@0.0.0-rc.0-0",
-                    "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA=="
+                    "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA==",
+                    "port": 587,
+                    "sender": "",
+                    "reply_to": ""
                 }
             }]
         },
@@ -1142,6 +1238,11 @@
                     "url": "ARGOCD_URL",
                     "username": "ARGOCD_USERNAME",
                     "password": "ARGOCD_PASSWORD"
+                },
+                "notifications_email": {
+                    "hostname": "NOTIFICATIONS_EMAIL_HOSTNAME",
+                    "username": "NOTIFICATIONS_EMAIL_USERNAME",
+                    "password": "NOTIFICATIONS_EMAIL_PASSWORD"
                 }
             },
             "subscription": {
@@ -1181,8 +1282,12 @@
                 "integrity": "sha512-LlkM2Mf2QTndsS6eBzyXDhJmRTHLpAku3hhlvWhtQChSLTFCtNGRTIQA5WHG7NqLH0QqBz+UcEjX7Vca82QKKg=="
             },
             "notifications_email": {
+                "enabled": false,
                 "package": "plugin-notifications-backend-module-email-dynamic@0.0.0-rc.0-0",
-                "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA=="
+                "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA==",
+                "port": 587,
+                "sender": "",
+                "reply_to": ""
             }
         },
         "postgres": {
