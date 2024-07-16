@@ -99,10 +99,10 @@ argocd:
 
 
 rhsso:
-  enabled: true # Whether to create the Red Hat SSO login information
-  deploy: true # If we need to deploy the RedHat SSO operator (For development pourposes)
-  metadataURL: "" # If it's defined will use this, if not will build based on the deploy details.
-  baseURL: "" # If it's defined will use this, if not will build based on the deploy details.
+  enabled: true # When true, Backstage will be installed with oidc support.
+  deploy: true # When true, it will deploy Keycloak and the given realm.
+  metadataURL: "" # If it's defined will use this, if not will build based on the deploy details. This is the openid-configuration url.
+  baseURL: "" # If it's defined will use this, if not will build based on the deploy details. This is the keycloak url to retrieve all catalog users.
   log_level: INFO # Log level for sso-idp microservices
   namespace: orchestrator-sso # namespace where the operator should be deployed
   instances: 1 # Number of sso-instances
