@@ -75,6 +75,18 @@ The following table lists the configurable parameters of the Orchestrator chart 
 | `tekton.enabled` | whether to create the Tekton pipeline resources | `false` |
 | `argocd.enabled` | whether to install the ArgoCD plugin and create the orchestrator AppProject | `false` |
 | `argocd.namespace` | Defines the namespace where the orchestrator's instance of ArgoCD is deployed. The value is captured when running setup.sh script and stored as a label in the selected namespace. User can override the value by populating this field. Defaults to `orchestrator-gitops` in the setup.sh script. | `""` |
+| `rhsso.enabled` | Whether to create the Red Hat SSO login information | `true` |
+| `rhsso.deploy` | If we need to deploy the RedHat SSO operator (For development pourposes) | `true` |
+| `rhsso.metadataURL` | If it's defined will use this, if not will build based on the deploy details. | `""` |
+| `rhsso.baseURL` | If it's defined will use this, if not will build based on the deploy details. | `""` |
+| `rhsso.log_level` | Log level for sso-idp microservices | `"INFO"` |
+| `rhsso.namespace` | namespace where the operator should be deployed | `"orchestrator-sso"` |
+| `rhsso.instances` | Number of sso-instances | `1` |
+| `rhsso.startingCSV` |  | `"rhsso-operator.7.6.9-opr-001"` |
+| `rhsso.realm.name` |  | `"basic"` |
+| `rhsso.client.username` |  | `"rhdh"` |
+| `rhsso.client.password` |  | `"rhdh"` |
+| `rhsso.users` |  | `[{"name": "alice", "email": "alice@alice.com", "password": "alice"}, {"name": "bob", "email": "bob@bob.com", "password": "bob"}]` |
 
 
 
