@@ -1,0 +1,6 @@
+FROM docker.io/alpine/helm:3.15.3
+
+RUN helm plugin install https://github.com/losisin/helm-values-schema-json.git
+
+WORKDIR /app/
+
