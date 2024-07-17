@@ -54,7 +54,7 @@ spec:
   name: {{ .Values.rhdhOperator.subscription.name }}
   source: {{ .Values.rhdhOperator.subscription.source }}
   sourceNamespace: openshift-marketplace
-  {{- if not .Values.rhdhOperator.subscription.startingCSV }}
+  {{- if .Values.rhdhOperator.subscription.startingCSV }}
   startingCSV: {{ .Values.rhdhOperator.subscription.startingCSV }}
   {{- end }}
   {{- if .Values.rhdhPlugins.npmRegistry }}
