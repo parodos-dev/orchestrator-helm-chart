@@ -22,5 +22,5 @@ metadata:
   name: dev1
 spec:
   profile:
-    displayName: Guest User
+    displayName: Developer 1
   memberOf: [development]
