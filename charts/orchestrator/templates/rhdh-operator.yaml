@@ -332,7 +332,7 @@ data:
   {{- if .Values.rhdhOperator.enableGuestProvider }}
         guest:
           dangerouslyAllowOutsideDevelopment: true
-          userEntityRef: user:development/guest
+          userEntityRef: user:default/guest
   {{- end }}
 ---
 kind: ConfigMap
