@@ -127,6 +127,8 @@ backstage:
             defaultMode: 420
             optional: true
             secretName: dynamic-plugins-npmrc
+        - name: npmcacache
+          emptyDir: {}
       extraVolumeMounts:
         - name: dynamic-plugins-root
           mountPath: /opt/app-root/src/dynamic-plugins-root
