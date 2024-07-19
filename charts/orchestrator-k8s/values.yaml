@@ -93,6 +93,16 @@ backstage:
         integrity: >-
           sha512-FVMmIHjAoRg+kzpEhkEjtCKgRanWHwaI9I2Jqj9/gObnF2WBIllzAPiGNxj6tkMFloLflSJc6kc9ZphttAGGcQ==
   upstream:
+    # TODO when setting this to false the secret is still referenced in the rhdh
+    # deployment, looks like rhdh-backstage chart doesn't support excluding
+    # the postrgres secret part.
+    postgresql:
+      #enabled: false
+      primary:
+        resources:
+          limits:
+            ephemeral-storage: 1Mi
+
     ingress:
       enabled: true  # Use Kubernetes Ingress instead of OpenShift Route
     backstage:
@@ -118,8 +128,8 @@ backstage:
         - name: dynamic-plugins
           configMap:
             defaultMode: 420
-            name: dynamic-plugins
-            optional: true
+            name: '{{ printf "%s-dynamic-plugins" .Release.Name }}'
+            optional: false
         # Optional volume that allows exposing the `.npmrc` file (through a `dynamic-plugins-npmrc` secret)
         # to be used when running `npm pack` during the dynamic plugins installation by the initContainer.
         - name: dynamic-plugins-npmrc
@@ -130,10 +140,13 @@ backstage:
         - name: npmcacache
           emptyDir: {}
       extraVolumeMounts:
-        - name: dynamic-plugins-root
-          mountPath: /opt/app-root/src/dynamic-plugins-root
         - name: backstage-locations
           mountPath: /opt/backstage/locations
+        - mountPath: /dynamic-plugins-root
+          name: dynamic-plugins-root
+        - mountPath: /opt/app-root/src/.npmrc.dynamic-plugins
+          name: dynamic-plugins-npmrc
+
       resources:
         limits:
           memory: 2Gi
