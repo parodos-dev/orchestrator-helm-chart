@@ -101,7 +101,7 @@ backstage:
       primary:
         resources:
           limits:
-            ephemeral-storage: 1Mi
+            ephemeral-storage: 2Gi
 
     ingress:
       enabled: true  # Use Kubernetes Ingress instead of OpenShift Route
@@ -130,6 +130,12 @@ backstage:
             defaultMode: 420
             name: '{{ printf "%s-dynamic-plugins" .Release.Name }}'
             optional: false
+        - name: app-config
+          configMap:
+            defaultMode: 420
+            name: '{{ printf "%s-backstage-app-config" .Release.Name }}'
+            optional: false
+
         # Optional volume that allows exposing the `.npmrc` file (through a `dynamic-plugins-npmrc` secret)
         # to be used when running `npm pack` during the dynamic plugins installation by the initContainer.
         - name: dynamic-plugins-npmrc
@@ -142,10 +148,22 @@ backstage:
       extraVolumeMounts:
         - name: backstage-locations
           mountPath: /opt/backstage/locations
-        - mountPath: /dynamic-plugins-root
-          name: dynamic-plugins-root
+
         - mountPath: /opt/app-root/src/.npmrc.dynamic-plugins
           name: dynamic-plugins-npmrc
+
+        - name: dynamic-plugins-root
+          mountPath: /opt/app-root/src/dynamic-plugins-root
+
+        - name: app-config
+          readOnly: true
+          mountPath: /opt/app-root/src/default.app-config.yaml
+          subPath: default.app-config.yaml
+
+        - name: dynamic-plugins
+          readOnly: true
+          mountPath: /opt/app-root/src/dynamic-plugins.yaml
+          subPath: dynamic-plugins.yaml
 
       resources:
         limits:
