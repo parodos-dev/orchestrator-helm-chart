@@ -38,9 +38,8 @@ backstage:
       - dynamic-plugins.default.yaml
       plugins:
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.6.4"
-        integrity: >-
-          sha512-AbTX5YGJGcpWhlPsLmsysn0TAZLEbSW2lmKu1OuhvP4iI2KQBkF6naN/0iJopEH2s0Itd+k48VN+Q7NeAPu2JA==
+        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.10.1"
+        integrity: sha512-LC3bYgYWig+KGgymM7Ospl50RU0R+MUzgJGyBFsfrOFMoJ2R71FSaZYUsGWZwyHIvx+ChhKVDwZQApJtpSg+Ag==
         pluginConfig:
           orchestrator:
             dataIndexService:
@@ -48,9 +47,8 @@ backstage:
             editor:
               path: https://sandbox.kie.org/swf-chrome-extension/0.32.0
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator@1.8.7"
-        integrity: >-
-          sha512-cCfXX9y0Fy+l6PfXoZ5ll2vl5buR2GD74TI4XA0uOpH+p2COj7KQg8e8gWqPBMoyvgD6JZiGEUnd/rq6Pn0XMQ==
+        package: "@janus-idp/backstage-plugin-orchestrator@1.16.1"
+        integrity: sha512-4lk9U4Wv+AYmBdUvwtwoLYmRYjiEvEyO30shrzVf68QeyHr7eevNJ+kbRakxNq/WEEBTdZ9DVjl9RpdpmHT1gg==
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -68,9 +66,8 @@ backstage:
                   path: /orchestrator
 
       - disabled: false
-        package: "@janus-idp/plugin-notifications@1.1.16"
-        integrity: >-
-          sha512-pmAInZ3231PGkHxpPzOIFCdftTVlk4+w5/vi5hfixPQRKNf68hm9WudsgK6Q/Rv436DHt8ZWJyAP3QWhxZR2Zw==
+        package: "https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-notifications-dynamic-0.2.0.tgz"
+        integrity: sha512-juXCynHPSIYThJHh1ZfR+77kyAtla3vNOl1telUgC402KZCUoAVB+X3H4ZACWGZNvFQ8ySyVc5q/mE1MrCzW0g==
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -89,9 +86,8 @@ backstage:
                     config:
                       pollingIntervalMs: 5000
       - disabled: false
-        package: "@janus-idp/plugin-notifications-backend-dynamic@1.4.3"
-        integrity: >-
-          sha512-FVMmIHjAoRg+kzpEhkEjtCKgRanWHwaI9I2Jqj9/gObnF2WBIllzAPiGNxj6tkMFloLflSJc6kc9ZphttAGGcQ==
+        package: "https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-notifications-backend-dynamic-0.2.0.tgz"
+        integrity: sha512-QxIkZ7uX8CuCu9EUm8t0T0HOv9KT2AboMBwyr0Xu6Xa1I2U3E59YL5f5NQO9yVpidf+6rlV7qTCvJSn5MAQGnw==
   upstream:
     # TODO when setting this to false the secret is still referenced in the rhdh
     # deployment, looks like rhdh-backstage chart doesn't support excluding
@@ -179,7 +175,9 @@ backstage:
         fsGroup: 1001
 
       image:
-        tag: next
+        # use 1.2 till we get the CI working again and publishing upstream 
+        # versions of the orchestrtor and notification plugins
+        tag: "1.2"
       extraEnvVarsSecrets:
         - backstage-backend-auth-secret
       appConfig:
@@ -194,6 +192,7 @@ backstage:
             - host: github.com
               token: "INSERT VALID TOKEN HERE"
         auth:
+          dangerouslyDisableDefaultAuthPolicy: true
           externalAccess:
             - type: static
               options:
@@ -207,8 +206,12 @@ backstage:
           providers:
             github:
               development:
-                clientId: "INSERT VALID CLIENT ID HERE"
-                clientSecret: "INSERT VALID CLIENT SECRET HERE"
+                clientId: ${GH_PROVIDER_CLIENT_ID}
+                clientSecret: ${GH_PROVIDER_SECRET} 
+            guest:
+              dangerouslyAllowOutsideDevelopment: true
+              userEntityRef: user:default/guest
+
         catalog:
           rules:
             - allow:
