@@ -2,6 +2,19 @@ name: Release Orchestrator Charts - Stable
 
 on:
   workflow_dispatch:
+    inputs:
+      markAsLatest:
+        description: "Mark as latest chart"
+        required: false
+        default: false
+      skipUpload:
+        description: "Skip uploading packages"
+        required: false
+        default: false
+      skipExisting:
+        description: "Skip release of existing version"
+        required: false
+        default: true
   push:
     branches:
       - stable-1.x
@@ -33,6 +46,8 @@ jobs:
         with:
           config: chart-releaser.yaml
           pages_index_path: docs/index.yaml
-          skip_existing: true
+          skip_existing: ${{ inputs.skipExisting }}
+          mark_as_latest: ${{ inputs.markAsLatest }}
+          skip_upload: ${{ inputs.skipUpload }}
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
