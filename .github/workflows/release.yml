@@ -29,9 +29,10 @@ jobs:
           helm repo add workflows https://parodos.dev/serverless-workflows-config
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.0
+        uses: masayag/chart-releaser-action@main
         with:
           config: chart-releaser.yaml
+          pages_index_path: docs/index.yaml
           skip_existing: true
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
