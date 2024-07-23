@@ -15,6 +15,10 @@ on:
         description: "Skip release of existing version"
         required: false
         default: true
+      pageIndexFile:
+        description: "The pages index file"
+        required: false
+        default: docs/index.yaml
   push:
     branches:
       - stable-1.x
@@ -45,7 +49,7 @@ jobs:
         uses: masayag/chart-releaser-action@main
         with:
           config: chart-releaser.yaml
-          pages_index_path: docs/index.yaml
+          pages_index_path: ${{ inputs.pageIndexFile }}
           skip_existing: ${{ inputs.skipExisting }}
           mark_as_latest: ${{ inputs.markAsLatest }}
           skip_upload: ${{ inputs.skipUpload }}
