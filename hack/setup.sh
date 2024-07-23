@@ -69,7 +69,19 @@ function generateK8sToken {
 
   oc adm policy add-cluster-role-to-user cluster-admin -z $sa_name -n $sa_namespace
   echo "Added cluster-admin role to '$sa_name' in '$sa_namespace'."
-  K8S_CLUSTER_TOKEN=$(oc create token ${sa_name} -n $sa_namespace)
+
+    cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token
+metadata:
+  name: ${sa_name}
+  namespace: ${sa_namespace}
+  annotations:
+    kubernetes.io/service-account.name: orchestrator
+EOF
+
+  K8S_CLUSTER_TOKEN=$(oc -n $sa_namespace get secret/${sa_name} -o jsonpath='{.data.token}' | base64 -d )
 }
 
 function captureGitToken {
