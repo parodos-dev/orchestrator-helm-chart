@@ -37,7 +37,6 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add backstage https://backstage.github.io/charts
 helm repo add postgresql-persistent https://sclorg.github.io/helm-charts
 helm repo add redhat-developer https://redhat-developer.github.io/rhdh-chart
-helm install backstage redhat-developer/backstage
 helm repo add workflows https://parodos.dev/serverless-workflows-config
 
 helm dependencies build
