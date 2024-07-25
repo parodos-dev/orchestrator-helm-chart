@@ -4,7 +4,7 @@ global:
 appName: orchestrator
 serviceAccountName: orchestrator-sa
 labels:
-  - app: orchestartor 
+  - app: orchestartor
 
 workflows:
   enabled: true
@@ -13,7 +13,7 @@ sonataflowOperator:
   image: quay.io/kiegroup/kogito-serverless-operator-nightly:latest
 
 postgresql-persistent:
-  # depends on sonataflow-operator which still uses the ephemeral image. 
+  # depends on sonataflow-operator which still uses the ephemeral image.
   enabled: false
   database_service_name: workflows-db
   memory_limit: 512Mi
@@ -28,7 +28,7 @@ postgresql-persistent:
 
 # override Janus image with one with the orchestrator plugin
 # May change with dynamic plugin support
-backstage: 
+backstage:
   route:
     # set to false for kubernetes
     enabled: false
@@ -38,8 +38,8 @@ backstage:
       - dynamic-plugins.default.yaml
       plugins:
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.10.1"
-        integrity: sha512-LC3bYgYWig+KGgymM7Ospl50RU0R+MUzgJGyBFsfrOFMoJ2R71FSaZYUsGWZwyHIvx+ChhKVDwZQApJtpSg+Ag==
+        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.16.1"
+        integrity: sha512-rdTBb0PWZlJh63raLUvhriP/Dexc4z5XOcBOjWTa9nNsvU9BQHkXHaAYkEhbE0g0842MkeEzWrXfedaOWNrx6g==
         pluginConfig:
           orchestrator:
             dataIndexService:
@@ -47,8 +47,8 @@ backstage:
             editor:
               path: https://sandbox.kie.org/swf-chrome-extension/0.32.0
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator@1.16.1"
-        integrity: sha512-4lk9U4Wv+AYmBdUvwtwoLYmRYjiEvEyO30shrzVf68QeyHr7eevNJ+kbRakxNq/WEEBTdZ9DVjl9RpdpmHT1gg==
+        package: "@janus-idp/backstage-plugin-orchestrator@1.17.0"
+        integrity: sha512-f/XBL1prZWrnv3ckZNzaiRVOlGpc0jHn7RAHHndhuKRh0Hlzfsmxvs31+hBljE4aLXi6wBwm8iOn604JfiMsTA==
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -88,6 +88,16 @@ backstage:
       - disabled: false
         package: "https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-notifications-backend-dynamic-0.2.0.tgz"
         integrity: sha512-QxIkZ7uX8CuCu9EUm8t0T0HOv9KT2AboMBwyr0Xu6Xa1I2U3E59YL5f5NQO9yVpidf+6rlV7qTCvJSn5MAQGnw==
+      - disabled: false
+        package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-signals-dynamic-0.0.5.tgz
+        integrity: sha512-QSDkIYPWjgzcBdt3Gvd7Omq472rMI4oy6x7vLTXVHpIzmWetJalaB6SH8dXxORCFqL6hb3ccJjPsn3rSV8+2Jw==
+      - disabled: false
+        package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-signals-backend-dynamic-0.1.3.tgz
+        integrity: sha512-124+7o/wurgiWkSY5j/80SaauAX/3iVACIm+jR5g09r5QlKfO+GCCNuqhJ8xfbNT+bT6OeyWjPRJMkkjap0u4Q==
+      - disabled: false
+        package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-events-backend-dynamic-0.3.4.tgz
+        integrity: sha512-YjW+vGSl4OYR6/PZW/6f7IAz+rxxKUlfai3M1DBmt0OZ59GnowvnwqCbCRDYVQ3xkQyhPSzzUedo5/6Iu0ebAg==
+
   upstream:
     # TODO when setting this to false the secret is still referenced in the rhdh
     # deployment, looks like rhdh-backstage chart doesn't support excluding
@@ -168,14 +178,14 @@ backstage:
         requests:
           memory: 800Mi
           cpu: 200m
-      
+
       podSecurityContext:  # Vanilla Kubernetes doesn't feature OpenShift default SCCs with dynamic UIDs, adjust accordingly to the deployed image
         runAsUser: 1001
         runAsGroup: 1001
         fsGroup: 1001
 
       image:
-        # use 1.2 till we get the CI working again and publishing upstream 
+        # use 1.2 till we get the CI working again and publishing upstream
         # versions of the orchestrtor and notification plugins
         tag: "1.2"
       extraEnvVarsSecrets:
@@ -206,8 +216,8 @@ backstage:
           providers:
             github:
               development:
-                clientId: ${GH_PROVIDER_CLIENT_ID}
-                clientSecret: ${GH_PROVIDER_SECRET} 
+                clientId: ${GH_PROVIDER_CLIENT_ID:-provide_gh_provider_client_id_in_backstage_backend_auth_secret}
+                clientSecret: ${GH_PROVIDER_SECRET:-provide_gh_provider_secret_in_backstage_backend_auth_secret}
             guest:
               dangerouslyAllowOutsideDevelopment: true
               userEntityRef: user:default/guest
@@ -242,5 +252,5 @@ backstage:
         orchestrator:
           catalog:
             environment: development
-    
+
 
