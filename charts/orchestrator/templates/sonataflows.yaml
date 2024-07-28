@@ -27,11 +27,11 @@ spec:
     template:
       resources:
         requests:
-          memory: {{ .Values.orchestrator.sonataPlatform.resources.requests.memory }}
-          cpu: {{ .Values.orchestrator.sonataPlatform.resources.requests.cpu }}
+          memory: {{ .Values.orchestrator.sonataflowPlatform.resources.requests.memory }}
+          cpu: {{ .Values.orchestrator.sonataflowPlatform.resources.requests.cpu }}
         limits:
-          memory: {{ .Values.orchestrator.sonataPlatform.resources.limits.memory }}
-          cpu: {{ .Values.orchestrator.sonataPlatform.resources.limits.cpu }}
+          memory: {{ .Values.orchestrator.sonataflowPlatform.resources.limits.memory }}
+          cpu: {{ .Values.orchestrator.sonataflowPlatform.resources.limits.cpu }}
   services:
     dataIndex:
       enabled: true
@@ -44,9 +44,11 @@ spec:
           serviceRef:
             name: {{ .Values.postgres.serviceName }}
             namespace: {{ .Values.postgres.serviceNamespace }}
+      {{- if .Values.orchestrator.sonataflowPlatform.dataIndexImage }}
       podTemplate:
         container:
-          image: "quay.io/kiegroup/kogito-data-index-postgresql:9.99.1.CR1"
+          image: {{ .Values.orchestrator.sonataflowPlatform.dataIndexImage }}
+      {{- end }}
     jobService:
       enabled: true
       persistence:
@@ -58,6 +60,11 @@ spec:
           serviceRef:
             name: {{ .Values.postgres.serviceName }}
             namespace: {{ .Values.postgres.serviceNamespace }}
+      {{- if .Values.orchestrator.sonataflowPlatform.jobServiceImage }}
+      podTemplate:
+        container:
+          image: {{ .Values.orchestrator.sonataflowPlatform.jobServiceImage }}
+      {{- end }}
 {{- end }}
 {{- $workflowNamespace := include "get-workflow-namespace" . }}
 ## Manifests

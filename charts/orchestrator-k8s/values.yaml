@@ -4,7 +4,7 @@ global:
 appName: orchestrator
 serviceAccountName: orchestrator-sa
 labels:
-  - app: orchestartor 
+  - app: orchestartor
 
 workflows:
   enabled: true
@@ -13,7 +13,7 @@ sonataflowOperator:
   image: quay.io/kiegroup/kogito-serverless-operator-nightly:latest
 
 postgresql-persistent:
-  # depends on sonataflow-operator which still uses the ephemeral image. 
+  # depends on sonataflow-operator which still uses the ephemeral image.
   enabled: false
   database_service_name: workflows-db
   memory_limit: 512Mi
@@ -28,7 +28,7 @@ postgresql-persistent:
 
 # override Janus image with one with the orchestrator plugin
 # May change with dynamic plugin support
-backstage: 
+backstage:
   route:
     # set to false for kubernetes
     enabled: false
@@ -38,9 +38,8 @@ backstage:
       - dynamic-plugins.default.yaml
       plugins:
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.6.4"
-        integrity: >-
-          sha512-AbTX5YGJGcpWhlPsLmsysn0TAZLEbSW2lmKu1OuhvP4iI2KQBkF6naN/0iJopEH2s0Itd+k48VN+Q7NeAPu2JA==
+        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.16.1"
+        integrity: sha512-rdTBb0PWZlJh63raLUvhriP/Dexc4z5XOcBOjWTa9nNsvU9BQHkXHaAYkEhbE0g0842MkeEzWrXfedaOWNrx6g==
         pluginConfig:
           orchestrator:
             dataIndexService:
@@ -48,9 +47,8 @@ backstage:
             editor:
               path: https://sandbox.kie.org/swf-chrome-extension/0.32.0
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator@1.8.7"
-        integrity: >-
-          sha512-cCfXX9y0Fy+l6PfXoZ5ll2vl5buR2GD74TI4XA0uOpH+p2COj7KQg8e8gWqPBMoyvgD6JZiGEUnd/rq6Pn0XMQ==
+        package: "@janus-idp/backstage-plugin-orchestrator@1.17.0"
+        integrity: sha512-f/XBL1prZWrnv3ckZNzaiRVOlGpc0jHn7RAHHndhuKRh0Hlzfsmxvs31+hBljE4aLXi6wBwm8iOn604JfiMsTA==
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -68,9 +66,8 @@ backstage:
                   path: /orchestrator
 
       - disabled: false
-        package: "@janus-idp/plugin-notifications@1.1.16"
-        integrity: >-
-          sha512-pmAInZ3231PGkHxpPzOIFCdftTVlk4+w5/vi5hfixPQRKNf68hm9WudsgK6Q/Rv436DHt8ZWJyAP3QWhxZR2Zw==
+        package: "https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-notifications-dynamic-0.2.0.tgz"
+        integrity: sha512-juXCynHPSIYThJHh1ZfR+77kyAtla3vNOl1telUgC402KZCUoAVB+X3H4ZACWGZNvFQ8ySyVc5q/mE1MrCzW0g==
         pluginConfig:
           dynamicPlugins:
             frontend:
@@ -89,10 +86,29 @@ backstage:
                     config:
                       pollingIntervalMs: 5000
       - disabled: false
-        package: "@janus-idp/plugin-notifications-backend-dynamic@1.4.3"
-        integrity: >-
-          sha512-FVMmIHjAoRg+kzpEhkEjtCKgRanWHwaI9I2Jqj9/gObnF2WBIllzAPiGNxj6tkMFloLflSJc6kc9ZphttAGGcQ==
+        package: "https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-notifications-backend-dynamic-0.2.0.tgz"
+        integrity: sha512-QxIkZ7uX8CuCu9EUm8t0T0HOv9KT2AboMBwyr0Xu6Xa1I2U3E59YL5f5NQO9yVpidf+6rlV7qTCvJSn5MAQGnw==
+      - disabled: false
+        package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-signals-dynamic-0.0.5.tgz
+        integrity: sha512-QSDkIYPWjgzcBdt3Gvd7Omq472rMI4oy6x7vLTXVHpIzmWetJalaB6SH8dXxORCFqL6hb3ccJjPsn3rSV8+2Jw==
+      - disabled: false
+        package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-signals-backend-dynamic-0.1.3.tgz
+        integrity: sha512-124+7o/wurgiWkSY5j/80SaauAX/3iVACIm+jR5g09r5QlKfO+GCCNuqhJ8xfbNT+bT6OeyWjPRJMkkjap0u4Q==
+      - disabled: false
+        package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-events-backend-dynamic-0.3.4.tgz
+        integrity: sha512-YjW+vGSl4OYR6/PZW/6f7IAz+rxxKUlfai3M1DBmt0OZ59GnowvnwqCbCRDYVQ3xkQyhPSzzUedo5/6Iu0ebAg==
+
   upstream:
+    # TODO when setting this to false the secret is still referenced in the rhdh
+    # deployment, looks like rhdh-backstage chart doesn't support excluding
+    # the postrgres secret part.
+    postgresql:
+      #enabled: false
+      primary:
+        resources:
+          limits:
+            ephemeral-storage: 2Gi
+
     ingress:
       enabled: true  # Use Kubernetes Ingress instead of OpenShift Route
     backstage:
@@ -118,8 +134,14 @@ backstage:
         - name: dynamic-plugins
           configMap:
             defaultMode: 420
-            name: dynamic-plugins
-            optional: true
+            name: '{{ printf "%s-dynamic-plugins" .Release.Name }}'
+            optional: false
+        - name: app-config
+          configMap:
+            defaultMode: 420
+            name: '{{ printf "%s-backstage-app-config" .Release.Name }}'
+            optional: false
+
         # Optional volume that allows exposing the `.npmrc` file (through a `dynamic-plugins-npmrc` secret)
         # to be used when running `npm pack` during the dynamic plugins installation by the initContainer.
         - name: dynamic-plugins-npmrc
@@ -127,11 +149,28 @@ backstage:
             defaultMode: 420
             optional: true
             secretName: dynamic-plugins-npmrc
+        - name: npmcacache
+          emptyDir: {}
       extraVolumeMounts:
-        - name: dynamic-plugins-root
-          mountPath: /opt/app-root/src/dynamic-plugins-root
         - name: backstage-locations
           mountPath: /opt/backstage/locations
+
+        - mountPath: /opt/app-root/src/.npmrc.dynamic-plugins
+          name: dynamic-plugins-npmrc
+
+        - name: dynamic-plugins-root
+          mountPath: /opt/app-root/src/dynamic-plugins-root
+
+        - name: app-config
+          readOnly: true
+          mountPath: /opt/app-root/src/default.app-config.yaml
+          subPath: default.app-config.yaml
+
+        - name: dynamic-plugins
+          readOnly: true
+          mountPath: /opt/app-root/src/dynamic-plugins.yaml
+          subPath: dynamic-plugins.yaml
+
       resources:
         limits:
           memory: 2Gi
@@ -139,14 +178,18 @@ backstage:
         requests:
           memory: 800Mi
           cpu: 200m
-      
+
       podSecurityContext:  # Vanilla Kubernetes doesn't feature OpenShift default SCCs with dynamic UIDs, adjust accordingly to the deployed image
         runAsUser: 1001
         runAsGroup: 1001
         fsGroup: 1001
 
       image:
-        tag: next
+        # use 1.2 till we get the CI working again and publishing upstream
+        # versions of the orchestrtor and notification plugins
+        tag: "1.2"
+      extraEnvVarsSecrets:
+        - backstage-backend-auth-secret
       appConfig:
         app:
           baseUrl: http://localhost:9090
@@ -159,12 +202,26 @@ backstage:
             - host: github.com
               token: "INSERT VALID TOKEN HERE"
         auth:
+          dangerouslyDisableDefaultAuthPolicy: true
+          externalAccess:
+            - type: static
+              options:
+                token: ${ADMIN_CURL_TOKEN}
+                subject: admin-curl-access
+            - type: static
+              options:
+                token: ${ADMIN_CURL_TOKEN}
+                subject: notifications-access
           environment: development
           providers:
             github:
               development:
-                clientId: "INSERT VALID CLIENT ID HERE"
-                clientSecret: "INSERT VALID CLIENT SECRET HERE"
+                clientId: ${GH_PROVIDER_CLIENT_ID:-provide_gh_provider_client_id_in_backstage_backend_auth_secret}
+                clientSecret: ${GH_PROVIDER_SECRET:-provide_gh_provider_secret_in_backstage_backend_auth_secret}
+            guest:
+              dangerouslyAllowOutsideDevelopment: true
+              userEntityRef: user:default/guest
+
         catalog:
           rules:
             - allow:
@@ -195,5 +252,5 @@ backstage:
         orchestrator:
           catalog:
             environment: development
-    
+
 

@@ -7,6 +7,9 @@
 # helm chart dependencies
 charts/*/charts/
 **/charts/*.tgz
+ssh
+docker-credentionals-secret.yaml
 
 # setenv.sh
 .env
+
