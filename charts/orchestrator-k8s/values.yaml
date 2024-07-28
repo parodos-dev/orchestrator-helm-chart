@@ -71,32 +71,31 @@ backstage:
         pluginConfig:
           dynamicPlugins:
             frontend:
-              janus-idp.backstage-plugin-notifications:
-                appIcons:
-                  - name: notificationsIcon
-                    module: NotificationsPlugin
-                    importName: NotificationsActiveIcon
+              backstage.plugin-notifications:
                 dynamicRoutes:
-                  - path: /notifications
-                    importName: NotificationsPage
-                    module: NotificationsPlugin
+                  - importName: NotificationsPage
                     menuItem:
-                      icon: notificationsIcon
-                      text: Notifications
-                    config:
-                      pollingIntervalMs: 5000
+                      config:
+                        props:
+                          titleCounterEnabled: true
+                          webNotificationsEnabled: false
+                      importName: NotificationsSidebarItem
+                    path: /notifications
+
+
       - disabled: false
         package: "https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-notifications-backend-dynamic-0.2.0.tgz"
         integrity: sha512-QxIkZ7uX8CuCu9EUm8t0T0HOv9KT2AboMBwyr0Xu6Xa1I2U3E59YL5f5NQO9yVpidf+6rlV7qTCvJSn5MAQGnw==
       - disabled: false
         package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-signals-dynamic-0.0.5.tgz
         integrity: sha512-QSDkIYPWjgzcBdt3Gvd7Omq472rMI4oy6x7vLTXVHpIzmWetJalaB6SH8dXxORCFqL6hb3ccJjPsn3rSV8+2Jw==
+        pluginConfig:
+          dynamicPlugins:
+            frontend:
+              backstage.plugin-signals: {}
       - disabled: false
         package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-signals-backend-dynamic-0.1.3.tgz
         integrity: sha512-124+7o/wurgiWkSY5j/80SaauAX/3iVACIm+jR5g09r5QlKfO+GCCNuqhJ8xfbNT+bT6OeyWjPRJMkkjap0u4Q==
-      - disabled: false
-        package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-events-backend-dynamic-0.3.4.tgz
-        integrity: sha512-YjW+vGSl4OYR6/PZW/6f7IAz+rxxKUlfai3M1DBmt0OZ59GnowvnwqCbCRDYVQ3xkQyhPSzzUedo5/6Iu0ebAg==
 
   upstream:
     # TODO when setting this to false the secret is still referenced in the rhdh
@@ -194,6 +193,15 @@ backstage:
         app:
           baseUrl: http://localhost:9090
         backend:
+          auth:
+            # for backstage < 1.27 we still need this
+            keys:
+              - secret: ${BACKEND_SECRET}
+            externalAccess:
+              - type: static
+                options:
+                  token: ${BACKEND_SECRET}
+                  subject: orchestrator
           baseUrl: http://localhost:9090
           cors:
             origin: http://localhost:9090
@@ -202,16 +210,6 @@ backstage:
             - host: github.com
               token: "INSERT VALID TOKEN HERE"
         auth:
-          dangerouslyDisableDefaultAuthPolicy: true
-          externalAccess:
-            - type: static
-              options:
-                token: ${ADMIN_CURL_TOKEN}
-                subject: admin-curl-access
-            - type: static
-              options:
-                token: ${ADMIN_CURL_TOKEN}
-                subject: notifications-access
           environment: development
           providers:
             github:
@@ -247,8 +245,10 @@ backstage:
               type: file
 
           csp:
-            frame-src:
-              - "https://sandbox.kie.org"
+            script-src: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
+            script-src-elem: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
+            connect-src: ["'self'", 'http:', 'https:', 'data:']
+
         orchestrator:
           catalog:
             environment: development

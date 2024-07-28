@@ -2,8 +2,10 @@ This chart will install RHDH + orchestrator plugin + Serverless Workflows.
 
 It is under development and meant for non-prod environment for now
 
-To get RHDH's route location:
-    $ oc get route {{ .Release.Name }}-backstage -o jsonpath='https://{ .spec.host }{"\n"}'
+To get RHDH's ingress host location:
+    $ oc get ingress {{ .Release.Name }}-backstage -o jsonpath='https://{ .spec.rules[0].host }{"\n"}'
+
+If you are running locally with kind and ingress controller then it should be http://localhost:9090
 
 To get the serverless workflow operator status:
     $ oc get deploy -n sonataflow-operator-system 
