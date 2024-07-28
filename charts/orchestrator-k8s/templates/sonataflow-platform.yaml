@@ -6,7 +6,7 @@ spec:
   build:
     config:
       strategyOptions:
-        KanikoBuildCacheEnabled: "true"
+        KanikoBuildCacheEnabled: "false"
       registry:
         address: quay.io/kiegroup
         secret: regcred
