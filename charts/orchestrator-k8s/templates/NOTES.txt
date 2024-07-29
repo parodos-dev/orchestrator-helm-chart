@@ -10,7 +10,4 @@ If you are running locally with kind and ingress controller then it should be ht
 To get the serverless workflow operator status:
     $ oc get deploy -n sonataflow-operator-system 
 
-To get the serverless workflows status:
-    $ oc get sf 
-
 You should now have RHDH with the orchestrator plugin installed to manage your deployed workflows.
