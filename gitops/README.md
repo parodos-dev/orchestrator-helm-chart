@@ -98,6 +98,10 @@ There is a need to create a single K8s secret combined with the following secret
 Those two K8s secrets should be merged into a single secret named `docker-credentials` in `orchestrator-gitops` namespace in the cluster that runs the pipelines.
 You may use this [helper script](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/hack/merge_secrets.sh) to merge the secrets or choose another method of downloading the credentials and merging them.
 
+Note: If using helper script, ensure to add merged secret to orchestrator-gitops namespace.
+```console
+oc apply -f <secret-name.yaml> -n orchestrator-gitops
+```
 ## Define the SSH credentials
 
 The pipeline uses SSH to push the deployment configuration to the `gitops` repository containing the `kustomize` deployment configuration.
@@ -128,7 +132,7 @@ ssh-keyscan github.com > ssh/known_hosts
 ```console
 echo "Host github.com
   HostName github.com
-  IdentityFile ~/.ssh/id_rsa" > ssh/config
+  IdentityFile ~/ssh/id_rsa" > ssh/config
 ```
 
 - Create the secret that the Pipeline uses to store the SSH credentials:
