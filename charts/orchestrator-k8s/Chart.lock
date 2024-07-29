@@ -5,8 +5,5 @@ dependencies:
 - name: postgresql-persistent
   repository: https://sclorg.github.io/helm-charts
   version: 0.0.3
-- name: workflows
-  repository: https://parodos.dev/serverless-workflows-config
-  version: 0.2.0
-digest: sha256:a7f65a96700c01e20dbab7cb1e6777822365b669c01cf471e234a269a7631140
-generated: "2024-07-18T20:58:01.789801143+03:00"
+digest: sha256:2fece5e6a77d2215606ae2beef9b5cb97269b954ecc3ef3ab5fab13bd2cea34c
+generated: "2024-07-29T14:52:29.106838023+03:00"
