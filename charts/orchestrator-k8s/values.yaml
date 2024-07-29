@@ -6,9 +6,6 @@ serviceAccountName: orchestrator-sa
 labels:
   - app: orchestartor
 
-workflows:
-  enabled: true
-
 sonataflowOperator:
   image: quay.io/kiegroup/kogito-serverless-operator-nightly:latest
 
@@ -26,8 +23,6 @@ postgresql-persistent:
   image:
     tag: "latest"
 
-# override Janus image with one with the orchestrator plugin
-# May change with dynamic plugin support
 backstage:
   route:
     # set to false for kubernetes
