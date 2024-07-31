@@ -230,8 +230,8 @@ data:
               type: config
   {{- end }}
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestrator_backend.package }}"
-        integrity: {{ .Values.rhdhPlugins.orchestrator_backend.integrity }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestratorBackend.package }}"
+        integrity: {{ .Values.rhdhPlugins.orchestratorBackend.integrity }}
         pluginConfig:
           orchestrator:
             dataIndexService:
@@ -278,20 +278,20 @@ data:
             frontend:
               redhat.plugin-signals: {}
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications_backend.package }}"
-        integrity: {{ .Values.rhdhPlugins.notifications_backend.integrity }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notificationsBackend.package }}"
+        integrity: {{ .Values.rhdhPlugins.notificationsBackend.integrity }}
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.signals_backend.package }}"
-        integrity: {{ .Values.rhdhPlugins.signals_backend.integrity }}
-  {{- if and .Values.rhdhPlugins.notifications_email.enabled
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.signalsBackend.package }}"
+        integrity: {{ .Values.rhdhPlugins.signalsBackend.integrity }}
+  {{- if and .Values.rhdhPlugins.notificationsEmail.enabled
         ( and
             (and (.Values.rhdhOperator.secretRef.notificationsEmail.hostname) (dig "data" .Values.rhdhOperator.secretRef.notificationsEmail.hostname "" $secret ) )
             (and (.Values.rhdhOperator.secretRef.notificationsEmail.username) (.Values.rhdhOperator.secretRef.notificationsEmail.password) )
         )
   }}
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications_email.package }}"
-        integrity: {{ .Values.rhdhPlugins.notifications_email.integrity }}
+        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notificationsEmail.package }}"
+        integrity: {{ .Values.rhdhPlugins.notificationsEmail.integrity }}
         pluginConfig:
           notifications:
              processors:
@@ -299,12 +299,12 @@ data:
                  transportConfig:
                    transport: smtp
                    hostname: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.hostname }}
-                   port: {{ .Values.rhdhPlugins.notifications_email.port }}
+                   port: {{ .Values.rhdhPlugins.notificationsEmail.port }}
                    secure: false
                    username: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.username }}
                    password: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.password }}
-                 sender: {{ .Values.rhdhPlugins.notifications_email.sender }}
-                 replyTo: {{ .Values.rhdhPlugins.notifications_email.replyTo }}
+                 sender: {{ .Values.rhdhPlugins.notificationsEmail.sender }}
+                 replyTo: {{ .Values.rhdhPlugins.notificationsEmail.replyTo }}
                  concurrencyLimit: 10
                  cache:
                    ttl:
