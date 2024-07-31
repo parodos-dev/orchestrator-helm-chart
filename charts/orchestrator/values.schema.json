@@ -262,7 +262,7 @@
                         "github",
                         "k8s",
                         "argocd",
-                        "notifications_email"
+                        "notificationsEmail"
                     ],
                     "properties": {
                         "name": {
@@ -407,10 +407,10 @@
                                 "password": "ARGOCD_PASSWORD"
                             }]
                         },
-                        "notifications_email": {
+                        "notificationsEmail": {
                             "type": "object",
                             "default": {},
-                            "title": "The notifications_email Schema",
+                            "title": "The notificationsEmail Schema",
                             "required": [
                                 "hostname",
                                 "username",
@@ -468,7 +468,7 @@
                             "username": "ARGOCD_USERNAME",
                             "password": "ARGOCD_PASSWORD"
                         },
-                        "notifications_email": {
+                        "notificationsEmail": {
                             "hostname": "NOTIFICATIONS_EMAIL_HOSTNAME",
                             "username": "NOTIFICATIONS_EMAIL_USERNAME",
                             "password": "NOTIFICATIONS_EMAIL_PASSWORD"
@@ -570,7 +570,7 @@
                         "username": "ARGOCD_USERNAME",
                         "password": "ARGOCD_PASSWORD"
                     },
-                    "notifications_email": {
+                    "notificationsEmail": {
                         "hostname": "NOTIFICATIONS_EMAIL_HOSTNAME",
                         "username": "NOTIFICATIONS_EMAIL_USERNAME",
                         "password": "NOTIFICATIONS_EMAIL_PASSWORD"
@@ -814,7 +814,7 @@
                         "integrity",
                         "port",
                         "sender",
-                        "reply_to"
+                        "replyTo"
                     ],
                     "properties": {
                         "enabled": {
@@ -857,10 +857,10 @@
                                 ""
                             ]
                         },
-                        "reply_to": {
+                        "replyTo": {
                             "type": "string",
                             "default": "",
-                            "title": "The reply_to Schema",
+                            "title": "The replyTo Schema",
                             "examples": [
                                 ""
                             ]
@@ -872,7 +872,7 @@
                         "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA==",
                         "port": 587,
                         "sender": "",
-                        "reply_to": ""
+                        "replyTo": ""
                     }]
                 }
             },
@@ -909,7 +909,7 @@
                     "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA==",
                     "port": 587,
                     "sender": "",
-                    "reply_to": ""
+                    "replyTo": ""
                 }
             }]
         },
@@ -1239,7 +1239,7 @@
                     "username": "ARGOCD_USERNAME",
                     "password": "ARGOCD_PASSWORD"
                 },
-                "notifications_email": {
+                "notificationsEmail": {
                     "hostname": "NOTIFICATIONS_EMAIL_HOSTNAME",
                     "username": "NOTIFICATIONS_EMAIL_USERNAME",
                     "password": "NOTIFICATIONS_EMAIL_PASSWORD"
@@ -1287,7 +1287,7 @@
                 "integrity": "sha512-TikxFBxBHKJYZy8go+Mw+7yjfSJILgXjr4K0C0+tnKyMOn+OqIX6K8c1fq7IdXto3fftQ+mmCrBqJem25JjVnA==",
                 "port": 587,
                 "sender": "",
-                "reply_to": ""
+                "replyTo": ""
             }
         },
         "postgres": {

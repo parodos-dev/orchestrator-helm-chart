@@ -285,8 +285,8 @@ data:
         integrity: {{ .Values.rhdhPlugins.signals_backend.integrity }}
   {{- if and .Values.rhdhPlugins.notifications_email.enabled
         ( and
-            (and (.Values.rhdhOperator.secretRef.notifications_email.hostname) (dig "data" .Values.rhdhOperator.secretRef.notifications_email.hostname "" $secret ) )
-            (and (.Values.rhdhOperator.secretRef.notifications_email.username) (.Values.rhdhOperator.secretRef.notifications_email.password) )
+            (and (.Values.rhdhOperator.secretRef.notificationsEmail.hostname) (dig "data" .Values.rhdhOperator.secretRef.notificationsEmail.hostname "" $secret ) )
+            (and (.Values.rhdhOperator.secretRef.notificationsEmail.username) (.Values.rhdhOperator.secretRef.notificationsEmail.password) )
         )
   }}
       - disabled: false
@@ -298,15 +298,13 @@ data:
                email:
                  transportConfig:
                    transport: smtp
-                   hostname: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notifications_email.hostname }}
+                   hostname: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.hostname }}
                    port: {{ .Values.rhdhPlugins.notifications_email.port }}
                    secure: false
-                   username: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notifications_email.username }}
-                   password: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notifications_email.password }}
+                   username: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.username }}
+                   password: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.password }}
                  sender: {{ .Values.rhdhPlugins.notifications_email.sender }}
-                 replyTo: {{ .Values.rhdhPlugins.notifications_email.reply_to }}
-                 broadcastConfig:
-                   receiver: users
+                 replyTo: {{ .Values.rhdhPlugins.notifications_email.replyTo }}
                  concurrencyLimit: 10
                  cache:
                    ttl:
