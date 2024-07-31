@@ -14,6 +14,7 @@ metadata:
 spec:
   profile:
     displayName: Guest User
+    email: guest.user@example.com
   memberOf: [development]
 ---
 apiVersion: backstage.io/v1alpha1
