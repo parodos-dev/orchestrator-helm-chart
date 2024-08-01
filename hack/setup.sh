@@ -245,13 +245,13 @@ function createBackstageSecret {
   if [ -n "$GITHUB_CLIENT_SECRET" ]; then
     secretKeys[GITHUB_CLIENT_SECRET]=$GITHUB_CLIENT_SECRET
   fi
-  if [ -n "$NOTIFICATIONS_EMAIL_HOSTNAME" ]; then
+  if [ -n "$NOTIFICATIONS_EMAIL_HOSTNAME" ] && [ "$SETUP_NOTIFICATIONS_EMAIL" = true ]; then
     secretKeys[NOTIFICATIONS_EMAIL_HOSTNAME]=$NOTIFICATIONS_EMAIL_HOSTNAME
   fi
-  if [ -n "$NOTIFICATIONS_EMAIL_USERNAME" ]; then
+  if [ -n "$NOTIFICATIONS_EMAIL_USERNAME" ] && [ "$SETUP_NOTIFICATIONS_EMAIL" = true ]; then
     secretKeys[NOTIFICATIONS_EMAIL_USERNAME]=$NOTIFICATIONS_EMAIL_USERNAME
   fi
-  if [ -n "$NOTIFICATIONS_EMAIL_PASSWORD" ]; then
+  if [ -n "$NOTIFICATIONS_EMAIL_PASSWORD" ] && [ "$SETUP_NOTIFICATIONS_EMAIL" = true ]; then
     secretKeys[NOTIFICATIONS_EMAIL_PASSWORD]=$NOTIFICATIONS_EMAIL_PASSWORD
   fi
   cmd="oc create secret generic backstage-backend-auth-secret -n rhdh-operator --from-literal=BACKEND_SECRET=$BACKEND_SECRET"
