@@ -1,3 +1,12 @@
+## Installing the Orchestartor Chart Without Installing RHDH
+To install the required components without RHDH, utilize the `--set rhdhOperator.enabled=false` option. A comprehensive command would resemble the following:
+
+```bash
+helm upgrade -i orchestrator orchestrator/orchestrator --set rhdhOperator.enabled=false
+```
+This command will result in the installation of the Sonataflow Operator and OpenShift Serverless Operators. Alternatively, these operators can be installed directly from the operator catalog.
+
+## Adding Orchestrator Plugins to RHDH
 In an RHDH installation, there are two primary ConfigMaps that require modification, typically found under the *rhdh-operator* namespaces:
 
 * *dynamic-plugins* ConfigMap: This ConfigMap houses the configuration for enabling and configuring dynamic plugins. To incorporate the orchestrator plugins, append the following configuration to the *dynamic-plugins* ConfigMap:
