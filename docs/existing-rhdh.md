@@ -1,4 +1,4 @@
-**Please note - this document refers to RC builds**, the content will be updated once plugins are released as GA.
+**Please note - this document refers to RC builds and supported by RHDH-1.2 only**, the content will be updated once plugins are released as GA.
 
 In an RHDH installation, there are two primary ConfigMaps that require modification, typically found under the *rhdh-operator* namespaces:
 
