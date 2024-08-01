@@ -188,7 +188,7 @@ spec:
           cp -r workflow/$(params.workflowId) flat/$(params.workflowId)
         fi
 
-        curl -L https://raw.githubusercontent.com/parodos-dev/serverless-workflows/main/pipeline/workflow-builder.Dockerfile -o flat/workflow-builder.Dockerfile
+        curl -L https://raw.githubusercontent.com/parodos-dev/serverless-workflows/v1.1.x/pipeline/workflow-builder.Dockerfile -o flat/workflow-builder.Dockerfile
 ---
 apiVersion: tekton.dev/v1
 kind: Task
