@@ -1,0 +1,23 @@
+name: Release Orchestrator Charts
+
+on:
+  workflow_dispatch:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # nighly schedule at 00:05
+    - cron:  '5 0 * * *'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Orchestrator Plugins Versions
+        run: |
+          #!/bin/bash
+          charts/orchestrator-k8s/hack/update_plugins_version.sh
+          # TODO create pr if changed
+          git diff charts/orchestrator-k8s/values.yaml
