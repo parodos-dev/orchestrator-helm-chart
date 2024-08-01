@@ -165,6 +165,50 @@ function captureArgoCDCreds {
   fi
 }
 
+function captureNotificationsEmailHostname {
+   if [ -z "$NOTIFICATIONS_EMAIL_HOSTNAME" ]; then
+    read -p "Enter the SMTP server hostname for notification emails (empty for disabling it): " value
+    echo ""
+    NOTIFICATIONS_EMAIL_HOSTNAME=$value
+  else
+    echo "SMTP server hostname for notification emails already set."
+  fi
+}
+
+function captureNotificationsEmailUsername {
+   if [ -z "$NOTIFICATIONS_EMAIL_USERNAME" ]; then
+    read -p "Enter the SMTP server username for notification emails (empty for disabling it): " value
+    echo ""
+    NOTIFICATIONS_EMAIL_USERNAME=$value
+  else
+    echo "SMTP server username for notification emails already set."
+  fi
+}
+
+function captureNotificationsEmailPassword {
+   if [ -z "$NOTIFICATIONS_EMAIL_PASSWORD" ]; then
+    read -s -p "Enter the SMTP server password for notification emails (empty for disabling it): " value
+    echo ""
+    NOTIFICATIONS_EMAIL_PASSWORD=$value
+  else
+    echo "SMTP server password for notification emails already set."
+  fi
+}
+
+function setupNotificationsEmailConfig {
+  if $use_default; then
+    SETUP_NOTIFICATIONS_EMAIL=true
+  else
+    echo "Setup a notifications email plugin?:"
+    select yn in "Yes" "No"; do
+        case $yn in
+            Yes ) SETUP_NOTIFICATIONS_EMAIL=true; break;;
+            No ) SETUP_NOTIFICATIONS_EMAIL=false; break;;
+        esac
+    done
+  fi
+}
+
 function checkPrerequisite {
   if ! command -v oc &> /dev/null; then
     echo "oc is required for this script to run. Exiting."
@@ -200,6 +244,15 @@ function createBackstageSecret {
   fi
   if [ -n "$GITHUB_CLIENT_SECRET" ]; then
     secretKeys[GITHUB_CLIENT_SECRET]=$GITHUB_CLIENT_SECRET
+  fi
+  if [ -n "$NOTIFICATIONS_EMAIL_HOSTNAME" ] && [ "$SETUP_NOTIFICATIONS_EMAIL" = true ]; then
+    secretKeys[NOTIFICATIONS_EMAIL_HOSTNAME]=$NOTIFICATIONS_EMAIL_HOSTNAME
+  fi
+  if [ -n "$NOTIFICATIONS_EMAIL_USERNAME" ] && [ "$SETUP_NOTIFICATIONS_EMAIL" = true ]; then
+    secretKeys[NOTIFICATIONS_EMAIL_USERNAME]=$NOTIFICATIONS_EMAIL_USERNAME
+  fi
+  if [ -n "$NOTIFICATIONS_EMAIL_PASSWORD" ] && [ "$SETUP_NOTIFICATIONS_EMAIL" = true ]; then
+    secretKeys[NOTIFICATIONS_EMAIL_PASSWORD]=$NOTIFICATIONS_EMAIL_PASSWORD
   fi
   cmd="oc create secret generic backstage-backend-auth-secret -n rhdh-operator --from-literal=BACKEND_SECRET=$BACKEND_SECRET"
   for key in "${!secretKeys[@]}"; do
@@ -275,6 +328,12 @@ function main {
     captureGitToken
     captureGitClientId
     captureGitClientSecret
+    setupNotificationsEmailConfig
+    if $SETUP_NOTIFICATIONS_EMAIL; then
+      captureNotificationsEmailHostname
+      captureNotificationsEmailUsername
+      captureNotificationsEmailPassword
+    fi
     createBackstageSecret
   fi
   echo "Setup completed successfully!"
