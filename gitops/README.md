@@ -132,7 +132,7 @@ ssh-keyscan github.com > ssh/known_hosts
 ```console
 echo "Host github.com
   HostName github.com
-  IdentityFile ~/ssh/id_rsa" > ssh/config
+  IdentityFile ~/.ssh/id_rsa" > ssh/config
 ```
 
 - Create the secret that the Pipeline uses to store the SSH credentials:
