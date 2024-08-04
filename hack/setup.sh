@@ -197,7 +197,7 @@ function captureNotificationsEmailPassword {
 
 function setupNotificationsEmailConfig {
   if $use_default; then
-    SETUP_NOTIFICATIONS_EMAIL=true
+    SETUP_NOTIFICATIONS_EMAIL=false
   else
     echo "Setup a notifications email plugin?:"
     select yn in "Yes" "No"; do
