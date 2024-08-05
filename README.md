@@ -45,7 +45,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
   - Validated APIs are `tekton.dev/v1beta1/Task` and `tekton.dev/v1/Pipeline`
   - Requires ArgoCD installed since the manifests are deployed in the same namespace as the ArgoCD instance.
 
-  Remember to enable enable [argocd](https://github.com/parodos-dev/orchestrator-helm-chart/blob/145a6cb647253faa1e8d50fcaac75988f5807724/charts/orchestrator/values.yaml#L80) and [tekton](https://github.com/parodos-dev/orchestrator-helm-chart/blob/145a6cb647253faa1e8d50fcaac75988f5807724/charts/orchestrator/values.yaml#L77) in the `values.yaml` or, alternatively, enabled them via helm's setting flag in the CLI when installing the chart. Example:
+  Remember to enable [argocd](https://github.com/parodos-dev/orchestrator-helm-chart/blob/145a6cb647253faa1e8d50fcaac75988f5807724/charts/orchestrator/values.yaml#L80) and [tekton](https://github.com/parodos-dev/orchestrator-helm-chart/blob/145a6cb647253faa1e8d50fcaac75988f5807724/charts/orchestrator/values.yaml#L77) in the `values.yaml` or, alternatively, enabled them via helm's setting flag in the CLI when installing the chart. Example:
 
   ```console
   helm upgrade -i ... --set argocd.enabled=true --set tekton.enabled=true
