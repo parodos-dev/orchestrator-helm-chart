@@ -124,6 +124,9 @@ Run the following commands to wait until the services are ready:
   oc wait -n {{ .Values.rhdhOperator.subscription.namespace }} backstage backstage --for=condition=Deployed=True
   oc wait -n {{ .Values.rhdhOperator.subscription.namespace }} deploy/backstage-backstage --for=condition=Available {{ $timeout }}
 {{- end }}
+{{- if eq $sonataFlowPlatformInstalled $yes }}
+  oc get networkpolicy -n {{ $workflowNamespace }}
+{{- end }}
 
 In case of a CR deployment failure, check the logs of the pods created by the corresponding job to deploy the failed CRs instance. The jobs are always
 deleted after the deployment of the chart is completed.
