@@ -485,7 +485,8 @@
                         "installPlanApproval",
                         "name",
                         "source",
-                        "startingCSV"
+                        "startingCSV",
+                        "targetNamespace"
                     ],
                     "properties": {
                         "namespace": {
@@ -535,6 +536,14 @@
                             "examples": [
                                 ""
                             ]
+                        },
+                        "targetNamespace": {
+                            "type": "string",
+                            "default": "",
+                            "title": "The targetNamespace Schema",
+                            "examples": [
+                                "rhdh-operator"
+                            ]
                         }
                     },
                     "examples": [{
@@ -543,7 +552,8 @@
                         "installPlanApproval": "Automatic",
                         "name": "rhdh",
                         "source": "redhat-operators",
-                        "startingCSV": ""
+                        "startingCSV": "",
+                        "targetNamespace": "rhdh-operator"
                     }]
                 }
             },
@@ -582,7 +592,8 @@
                     "installPlanApproval": "Automatic",
                     "name": "rhdh",
                     "source": "redhat-operators",
-                    "startingCSV": ""
+                    "startingCSV": "",
+                    "targetNamespace": "rhdh-operator"
                 }
             }]
         },
@@ -1251,7 +1262,8 @@
                 "installPlanApproval": "Automatic",
                 "name": "rhdh",
                 "source": "redhat-operators",
-                "startingCSV": ""
+                "startingCSV": "",
+                "targetNamespace": "rhdh-operator"
             }
         },
         "rhdhPlugins": {
