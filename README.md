@@ -210,6 +210,41 @@ In addition to the [prerequisites](https://github.com/parodos-dev/orchestrator-h
 - `Tekton/OpenShift Pipelines` operator
   - Validated APIs are `tekton.dev/v1beta1/Task` and `tekton.dev/v1/Pipeline`
 
+### Additional Workflow Namespaces
+
+If you want to deploy workflows on other namespaces, make sure you follow these steps:
+
+ - For the cluster Sonataflow services to accept the traffic from the workflows, set this label:
+   ```console
+      oc label ns my-additional-workflow-ns rhdh.redhat.com/workflow-namespace=""
+   ```
+
+ - Set a network policy to allow only RHDH and Sonatflow services traffic. Taken from the `charts/orchestrator/templates/network-policy.yaml`
+
+   ```console
+      oc create -f <<EOF
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: allow-rhdh-to-sonataflow-and-workflows
+        # Sonataflow and Workflows are using the same namespace.
+        namespace: my-additional-workflow-ns
+      spec:
+        podSelector: {}
+        ingress:
+          - from:
+            - namespaceSelector:
+                matchLabels:
+                  # Allow RHDH namespace to communicate with workflows and sonataflow services, see the chart for the default value
+                  kubernetes.io/metadata.name: rhdh-operator
+            - namespaceSelector:
+                matchLabels:
+                  # Allow any other namespace the has workflows deployed because this is where
+                  # this namespace contains the sonataflow services
+                  rhdh.redhat.com/workflow-namespace: ""
+      EOF
+   ```
+
 ### GitOps environment
 
 See the dedicated [document](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/GitOps.md)
