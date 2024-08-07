@@ -284,10 +284,7 @@ data:
         package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.signalsBackend.package }}"
         integrity: {{ .Values.rhdhPlugins.signalsBackend.integrity }}
   {{- if and .Values.rhdhPlugins.notificationsEmail.enabled
-        ( and
-            (and (.Values.rhdhOperator.secretRef.notificationsEmail.hostname) (dig "data" .Values.rhdhOperator.secretRef.notificationsEmail.hostname "" $secret ) )
-            (and (.Values.rhdhOperator.secretRef.notificationsEmail.username) (.Values.rhdhOperator.secretRef.notificationsEmail.password) )
-        )
+        ( and (.Values.rhdhOperator.secretRef.notificationsEmail.hostname) (dig "data" .Values.rhdhOperator.secretRef.notificationsEmail.hostname "" $secret ) )
   }}
       - disabled: false
         package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notificationsEmail.package }}"
@@ -301,10 +298,16 @@ data:
                    hostname: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.hostname }}
                    port: {{ .Values.rhdhPlugins.notificationsEmail.port }}
                    secure: false
+                {{- if .Values.rhdhOperator.secretRef.notificationsEmail.username }}
                    username: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.username }}
+                {{- end}}
+                {{- if .Values.rhdhOperator.secretRef.notificationsEmail.password }}
                    password: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.password }}
+                {{- end}}
                  sender: {{ .Values.rhdhPlugins.notificationsEmail.sender }}
+                {{- if .Values.rhdhPlugins.notificationsEmail.replyTo }}
                  replyTo: {{ .Values.rhdhPlugins.notificationsEmail.replyTo }}
+                {{- end}}
                  concurrencyLimit: 10
                  cache:
                    ttl:
