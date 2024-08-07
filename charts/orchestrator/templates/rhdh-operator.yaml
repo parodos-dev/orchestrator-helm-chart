@@ -291,27 +291,29 @@ data:
         integrity: {{ .Values.rhdhPlugins.notificationsEmail.integrity }}
         pluginConfig:
           notifications:
-             processors:
-               email:
-                 transportConfig:
-                   transport: smtp
-                   hostname: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.hostname }}
-                   port: {{ .Values.rhdhPlugins.notificationsEmail.port }}
-                   secure: false
+            processors:
+              email:
+                transportConfig:
+                  transport: smtp
+                  hostname: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.hostname }}
+                  port: {{ .Values.rhdhPlugins.notificationsEmail.port }}
+                  secure: false
                 {{- if .Values.rhdhOperator.secretRef.notificationsEmail.username }}
-                   username: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.username }}
+                  username: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.username }}
                 {{- end}}
                 {{- if .Values.rhdhOperator.secretRef.notificationsEmail.password }}
-                   password: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.password }}
+                  password: {{ printf "${%s}" .Values.rhdhOperator.secretRef.notificationsEmail.password }}
                 {{- end}}
-                 sender: {{ .Values.rhdhPlugins.notificationsEmail.sender }}
+                sender: {{ .Values.rhdhPlugins.notificationsEmail.sender }}
                 {{- if .Values.rhdhPlugins.notificationsEmail.replyTo }}
-                 replyTo: {{ .Values.rhdhPlugins.notificationsEmail.replyTo }}
+                replyTo: {{ .Values.rhdhPlugins.notificationsEmail.replyTo }}
                 {{- end}}
-                 concurrencyLimit: 10
-                 cache:
-                   ttl:
-                     days: 1
+                broadcastConfig:
+                  receiver: "none"
+                concurrencyLimit: 10
+                cache:
+                  ttl:
+                    days: 1
   {{- end }}
 ---
 apiVersion: v1
