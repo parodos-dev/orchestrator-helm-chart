@@ -101,6 +101,21 @@ data:
           user: ${POSTGRES_USER}
           host: ${POSTGRES_HOST}
           port: ${POSTGRES_PORT}
+      {{- if and .Values.argocd.enabled
+            ( and
+                (and (.Values.rhdhOperator.secretRef.argocd.url) (dig "data" .Values.rhdhOperator.secretRef.argocd.url "" $secret ) )
+                (and (.Values.rhdhOperator.secretRef.argocd.username) (dig "data" .Values.rhdhOperator.secretRef.argocd.password "" $secret) )
+            )
+      }}
+      argocd:
+        appLocatorMethods:
+        - instances:
+          - name: main
+            url: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.url }}
+            username: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.username }}
+            password: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.password }}
+          type: config
+      {{- end }}
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -182,52 +197,12 @@ data:
         )
   }}
       - disabled: false
-        package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd-backend-dynamic
-        pluginConfig:
-          argocd:
-            appLocatorMethods:
-            - instances:
-              - name: main
-                url: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.url }}
-                username: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.username }}
-                password: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.password }}
-              type: config
+        package: ./dynamic-plugins/dist/janus-idp-backstage-plugin-argocd
       - disabled: false
-        package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd
-        pluginConfig:
-          dynamicPlugins:
-            frontend:
-              roadiehq.backstage-plugin-argo-cd:
-                mountPoints:
-                  - mountPoint: entity.page.overview/cards
-                    importName: EntityArgoCDOverviewCard
-                    config:
-                      layout:
-                        gridColumnEnd:
-                          lg: "span 8"
-                          xs: "span 12"
-                      if:
-                        allOf:
-                          - isArgocdAvailable
-                  - mountPoint: entity.page.cd/cards
-                    importName: EntityArgoCDHistoryCard
-                    config:
-                      layout:
-                        gridColumn: "1 / -1"
-                      if:
-                        allOf:
-                          - isArgocdAvailable
+        package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd-backend-dynamic
       - disabled: false
         package: ./dynamic-plugins/dist/roadiehq-scaffolder-backend-argocd-dynamic
-        pluginConfig:
-          argocd:
-            appLocatorMethods:
-            - instances:
-              - name: main
-                url: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.url }}
-                username: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.username }}
-                password: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.password }}
-              type: config
+      - disabled: false
   {{- end }}
       - disabled: false
         package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestratorBackend.package }}"
