@@ -57,7 +57,7 @@ rhdhPlugins: # RHDH plugins required for the Orchestrator
   scope: "@janus-idp"
   orchestrator:
     package: "backstage-plugin-orchestrator@1.17.0"
-    integrity: sha512-uxkNFS/4nkVM6FRq0Uvnznvxcm/3MNdh11R6sRsbmKCP4KF4N9T2GF4lgfD7J+p7EuGMD4UFnjKjaR77v0NGaQ==
+    integrity: sha512-f/XBL1prZWrnv3ckZNzaiRVOlGpc0jHn7RAHHndhuKRh0Hlzfsmxvs31+hBljE4aLXi6wBwm8iOn604JfiMsTA==
   orchestratorBackend:
     package: "backstage-plugin-orchestrator-backend-dynamic@1.16.0"
     integrity: sha512-pQzJpl+BzM1vXmogPo+IJvFLTcWeKjStpQrypHgPglfQgMWkywyU/WWyWXjkEZfFTB+S7jARzemc4rkJx/2zjQ==
