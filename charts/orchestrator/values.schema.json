@@ -224,6 +224,7 @@
                 "isReleaseCandidate",
                 "enabled",
                 "enableGuestProvider",
+                "catalogBranch",
                 "secretRef",
                 "subscription"
             ],
@@ -250,6 +251,14 @@
                     "title": "The enableGuestProvider Schema",
                     "examples": [
                         false
+                    ]
+                },
+                "catalogBranch": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The catalogBranch Schema",
+                    "examples": [
+                        "main"
                     ]
                 },
                 "secretRef": {
@@ -561,6 +570,7 @@
                 "isReleaseCandidate": false,
                 "enabled": true,
                 "enableGuestProvider": false,
+                "catalogBranch": "main",
                 "secretRef": {
                     "name": "backstage-backend-auth-secret",
                     "backstage": {
@@ -1231,6 +1241,7 @@
             "isReleaseCandidate": false,
             "enabled": true,
             "enableGuestProvider": false,
+            "catalogBranch": "main",
             "secretRef": {
                 "name": "backstage-backend-auth-secret",
                 "backstage": {
