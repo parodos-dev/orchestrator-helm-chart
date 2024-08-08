@@ -202,7 +202,7 @@ data:
                     module: OrchestratorPlugin
                     path: /orchestrator
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notifications.package }}"
+        package: "{{ .Values.rhdhPlugins.notifications.package }}"
         integrity: {{ .Values.rhdhPlugins.notifications.integrity }}
         pluginConfig:
           dynamicPlugins:
@@ -218,23 +218,23 @@ data:
                       importName: NotificationsSidebarItem
                     path: /notifications
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.signals.package }}"
+        package: "{{ .Values.rhdhPlugins.signals.package }}"
         integrity: {{ .Values.rhdhPlugins.signals.integrity }}
         pluginConfig:
           dynamicPlugins:
             frontend:
               redhat.plugin-signals: {}
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notificationsBackend.package }}"
+        package: "{{ .Values.rhdhPlugins.notificationsBackend.package }}"
         integrity: {{ .Values.rhdhPlugins.notificationsBackend.integrity }}
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.signalsBackend.package }}"
+        package: "{{ .Values.rhdhPlugins.signalsBackend.package }}"
         integrity: {{ .Values.rhdhPlugins.signalsBackend.integrity }}
   {{- if and .Values.rhdhPlugins.notificationsEmail.enabled
         ( and (.Values.rhdhOperator.secretRef.notificationsEmail.hostname) (dig "data" .Values.rhdhOperator.secretRef.notificationsEmail.hostname "" $secret ) )
   }}
       - disabled: false
-        package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.notificationsEmail.package }}"
+        package: "{{ .Values.rhdhPlugins.notificationsEmail.package }}"
         integrity: {{ .Values.rhdhPlugins.notificationsEmail.integrity }}
         pluginConfig:
           notifications:
