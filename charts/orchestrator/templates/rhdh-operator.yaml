@@ -101,21 +101,21 @@ data:
           user: ${POSTGRES_USER}
           host: ${POSTGRES_HOST}
           port: ${POSTGRES_PORT}
-      {{- if and .Values.argocd.enabled
-            ( and
-                (and (.Values.rhdhOperator.secretRef.argocd.url) (dig "data" .Values.rhdhOperator.secretRef.argocd.url "" $secret ) )
-                (and (.Values.rhdhOperator.secretRef.argocd.username) (dig "data" .Values.rhdhOperator.secretRef.argocd.password "" $secret) )
-            )
-      }}
-      argocd:
-        appLocatorMethods:
-        - instances:
-          - name: main
-            url: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.url }}
-            username: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.username }}
-            password: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.password }}
-          type: config
-      {{- end }}
+    {{- if and .Values.argocd.enabled
+          ( and
+              (and (.Values.rhdhOperator.secretRef.argocd.url) (dig "data" .Values.rhdhOperator.secretRef.argocd.url "" $secret ) )
+              (and (.Values.rhdhOperator.secretRef.argocd.username) (dig "data" .Values.rhdhOperator.secretRef.argocd.password "" $secret) )
+          )
+    }}
+    argocd:
+      appLocatorMethods:
+      - instances:
+        - name: main
+          url: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.url }}
+          username: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.username }}
+          password: {{ printf "${%s}" .Values.rhdhOperator.secretRef.argocd.password }}
+        type: config
+    {{- end }}
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -151,43 +151,16 @@ data:
             clusterLocatorMethods:
               - type: 'config'
                 clusters:
-                  - name: 'OpenShift Orchestrator Demo'
+                  - name: 'Default Cluster'
                     url: {{ printf "${%s}" .Values.rhdhOperator.secretRef.k8s.clusterUrl }}
                     authProvider: 'serviceAccount'
                     skipTLSVerify: true
                     serviceAccountToken: {{ printf "${%s}" .Values.rhdhOperator.secretRef.k8s.clusterToken }}
       - package: ./dynamic-plugins/dist/backstage-plugin-kubernetes
         disabled: false
-        pluginConfig:
-          dynamicPlugins:
-            frontend:
-              backstage.plugin-kubernetes:
-                mountPoints:
-                  - mountPoint: entity.page.kubernetes/cards
-                    importName: EntityKubernetesContent
-                    config:
-                      layout:
-                        gridColumn: "1 / -1"
-                      if:
-                        anyOf:
-                          - hasAnnotation: backstage.io/kubernetes-id
-                          - hasAnnotation: backstage.io/kubernetes-namespace
     {{- if .Values.tekton.enabled }}
       - package: ./dynamic-plugins/dist/janus-idp-backstage-plugin-tekton
         disabled: false
-        pluginConfig:
-          dynamicPlugins:
-            frontend:
-              janus-idp.backstage-plugin-tekton:
-                mountPoints:
-                  - mountPoint: entity.page.ci/cards
-                    importName: TektonCI
-                    config:
-                      layout:
-                        gridColumn: "1 / -1"
-                      if:
-                        allOf:
-                          - isTektonCIAvailable
     {{- end }}
   {{- end }}
   {{- if and .Values.argocd.enabled
@@ -202,7 +175,6 @@ data:
         package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd-backend-dynamic
       - disabled: false
         package: ./dynamic-plugins/dist/roadiehq-scaffolder-backend-argocd-dynamic
-      - disabled: false
   {{- end }}
       - disabled: false
         package: "{{ .Values.rhdhPlugins.scope }}/{{ .Values.rhdhPlugins.orchestratorBackend.package }}"
@@ -347,7 +319,7 @@ data:
           target: https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/resources/users.yaml
       {{- end }}
         - type: url
-          target: https://github.com/parodos-dev/workflow-software-templates/{{ .Values.rhdhOperator.catalogBranch }}/main/entities/workflow-resources.yaml
+          target: https://github.com/parodos-dev/workflow-software-templates/blob/{{ .Values.rhdhOperator.catalogBranch }}/entities/workflow-resources.yaml
         - type: url
           target: https://github.com/parodos-dev/workflow-software-templates/blob/{{ .Values.rhdhOperator.catalogBranch }}/scaffolder-templates/basic-workflow/template.yaml
         - type: url
