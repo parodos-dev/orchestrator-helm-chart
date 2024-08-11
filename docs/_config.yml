@@ -1,3 +1,4 @@
 theme: jekyll-theme-cayman
 name: Orchestrator Helm Repository
 description: Orchestrator Helm Repository
+markdown: GFM
