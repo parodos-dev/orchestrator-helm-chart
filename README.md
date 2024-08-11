@@ -228,52 +228,88 @@ Follow Helm Chart installation instructions [here](https://docs.openshift.com/co
 
 ### Additional Workflow Namespaces
 
-If you want to deploy workflows on other namespaces, make sure you follow these steps:
- - To allow cluster Sonataflow services to accept traffic from workflows, set this label in the desired workflow: 
+When deploying a workflow in a namespace different from where Sonataflow services are running (e.g., sonataflow-infra), several essential steps must be followed:
+
+1. **Label the Workflow Namespace:**
+  To allow Sonataflow services to accept traffic from workflows, apply the following label to the desired workflow namespace:
    ```console
       oc label ns $ADDITIONAL_NAMESPACE rhdh.redhat.com/workflow-namespace=""
    ```
- - Check the namespace of where RHDH is running according to their CR
+2. **Identify the RHDH Namespace:**
+   Retrieve the namespace where RHDH is running by executing:
    ```console
       oc get backstage -A
    ```
-   Store the value  in `RHDH_NAMESPACE`
-
- - Check the namespace of where Sonataflow services are deployed
+   Store the namespace value in RHDH_NAMESPACE.
+3. **Identify the Sonataflow Services Namespace:**
+   Check the namespace where Sonataflow services are deployed:
    ```console
       oc get sonataflowclusterplatform -A
    ```
-   If there's no cluster platform most likely you use a namespaces platform:
+   If there is no cluster platform, check for a namespace-specific platform:
    ```console
-      oc get sfp -A
+      oc get sonataflowplatform -A
    ```
+   Store the namespace value in SONATAFLOW_PLATFORM_NAMESPACE.
 
-   Store the value  in `SONATAFLOW_PLATFORM_NAMESPACE`
-
- - Set a network policy to allow only RHDH and Sonatflow services traffic. Taken from the `charts/orchestrator/templates/network-policy.yaml`
+4. **Set Up Network Policy:**
+   Configure a network policy to allow traffic only between RHDH, Sonataflow services, and the workflows. The policy can be derived from the charts/orchestrator/templates/network-policy.yaml file:
 
    ```console
-      oc create -f <<EOF
-      apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: allow-rhdh-to-sonataflow-and-workflows
-        # Sonataflow and Workflows are using the same namespace.
-        namespace: $ADDITIONAL_NAMESPACE
-      spec:
-        podSelector: {}
-        ingress:
-          - from:
-            - namespaceSelector:
-                matchLabels:
-                  # Allow RHDH namespace to communicate with workflows.
-                  kubernetes.io/metadata.name: $RHDH_NAMESPACE
-            - namespaceSelector:
-                matchLabels:
-                  # Allow Sonataflow services to communicate with workflows. 
-                  kubernetes.io/metadata.name: $SONATAFLOW_PLATFORM_NAMESPACE 
-      EOF
+   oc create -f <<EOF
+   apiVersion: networking.k8s.io/v1
+   kind: NetworkPolicy
+   metadata:
+     name: allow-rhdh-to-sonataflow-and-workflows
+     # Sonataflow and Workflows are using the same namespace.
+     namespace: $ADDITIONAL_NAMESPACE
+   spec:
+     podSelector: {}
+     ingress:
+       - from:
+         - namespaceSelector:
+             matchLabels:
+               # Allow RHDH namespace to communicate with workflows.
+               kubernetes.io/metadata.name: $RHDH_NAMESPACE
+         - namespaceSelector:
+             matchLabels:
+               # Allow Sonataflow services to communicate with workflows.
+               kubernetes.io/metadata.name: $SONATAFLOW_PLATFORM_NAMESPACE
+   EOF
    ```
+5. **Ensure Persistence for the Workflow:**
+  If persistence is required, follow these steps:
+  * **Create a PostgreSQL Secret:**
+    The workflow needs its own schema in PostgreSQL. Create a secret containing the PostgreSQL credentials in the workflow's namespace:
+    ```
+    oc get secret sonataflow-psql-postgresql -n sonataflow-infra -o yaml > secret.yaml
+    sed -i '/namespace: sonataflow-infra/d' secret.yaml
+    oc apply -f secret.yaml -n $ADDITIONAL_NAMESPACE
+    ```
+  * **Configure the Namespace Attribute:**
+    Add the namespace attribute under the `serviceRef` property where the PostgreSQL server is deployed.
+    ```yaml
+    apiVersion: sonataflow.org/v1alpha08
+    kind: SonataFlow
+      ...
+    spec:
+      ...
+      persistence:
+        postgresql:
+          secretRef:
+            name: sonataflow-psql-postgresql
+            passwordKey: postgres-password
+            userKey: postgres-username
+          serviceRef:
+            databaseName: sonataflow
+            databaseSchema: greeting
+            name: sonataflow-psql-postgresql
+            namespace: $POSTGRESQL_NAMESPACE
+            port: 5432
+    ```
+    Replace POSTGRESQL_NAMESPACE with the namespace where the PostgreSQL server is deployed.
+
+By following these steps, the workflow will have the necessary credentials to access PostgreSQL and will correctly reference the service in a different namespace.
 
 ### GitOps environment
 
