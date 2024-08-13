@@ -15,6 +15,21 @@ function captureSetupNewRHDHDeployment {
   fi
 }
 
+function captureRHDHNamespace {
+  default="rhdh-operator"
+  if [ "$use_default" == true ]; then
+    rhdh_workspace="$default"
+  else
+    read -p "Enter RHDH Operator namespace (default: $default): " value
+    if [ -z "$value" ]; then
+        rhdh_workspace="$default"
+    else
+        rhdh_workspace="$value"
+    fi
+  fi
+  RHDH_NAMESPACE=$rhdh_workspace
+}
+
 function captureWorkflowNamespace {
   default="sonataflow-infra"
   if [ "$use_default" == true ]; then
@@ -219,8 +234,8 @@ function checkPrerequisite {
 }
 
 function createBackstageSecret {
-  if 2>/dev/null 1>&2 oc get secret backstage-backend-auth-secret -n rhdh-operator; then
-    oc delete secret backstage-backend-auth-secret -n rhdh-operator
+  if 2>/dev/null 1>&2 oc get secret backstage-backend-auth-secret -n $RHDH_NAMESPACE; then
+    oc delete secret backstage-backend-auth-secret -n $RHDH_NAMESPACE
   fi
   declare -A secretKeys
   if [ -n "$K8S_CLUSTER_URL" ]; then
@@ -256,7 +271,7 @@ function createBackstageSecret {
   if [ -n "$NOTIFICATIONS_EMAIL_PASSWORD" ] && [ "$SETUP_NOTIFICATIONS_EMAIL" = true ]; then
     secretKeys[NOTIFICATIONS_EMAIL_PASSWORD]=$NOTIFICATIONS_EMAIL_PASSWORD
   fi
-  cmd="oc create secret generic backstage-backend-auth-secret -n rhdh-operator --from-literal=BACKEND_SECRET=$BACKEND_SECRET"
+  cmd="oc create secret generic backstage-backend-auth-secret -n $RHDH_NAMESPACE --from-literal=BACKEND_SECRET=$BACKEND_SECRET"
   for key in "${!secretKeys[@]}"; do
     cmd="${cmd} --from-literal=${key}=${secretKeys[$key]}"
   done
@@ -336,6 +351,7 @@ function main {
       captureNotificationsEmailUsername
       captureNotificationsEmailPassword
     fi
+    captureRHDHNamespace
     createBackstageSecret
   fi
   echo "Setup completed successfully!"
