@@ -1,4 +1,4 @@
-name: Release Orchestrator Charts
+name: Orchestrator-k8s - orchestrator plugins
 
 on:
   workflow_dispatch:
