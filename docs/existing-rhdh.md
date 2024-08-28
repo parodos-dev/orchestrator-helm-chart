@@ -1,8 +1,59 @@
 **Please note - this document refers to RC builds and supported by RHDH-1.2 only**, the content will be updated once plugins are released as GA.
 
-In an RHDH installation, there are two primary ConfigMaps that require modification, typically found under the *rhdh-operator* namespaces:
+# Prerequisites
+- RHDH instance deployed with IDP configured (github, gitlab,...)
+- For using the Orchestrator's [software templates](https://github.com/parodos-dev/workflow-software-templates/tree/v1.2.x), OpenShift Gitops (ArgoCD) and OpenShift Pipelines (Tekton) should be installed and configured in RHDH (to enhance the CI/CD plugins)
+- A secret in RHDH's namespace name `dynamic-plugins-npmrc` that points to the plugins npm registry (details will be provided below)
 
-* *dynamic-plugins* ConfigMap: This ConfigMap houses the configuration for enabling and configuring dynamic plugins. To incorporate the orchestrator plugins, append the following configuration to the *dynamic-plugins* ConfigMap:
+# Installation steps
+
+## Install the Orchestrator Operator
+In 1.2, the Orchestrator infrastructure is being installe using the orchestrator-operator.
+- Install the orchestrator-operator from the OperatorHub.
+- Create orchestrator resource (operand) instance - ensure `rhdhOperator: enabled: False` is set, e.g.
+  ```
+  spec:
+    orchestrator:
+      namespace: sonataflow-infra
+      sonataflowPlatform:
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 64Mi
+    postgres:
+      authSecret:
+        name: sonataflow-psql-postgresql
+        passwordKey: postgres-password
+        userKey: postgres-username
+      database: sonataflow
+      serviceName: sonataflow-psql-postgresql
+      serviceNamespace: sonataflow-infra
+    rhdhOperator:
+      enabled: false
+  ```
+
+## Edit RHDH configuration
+As part of RHDH deployed resources, there are two primary ConfigMaps that require modification, typically found under the *rhdh-operator* namespaces, or located in the same namespace as the Backstage CR.
+Before enabling the Orchestrator and Notifications plugins, pls ensure a secret that points to the target npmjs registry exists in the same RHDH namespace, e.g.:
+```
+cat <<EOF | oc apply -n $RHDH_NAMESPACE -f -
+apiVersion: v1
+data:
+  .npmrc: cmVnaXN0cnk9aHR0cHM6Ly9ucG0ucmVnaXN0cnkucmVkaGF0LmNvbQo=
+kind: Secret
+metadata:
+  name: dynamic-plugins-npmrc
+  namespace: rhdh-operator
+EOF
+```
+The value of `.data.npmrc` points to https://npm.registry.redhat.com.
+For testing RC plugin versions, update to `cmVnaXN0cnk9aHR0cHM6Ly9ucG0uc3RhZ2UucmVnaXN0cnkucmVkaGF0LmNvbQo=` (points to https://npm.stage.registry.redhat.com and can be accessed internally).
+
+### dynamic-plugins ConfigMap
+This ConfigMap houses the configuration for enabling and configuring dynamic plugins. To incorporate the orchestrator plugins, append the following configuration to the **dynamic-plugins** ConfigMap:
 
 ```yaml
   - disabled: false
@@ -40,7 +91,11 @@ When installed by the Helm chart, it should point to `http://sonataflow-platform
 oc get svc -n sonataflow-infra sonataflow-platform-data-index-service -o jsonpath='http://{.metadata.name}.{.metadata.namespace}'
 ```
 
-* **-app-config* ConfigMap: This ConfigMap used for configuring backstage. Please add/modify to include the following:
+### app-config ConfigMap
+This ConfigMap used for configuring backstage. Please add/modify to include the following:
+- A static access token (or a different method based on this [doc](https://backstage.io/docs/auth/service-to-service-auth/) to enable the workflows to send notifications to RHDH or to invoke scaffolder actions.
+- Define csp and cors
+  
 ```yaml
 app:
   backend:
@@ -131,9 +186,15 @@ For the `*-app-config` ConfigMap add the database configuration if isn't already
 If persistence is enabled (which should be the default setting), ensure that the PostgreSQL environment variables are accessible.
 The RHDH instance will be restarted automatically on ConfigMap changes.
 
-To import the Orchestrator software templates into the catalog via the Backstage UI, follow the instructions outlined in this [document](https://backstage.io/docs/features/software-templates/adding-templates). Register new templates into the catalog from the specified [source](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/charts/orchestrator/templates/rhdh-operator.yaml#L359)
-
+### Import Orchestrator's software templates
+To import the Orchestrator software templates into the catalog via the Backstage UI, follow the instructions outlined in this [document](https://backstage.io/docs/features/software-templates/adding-templates). 
+Register new templates into the catalog from the
+- [Workflow resources (group and system)](https://github.com/parodos-dev/workflow-software-templates/blob/v1.2.x/entities/workflow-resources.yaml) (optional)
+- [Basic template](https://github.com/parodos-dev/workflow-software-templates/blob/v1.2.x/scaffolder-templates/basic-workflow/template.yaml)
+- [Complex template - workflow with custom Java code](https://github.com/parodos-dev/workflow-software-templates/blob/v1.2.x/scaffolder-templates/complex-assessment-workflow/template.yaml)
+          
 ## Upgrade plugin versions - WIP
+**NOTE** This section is still **WIP** since there are additional plugins related to the notification that haven't yet been published.
 
 To perform an upgrade of the plugin versions, start by acquiring the new plugin version along with its associated integrity value.
 In the future, this section will be updated to reference the Red Hat NPM registry. However, at present, it directs to @janus-idp NPM packages on https://registry.npmjs.com.
@@ -143,42 +204,41 @@ The following script is useful to obtain the required information for updating t
 #!/bin/bash
 
 PLUGINS=(
-  "@janus-idp/plugin-notifications"
-  "@janus-idp/plugin-notifications-backend-dynamic"
-  "@janus-idp/backstage-plugin-orchestrator"
-  "@janus-idp/backstage-plugin-orchestrator-backend-dynamic"
+  "@redhat/backstage-plugin-orchestrator"
+  "@redhat/backstage-plugin-orchestrator-backend-dynamic"
+  "@redhat/plugin-notifications-dynamic"
+  "@redhat/plugin-notifications-backend-dynamic"
+  "@redhat/plugin-notifications-backend-module-email-dynamic"
+  "@redhat/plugin-signals-backend-dynamic"
+  "@redhat/plugin-signals-dynamic"
 )
 
 for PLUGIN_NAME in "${PLUGINS[@]}"
 do
-    echo "Processing plugin: $PLUGIN_NAME"
-    curl -s -q "https://registry.npmjs.com/${PLUGIN_NAME}" | \
-    jq -r '.versions | keys_unsorted[-1] as $latest_version | .[$latest_version] | "\(.name)\n\(.version)\n\(.dist.integrity)"'
-    echo
+     echo "Retriving latest version for plugin: $PLUGIN_NAME\n";
+     curl -s -q "https://npm.registry.redhat.com/${PLUGIN_NAME}/" | jq -r '.versions | keys_unsorted[-1] as $latest_version | .[$latest_version] | "package: \"\(.name)@\(.version)\"\nintegrity: \(.dist.integrity)"';     
+     echo "---"
 done
 ```
 
 A sample output should look like:
 ```
-Processing plugin: @janus-idp/plugin-notifications
-@janus-idp/plugin-notifications
-1.1.12
-sha512-GCdEuHRQek3ay428C8C4wWgxjNpNwCXgIdFbUUFGCLLkBFSaOEw+XaBvWaBGtQ5BLgE3jQEUxa+422uzSYC5oQ==
-
-Processing plugin: @janus-idp/plugin-notifications-backend-dynamic
-@janus-idp/plugin-notifications-backend-dynamic
-1.3.6
-sha512-Qd8pniy1yRx+x7LnwjzQ6k9zP+C1yex24MaCcx7dGDPT/XbTokwoSZr4baSSn8jUA6P45NUUevu1d629mG4JGQ==
-
-Processing plugin: @janus-idp/backstage-plugin-orchestrator
-@janus-idp/backstage-plugin-orchestrator
-1.7.8
-sha512-wJtu4Vhx3qjEiTe/i0Js2Jc0nz8B3ZIImJdul02KcyKmXNSKm3/rEiWo6AKaXUk/giRYscZQ1jTqlw/nz7xqeQ==
-
-Processing plugin: @janus-idp/backstage-plugin-orchestrator-backend-dynamic
-@janus-idp/backstage-plugin-orchestrator-backend-dynamic
-1.5.3
-sha512-l1MJIrZeXp9nOQpxFF5cw1ItOgA/p4xhGjKN12sg4Re8GC1qL+5hik+lA1BjMxAN6nKGWsLdFkgqLWa6jQuQFw==
+Retriving latest version for plugin: @redhat/plugin-notifications\n
+package: "@redhat/plugin-notifications@1.0.0"
+integrity: sha512-t+cnwKOfqJJqbgZIMjJ1Hzr1mqHft619QoK5bF7c8TuQGUjQR0NtaIFWUNhR1JFlE4oQz0NDaAgBnDwtjMk9qA==
+---
+Retriving latest version for plugin: @redhat/plugin-notifications-backend-dynamic\n
+package: "@redhat/plugin-notifications-backend-dynamic@1.0.0"
+integrity: sha512-o4GFXmQu6uUXbCDukXHahZ37sfQQYM92pL3LhkXO5aYKudITKzlv6lEZnb9zO9Rnr3U0LD7ytFzks51EfXssXw==
+---
+Retriving latest version for plugin: @redhat/backstage-plugin-orchestrator\n
+package: "@redhat/backstage-plugin-orchestrator@1.0.0"
+integrity: sha512-CuYYR7v2O8EVoI1FA7usidzUPp1N5OOKDkIvhDRPf4I7BxgDCWLqW7rBQ4Z7qBXfpeYJrQOxInc0E2xWEat8JA==
+---
+Retriving latest version for plugin: @redhat/backstage-plugin-orchestrator-backend-dynamic\n
+package: "@redhat/backstage-plugin-orchestrator-backend-dynamic@1.0.0"
+integrity: sha512-l0g3T/a1NxX9JogTesZAdUzpNhHQaPxRwki15HWny9GlXCELAx+ta0UC3afsHy6Jp2wOn1prlW0ZuXuc7Ncb0g==
+---
 ```
 
 After editing the version and integrity values in the *dynamic-plugins* ConfigMap, restart the Backstage instance for changes to take effect.
