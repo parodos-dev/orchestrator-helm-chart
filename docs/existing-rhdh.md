@@ -241,6 +241,6 @@ integrity: sha512-l0g3T/a1NxX9JogTesZAdUzpNhHQaPxRwki15HWny9GlXCELAx+ta0UC3afsHy
 ---
 ```
 
-After editing the version and integrity values in the *dynamic-plugins* ConfigMap, restart the Backstage instance for changes to take effect.
+After editing the version and integrity values in the *dynamic-plugins* ConfigMap, the RHDH instance will be restarted automatically.
 
-https://github.com/parodos-dev/orchestrator-helm-chart/blob/stable-1.x/charts/orchestrator/templates/rhdh-operator.yaml#L159
+
