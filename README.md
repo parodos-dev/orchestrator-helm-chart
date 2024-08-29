@@ -1,3 +1,12 @@
+
+> ## 📢 **Repository Notice**
+> 
+> This repository is now dedicated to maintaining the **stable-1.1.x** version of the Orchestrator, which is deployed using a Helm chart.
+> 
+> ⚠️ **Important:** The installation method for **Orchestrator 1.2.x** has been changed to be operator-based. Development for this version now happens in the [Orchestrator Helm Operator repository](https://github.com/parodos-dev/orchestrator-helm-operator).
+> 
+> Additionally, this repository will continue to be the home for developing the **orchestrator-k8s Helm chart**.
+
 # Orchestrator Helm Chart
 This repository contains the Helm chart for deploying the Orchestrator solution suite.
 
