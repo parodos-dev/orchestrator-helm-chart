@@ -33,7 +33,7 @@ backstage:
       - dynamic-plugins.default.yaml
       plugins:
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.16.1"
+        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.21.0"
         integrity: sha512-rdTBb0PWZlJh63raLUvhriP/Dexc4z5XOcBOjWTa9nNsvU9BQHkXHaAYkEhbE0g0842MkeEzWrXfedaOWNrx6g==
         pluginConfig:
           orchestrator:
@@ -42,7 +42,7 @@ backstage:
             editor:
               path: https://sandbox.kie.org/swf-chrome-extension/0.32.0
       - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator@1.17.0"
+        package: "@janus-idp/backstage-plugin-orchestrator@1.22.0"
         integrity: sha512-f/XBL1prZWrnv3ckZNzaiRVOlGpc0jHn7RAHHndhuKRh0Hlzfsmxvs31+hBljE4aLXi6wBwm8iOn604JfiMsTA==
         pluginConfig:
           dynamicPlugins:
