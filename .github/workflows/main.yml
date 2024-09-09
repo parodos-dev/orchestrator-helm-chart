@@ -10,7 +10,14 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           gh pr comment -b " \
+            📢 Repository Notice \
+            This repository is now dedicated to maintaining the stable-1.1.x version of the Orchestrator, which is deployed using a Helm chart. \
+            \
+            ⚠️ Important: The installation method for Orchestrator 1.2.x has been changed to be operator-based. Development for this version now happens in the Orchestrator Helm Operator repository. \
+            \  
+            Additionally, this repository will continue to be the home for developing the orchestrator-k8s Helm chart. \
+            \
             If this change includes changes to the orchestrator helm chart, please \
-            close the PR and send it to https://parodos-dev/orchestrator-helm-operator"
+            close the PR and send it to https://parodos-dev/orchestrator-helm-operator instead" 
         env:
           GH_TOKEN: ${{ github.token }}
