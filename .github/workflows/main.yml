@@ -1,0 +1,15 @@
+on:
+  pull_request:
+    types:
+    - opened
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          gh pr comment -b " \
+            If this change includes changes to the orchestrator helm chart, please \
+            close the PR and send it to https://parodos-dev/orchestrator-helm-operator"
+        env:
+          GH_TOKEN: ${{ github.token }}
