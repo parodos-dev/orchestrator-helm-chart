@@ -7,6 +7,7 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - run: |
           gh pr comment -b " \
             If this change includes changes to the orchestrator helm chart, please \
