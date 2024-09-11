@@ -1,14 +1,11 @@
 global:
   host: localhost # Specify your own Ingress host
-
 appName: orchestrator
 serviceAccountName: orchestrator-sa
 labels:
   - app: orchestartor
-
 sonataflowOperator:
   image: quay.io/kiegroup/kogito-serverless-operator-nightly:latest
-
 postgresql-persistent:
   # depends on sonataflow-operator which still uses the ephemeral image.
   enabled: false
@@ -22,7 +19,6 @@ postgresql-persistent:
     port: 5432
   image:
     tag: "latest"
-
 backstage:
   route:
     # set to false for kubernetes
@@ -30,68 +26,64 @@ backstage:
   global:
     dynamic:
       includes:
-      - dynamic-plugins.default.yaml
+        - dynamic-plugins.default.yaml
       plugins:
-      - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.21.0"
-        integrity: sha512-rdTBb0PWZlJh63raLUvhriP/Dexc4z5XOcBOjWTa9nNsvU9BQHkXHaAYkEhbE0g0842MkeEzWrXfedaOWNrx6g==
-        pluginConfig:
-          orchestrator:
-            dataIndexService:
-              url: http://sonataflow-platform-data-index-service
-            editor:
-              path: https://sandbox.kie.org/swf-chrome-extension/0.32.0
-      - disabled: false
-        package: "@janus-idp/backstage-plugin-orchestrator@1.22.0"
-        integrity: sha512-f/XBL1prZWrnv3ckZNzaiRVOlGpc0jHn7RAHHndhuKRh0Hlzfsmxvs31+hBljE4aLXi6wBwm8iOn604JfiMsTA==
-        pluginConfig:
-          dynamicPlugins:
-            frontend:
-              janus-idp.backstage-plugin-orchestrator:
-                appIcons:
-                - importName: OrchestratorIcon
-                  module: OrchestratorPlugin
-                  name: orchestratorIcon
-                dynamicRoutes:
-                - importName: OrchestratorPage
-                  menuItem:
-                    icon: orchestratorIcon
-                    text: Orchestrator
-                  module: OrchestratorPlugin
-                  path: /orchestrator
-
-      - disabled: false
-        package: "https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-notifications-dynamic-0.2.0.tgz"
-        integrity: sha512-juXCynHPSIYThJHh1ZfR+77kyAtla3vNOl1telUgC402KZCUoAVB+X3H4ZACWGZNvFQ8ySyVc5q/mE1MrCzW0g==
-        pluginConfig:
-          dynamicPlugins:
-            frontend:
-              backstage.plugin-notifications:
-                dynamicRoutes:
-                  - importName: NotificationsPage
-                    menuItem:
-                      config:
-                        props:
-                          titleCounterEnabled: true
-                          webNotificationsEnabled: false
-                      importName: NotificationsSidebarItem
-                    path: /notifications
-
-
-      - disabled: false
-        package: "https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-notifications-backend-dynamic-0.2.0.tgz"
-        integrity: sha512-QxIkZ7uX8CuCu9EUm8t0T0HOv9KT2AboMBwyr0Xu6Xa1I2U3E59YL5f5NQO9yVpidf+6rlV7qTCvJSn5MAQGnw==
-      - disabled: false
-        package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-signals-dynamic-0.0.5.tgz
-        integrity: sha512-QSDkIYPWjgzcBdt3Gvd7Omq472rMI4oy6x7vLTXVHpIzmWetJalaB6SH8dXxORCFqL6hb3ccJjPsn3rSV8+2Jw==
-        pluginConfig:
-          dynamicPlugins:
-            frontend:
-              backstage.plugin-signals: {}
-      - disabled: false
-        package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-signals-backend-dynamic-0.1.3.tgz
-        integrity: sha512-124+7o/wurgiWkSY5j/80SaauAX/3iVACIm+jR5g09r5QlKfO+GCCNuqhJ8xfbNT+bT6OeyWjPRJMkkjap0u4Q==
-
+        - disabled: false
+          package: "@janus-idp/backstage-plugin-orchestrator-backend-dynamic@1.22.2"
+          integrity: sha512-eaI6aAg8JAvNGwdTvXudoOKjfFnKygLScn6QP9hMvgt6pehtovYb1ZY/+nrym74Shl2OHEbygtxGQr8IH8z6fg==
+          pluginConfig:
+            orchestrator:
+              dataIndexService:
+                url: http://sonataflow-platform-data-index-service
+              editor:
+                path: https://sandbox.kie.org/swf-chrome-extension/0.32.0
+        - disabled: false
+          package: "@janus-idp/backstage-plugin-orchestrator@1.22.2"
+          integrity: sha512-BUxgmg+zT9eulBqWHQrgzfxVdAATRGMkW1CyILprCWCC3sED+f55QEXNp12xf9hnjSt6ERAU+uSJj0v4RZaAPA==
+          pluginConfig:
+            dynamicPlugins:
+              frontend:
+                janus-idp.backstage-plugin-orchestrator:
+                  appIcons:
+                    - importName: OrchestratorIcon
+                      module: OrchestratorPlugin
+                      name: orchestratorIcon
+                  dynamicRoutes:
+                    - importName: OrchestratorPage
+                      menuItem:
+                        icon: orchestratorIcon
+                        text: Orchestrator
+                      module: OrchestratorPlugin
+                      path: /orchestrator
+        - disabled: false
+          package: "https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-notifications-dynamic-0.2.0.tgz"
+          integrity: sha512-juXCynHPSIYThJHh1ZfR+77kyAtla3vNOl1telUgC402KZCUoAVB+X3H4ZACWGZNvFQ8ySyVc5q/mE1MrCzW0g==
+          pluginConfig:
+            dynamicPlugins:
+              frontend:
+                backstage.plugin-notifications:
+                  dynamicRoutes:
+                    - importName: NotificationsPage
+                      menuItem:
+                        config:
+                          props:
+                            titleCounterEnabled: true
+                            webNotificationsEnabled: false
+                        importName: NotificationsSidebarItem
+                      path: /notifications
+        - disabled: false
+          package: "https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-notifications-backend-dynamic-0.2.0.tgz"
+          integrity: sha512-QxIkZ7uX8CuCu9EUm8t0T0HOv9KT2AboMBwyr0Xu6Xa1I2U3E59YL5f5NQO9yVpidf+6rlV7qTCvJSn5MAQGnw==
+        - disabled: false
+          package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-signals-dynamic-0.0.5.tgz
+          integrity: sha512-QSDkIYPWjgzcBdt3Gvd7Omq472rMI4oy6x7vLTXVHpIzmWetJalaB6SH8dXxORCFqL6hb3ccJjPsn3rSV8+2Jw==
+          pluginConfig:
+            dynamicPlugins:
+              frontend:
+                backstage.plugin-signals: {}
+        - disabled: false
+          package: https://github.com/redhat-developer/rhdh-plugin-export-backstage-backstage/releases/download/v1.2.0/backstage-plugin-signals-backend-dynamic-0.1.3.tgz
+          integrity: sha512-124+7o/wurgiWkSY5j/80SaauAX/3iVACIm+jR5g09r5QlKfO+GCCNuqhJ8xfbNT+bT6OeyWjPRJMkkjap0u4Q==
   upstream:
     # TODO when setting this to false the secret is still referenced in the rhdh
     # deployment, looks like rhdh-backstage chart doesn't support excluding
@@ -102,15 +94,13 @@ backstage:
         resources:
           limits:
             ephemeral-storage: 2Gi
-
     ingress:
-      enabled: true  # Use Kubernetes Ingress instead of OpenShift Route
+      enabled: true # Use Kubernetes Ingress instead of OpenShift Route
     backstage:
       extraVolumes:
         - name: backstage-locations
           configMap:
             name: backstage-locations
-
         - name: dynamic-plugins-root
           ephemeral:
             volumeClaimTemplate:
@@ -121,8 +111,6 @@ backstage:
                   requests:
                     # -- Size of the volume that will contain the dynamic plugins. It should be large enough to contain all the plugins.
                     storage: 1Gi
-
-
         # Volume that will expose the `dynamic-plugins.yaml` file from the `dynamic-plugins` config map.
         # The `dynamic-plugins` config map is created by the helm chart from the content of the `global.dynamic` field.
         - name: dynamic-plugins
@@ -135,7 +123,6 @@ backstage:
             defaultMode: 420
             name: '{{ printf "%s-backstage-app-config" .Release.Name }}'
             optional: false
-
         # Optional volume that allows exposing the `.npmrc` file (through a `dynamic-plugins-npmrc` secret)
         # to be used when running `npm pack` during the dynamic plugins installation by the initContainer.
         - name: dynamic-plugins-npmrc
@@ -148,23 +135,18 @@ backstage:
       extraVolumeMounts:
         - name: backstage-locations
           mountPath: /opt/backstage/locations
-
         - mountPath: /opt/app-root/src/.npmrc.dynamic-plugins
           name: dynamic-plugins-npmrc
-
         - name: dynamic-plugins-root
           mountPath: /opt/app-root/src/dynamic-plugins-root
-
         - name: app-config
           readOnly: true
           mountPath: /opt/app-root/src/default.app-config.yaml
           subPath: default.app-config.yaml
-
         - name: dynamic-plugins
           readOnly: true
           mountPath: /opt/app-root/src/dynamic-plugins.yaml
           subPath: dynamic-plugins.yaml
-
       resources:
         limits:
           memory: 2Gi
@@ -172,12 +154,10 @@ backstage:
         requests:
           memory: 800Mi
           cpu: 200m
-
-      podSecurityContext:  # Vanilla Kubernetes doesn't feature OpenShift default SCCs with dynamic UIDs, adjust accordingly to the deployed image
+      podSecurityContext: # Vanilla Kubernetes doesn't feature OpenShift default SCCs with dynamic UIDs, adjust accordingly to the deployed image
         runAsUser: 1001
         runAsGroup: 1001
         fsGroup: 1001
-
       image:
         # use 1.2 till we get the CI working again and publishing upstream
         # versions of the orchestrtor and notification plugins
@@ -214,21 +194,9 @@ backstage:
             guest:
               dangerouslyAllowOutsideDevelopment: true
               userEntityRef: user:default/guest
-
         catalog:
           rules:
-            - allow:
-                [
-                  Component,
-                  System,
-                  Group,
-                  Resource,
-                  Location,
-                  Template,
-                  API,
-                  User,
-                  Domain,
-                ]
+            - allow: [Component, System, Group, Resource, Location, Template, API, User, Domain]
           locations:
             - target: https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml
               type: url
@@ -238,14 +206,10 @@ backstage:
               type: file
             - target: /opt/backstage/locations/workflow-resources.yaml
               type: file
-
           csp:
             script-src: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
             script-src-elem: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
             connect-src: ["'self'", 'http:', 'https:', 'data:']
-
         orchestrator:
           catalog:
             environment: development
-
-
