@@ -1440,6 +1440,27 @@ entries:
   orchestrator-k8s:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2024-09-11T12:59:24.180893127Z"
+    dependencies:
+    - name: backstage
+      repository: https://redhat-developer.github.io/rhdh-chart
+      version: 2.16.7
+    - condition: postgresql-persistent.enabled
+      name: postgresql-persistent
+      repository: https://sclorg.github.io/helm-charts
+      version: 0.0.3
+    description: 'Helm chart to deploy the Orchestrator solution suite on Kubernetes,
+      including Janus IDP backstage, SonataFlow Operator, Knative Eventing and Knative
+      Serving. '
+    digest: 77943e4beb48ccecf7e64e14baccf586e4410c69d185777436ec0be2250417e8
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: orchestrator-k8s
+    type: application
+    urls:
+    - https://github.com/parodos-dev/orchestrator-helm-chart/releases/download/orchestrator-k8s-0.3.11/orchestrator-k8s-0.3.11.tgz
+    version: 0.3.11
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2024-09-05T11:55:52.99965515Z"
     dependencies:
     - name: backstage
@@ -1705,4 +1726,4 @@ entries:
     urls:
     - https://github.com/parodos-dev/orchestrator-helm-chart/releases/download/orchestrator-k8s-0.3.0/orchestrator-k8s-0.3.0.tgz
     version: 0.3.0
-generated: "2024-09-05T11:55:52.999843771Z"
+generated: "2024-09-11T12:59:24.181179674Z"
