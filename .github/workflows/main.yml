@@ -1,23 +1,29 @@
+name: PR notice
 on:
   pull_request:
     types:
-    - opened
+      - opened
+    paths:
+      - "chart/orchestrator/"
 
 jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          gh pr comment -b " \
-            📢 Repository Notice \
-            This repository is now dedicated to maintaining the stable-1.1.x version of the Orchestrator, which is deployed using a Helm chart. \
-            \
-            ⚠️ Important: The installation method for Orchestrator 1.2.x has been changed to be operator-based. Development for this version now happens in the Orchestrator Helm Operator repository. \
-            \  
-            Additionally, this repository will continue to be the home for developing the orchestrator-k8s Helm chart. \
-            \
-            If this change includes changes to the orchestrator helm chart, please \
-            close the PR and send it to https://parodos-dev/orchestrator-helm-operator instead" 
-        env:
+      - env:
           GH_TOKEN: ${{ github.token }}
+        run: |
+          cat << EOF | gh pr comment ${{ github.event.number }} -F -
+          📢 Repository Notice
+          This repository is now dedicated to maintaining the stable-1.1.x version of the Orchestrator, which is deployed using a Helm chart.
+          
+          ⚠️ Important: The installation method for Orchestrator 1.2.x has been changed to be operator-based.
+          Development for this version now happens in the Orchestrator Helm Operator repository.
+             
+          Additionally, this repository will continue to be the home for developing the orchestrator-k8s Helm chart.
+          
+          If this change includes changes to the orchestrator helm chart, please
+          close the PR and send it to https://parodos-dev/orchestrator-helm-operator instead"
+          EOF
+        
