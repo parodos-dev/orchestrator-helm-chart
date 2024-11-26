@@ -6,6 +6,15 @@ labels:
   - app: orchestartor
 sonataflowOperator:
   image: quay.io/kiegroup/kogito-serverless-operator-nightly:latest
+platform:
+  # eventing related fields
+  eventing:
+    # broker related fields
+    broker:
+      # name of the broker to use when creating triggers and sinkbindings
+      name: broker
+      # namespace where the broker is deployed
+      namespace: default
 postgresql-persistent:
   # depends on sonataflow-operator which still uses the ephemeral image.
   enabled: false
