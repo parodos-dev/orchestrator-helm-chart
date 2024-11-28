@@ -10,7 +10,15 @@ spec:
       registry:
         address: quay.io/kiegroup
         secret: regcred
-
+  {{- if (and (.Values.platform.eventing.broker.name) (.Values.platform.eventing.broker.namespace)) }}
+  eventing:
+    broker:
+      ref:
+        apiVersion: eventing.knative.dev/v1
+        kind: Broker
+        name: {{ .Values.platform.eventing.broker.name }}
+        namespace: {{ .Values.platform.eventing.broker.namespace }}
+  {{- end }}
   services:
     dataIndex:
       enabled: true
