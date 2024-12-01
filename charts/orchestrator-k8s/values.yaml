@@ -5,7 +5,7 @@ serviceAccountName: orchestrator-sa
 labels:
   - app: orchestartor
 sonataflowOperator:
-  image: quay.io/kiegroup/kogito-serverless-operator-nightly:latest
+  image: quay.io/kubesmarts/incubator-kie-sonataflow-operator:main
 platform:
   # eventing related fields
   eventing:

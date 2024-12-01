@@ -1,9 +1,9 @@
 dependencies:
 - name: backstage
   repository: https://redhat-developer.github.io/rhdh-chart
-  version: 2.24.0
+  version: 2.18.0
 - name: postgresql-persistent
   repository: https://sclorg.github.io/helm-charts
   version: 0.0.3
-digest: sha256:1a995070c696838784aaf83f289be894f416f55dc9ac331a91141bf4d56cddc4
-generated: "2024-11-28T14:32:18.957292843+01:00"
+digest: sha256:d9f9ec1040c9863b849db00308f1f031a38a6114054fff7d4b44c2ef4f6629f3
+generated: "2024-11-29T12:31:20.7211207+01:00"
