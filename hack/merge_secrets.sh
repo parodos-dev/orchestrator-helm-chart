@@ -48,7 +48,7 @@ metadata:
   namespace: orchestrator-gitops
 type: kubernetes.io/dockerconfigjson
 data:
-  .dockerconfigjson: $(cat $encoded_merged_secret)" > docker-credentionals-secret.yaml
+  .dockerconfigjson: $(cat $encoded_merged_secret)" > docker-credentials-secret.yaml
 
 # Clean up temporary files
 rm "$temp_secret1_file" "$temp_secret2_file" "$merged_secret_file" "$encoded_merged_secret"
