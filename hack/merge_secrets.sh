@@ -18,7 +18,11 @@ secret2_file=$2
 base64_encode() {
     local input_file=$1
     local output_file=$2
-    base64 -w 0 "$input_file" > "$output_file"
+    if [ "$(uname -o)" = "Darwin" ]; then
+        base64 -i "$input_file" -o "$output_file"
+    else
+        base64 -w 0 "$input_file" > "$output_file"
+    fi
 }
 
 # Decode the secrets into temporary files
@@ -49,4 +53,4 @@ data:
 # Clean up temporary files
 rm "$temp_secret1_file" "$temp_secret2_file" "$merged_secret_file" "$encoded_merged_secret"
 
-echo "Merged secret created: docker-credentionals-secret.yaml"
+echo "Merged secret created: docker-credentials-secret.yaml"
