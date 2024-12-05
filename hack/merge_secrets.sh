@@ -53,4 +53,4 @@ data:
 # Clean up temporary files
 rm "$temp_secret1_file" "$temp_secret2_file" "$merged_secret_file" "$encoded_merged_secret"
 
-echo "Merged secret created: docker-credentionals-secret.yaml"
+echo "Merged secret created: docker-credentials-secret.yaml"
