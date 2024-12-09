@@ -211,6 +211,8 @@ backstage:
               type: url
             - target: /opt/backstage/locations/basic-workflow-template.yaml
               type: file
+            - target: /opt/backstage/locations/advanced-workflow-template.yaml
+              type: file
             - target: /opt/backstage/locations/users.yaml
               type: file
             - target: /opt/backstage/locations/workflow-resources.yaml
