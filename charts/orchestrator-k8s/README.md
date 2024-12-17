@@ -14,7 +14,7 @@ The chart deploys:
 ### Usage
 
 ```console
-helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
+helm repo add orchestrator https://rhdhorchestrator.github.io/orchestrator-helm-chart
 
 helm install orchestrator orchestrator/orchestrator-k8s
 ```
@@ -29,7 +29,7 @@ Every key in that secret will be available in the app-config for resolution.
 
 ## Development
 ```console
-git clone https://github.com/parodos-dev.github.io/orchestrator-helm-chart
+git clone https://github.com/rhdhorchestrator.github.io/orchestrator-helm-chart
 cd orchestrator-helm-chart/charts/orchestrator-k8s
 
 
@@ -37,7 +37,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add backstage https://backstage.github.io/charts
 helm repo add postgresql-persistent https://sclorg.github.io/helm-charts
 helm repo add redhat-developer https://redhat-developer.github.io/rhdh-chart
-helm repo add workflows https://parodos.dev/serverless-workflows-config
+helm repo add workflows https://rhdhorchestrator.io/serverless-workflows-config
 
 helm dependencies build
 helm install orchestrator .

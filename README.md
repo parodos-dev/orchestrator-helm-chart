@@ -3,14 +3,14 @@
 > 
 > This repository is now dedicated to maintaining the **stable-1.1.x** version of the Orchestrator, which is deployed using a Helm chart.
 > 
-> ⚠️ **Important:** The installation method for **Orchestrator 1.2.x** has been changed to be operator-based. Development for this version now happens in the [Orchestrator Helm Operator repository](https://github.com/parodos-dev/orchestrator-helm-operator).
+> ⚠️ **Important:** The installation method for **Orchestrator 1.2.x** has been changed to be operator-based. Development for this version now happens in the [Orchestrator Helm Operator repository](https://github.com/rhdhorchestrator/orchestrator-helm-operator).
 > 
 > Additionally, this repository will continue to be the home for developing the **orchestrator-k8s Helm chart**.
 
 # Orchestrator Helm Chart
 This repository contains the Helm chart for deploying the Orchestrator solution suite.
 
-For detailed instruction refer to this [guide](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/README.md)
+For detailed instruction refer to this [guide](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/gh-pages/README.md)
 
 ## Development
 
@@ -28,8 +28,8 @@ Overall, there are 4 plugins:
 * [orchestrator](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/orchestrator) - [@janus-idp/backstage-plugin-orchestrator](https://www.npmjs.com/package/@janus-idp/backstage-plugin-orchestrator) in npmjs
 * [orchestrator-backend](https://github.com/janus-idp/backstage-plugins/tree/main/plugins/orchestrator-backend) - [@janus-idp/backstage-plugin-orchestrator-backend-dynamic](https://www.npmjs.com/package/@janus-idp/backstage-plugin-orchestrator-backend-dynamic) in npmjs
 
-The plugins are configured by the `dynamic-plugins-rhdh` configmap in [RHDH operator configuration](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/charts/orchestrator/templates/rhdh-operator.yaml).
-To update plugin versions, use the script: [./hack/update_plugins_version.sh](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/hack/update_plugins_version.sh)
+The plugins are configured by the `dynamic-plugins-rhdh` configmap in [RHDH operator configuration](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/main/charts/orchestrator/templates/rhdh-operator.yaml).
+To update plugin versions, use the script: [./hack/update_plugins_version.sh](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/main/hack/update_plugins_version.sh)
 
 ## Documentation
-See [Helm Chart Documentation](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/charts/orchestrator/README.md) for information about the values used by the helm chart.
+See [Helm Chart Documentation](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/main/charts/orchestrator/README.md) for information about the values used by the helm chart.

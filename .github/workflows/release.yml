@@ -26,7 +26,7 @@ jobs:
         run: |
           helm repo add postgresql-persistent https://sclorg.github.io/helm-charts
           helm repo add backstage https://redhat-developer.github.io/rhdh-chart
-          helm repo add workflows https://parodos.dev/serverless-workflows-config
+          helm repo add workflows https://rhdhorchestrator.io/serverless-workflows-config
 
       - name: Run chart-releaser
         uses: masayag/chart-releaser-action@main
