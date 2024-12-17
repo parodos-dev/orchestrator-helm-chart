@@ -6,7 +6,7 @@ The following document describes the steps for installing the helm chart for loc
 1. Clone the git repository
 
     ```console
-    git clone git@github.com:parodos-dev/orchestrator-helm-chart.git
+    git clone git@github.com:rhdhorchestrator/orchestrator-helm-chart.git
     cd orchestrator-helm-chart/charts
     ```
 
@@ -15,7 +15,7 @@ The following document describes the steps for installing the helm chart for loc
   - `rhdh-operator` namespace
   - `backstage-backend-auth-secret` secret in the `rhdh-operator` namespace with at least the `BACKEND_SECRET` key with a random value. If you plan to develop with GitOps integration, run the `hack/setup.sh` script to automate the creation of the secret
   - `sonataflow-infra` namespace
-  - `postgreSQL` instance deployed in the `sonataflow-infra` namespace following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
+  - `postgreSQL` instance deployed in the `sonataflow-infra` namespace following these [instructions](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
 
 3. Configure the `values.yaml` fields\
     Before installing the chart, edit the `values.yaml` file and set the values accordingly. Remember to set to `true` the `argocd.enabled` and `tekton.enabled` fields when installing against a GitOps environment.

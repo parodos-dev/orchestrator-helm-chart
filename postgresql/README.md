@@ -12,13 +12,13 @@ Note: replace the password of the `sonataflow-psql-postgresql` secret below in t
 oc new-project sonataflow-infra
 oc create secret generic sonataflow-psql-postgresql --from-literal=postgres-username=postgres --from-literal=postgres-password=postgres
 
-git clone git@github.com:parodos-dev/orchestrator-helm-chart.git
+git clone git@github.com:rhdhorchestrator/orchestrator-helm-chart.git
 cd orchestrator-helm-chart/postgresql
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install sonataflow-psql bitnami/postgresql --version 12.x.x -f ./values.yaml
 ```
 
-#### **Note:** the default settings provided in [PostgreSQL values](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/postgresql/values.yaml) match the defaults provided in the [Orchestrator values](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/charts/orchestrator/values.yaml). 
+#### **Note:** the default settings provided in [PostgreSQL values](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/main/postgresql/values.yaml) match the defaults provided in the [Orchestrator values](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/main/charts/orchestrator/values.yaml). 
 Any changes to the first configuration must also be reported in the latter.
 
 For OpenShift-related configuration in the chart visit [here](https://github.com/bitnami/charts/blob/main/bitnami/postgresql/README.md#differences-between-bitnami-postgresql-image-and-docker-official-image).
@@ -52,7 +52,7 @@ GRANT ALL PRIVILEGES ON DATABASE sonataflow TO postgres;
 EOF
 ```
 
-Installing the Orchestrator chart should use the [values-rh-postgres.yaml](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/charts/orchestrator/values-rh-postgres.yaml) that contains the updated
+Installing the Orchestrator chart should use the [values-rh-postgres.yaml](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/main/charts/orchestrator/values-rh-postgres.yaml) that contains the updated
 secret keys according to the `examples/postgresql-persistent-template.json` template used to create the database server.
 Run installation by adding `-f orchestrator/values-rh-postgres.yaml`:
 ```

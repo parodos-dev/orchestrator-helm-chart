@@ -2,7 +2,7 @@
 
 # Prerequisites
 - RHDH instance deployed with IDP configured (github, gitlab,...)
-- For using the Orchestrator's [software templates](https://github.com/parodos-dev/workflow-software-templates/tree/v1.2.x), OpenShift Gitops (ArgoCD) and OpenShift Pipelines (Tekton) should be installed and configured in RHDH (to enhance the CI/CD plugins)
+- For using the Orchestrator's [software templates](https://github.com/rhdhorchestrator/workflow-software-templates/tree/v1.2.x), OpenShift Gitops (ArgoCD) and OpenShift Pipelines (Tekton) should be installed and configured in RHDH (to enhance the CI/CD plugins)
 - A secret in RHDH's namespace name `dynamic-plugins-npmrc` that points to the plugins npm registry (details will be provided below)
 
 # Installation steps
@@ -83,7 +83,7 @@ This ConfigMap houses the configuration for enabling and configuring dynamic plu
                 path: /orchestrator
 ```
 
-The versions of the plugins may undergo updates, leading to changes in their integrity values. To ensure you are utilizing the latest versions, please consult the Helm chart values available [here](https://github.com/parodos-dev/orchestrator-helm-chart/blob/main/charts/orchestrator/values.yaml#L48). It's imperative to set both the version and integrity values accordingly.
+The versions of the plugins may undergo updates, leading to changes in their integrity values. To ensure you are utilizing the latest versions, please consult the Helm chart values available [here](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/main/charts/orchestrator/values.yaml#L48). It's imperative to set both the version and integrity values accordingly.
 
 Additionally, ensure that the `dataIndexService.url` points to the service of the Data Index installed by the Chart/Operator.
 When installed by the Helm chart, it should point to `http://sonataflow-platform-data-index-service.sonataflow-infra`:
@@ -189,9 +189,9 @@ The RHDH instance will be restarted automatically on ConfigMap changes.
 ### Import Orchestrator's software templates
 To import the Orchestrator software templates into the catalog via the Backstage UI, follow the instructions outlined in this [document](https://backstage.io/docs/features/software-templates/adding-templates). 
 Register new templates into the catalog from the
-- [Workflow resources (group and system)](https://github.com/parodos-dev/workflow-software-templates/blob/v1.2.x/entities/workflow-resources.yaml) (optional)
-- [Basic template](https://github.com/parodos-dev/workflow-software-templates/blob/v1.2.x/scaffolder-templates/basic-workflow/template.yaml)
-- [Complex template - workflow with custom Java code](https://github.com/parodos-dev/workflow-software-templates/blob/v1.2.x/scaffolder-templates/complex-assessment-workflow/template.yaml)
+- [Workflow resources (group and system)](https://github.com/rhdhorchestrator/workflow-software-templates/blob/v1.2.x/entities/workflow-resources.yaml) (optional)
+- [Basic template](https://github.com/rhdhorchestrator/workflow-software-templates/blob/v1.2.x/scaffolder-templates/basic-workflow/template.yaml)
+- [Complex template - workflow with custom Java code](https://github.com/rhdhorchestrator/workflow-software-templates/blob/v1.2.x/scaffolder-templates/complex-assessment-workflow/template.yaml)
           
 ## Upgrade plugin versions - WIP
 **NOTE** This section is still **WIP** since there are additional plugins related to the notification that haven't yet been published.

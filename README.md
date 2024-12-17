@@ -35,17 +35,17 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
 ### Deployment with GitOps
 
-  If you plan to deploy in a GitOps environment, make sure you have installed the `ArgoCD/Red Hat OpenShift GitOps` and the `Tekton/Red Hat Openshift Pipelines Install` operators following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/gitops/README.md).
+  If you plan to deploy in a GitOps environment, make sure you have installed the `ArgoCD/Red Hat OpenShift GitOps` and the `Tekton/Red Hat Openshift Pipelines Install` operators following these [instructions](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/gh-pages/gitops/README.md).
   The Orchestrator installs RHDH and imports software templates designed for bootstrapping workflow development. These templates are crafted to ease the development lifecycle, including a Tekton pipeline to build workflow images and generate workflow K8s custom resources. Furthermore, ArgoCD is utilized to monitor any changes made to the workflow repository and to automatically trigger the Tekton pipelines as needed.
 
 - `ArgoCD/OpenShift GitOps` operator
-  - Ensure at least one instance of `ArgoCD` exists in the designated namespace (referenced by `ARGOCD_NAMESPACE` environment variable). Example [here](https://raw.githubusercontent.com/parodos-dev/orchestrator-helm-chart/gh-pages/gitops/resources/argocd-example.yaml)
+  - Ensure at least one instance of `ArgoCD` exists in the designated namespace (referenced by `ARGOCD_NAMESPACE` environment variable). Example [here](https://raw.githubusercontent.com/rhdhorchestrator/orchestrator-helm-chart/gh-pages/gitops/resources/argocd-example.yaml)
   - Validated API is `argoproj.io/v1alpha1/AppProject`
 - `Tekton/OpenShift Pipelines` operator
   - Validated APIs are `tekton.dev/v1beta1/Task` and `tekton.dev/v1/Pipeline`
   - Requires ArgoCD installed since the manifests are deployed in the same namespace as the ArgoCD instance.
 
-  Remember to enable [argocd](https://github.com/parodos-dev/orchestrator-helm-chart/blob/145a6cb647253faa1e8d50fcaac75988f5807724/charts/orchestrator/values.yaml#L80) and [tekton](https://github.com/parodos-dev/orchestrator-helm-chart/blob/145a6cb647253faa1e8d50fcaac75988f5807724/charts/orchestrator/values.yaml#L77) in the `values.yaml` or, alternatively, enabled them via helm's setting flag in the CLI when installing the chart. Example:
+  Remember to enable [argocd](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/145a6cb647253faa1e8d50fcaac75988f5807724/charts/orchestrator/values.yaml#L80) and [tekton](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/145a6cb647253faa1e8d50fcaac75988f5807724/charts/orchestrator/values.yaml#L77) in the `values.yaml` or, alternatively, enabled them via helm's setting flag in the CLI when installing the chart. Example:
 
   ```console
   helm upgrade -i ... --set argocd.enabled=true --set tekton.enabled=true
@@ -58,7 +58,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
      Add the repository:
 
      ```bash
-     helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
+     helm repo add orchestrator https://rhdhorchestrator.github.io/orchestrator-helm-chart
      ```
 
      Expect result:
@@ -77,10 +77,10 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
      ```
      NAME        	URL
-     orchestrator	https://parodos-dev.github.io/orchestrator-helm-chart
+     orchestrator	https://rhdhorchestrator.github.io/orchestrator-helm-chart
      ```
 
-1. Deploy the PostgreSQL reference implementation for persistence support in SonataFlow following these [instructions](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
+1. Deploy the PostgreSQL reference implementation for persistence support in SonataFlow following these [instructions](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
 
 1. Create a namespace for the Orchestrator solution:
 
@@ -98,7 +98,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 1.  Download the setup script from the github repository and run it to create the RHDH secret and label the GitOps namespaces:
 
     ```console
-    wget https://raw.githubusercontent.com/parodos-dev/orchestrator-helm-chart/main/hack/setup.sh -O /tmp/setup.sh && chmod u+x /tmp/setup.sh
+    wget https://raw.githubusercontent.com/rhdhorchestrator/orchestrator-helm-chart/main/hack/setup.sh -O /tmp/setup.sh && chmod u+x /tmp/setup.sh
     ```
 
     Run the script:
@@ -204,7 +204,7 @@ Note that as of November 6, 2023, OpenShift Serverless Operator is based on RHEL
 
 ### Installing from the git repository for chart development
 
-Use this [guide](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/manual.md) if you plan to develop the helm chart. Note that the requirements for the chart deployment still remain unchanged.
+Use this [guide](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/gh-pages/manual.md) if you plan to develop the helm chart. Note that the requirements for the chart deployment still remain unchanged.
 
 ### For installing from OpenShift Developer perspective
 
@@ -218,7 +218,7 @@ metadata:
   name: orchestrator
 spec:
   connectionConfig:
-    url: 'https://parodos-dev.github.io/orchestrator-helm-chart'
+    url: 'https://rhdhorchestrator.github.io/orchestrator-helm-chart'
 EOF
 ```
 
@@ -313,11 +313,11 @@ By following these steps, the workflow will have the necessary credentials to ac
 
 ### GitOps environment
 
-See the dedicated [document](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/gitops/README.md)
+See the dedicated [document](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/gh-pages/gitops/README.md)
 
 ### Deploying PostgreSQL reference implementation
 
-See [here](https://github.com/parodos-dev/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
+See [here](https://github.com/rhdhorchestrator/orchestrator-helm-chart/blob/gh-pages/postgresql/README.md)
 
 ### ArgoCD and workflow namespace
 
@@ -329,7 +329,7 @@ oc label ns $WORKFLOW_NAMESPACE argocd.argoproj.io/managed-by=$ARGOCD_NAMESPACE
 
 ### Workflow installation
 
-Follow [Workflows Installation](https://www.parodos.dev/serverless-workflows-config/)
+Follow [Workflows Installation](https://www.rhdhorchestrator.io/serverless-workflows-config/)
 
 ## Cleanup
 
