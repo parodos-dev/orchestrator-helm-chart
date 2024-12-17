@@ -24,6 +24,6 @@ jobs:
           Additionally, this repository will continue to be the home for developing the orchestrator-k8s Helm chart.
           
           If this change includes changes to the orchestrator helm chart, please
-          close the PR and send it to https://parodos-dev/orchestrator-helm-operator instead"
+          close the PR and send it to https://rhdhorchestrator/orchestrator-helm-operator instead"
           EOF
         

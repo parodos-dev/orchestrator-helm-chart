@@ -15,5 +15,5 @@ dependencies:
     version: "0.0.3"
     condition: postgresql-persistent.enabled
 
-icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
 
